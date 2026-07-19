@@ -15,9 +15,11 @@ a family or changing a public command.
   or flow types.
 - Record affine dimension separately from the trimmed polynomial degree and
   the h* degree.  Trailing zero h* coefficients are meaningful.
-- Reuse `kostka`, `combinatoric-core`, and `polytool` while establishing
-  correctness and performance parity.  Do not rewrite those projects merely
-  to move code into this repository.
+- Treat the internal `ehrcalc-kostka-engine` and `ehrcalc-foundations` crates
+  as the maintained implementations for their migrated algorithms.  Preserve
+  their provenance notes and use legacy `kostka` and `combinatoric-core` only
+  as comparison/reference sources.  Continue to use `polytool` for
+  real-rootedness and interlacing checks.
 - JSON is the stable machine contract.  Plain text and LaTeX are presentation
   layers derived from the same exact result data.
 - The `clap` command model is the source of truth for flags, subcommands, and

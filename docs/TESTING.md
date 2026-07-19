@@ -30,10 +30,10 @@ Each family must include:
 - reciprocity validation when an interior-count model is available; and
 - dimension tests, including degenerate and empty inputs where meaningful.
 
-GT and flagged examples must match `kostka`.  Order-polytope examples must
-match direct order-preserving-map counts.  Flow examples must match small
-enumerated flows.  Key examples must match existing checked fixtures before a
-new evaluator becomes the default.
+GT and flagged examples must match the frozen `kostka` reference fixtures.
+Order-polytope examples must match direct order-preserving-map counts.  Flow
+examples must match small enumerated flows.  Key examples must match checked
+fixtures before a new evaluator becomes the default.
 
 ### Regression Fixtures
 
@@ -52,10 +52,10 @@ the shared exact result model rather than formatted strings.
 
 ## Required Checks
 
-Run the focused package tests during development:
+Run the full standalone workspace tests during development:
 
 ```bash
-timeout 60s nice -n 10 cargo test -p ehrcalc
+timeout 60s nice -n 10 cargo test --workspace
 ```
 
 Before a feature is merged, also run the relevant cross-project comparison

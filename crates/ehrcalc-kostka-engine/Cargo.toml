@@ -1,0 +1,17 @@
+[package]
+name = "ehrcalc-kostka-engine"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+description = "GT, Kostka, Littlewood-Richardson, flow, and Ehrhart engine for Ehrcalc"
+
+[dependencies]
+rayon = "=1.10.0"
+num = "0.4"
+num-bigint = "0.4"
+num-rational = "0.4"
+num-traits = "0.2"
+hashbrown = "0.15"
+flate2 = { version = "1", features = ["rust_backend"] }
+serde_json = "1"

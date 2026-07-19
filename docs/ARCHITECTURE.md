@@ -30,15 +30,21 @@ When available, they also provide relative-interior counts for
 Ehrhart-Macdonald reciprocity.  The generic service owns the decision to use
 positive samples, reciprocal samples, or both.
 
-The initial implementation will wrap proven code:
+The public workspace owns two focused internal engines:
 
-- `kostka` for GT, Kostka, flagged Kostka, LR, and flow calculations;
-- `combinatoric-core` for key and order-polytope calculations; and
-- `polytool` for real-rootedness and interlacing checks.
+- `ehrcalc-kostka-engine` for GT, Kostka, flagged Kostka, LR, flow, Ehrhart,
+  h*, and standard-tableau algorithms migrated from legacy `kostka`; and
+- `ehrcalc-foundations` for the partition, permutation, Kogan-key, and
+  order-poset algorithms migrated from `combinatoric-core`.
 
-Only after parity and benchmarks justify it should neutral code be extracted
-into a dependency-free core crate.  The dependency direction must never make
-`polytool`, `kostka`, or `combinatoric-core` depend on a family adapter.
+Their provenance files name the source revisions and deliberately bounded
+scope.  This makes Ehrcalc independently buildable while leaving the broader
+`combinatoric-core` project separate.  The legacy `kostka` repository is a
+frozen compatibility/reference project and is never a runtime dependency.
+`polytool` remains the authority for real-rootedness and interlacing checks.
+
+The dependency direction must never make `polytool` or the legacy projects
+depend on an Ehrcalc family adapter.
 
 ## Exact Representation
 

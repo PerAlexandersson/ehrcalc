@@ -1,0 +1,13 @@
+[package]
+name = "ehrcalc-foundations"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+publish = false
+description = "Focused partition, permutation, key, and order-poset foundations for Ehrcalc"
+
+[dependencies]
+num-bigint = "0.4"
+num-rational = "0.4"
+num-traits = "0.2"
+num-integer = "0.1"

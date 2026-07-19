@@ -129,8 +129,10 @@ ehrcalc/docs/
 
 Ehrcalc is a standalone public package.  It uses `polytool` for future
 real-rootedness and interlacing checks rather than absorbing those algorithms.
-Family adapters wrap existing `kostka` and `combinatoric-core` code until a
-benchmark justifies extraction of neutral implementation layers.
+The GT/Kostka/LR/flow and key/order implementations have been migrated into
+the internal `ehrcalc-kostka-engine` and `ehrcalc-foundations` crates.  The
+legacy `kostka` repository is now a frozen compatibility/reference source,
+while the broader `combinatoric-core` project remains separate.
 
 ## Core Data Types
 
@@ -584,8 +586,9 @@ Phase 1:
 
 Phase 2:
 
-- wrap existing `kostka` Ehrhart APIs;
-- wrap existing `combinatoric-core` key Ehrhart API;
+- migrate the required `kostka` Ehrhart APIs into `ehrcalc-kostka-engine`;
+- migrate the required `combinatoric-core` key and order APIs into
+  `ehrcalc-foundations`;
 - add key row and key scan commands;
 - reproduce `key_hstar_interlacing` and `key_hstar_staircase` through `S_4`.
 

@@ -1,15 +1,15 @@
 //! Adapters for exact counting families already implemented in the workspace.
 
 use crate::exact::{EhrhartData, EhrhartPolynomial, ExactResult};
-use combinatoric_core::key_polynomial::key_ehrhart_polynomial;
-use combinatoric_core::poset::Poset;
-use combinatoric_core::Partition as CorePartition;
-use kostka::ehrhart::compute_ehrhart;
-use kostka::flow::FlowPolytope;
-use kostka::gt_dim::gt_polytope_dim_full;
-use kostka::kostka_dp::{flagged_skew_kostka, skew_kostka};
-use kostka::lr::lr_dp;
-use kostka::Partition as KostkaPartition;
+use ehrcalc_foundations::key_polynomial::key_ehrhart_polynomial;
+use ehrcalc_foundations::poset::Poset;
+use ehrcalc_foundations::Partition as CorePartition;
+use ehrcalc_kostka_engine::ehrhart::compute_ehrhart;
+use ehrcalc_kostka_engine::flow::FlowPolytope;
+use ehrcalc_kostka_engine::gt_dim::gt_polytope_dim_full;
+use ehrcalc_kostka_engine::kostka_dp::{flagged_skew_kostka, skew_kostka};
+use ehrcalc_kostka_engine::lr::lr_dp;
+use ehrcalc_kostka_engine::Partition as KostkaPartition;
 use num_bigint::{BigInt, BigUint, ToBigInt};
 
 /// Input for a GT/Kostka Ehrhart calculation.
