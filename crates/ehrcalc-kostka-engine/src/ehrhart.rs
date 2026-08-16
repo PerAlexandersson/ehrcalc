@@ -1,13 +1,14 @@
-use crate::gt_dim::gt_polytope_dim;
+use crate::gt_dim::gt_polytope_dim_full;
 use crate::kostka_dp::{
-    skew_kostka, skew_kostka_legacy, strict_skew_kostka, strict_skew_kostka_legacy,
+    flagged_skew_kostka_legacy, skew_kostka_legacy, strict_skew_kostka, strict_skew_kostka_legacy,
+    try_flagged_skew_kostka, try_skew_kostka, try_strict_skew_kostka,
 };
 use crate::Partition;
 /// Ehrhart polynomial computation for GT(lambda/mu, w).
 ///
 /// By Rassart (2004), the function n ↦ K(n*lambda / n*mu, n*w) is a polynomial in n.
 /// We:
-///   1. Compute the degree d via gt_dim::gt_polytope_dim.
+///   1. Compute the degree d via gt_dim::gt_polytope_dim_full, including flags.
 ///   2. Collect d+1 sample points using Ehrhart-Macdonald reciprocity with an
 ///      adaptive strategy (or plain positive-dilation when flags are active).
 ///   3. Solve the resulting system over Q by Gaussian elimination.
@@ -192,12 +193,36 @@ pub fn compute_ehrhart(
     max_states: Option<usize>,
     use_reciprocity: bool,
 ) -> EhrhartPoly {
+    try_compute_ehrhart(
+        lambda,
+        mu,
+        w,
+        upper_flags,
+        lower_flags,
+        verbose,
+        max_states,
+        use_reciprocity,
+    )
+    .expect("GT Ehrhart DP state limit exceeded")
+}
+
+/// Fallible variant of [`compute_ehrhart`] that reports a state-limit breach.
+pub fn try_compute_ehrhart(
+    lambda: &Partition,
+    mu: &Partition,
+    w: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    verbose: bool,
+    max_states: Option<usize>,
+    use_reciprocity: bool,
+) -> Result<EhrhartPoly, String> {
     let mode = if use_reciprocity {
         EhrhartInterpolation::AdaptiveReciprocity
     } else {
         EhrhartInterpolation::PositiveOnly
     };
-    compute_ehrhart_with_mode(
+    try_compute_ehrhart_with_mode(
         lambda,
         mu,
         w,
@@ -219,6 +244,30 @@ pub fn compute_ehrhart_with_mode(
     max_states: Option<usize>,
     mode: EhrhartInterpolation,
 ) -> EhrhartPoly {
+    try_compute_ehrhart_with_mode(
+        lambda,
+        mu,
+        w,
+        upper_flags,
+        lower_flags,
+        verbose,
+        max_states,
+        mode,
+    )
+    .expect("GT Ehrhart DP state limit exceeded")
+}
+
+/// Fallible variant of [`compute_ehrhart_with_mode`] that reports a state-limit breach.
+pub fn try_compute_ehrhart_with_mode(
+    lambda: &Partition,
+    mu: &Partition,
+    w: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    verbose: bool,
+    max_states: Option<usize>,
+    mode: EhrhartInterpolation,
+) -> Result<EhrhartPoly, String> {
     compute_ehrhart_impl(
         lambda,
         mu,
@@ -280,6 +329,7 @@ pub fn compute_ehrhart_legacy_with_mode(
         mode,
         true,
     )
+    .expect("legacy GT Ehrhart DP state limit exceeded")
 }
 
 fn compute_ehrhart_impl(
@@ -292,15 +342,15 @@ fn compute_ehrhart_impl(
     max_states: Option<usize>,
     mode: EhrhartInterpolation,
     use_legacy_dp: bool,
-) -> EhrhartPoly {
+) -> Result<EhrhartPoly, String> {
     // Early exit: sizes must be compatible for a non-empty polytope.
     let skew_size = lambda.size().saturating_sub(mu.size());
     let w_size: u32 = w.iter().sum();
     if skew_size != w_size {
-        return EhrhartPoly {
+        return Ok(EhrhartPoly {
             coeffs: vec![BigRational::zero()],
             degree: 0,
-        };
+        });
     }
 
     // Only reorder w when no flag bounds are active (flags are tied to w's row ordering).
@@ -323,35 +373,43 @@ fn compute_ehrhart_impl(
         EhrhartInterpolation::PositiveOnly => EhrhartInterpolation::PositiveOnly,
     };
 
-    let d = match gt_polytope_dim(lambda.parts(), mu.parts(), w) {
+    let d = match gt_polytope_dim_full(lambda.parts(), mu.parts(), w, upper_flags, lower_flags) {
         None => {
-            return EhrhartPoly {
+            return Ok(EhrhartPoly {
                 coeffs: vec![BigRational::zero()],
                 degree: 0,
-            }
+            });
         }
         Some(d) => d,
     };
 
-    let eval_positive = |t: u64| -> BigUint {
+    let eval_positive = |t: u64| -> Result<BigUint, String> {
         let tl = scale_partition(lambda, t);
         let tm_p = scale_partition(mu, t);
         let tw: Vec<u32> = w.iter().map(|&x| x * t as u32).collect();
         if use_legacy_dp {
-            skew_kostka_legacy(&tl, &tm_p, &tw, max_states, sort_weight)
+            Ok(if upper_flags.is_some() || lower_flags.is_some() {
+                flagged_skew_kostka_legacy(&tl, &tm_p, &tw, upper_flags, lower_flags, max_states)
+            } else {
+                skew_kostka_legacy(&tl, &tm_p, &tw, max_states, sort_weight)
+            })
+        } else if upper_flags.is_some() || lower_flags.is_some() {
+            try_flagged_skew_kostka(&tl, &tm_p, &tw, upper_flags, lower_flags, max_states)
         } else {
-            skew_kostka(&tl, &tm_p, &tw, max_states, sort_weight)
+            try_skew_kostka(&tl, &tm_p, &tw, max_states, sort_weight)
         }
     };
 
-    let eval_strict = |t: u64| -> BigUint {
+    let eval_strict = |t: u64| -> Result<BigUint, String> {
         let tl = scale_partition(lambda, t);
         let tm_p = scale_partition(mu, t);
         let tw: Vec<u32> = w.iter().map(|&x| x * t as u32).collect();
         if use_legacy_dp {
-            strict_skew_kostka_legacy(&tl, &tm_p, &tw, max_states, false)
+            Ok(strict_skew_kostka_legacy(
+                &tl, &tm_p, &tw, max_states, false,
+            ))
         } else {
-            strict_skew_kostka(&tl, &tm_p, &tw, max_states, false)
+            try_strict_skew_kostka(&tl, &tm_p, &tw, max_states, false)
         }
     };
 
@@ -359,10 +417,10 @@ fn compute_ehrhart_impl(
         // P(0) = 1 always (the trivial chain μ=μ is the unique point at dilation 0).
         if d == 0 {
             // Constant polynomial.  No DP evaluation needed.
-            return EhrhartPoly {
+            return Ok(EhrhartPoly {
                 coeffs: vec![BigRational::one()],
                 degree: 0,
-            };
+            });
         }
 
         // Sequential adaptive reciprocity strategy:
@@ -387,7 +445,7 @@ fn compute_ehrhart_impl(
             if last_neg_count <= last_pos_count {
                 // Evaluate the next negative point via strict Kostka
                 neg_t += 1;
-                let ks = eval_strict(neg_t);
+                let ks = eval_strict(neg_t)?;
                 let ks_r = BigRational::from(ks.to_bigint().unwrap());
                 let p_val = if sign_pos { ks_r } else { -ks_r };
                 points.push((-(neg_t as i64), p_val));
@@ -395,7 +453,7 @@ fn compute_ehrhart_impl(
             } else {
                 // Evaluate the next positive point via ordinary Kostka
                 pos_t += 1;
-                let k = eval_positive(pos_t);
+                let k = eval_positive(pos_t)?;
                 let k_r = BigRational::from(k.to_bigint().unwrap());
                 points.push((pos_t as i64, k_r));
                 last_pos_count = k;
@@ -410,10 +468,10 @@ fn compute_ehrhart_impl(
             .find(|(_, c)| !c.is_zero())
             .map(|(i, _)| i)
             .unwrap_or(0);
-        EhrhartPoly {
+        Ok(EhrhartPoly {
             coeffs,
             degree: true_degree,
-        }
+        })
     } else if mode == EhrhartInterpolation::Gorenstein {
         let sign_pos = d % 2 == 0; // (-1)^d is +1 iff d is even
 
@@ -426,7 +484,7 @@ fn compute_ehrhart_impl(
         // Probe the negative side to detect the codegree q.
         // We keep the free zeros at -1, ..., -(q-1) as interpolation points.
         for neg_t in 1..=((d + 1) as u64) {
-            let ks = eval_strict(neg_t);
+            let ks = eval_strict(neg_t)?;
             if ks.is_zero() {
                 points.push((-(neg_t as i64), BigRational::zero()));
                 if points.len() == d + 1 {
@@ -438,10 +496,10 @@ fn compute_ehrhart_impl(
                         .find(|(_, c)| !c.is_zero())
                         .map(|(i, _)| i)
                         .unwrap_or(0);
-                    return EhrhartPoly {
+                    return Ok(EhrhartPoly {
                         coeffs,
                         degree: true_degree,
-                    };
+                    });
                 }
             } else {
                 q = Some(neg_t);
@@ -493,7 +551,7 @@ fn compute_ehrhart_impl(
 
         for t in 1..=pair_count {
             let t_u = t as u64;
-            let k = eval_positive(t_u);
+            let k = eval_positive(t_u)?;
             let k_r = BigRational::from(k.to_bigint().unwrap());
             points.push((t as i64, k_r.clone()));
             let mirror = if sign_pos { k_r } else { -k_r };
@@ -502,7 +560,7 @@ fn compute_ehrhart_impl(
 
         if has_extra_positive {
             let t = pair_count as u64 + 1;
-            let k = eval_positive(t);
+            let k = eval_positive(t)?;
             let k_r = BigRational::from(k.to_bigint().unwrap());
             points.push((t as i64, k_r));
         }
@@ -517,19 +575,19 @@ fn compute_ehrhart_impl(
             .find(|(_, c)| !c.is_zero())
             .map(|(i, _)| i)
             .unwrap_or(0);
-        EhrhartPoly {
+        Ok(EhrhartPoly {
             coeffs,
             degree: true_degree,
-        }
+        })
     } else {
         // Plain method: evaluate at n = 1, ..., d+1.
         let values: Vec<BigRational> = (1..=(d + 1) as u64)
             .into_par_iter()
             .map(|n| {
-                let k = eval_positive(n);
-                BigRational::from(k.to_bigint().unwrap())
+                let k = eval_positive(n)?;
+                Ok(BigRational::from(k.to_bigint().unwrap()))
             })
-            .collect();
+            .collect::<Result<Vec<_>, String>>()?;
 
         let coeffs = vandermonde_solve(&values);
         let true_degree = coeffs
@@ -539,10 +597,10 @@ fn compute_ehrhart_impl(
             .find(|(_, c)| !c.is_zero())
             .map(|(i, _)| i)
             .unwrap_or(0);
-        EhrhartPoly {
+        Ok(EhrhartPoly {
             coeffs,
             degree: true_degree,
-        }
+        })
     }
 }
 
@@ -782,6 +840,52 @@ mod tests {
 
         assert_eq!(fast.degree, legacy.degree);
         assert_eq!(fast.coeffs, legacy.coeffs);
+    }
+
+    #[test]
+    fn flagged_ehrhart_uses_flagged_dimension_and_counts() {
+        let lambda = p(&[2, 1]);
+        let mu = Partition::empty();
+        let w = [1, 1, 1];
+        let upper = [1, 1, 2];
+
+        let poly = try_compute_ehrhart(&lambda, &mu, &w, Some(&upper), None, false, None, true)
+            .expect("flagged Ehrhart interpolation");
+
+        assert_eq!(poly.degree, 0);
+        assert_eq!(poly.coeffs, vec![BigRational::one()]);
+        assert_eq!(poly.eval(1), BigRational::one());
+    }
+
+    #[test]
+    fn state_limit_is_fallible_on_positive_and_strict_gt_paths() {
+        let lambda = p(&[2, 1]);
+        let mu = Partition::empty();
+        let w = [1, 1, 1];
+
+        let positive = try_compute_ehrhart_with_mode(
+            &lambda,
+            &mu,
+            &w,
+            None,
+            None,
+            false,
+            Some(0),
+            EhrhartInterpolation::PositiveOnly,
+        );
+        assert!(positive.is_err());
+
+        let strict = try_compute_ehrhart_with_mode(
+            &lambda,
+            &mu,
+            &w,
+            None,
+            None,
+            false,
+            Some(0),
+            EhrhartInterpolation::AdaptiveReciprocity,
+        );
+        assert!(strict.is_err());
     }
 
     #[test]

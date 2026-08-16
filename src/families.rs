@@ -4,7 +4,7 @@ use crate::exact::{EhrhartData, EhrhartPolynomial, ExactResult};
 use ehrcalc_foundations::key_polynomial::key_ehrhart_polynomial;
 use ehrcalc_foundations::poset::Poset;
 use ehrcalc_foundations::Partition as CorePartition;
-use ehrcalc_kostka_engine::ehrhart::compute_ehrhart;
+use ehrcalc_kostka_engine::ehrhart::try_compute_ehrhart;
 use ehrcalc_kostka_engine::flow::FlowPolytope;
 use ehrcalc_kostka_engine::gt_dim::gt_polytope_dim_full;
 use ehrcalc_kostka_engine::kostka_dp::{try_flagged_skew_kostka, try_skew_kostka};
@@ -97,7 +97,7 @@ pub fn gt_ehrhart(input: &GtInput) -> ExactResult<EhrhartData> {
         input.lower_flags.as_deref(),
     )
     .ok_or_else(|| "the requested GT polytope is empty".to_string())?;
-    let polynomial = compute_ehrhart(
+    let polynomial = try_compute_ehrhart(
         &lambda,
         &mu,
         &input.weight,
@@ -106,7 +106,7 @@ pub fn gt_ehrhart(input: &GtInput) -> ExactResult<EhrhartData> {
         false,
         input.max_states,
         input.use_reciprocity,
-    );
+    )?;
     EhrhartData::new(EhrhartPolynomial::new(dimension, polynomial.coeffs)?)
 }
 
@@ -283,7 +283,7 @@ mod tests {
             lambda: vec![2, 1],
             mu: vec![],
             weight: vec![1, 1, 1],
-            upper_flags: Some(vec![1, 2, 2]),
+            upper_flags: Some(vec![1, 1, 2]),
             lower_flags: None,
             max_states: None,
             use_reciprocity: false,
@@ -298,7 +298,28 @@ mod tests {
             max_states: input.max_states,
         })
         .expect("flagged count");
-        assert_eq!(data.ehrhart.evaluate(1), num_rational::BigRational::from(count));
+        assert_eq!(
+            data.ehrhart.evaluate(1),
+            num_rational::BigRational::from(count.clone())
+        );
+        assert_eq!(count, BigInt::one());
+        assert_eq!(data.ehrhart.dimension(), 0);
+    }
+
+    #[test]
+    fn gt_state_limit_returns_an_error_for_both_interpolation_paths() {
+        for use_reciprocity in [false, true] {
+            let result = gt_ehrhart(&GtInput {
+                lambda: vec![2, 1],
+                mu: vec![],
+                weight: vec![1, 1, 1],
+                upper_flags: None,
+                lower_flags: None,
+                max_states: Some(0),
+                use_reciprocity,
+            });
+            assert!(result.is_err(), "use_reciprocity={use_reciprocity}");
+        }
     }
 
     #[test]

@@ -1189,22 +1189,37 @@ pub fn strict_skew_kostka(
     mu: &Partition,
     w: &[u32],
     max_states: Option<usize>,
-    _sort_weight: bool,
+    sort_weight: bool,
 ) -> BigUint {
+    try_strict_skew_kostka(lambda, mu, w, max_states, sort_weight)
+        .expect("strict Kostka DP state limit exceeded")
+}
+
+/// Fallible variant of [`strict_skew_kostka`] that reports a state-limit breach.
+///
+/// `sort_weight` is ignored because reordering the weight would invalidate the
+/// propagated bounds used to recognize relatively interior lattice points.
+pub fn try_strict_skew_kostka(
+    lambda: &Partition,
+    mu: &Partition,
+    w: &[u32],
+    max_states: Option<usize>,
+    _sort_weight: bool,
+) -> Result<BigUint, String> {
     let skew_size: u32 = lambda.size().saturating_sub(mu.size());
     let w_size: u32 = w.iter().sum();
     if skew_size != w_size {
-        return BigUint::zero();
+        return Ok(BigUint::zero());
     }
     if !mu.partition_less_equal(lambda) {
-        return BigUint::zero();
+        return Ok(BigUint::zero());
     }
 
     let n = lambda.num_parts();
     let k = w.len();
 
     let (_, lb, ub) = match crate::gt_dim::gt_polytope_bounds(lambda.parts(), mu.parts(), w) {
-        None => return BigUint::zero(),
+        None => return Ok(BigUint::zero()),
         Some(data) => data,
     };
 
@@ -1280,18 +1295,18 @@ pub fn strict_skew_kostka(
 
         if let Some(limit) = max_states {
             if new_dp.len() > limit {
-                panic!(
+                return Err(format!(
                     "DP state count {} exceeds --max-states {}.",
                     new_dp.len(),
                     limit
-                );
+                ));
             }
         }
 
         dp = new_dp;
     }
 
-    dp.remove(lambda).unwrap_or_else(BigUint::zero)
+    Ok(dp.remove(lambda).unwrap_or_else(BigUint::zero))
 }
 
 /// Convenience wrapper for non-skew strict K(lambda, w).
