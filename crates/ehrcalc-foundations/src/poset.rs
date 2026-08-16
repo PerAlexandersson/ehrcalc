@@ -73,6 +73,44 @@ pub struct Poset {
 impl Poset {
     // -- Constructors -------------------------------------------------------
 
+    /// Create a poset from cover relations, validating vertex indices and
+    /// rejecting directed cycles.
+    pub fn try_new(n: usize, covers: &[(usize, usize)]) -> Result<Self, String> {
+        for &(a, b) in covers {
+            if a >= n || b >= n {
+                return Err(format!(
+                    "cover relation ({a}, {b}) references a vertex outside 0..{n}"
+                ));
+            }
+            if a == b {
+                return Err(format!("cover relation ({a}, {b}) is a self-loop"));
+            }
+        }
+
+        let poset = Self::new(n, covers);
+        let mut indegree = poset.parents.iter().map(Vec::len).collect::<Vec<_>>();
+        let mut queue = std::collections::VecDeque::new();
+        for (vertex, &degree) in indegree.iter().enumerate() {
+            if degree == 0 {
+                queue.push_back(vertex);
+            }
+        }
+        let mut visited = 0;
+        while let Some(vertex) = queue.pop_front() {
+            visited += 1;
+            for &child in &poset.children[vertex] {
+                indegree[child] -= 1;
+                if indegree[child] == 0 {
+                    queue.push_back(child);
+                }
+            }
+        }
+        if visited != n {
+            return Err("cover relations contain a directed cycle".to_string());
+        }
+        Ok(poset)
+    }
+
     /// Create a poset from cover relations.
     ///
     /// Each pair `(a, b)` means a < b. The input should be a Hasse diagram

@@ -121,20 +121,30 @@ pub fn lr_dp(
     nu: &Partition,
     max_states: Option<usize>,
 ) -> BigUint {
+    try_lr_dp(lambda, mu, nu, max_states).expect("LR DP state limit exceeded")
+}
+
+/// Fallible variant of [`lr_dp`] that reports a state-limit breach.
+pub fn try_lr_dp(
+    lambda: &Partition,
+    mu: &Partition,
+    nu: &Partition,
+    max_states: Option<usize>,
+) -> Result<BigUint, String> {
     let n = lambda.num_parts();
     let skew_size = lambda.size().saturating_sub(mu.size());
     let w: Vec<u32> = nu.parts().to_vec();
     let w_size: u32 = w.iter().sum();
 
     if skew_size != w_size || !mu.partition_less_equal(lambda) {
-        return BigUint::zero();
+        return Ok(BigUint::zero());
     }
     if w.is_empty() {
-        return if lambda == mu {
+        return Ok(if lambda == mu {
             BigUint::one()
         } else {
             BigUint::zero()
-        };
+        });
     }
 
     // Level 0 → 1: no Yamanouchi check (no previous letter to compare against).
@@ -163,11 +173,11 @@ pub fn lr_dp(
 
         if let Some(limit) = max_states {
             if new_dp.len() > limit {
-                panic!(
+                return Err(format!(
                     "LR DP state count {} exceeds --max-states {}.",
                     new_dp.len(),
                     limit
-                );
+                ));
             }
         }
 
@@ -175,10 +185,11 @@ pub fn lr_dp(
     }
 
     // Sum over all final states reaching λ.
-    dp.into_iter()
+    Ok(dp
+        .into_iter()
         .filter(|((part, _), _)| part == lambda)
         .map(|(_, count)| count)
-        .sum()
+        .sum())
 }
 
 // ── Method 2: Kostka matrix back-substitution ───────────────────────────────

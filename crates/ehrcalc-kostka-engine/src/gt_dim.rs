@@ -41,15 +41,49 @@ fn gt_polytope_dim_impl(
     let n = lambda.len();
     let k = w.len();
 
-    if n == 0 || k <= 1 {
-        return Some((0, vec![], vec![]));
+    // Pad μ to length n with zeros.
+    if mu
+        .get(n..)
+        .is_some_and(|tail| tail.iter().any(|&part| part != 0))
+    {
+        return None;
+    }
+    let mut mu_pad = mu.to_vec();
+    mu_pad.resize(n, 0);
+    if mu_pad
+        .iter()
+        .zip(lambda)
+        .any(|(&mu_part, &lambda_part)| mu_part > lambda_part)
+    {
+        return None;
+    }
+    let skew_size = lambda.iter().map(|&part| u64::from(part)).sum::<u64>()
+        - mu_pad.iter().map(|&part| u64::from(part)).sum::<u64>();
+    if skew_size != w.iter().map(|&part| u64::from(part)).sum::<u64>() {
+        return None;
+    }
+    if upper_flags.is_some_and(|flags| flags.len() != k)
+        || lower_flags.is_some_and(|flags| flags.len() != k)
+    {
+        return None;
+    }
+
+    if k == 0 {
+        return (skew_size == 0).then(|| (0, vec![], vec![]));
+    }
+    if k == 1 {
+        let horizontal_strip = (1..n).all(|j| lambda[j] <= mu_pad[j - 1]);
+        let flags_allow_strip = (0..n).all(|j| {
+            if lambda[j] == mu_pad[j] {
+                return true;
+            }
+            upper_flags.is_none_or(|flags| j < flags[0] as usize)
+                && lower_flags.is_none_or(|flags| j >= flags[0].saturating_sub(1) as usize)
+        });
+        return (horizontal_strip && flags_allow_strip).then(|| (0, vec![], vec![]));
     }
 
     let n_int = k - 1; // number of interior levels
-
-    // Pad μ to length n with zeros.
-    let mut mu_pad = mu.to_vec();
-    mu_pad.resize(n, 0);
 
     // Weight-sum targets: |α^{ℓ+1}| = |μ| + w[0] + … + w[ℓ].
     let mu_sum: u32 = mu_pad.iter().sum();
@@ -465,6 +499,14 @@ mod tests {
             gt_polytope_dim(&[3, 2, 1], &[], &[1, 1, 1, 1, 1, 1]),
             Some(7)
         );
+    }
+
+    #[test]
+    fn degenerate_chains_still_validate_feasibility() {
+        assert_eq!(gt_polytope_dim(&[2], &[], &[1]), None);
+        assert_eq!(gt_polytope_dim(&[2, 2], &[], &[4]), None);
+        assert_eq!(gt_polytope_dim(&[2, 1], &[1], &[2]), Some(0));
+        assert_eq!(gt_polytope_dim(&[2], &[], &[]), None);
     }
 
     /// Exhaustive test: all skew shapes with |λ| ≤ 5, all partition weights.

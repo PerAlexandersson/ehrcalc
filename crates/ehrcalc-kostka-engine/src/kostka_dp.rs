@@ -345,6 +345,17 @@ pub fn skew_kostka(
     skew_kostka_stats(lambda, mu, w, max_states, sort_weight).value
 }
 
+/// Fallible variant of [`skew_kostka`] that reports a state-limit breach.
+pub fn try_skew_kostka(
+    lambda: &Partition,
+    mu: &Partition,
+    w: &[u32],
+    max_states: Option<usize>,
+    sort_weight: bool,
+) -> Result<BigUint, String> {
+    Ok(try_skew_kostka_stats(lambda, mu, w, max_states, sort_weight)?.value)
+}
+
 pub fn skew_kostka_stats(
     lambda: &Partition,
     mu: &Partition,
@@ -352,21 +363,33 @@ pub fn skew_kostka_stats(
     max_states: Option<usize>,
     sort_weight: bool,
 ) -> KostkaDpStats {
+    try_skew_kostka_stats(lambda, mu, w, max_states, sort_weight)
+        .expect("Kostka DP state limit exceeded")
+}
+
+/// Fallible variant of [`skew_kostka_stats`] that reports a state-limit breach.
+pub fn try_skew_kostka_stats(
+    lambda: &Partition,
+    mu: &Partition,
+    w: &[u32],
+    max_states: Option<usize>,
+    sort_weight: bool,
+) -> Result<KostkaDpStats, String> {
     let skew_size: u32 = lambda.size().saturating_sub(mu.size());
     let w_size: u32 = w.iter().sum();
     if skew_size != w_size {
-        return KostkaDpStats {
+        return Ok(KostkaDpStats {
             value: BigUint::zero(),
             peak_states: 0,
             level_states: Vec::new(),
-        };
+        });
     }
     if !mu.partition_less_equal(lambda) {
-        return KostkaDpStats {
+        return Ok(KostkaDpStats {
             value: BigUint::zero(),
             peak_states: 0,
             level_states: Vec::new(),
-        };
+        });
     }
 
     let mut w_sorted;
@@ -398,12 +421,10 @@ pub fn skew_kostka_stats(
 
         if let Some(limit) = max_states {
             if new_dp.len() > limit {
-                panic!(
-                    "DP state count {} exceeds --max-states {}. \
-                     Use a smaller input or raise the limit.",
-                    new_dp.len(),
-                    limit
-                );
+                return Err(format!(
+                    "DP state count {} exceeds --max-states {}. Use a smaller input or raise the limit.",
+                    new_dp.len(), limit
+                ));
             }
         }
 
@@ -412,11 +433,11 @@ pub fn skew_kostka_stats(
         dp = new_dp;
     }
 
-    KostkaDpStats {
+    Ok(KostkaDpStats {
         value: dp.remove(lambda).unwrap_or_else(BigUint::zero),
         peak_states,
         level_states,
-    }
+    })
 }
 
 /// Convenience wrapper for non-skew K(lambda, w).
@@ -697,13 +718,26 @@ pub fn flagged_skew_kostka(
     lower_flags: Option<&[u32]>,
     max_states: Option<usize>,
 ) -> BigUint {
+    try_flagged_skew_kostka(lambda, mu, w, upper_flags, lower_flags, max_states)
+        .expect("flagged Kostka DP state limit exceeded")
+}
+
+/// Fallible variant of [`flagged_skew_kostka`] that reports a state-limit breach.
+pub fn try_flagged_skew_kostka(
+    lambda: &Partition,
+    mu: &Partition,
+    w: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    max_states: Option<usize>,
+) -> Result<BigUint, String> {
     let skew_size: u32 = lambda.size().saturating_sub(mu.size());
     let w_size: u32 = w.iter().sum();
     if skew_size != w_size {
-        return BigUint::zero();
+        return Ok(BigUint::zero());
     }
     if !mu.partition_less_equal(lambda) {
-        return BigUint::zero();
+        return Ok(BigUint::zero());
     }
 
     let n = lambda.num_parts();
@@ -740,18 +774,18 @@ pub fn flagged_skew_kostka(
 
         if let Some(limit) = max_states {
             if new_dp.len() > limit {
-                panic!(
+                return Err(format!(
                     "DP state count {} exceeds --max-states {}.",
                     new_dp.len(),
                     limit
-                );
+                ));
             }
         }
 
         dp = new_dp;
     }
 
-    dp.remove(lambda).unwrap_or_else(BigUint::zero)
+    Ok(dp.remove(lambda).unwrap_or_else(BigUint::zero))
 }
 
 // ── Strict (interior) counting for Ehrhart-Macdonald reciprocity ─────────────

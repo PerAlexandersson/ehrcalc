@@ -7,8 +7,8 @@ use ehrcalc_foundations::Partition as CorePartition;
 use ehrcalc_kostka_engine::ehrhart::compute_ehrhart;
 use ehrcalc_kostka_engine::flow::FlowPolytope;
 use ehrcalc_kostka_engine::gt_dim::gt_polytope_dim_full;
-use ehrcalc_kostka_engine::kostka_dp::{flagged_skew_kostka, skew_kostka};
-use ehrcalc_kostka_engine::lr::lr_dp;
+use ehrcalc_kostka_engine::kostka_dp::{try_flagged_skew_kostka, try_skew_kostka};
+use ehrcalc_kostka_engine::lr::try_lr_dp;
 use ehrcalc_kostka_engine::Partition as KostkaPartition;
 use num_bigint::{BigInt, BigUint, ToBigInt};
 
@@ -115,16 +115,16 @@ pub fn kostka_count(input: &KostkaInput) -> ExactResult<BigInt> {
     let lambda = KostkaPartition::new(input.lambda.clone());
     let mu = KostkaPartition::new(input.mu.clone());
     let count = if input.upper_flags.is_some() || input.lower_flags.is_some() {
-        flagged_skew_kostka(
+        try_flagged_skew_kostka(
             &lambda,
             &mu,
             &input.weight,
             input.upper_flags.as_deref(),
             input.lower_flags.as_deref(),
             input.max_states,
-        )
+        )?
     } else {
-        skew_kostka(&lambda, &mu, &input.weight, input.max_states, true)
+        try_skew_kostka(&lambda, &mu, &input.weight, input.max_states, true)?
     };
     biguint_to_bigint(count)
 }
@@ -134,12 +134,12 @@ pub fn lr_count(input: &LrInput) -> ExactResult<BigInt> {
     let lambda = KostkaPartition::new(input.lambda.clone());
     let mu = KostkaPartition::new(input.mu.clone());
     let nu = KostkaPartition::new(input.nu.clone());
-    biguint_to_bigint(lr_dp(&lambda, &mu, &nu, input.max_states))
+    biguint_to_bigint(try_lr_dp(&lambda, &mu, &nu, input.max_states)?)
 }
 
 /// Compute exact Ehrhart and h* data for an order polytope.
 pub fn order_ehrhart(input: &OrderInput) -> ExactResult<EhrhartData> {
-    let poset = build_poset(input);
+    let poset = build_poset(input)?;
     let polynomial = poset.order_polytope_ehrhart();
     EhrhartData::new(EhrhartPolynomial::new(poset.num_elements(), polynomial)?)
 }
@@ -166,14 +166,14 @@ pub fn key_ehrhart(input: &KeyInput) -> ExactResult<EhrhartData> {
     EhrhartData::new(EhrhartPolynomial::new(polynomial.degree, polynomial.coeffs)?)
 }
 
-fn build_poset(input: &OrderInput) -> Poset {
-    match input {
-        OrderInput::Covers { vertices, covers } => Poset::new(*vertices, covers),
+fn build_poset(input: &OrderInput) -> ExactResult<Poset> {
+    Ok(match input {
+        OrderInput::Covers { vertices, covers } => Poset::try_new(*vertices, covers)?,
         OrderInput::Chain { elements } => Poset::chain(*elements),
         OrderInput::Antichain { elements } => Poset::antichain(*elements),
         OrderInput::Fence { elements } => Poset::fence(*elements),
         OrderInput::Shape { lambda } => Poset::from_shape(&CorePartition::new(lambda.clone())),
-    }
+    })
 }
 
 fn validate_permutation(sigma: &[usize]) -> ExactResult<()> {
@@ -227,6 +227,19 @@ mod tests {
     }
 
     #[test]
+    fn kostka_state_limit_returns_an_error() {
+        let result = kostka_count(&KostkaInput {
+            lambda: vec![2, 1],
+            mu: vec![],
+            weight: vec![1, 1, 1],
+            upper_flags: None,
+            lower_flags: None,
+            max_states: Some(0),
+        });
+        assert!(result.is_err());
+    }
+
+    #[test]
     fn computes_gt_order_and_flow_ehrhart_data() {
         let gt = gt_ehrhart(&GtInput {
             lambda: vec![2, 1],
@@ -253,6 +266,15 @@ mod tests {
         })
         .expect("flow-polytope data");
         assert_eq!(flow.ehrhart.evaluate(3), num_rational::BigRational::from(BigInt::from(4)));
+    }
+
+    #[test]
+    fn order_rejects_cyclic_covers() {
+        let result = order_ehrhart(&OrderInput::Covers {
+            vertices: 2,
+            covers: vec![(0, 1), (1, 0)],
+        });
+        assert!(result.is_err());
     }
 
     #[test]
