@@ -61,3 +61,17 @@ timeout 60s nice -n 10 cargo test --workspace
 Before a feature is merged, also run the relevant cross-project comparison
 tests and record any long benchmark separately.  Tests that require more than
 60 seconds must be explicit, bounded, and not become the default test suite.
+
+For a quick command-level key h-star check, run:
+
+```bash
+timeout 60s nice -n 10 cargo run --quiet -- \
+  key-scan --n 3 --staircase --packets d-route
+timeout 60s nice -n 10 cargo run --quiet -- \
+  key-scan --n 3 --staircase --sigma 3,1,2 \
+  --packets none --rows --format json
+```
+
+The first command must report `6/6` real-rooted h-star rows and `8/8`
+strong-cover interlacings.  The second must return the exact h-star vector
+`["1", "2", "0"]`; see [`KEY_HSTAR.md`](KEY_HSTAR.md).

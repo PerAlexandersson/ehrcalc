@@ -7,6 +7,7 @@
 pub mod cli;
 pub mod exact;
 pub mod families;
+pub mod key_scan;
 pub mod render;
 
 /// The package version exposed to callers before the first functional API.

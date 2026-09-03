@@ -18,6 +18,7 @@ Commands:
   kostka       Compute Kostka, skew Kostka, and flagged Kostka coefficients
   lr           Compute a Littlewood-Richardson coefficient
   key          Compute key-polynomial Ehrhart families from Kogan faces
+  key-scan     Scan key h*-polynomials over full symmetric groups
   order        Compute order-polytope Ehrhart, h*, and dimension data
   flow         Compute acyclic flow-polytope Ehrhart, h*, and dimension data
   interpolate  Interpolate an exact polynomial from distinct integral sample points
@@ -40,7 +41,6 @@ Options:
 Use `ehrcalc <command> --help` for exact input syntax and examples.
 
 For generated Markdown command documentation, run `ehrcalc docs cli`.
-
 ```
 
 ## Commands
@@ -58,7 +58,7 @@ Options:
 
       --mu <MU>
           Optional inner partition for a skew shape
-          
+
           [default: ""]
 
       --weight <WEIGHT>
@@ -78,13 +78,12 @@ Options:
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
-          
+
           [default: text]
           [possible values: text, json, latex]
 
   -h, --help
           Print help
-
 ```
 
 ### `ehrcalc kostka`
@@ -100,7 +99,7 @@ Options:
 
       --mu <MU>
           Optional inner partition for a skew shape
-          
+
           [default: ""]
 
       --weight <WEIGHT>
@@ -117,13 +116,12 @@ Options:
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
-          
+
           [default: text]
           [possible values: text, json, latex]
 
   -h, --help
           Print help
-
 ```
 
 ### `ehrcalc lr`
@@ -148,13 +146,12 @@ Options:
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
-          
+
           [default: text]
           [possible values: text, json, latex]
 
   -h, --help
           Print help
-
 ```
 
 ### `ehrcalc key`
@@ -176,13 +173,90 @@ Options:
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
-          
+
           [default: text]
           [possible values: text, json, latex]
 
   -h, --help
           Print help
+```
 
+### `ehrcalc key-scan`
+
+```text
+Scan key h*-polynomials over full symmetric groups
+
+Usage: key-scan [OPTIONS]
+
+Options:
+      --n <N>
+          Scan exactly this rank `S_n`
+
+      --max-n <MAX_N>
+          Scan every rank from `S_1` through `S_max_n`
+
+      --staircase
+          Use the staircase partition `rho_n=(n-1,n-2,...,1,0)`
+
+      --lambda <LAMBDA>
+          Dominant partition to scan, padded with trailing zeroes to rank `n`
+
+      --gaps <GAPS>
+          Adjacent gaps `lambda_i-lambda_{i+1}`, for example `2,1,1`
+
+      --sigma <SIGMA>
+          Compute only this one-based permutation, for example `4,2,5,1,3`
+
+      --packets <PACKETS>
+          Packet family to compute in addition to row data
+
+          Possible values:
+          - auto:     Use D-route checks for staircase scans and h*-cover checks otherwise
+          - none:     Only compute row data: Ehrhart, h*, B, optional D, and lower covers
+          - h-checks: Compute h*-coefficient, real-rootedness, and cover-interlacing checks
+          - d-route:  Also compute the D/G/W/barK/L route and exact polytool checks
+
+          [default: auto]
+
+      --rows
+          Include every row in the final rendered output
+
+      --block-summary
+          Group available rows by the block-constant lambda contingency matrix
+
+      --block-representatives
+          Compute only one lexicographic representative for each block matrix class
+
+      --start-index <START_INDEX>
+          First lexicographic permutation index to compute
+
+          [default: 0]
+
+      --limit <LIMIT>
+          Maximum number of new lexicographic rows to compute
+
+      --checkpoint <CHECKPOINT>
+          Append each completed row as JSONL, so timeout-killed scans keep progress
+
+      --resume <RESUME>
+          Read previously checkpointed JSONL rows and skip them
+
+      --sample-checkpoint <SAMPLE_CHECKPOINT>
+          Read/write per-dilation JSONL samples for one selected `--sigma`
+
+      --format <FORMAT>
+          Render as human-readable text, stable JSON, or LaTeX formulas
+
+          [default: text]
+          [possible values: text, json, latex]
+
+  -h, --help
+          Print help (see a summary with '-h')
+
+Examples:
+  ehrcalc key-scan --n 3 --staircase --rows
+  ehrcalc key-scan --n 5 --lambda 2,1,1 --sigma 4,2,5,1,3 --rows --format json
+  ehrcalc key-scan --n 6 --staircase --checkpoint rows.jsonl
 ```
 
 ### `ehrcalc order`
@@ -213,13 +287,12 @@ Options:
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
-          
+
           [default: text]
           [possible values: text, json, latex]
 
   -h, --help
           Print help
-
 ```
 
 ### `ehrcalc flow`
@@ -247,13 +320,12 @@ Options:
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
-          
+
           [default: text]
           [possible values: text, json, latex]
 
   -h, --help
           Print help
-
 ```
 
 ### `ehrcalc interpolate`
@@ -272,13 +344,12 @@ Options:
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
-          
+
           [default: text]
           [possible values: text, json, latex]
 
   -h, --help
           Print help
-
 ```
 
 ### `ehrcalc hstar`
@@ -300,13 +371,12 @@ Options:
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
-          
+
           [default: text]
           [possible values: text, json, latex]
 
   -h, --help
           Print help
-
 ```
 
 ### `ehrcalc binomial`
@@ -328,13 +398,12 @@ Options:
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
-          
+
           [default: text]
           [possible values: text, json, latex]
 
   -h, --help
           Print help
-
 ```
 
 ### `ehrcalc delta`
@@ -353,13 +422,12 @@ Options:
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
-          
+
           [default: text]
           [possible values: text, json, latex]
 
   -h, --help
           Print help
-
 ```
 
 ### `ehrcalc sum`
@@ -378,13 +446,12 @@ Options:
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
-          
+
           [default: text]
           [possible values: text, json, latex]
 
   -h, --help
           Print help
-
 ```
 
 ### `ehrcalc eval`
@@ -406,13 +473,12 @@ Options:
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
-          
+
           [default: text]
           [possible values: text, json, latex]
 
   -h, --help
           Print help
-
 ```
 
 ### `ehrcalc verify`
@@ -434,13 +500,12 @@ Options:
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
-          
+
           [default: text]
           [possible values: text, json, latex]
 
   -h, --help
           Print help
-
 ```
 
 ### `ehrcalc docs`
@@ -457,6 +522,5 @@ Commands:
 Options:
   -h, --help
           Print help
-
 ```
 

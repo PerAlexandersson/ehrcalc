@@ -296,6 +296,10 @@ ehrcalc key scan --max-n 5 --staircase --format json
 ehrcalc key covers --max-n 5 --staircase --packets d-route
 ```
 
+Current v0.1 implementation note: the batch staircase workflow is exposed as
+the top-level command `ehrcalc key-scan` while the existing `ehrcalc key`
+single-row Kogan-face command remains unchanged.
+
 The key row output should include:
 
 ```text

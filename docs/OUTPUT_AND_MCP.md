@@ -48,8 +48,18 @@ enumerating flags.
 
 The `ehrcalc-mcp` binary exposes structured library operations over stdio.
 Its first tools are `ehrhart_transform` for exact conversion and transform
-operations, and `compute_family` for GT, Kostka, LR, key, order, and flow
-requests.  Each tool calls the same Ehrcalc library adapter as the CLI.
+operations, and `compute_family` for GT, Kostka, LR, key, staircase
+`key_scan`, order, and flow requests.  Each tool calls the same Ehrcalc
+library adapter as the CLI.
+The `KeyScan` family request also exposes the block-constant scan controls
+`block_summary` and `block_representatives`, matching the CLI flags.  It also
+accepts `sigma` to compute one selected permutation through the fast
+principal-specialization scanner; these partial scans omit global packet
+summaries.  For one selected `sigma`, `sample_checkpoint` reads and appends
+per-dilation sample records before interpolation, which allows hard rows to
+be accumulated across timeout-limited runs.
+See [`KEY_HSTAR.md`](KEY_HSTAR.md) for the mathematical convention and the
+matching CLI workflows.
 
 The MCP input schema uses strings for arbitrary-size integers and rationals
 where a JSON number would be unsafe.  It rejects unknown fields and ambiguous

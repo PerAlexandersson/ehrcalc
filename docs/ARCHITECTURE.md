@@ -41,7 +41,8 @@ Their provenance files name the source revisions and deliberately bounded
 scope.  This makes Ehrcalc independently buildable while leaving the broader
 `combinatoric-core` project separate.  The legacy `kostka` repository is a
 frozen compatibility/reference project and is never a runtime dependency.
-`polytool` remains the authority for real-rootedness and interlacing checks.
+`polytool` remains the authority for real-rootedness and interlacing checks and
+is consumed from a pinned public Git revision.
 
 The dependency direction must never make `polytool` or the legacy projects
 depend on an Ehrcalc family adapter.

@@ -16,14 +16,23 @@ Ehrhart computation.
 Version 0.1 implements the exact interpolation and transform core, the
 Gelfand-Tsetlin, Kostka, flagged Kostka, Littlewood-Richardson, key, order,
 and acyclic-flow command families, JSON/LaTeX/plain-text rendering, and an
-MCP stdio companion.  The Key-HStar-Bruhat scan and packet workflow remains a
-benchmark-driven extension; it is specified but intentionally not represented
-as a completed command.
+MCP stdio companion.  It also includes the `key-scan` command for
+Key-HStar-Bruhat full-rank scans with resumable JSONL checkpoints.  The fast
+scanner supports staircase shapes, explicit dominant partitions, and adjacent
+gap vectors; staircase scans can also run the `D/G/W/bar K/L` packet checks.
+Scans whose parts have a common factor use the exact dilation shortcut
+`P_{sigma,k mu}(m)=P_{sigma,mu}(km)`, including scaled staircases and
+rectangles `(k^r,0^{n-r})`.  Single-row scans with `--sigma` can also use
+`--sample-checkpoint` to preserve each exact dilation sample before final
+interpolation.  For block-constant shapes, `--block-summary`
+groups rows by the block contingency matrix, and `--block-representatives`
+computes one lexicographic representative for each matrix class.
 
 The repository is a standalone Cargo workspace.  Its internal
 `ehrcalc-kostka-engine` and `ehrcalc-foundations` crates own the migrated
 algorithms needed by the public CLI and MCP server.  No sibling repository is
-needed to build or test Ehrcalc.
+needed to build it: `polytool`, used for exact real-rootedness and interlacing,
+is pinned to a public Git revision.
 
 ## Scope
 
@@ -42,11 +51,29 @@ LR coefficient as an Ehrhart value by default.
 
 ## CLI
 
+Build a fresh checkout with the stable Rust toolchain:
+
+```bash
+git clone https://github.com/PerAlexandersson/ehrcalc.git
+cd ehrcalc
+cargo build --release
+./target/release/ehrcalc --help
+```
+
+The exact `polytool` dependency is fetched from its pinned public Git revision;
+no sibling checkout is required.
+
 ```text
 ehrcalc gt ...
 ehrcalc kostka ...
 ehrcalc lr ...
 ehrcalc key ...
+ehrcalc key-scan --max-n 5 --staircase
+ehrcalc key-scan --n 4 --lambda 4,2,1 --packets h-checks
+ehrcalc key-scan --n 4 --gaps 2,1,1 --rows --format json
+ehrcalc key-scan --n 5 --lambda 2,1,1 --sigma 4,2,5,1,3 --rows
+ehrcalc key-scan --n 6 --lambda 7,5,5,2,0,0 --sigma 5,4,6,2,1,3 \
+  --sample-checkpoint samples.jsonl --rows --format json
 ehrcalc order ...
 ehrcalc flow ...
 ehrcalc interpolate ...
@@ -64,6 +91,10 @@ The command model is the source of truth for the CLI reference.  Run
 The checked-in [CLI reference](docs/cli.md) is generated from that same model
 and is tested for drift.  This README deliberately stays a short overview and
 does not duplicate every option.
+
+See [Key h-star computations](docs/KEY_HSTAR.md) for the mathematical
+convention, exact row schema, packet modes, and resumable workflows for
+`key-scan`.
 
 The `ehrcalc-mcp` companion binary exposes the same exact library operations
 over MCP stdio transport.  See [docs/OUTPUT_AND_MCP.md](docs/OUTPUT_AND_MCP.md)
@@ -90,6 +121,7 @@ See:
 - [EHRHART_TOOL_SPEC.md](EHRHART_TOOL_SPEC.md) for requirements and the
   phased migration plan.
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for package boundaries.
+- [docs/KEY_HSTAR.md](docs/KEY_HSTAR.md) for key h-star computations.
 - [docs/cli.md](docs/cli.md) for generated CLI documentation.
 - [docs/OUTPUT_AND_MCP.md](docs/OUTPUT_AND_MCP.md) for output and MCP design.
 - [docs/TESTING.md](docs/TESTING.md) for the required test strategy.

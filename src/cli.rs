@@ -8,6 +8,7 @@ use crate::families::{
     flow_ehrhart, gt_ehrhart, key_ehrhart, kostka_count, lr_count, order_ehrhart, FlowInput,
     GtInput, KeyInput, KostkaInput, LrInput, OrderInput,
 };
+use crate::key_scan::{run_key_scan, KeyPacketMode, KeyScanInput};
 use crate::render::{render_count, render_ehrhart, render_polynomial, OutputFormat};
 use clap::{Args, CommandFactory, Parser, Subcommand};
 use num_rational::BigRational;
@@ -39,6 +40,8 @@ pub enum Command {
     Lr(LrArgs),
     /// Compute key-polynomial Ehrhart families from Kogan faces.
     Key(KeyArgs),
+    /// Scan key h*-polynomials over full symmetric groups.
+    KeyScan(KeyScanArgs),
     /// Compute order-polytope Ehrhart, h*, and dimension data.
     Order(OrderArgs),
     /// Compute acyclic flow-polytope Ehrhart, h*, and dimension data.
@@ -72,6 +75,7 @@ impl Command {
             Self::Kostka(_) => "kostka",
             Self::Lr(_) => "lr",
             Self::Key(_) => "key",
+            Self::KeyScan(_) => "key-scan",
             Self::Order(_) => "order",
             Self::Flow(_) => "flow",
             Self::Interpolate(_) => "interpolate",
@@ -182,6 +186,62 @@ pub struct KeyArgs {
     output: OutputArgs,
 }
 
+/// Arguments for a key scan over one or more symmetric groups.
+#[derive(Clone, Debug, Args)]
+#[command(after_long_help = "Examples:
+  ehrcalc key-scan --n 3 --staircase --rows
+  ehrcalc key-scan --n 5 --lambda 2,1,1 --sigma 4,2,5,1,3 --rows --format json
+  ehrcalc key-scan --n 6 --staircase --checkpoint rows.jsonl")]
+pub struct KeyScanArgs {
+    /// Scan exactly this rank `S_n`.
+    #[arg(long, conflicts_with = "max_n")]
+    n: Option<usize>,
+    /// Scan every rank from `S_1` through `S_max_n`.
+    #[arg(long, conflicts_with = "n")]
+    max_n: Option<usize>,
+    /// Use the staircase partition `rho_n=(n-1,n-2,...,1,0)`.
+    #[arg(long, conflicts_with_all = ["lambda", "gaps"])]
+    staircase: bool,
+    /// Dominant partition to scan, padded with trailing zeroes to rank `n`.
+    #[arg(long, conflicts_with_all = ["staircase", "gaps"])]
+    lambda: Option<String>,
+    /// Adjacent gaps `lambda_i-lambda_{i+1}`, for example `2,1,1`.
+    #[arg(long, conflicts_with_all = ["staircase", "lambda"])]
+    gaps: Option<String>,
+    /// Compute only this one-based permutation, for example `4,2,5,1,3`.
+    #[arg(long)]
+    sigma: Option<String>,
+    /// Packet family to compute in addition to row data.
+    #[arg(long, value_enum, default_value_t = KeyPacketMode::Auto)]
+    packets: KeyPacketMode,
+    /// Include every row in the final rendered output.
+    #[arg(long)]
+    rows: bool,
+    /// Group available rows by the block-constant lambda contingency matrix.
+    #[arg(long)]
+    block_summary: bool,
+    /// Compute only one lexicographic representative for each block matrix class.
+    #[arg(long)]
+    block_representatives: bool,
+    /// First lexicographic permutation index to compute.
+    #[arg(long, default_value_t = 0)]
+    start_index: usize,
+    /// Maximum number of new lexicographic rows to compute.
+    #[arg(long)]
+    limit: Option<usize>,
+    /// Append each completed row as JSONL, so timeout-killed scans keep progress.
+    #[arg(long)]
+    checkpoint: Option<PathBuf>,
+    /// Read previously checkpointed JSONL rows and skip them.
+    #[arg(long)]
+    resume: Option<PathBuf>,
+    /// Read/write per-dilation JSONL samples for one selected `--sigma`.
+    #[arg(long)]
+    sample_checkpoint: Option<PathBuf>,
+    #[command(flatten)]
+    output: OutputArgs,
+}
+
 /// Arguments for an order-polytope calculation.
 #[derive(Clone, Debug, Args)]
 pub struct OrderArgs {
@@ -252,7 +312,11 @@ pub struct HstarArgs {
     #[arg(long, conflicts_with = "hstar", required_unless_present = "hstar")]
     coefficients: Option<String>,
     /// h* coefficients in ascending degree order, including trailing zeros.
-    #[arg(long, conflicts_with = "coefficients", required_unless_present = "coefficients")]
+    #[arg(
+        long,
+        conflicts_with = "coefficients",
+        required_unless_present = "coefficients"
+    )]
     hstar: Option<String>,
     #[command(flatten)]
     output: OutputArgs,
@@ -262,10 +326,18 @@ pub struct HstarArgs {
 #[derive(Clone, Debug, Args)]
 pub struct BinomialArgs {
     /// Power-basis coefficients in ascending degree order.
-    #[arg(long, conflicts_with = "binomial", required_unless_present = "binomial")]
+    #[arg(
+        long,
+        conflicts_with = "binomial",
+        required_unless_present = "binomial"
+    )]
     coefficients: Option<String>,
     /// Standard binomial-basis coefficients for `sum b_j binom(n,j)`.
-    #[arg(long, conflicts_with = "coefficients", required_unless_present = "coefficients")]
+    #[arg(
+        long,
+        conflicts_with = "coefficients",
+        required_unless_present = "coefficients"
+    )]
     binomial: Option<String>,
     /// Declared dimension when converting from the power basis.
     #[arg(long)]
@@ -388,6 +460,28 @@ pub fn run(cli: Cli) -> Result<Option<String>, String> {
             })?;
             render_ehrhart(&data, args.output.format)
         }
+        Command::KeyScan(args) => run_key_scan(&KeyScanInput {
+            n: args.n,
+            max_n: args.max_n,
+            staircase: args.staircase,
+            lambda: parse_optional_u32_list(args.lambda.as_deref(), "lambda")?,
+            gaps: parse_optional_u32_list(args.gaps.as_deref(), "gaps")?,
+            sigma: args
+                .sigma
+                .as_deref()
+                .map(|value| parse_usize_list(value, "sigma"))
+                .transpose()?,
+            packets: args.packets,
+            include_rows: args.rows,
+            include_block_summary: args.block_summary,
+            block_representatives: args.block_representatives,
+            start_index: args.start_index,
+            limit: args.limit,
+            checkpoint: args.checkpoint,
+            resume: args.resume,
+            sample_checkpoint: args.sample_checkpoint,
+            format: args.output.format,
+        })?,
         Command::Order(args) => {
             let data = order_ehrhart(&parse_order_input(&args)?)?;
             render_ehrhart(&data, args.output.format)
@@ -403,14 +497,26 @@ pub fn run(cli: Cli) -> Result<Option<String>, String> {
             render_ehrhart(&data, args.output.format)
         }
         Command::Interpolate(args) => {
-            let polynomial = EhrhartPolynomial::interpolate(args.dimension, &parse_points(&args.points)?)?;
-            render_polynomial("interpolate", &polynomial, polynomial.to_binomial_basis().ok().as_ref(), args.output.format)
+            let polynomial =
+                EhrhartPolynomial::interpolate(args.dimension, &parse_points(&args.points)?)?;
+            render_polynomial(
+                "interpolate",
+                &polynomial,
+                polynomial.to_binomial_basis().ok().as_ref(),
+                args.output.format,
+            )
         }
         Command::Hstar(args) => {
             let data = if let Some(coefficients) = args.coefficients {
-                EhrhartData::new(EhrhartPolynomial::new(args.dimension, parse_rational_list(&coefficients)?)?)?
+                EhrhartData::new(EhrhartPolynomial::new(
+                    args.dimension,
+                    parse_rational_list(&coefficients)?,
+                )?)?
             } else {
-                let hstar = HStarPolynomial::new(args.dimension, parse_bigint_list(args.hstar.as_deref().expect("clap requires hstar"))?)?;
+                let hstar = HStarPolynomial::new(
+                    args.dimension,
+                    parse_bigint_list(args.hstar.as_deref().expect("clap requires hstar"))?,
+                )?;
                 EhrhartData::new(hstar.to_ehrhart()?)?
             };
             render_ehrhart(&data, args.output.format)
@@ -418,10 +524,15 @@ pub fn run(cli: Cli) -> Result<Option<String>, String> {
         Command::Binomial(args) => {
             let polynomial = if let Some(coefficients) = args.coefficients {
                 let coefficients = parse_rational_list(&coefficients)?;
-                let dimension = args.dimension.unwrap_or(coefficients.len().saturating_sub(1));
+                let dimension = args
+                    .dimension
+                    .unwrap_or(coefficients.len().saturating_sub(1));
                 EhrhartPolynomial::new(dimension, coefficients)?
             } else {
-                BinomialBasisPolynomial::new(parse_bigint_list(args.binomial.as_deref().expect("clap requires binomial"))?).to_polynomial()?
+                BinomialBasisPolynomial::new(parse_bigint_list(
+                    args.binomial.as_deref().expect("clap requires binomial"),
+                )?)
+                .to_polynomial()?
             };
             let basis = polynomial.to_binomial_basis()?;
             render_polynomial("Ehrhart", &polynomial, Some(&basis), args.output.format)
@@ -429,21 +540,43 @@ pub fn run(cli: Cli) -> Result<Option<String>, String> {
         Command::Delta(args) => {
             let polynomial = parse_polynomial_args(&args)?;
             let result = polynomial.finite_difference()?;
-            render_polynomial("Delta", &result, result.to_binomial_basis().ok().as_ref(), args.output.format)
+            render_polynomial(
+                "Delta",
+                &result,
+                result.to_binomial_basis().ok().as_ref(),
+                args.output.format,
+            )
         }
         Command::Sum(args) => {
             let polynomial = parse_polynomial_args(&args)?;
             let result = polynomial.discrete_sum()?;
-            render_polynomial("sum", &result, result.to_binomial_basis().ok().as_ref(), args.output.format)
+            render_polynomial(
+                "sum",
+                &result,
+                result.to_binomial_basis().ok().as_ref(),
+                args.output.format,
+            )
         }
         Command::Eval(args) => {
-            let polynomial = EhrhartPolynomial::new(args.dimension, parse_rational_list(&args.coefficients)?)?;
-            render_value("value", args.at, &polynomial.evaluate(args.at), args.output.format)
+            let polynomial =
+                EhrhartPolynomial::new(args.dimension, parse_rational_list(&args.coefficients)?)?;
+            render_value(
+                "value",
+                args.at,
+                &polynomial.evaluate(args.at),
+                args.output.format,
+            )
         }
         Command::Verify(args) => {
-            let polynomial = EhrhartPolynomial::new(args.dimension, parse_rational_list(&args.coefficients)?)?;
+            let polynomial =
+                EhrhartPolynomial::new(args.dimension, parse_rational_list(&args.coefficients)?)?;
             let (point, expected) = parse_one_point(&args.point)?;
-            render_verification(point, &expected, &polynomial.evaluate(point), args.output.format)
+            render_verification(
+                point,
+                &expected,
+                &polynomial.evaluate(point),
+                args.output.format,
+            )
         }
         Command::Docs { target } => match target {
             DocsTarget::Cli(args) => {
@@ -473,17 +606,28 @@ pub fn cli_reference_markdown() -> String {
     );
     markdown.push_str("## Top-Level Usage\n\n```text\n");
     let mut root = command.clone();
-    markdown.push_str(&root.render_long_help().to_string());
+    markdown.push_str(&trim_trailing_help_whitespace(
+        &root.render_long_help().to_string(),
+    ));
     markdown.push_str("\n```\n\n## Commands\n\n");
 
     for subcommand in command.get_subcommands() {
         let mut detailed = subcommand.clone();
         markdown.push_str(&format!("### `ehrcalc {}`\n\n", subcommand.get_name()));
         markdown.push_str("```text\n");
-        markdown.push_str(&detailed.render_long_help().to_string());
+        markdown.push_str(&trim_trailing_help_whitespace(
+            &detailed.render_long_help().to_string(),
+        ));
         markdown.push_str("\n```\n\n");
     }
     markdown
+}
+
+fn trim_trailing_help_whitespace(text: &str) -> String {
+    text.lines()
+        .map(str::trim_end)
+        .collect::<Vec<_>>()
+        .join("\n")
 }
 
 fn parse_polynomial_args(args: &PolynomialArgs) -> Result<EhrhartPolynomial, String> {
@@ -509,7 +653,11 @@ fn parse_u32_list(text: &str, name: &str) -> Result<Vec<u32>, String> {
         return Ok(Vec::new());
     }
     text.split(',')
-        .map(|item| item.trim().parse::<u32>().map_err(|_| format!("invalid {name} entry `{}`", item.trim())))
+        .map(|item| {
+            item.trim()
+                .parse::<u32>()
+                .map_err(|_| format!("invalid {name} entry `{}`", item.trim()))
+        })
         .collect()
 }
 
@@ -524,7 +672,11 @@ fn parse_usize_list(text: &str, name: &str) -> Result<Vec<usize>, String> {
         return Err(format!("{name} must not be empty"));
     }
     text.split(',')
-        .map(|item| item.trim().parse::<usize>().map_err(|_| format!("invalid {name} entry `{}`", item.trim())))
+        .map(|item| {
+            item.trim()
+                .parse::<usize>()
+                .map_err(|_| format!("invalid {name} entry `{}`", item.trim()))
+        })
         .collect()
 }
 
@@ -533,7 +685,11 @@ fn parse_i64_list(text: &str, name: &str) -> Result<Vec<i64>, String> {
         return Err(format!("{name} must not be empty"));
     }
     text.split(',')
-        .map(|item| item.trim().parse::<i64>().map_err(|_| format!("invalid {name} entry `{}`", item.trim())))
+        .map(|item| {
+            item.trim()
+                .parse::<i64>()
+                .map_err(|_| format!("invalid {name} entry `{}`", item.trim()))
+        })
         .collect()
 }
 
@@ -548,8 +704,12 @@ fn parse_edges(text: &str) -> Result<Vec<(usize, usize)>, String> {
                 .split_once("->")
                 .ok_or_else(|| format!("invalid edge `{}`; use tail->head", edge.trim()))?;
             Ok((
-                tail.trim().parse::<usize>().map_err(|_| format!("invalid edge tail `{}`", tail.trim()))?,
-                head.trim().parse::<usize>().map_err(|_| format!("invalid edge head `{}`", head.trim()))?,
+                tail.trim()
+                    .parse::<usize>()
+                    .map_err(|_| format!("invalid edge tail `{}`", tail.trim()))?,
+                head.trim()
+                    .parse::<usize>()
+                    .map_err(|_| format!("invalid edge head `{}`", head.trim()))?,
             ))
         })
         .collect()
@@ -565,10 +725,19 @@ fn parse_covers(text: &str, vertices: usize) -> Result<Vec<(usize, usize)>, Stri
                 .trim()
                 .split_once('<')
                 .ok_or_else(|| format!("invalid cover `{}`; use lower<upper", cover.trim()))?;
-            let lower = lower.trim().parse::<usize>().map_err(|_| format!("invalid cover vertex `{}`", lower.trim()))?;
-            let upper = upper.trim().parse::<usize>().map_err(|_| format!("invalid cover vertex `{}`", upper.trim()))?;
+            let lower = lower
+                .trim()
+                .parse::<usize>()
+                .map_err(|_| format!("invalid cover vertex `{}`", lower.trim()))?;
+            let upper = upper
+                .trim()
+                .parse::<usize>()
+                .map_err(|_| format!("invalid cover vertex `{}`", upper.trim()))?;
             if lower >= vertices || upper >= vertices || lower == upper {
-                return Err(format!("cover {lower}<{upper} is outside the vertex set 0..{}", vertices.saturating_sub(1)));
+                return Err(format!(
+                    "cover {lower}<{upper} is outside the vertex set 0..{}",
+                    vertices.saturating_sub(1)
+                ));
             }
             Ok((lower, upper))
         })
@@ -588,16 +757,27 @@ fn parse_one_point(text: &str) -> Result<(i64, BigRational), String> {
         .split_once(':')
         .ok_or_else(|| format!("invalid point `{}`; use dilation:value", text.trim()))?;
     Ok((
-        point.trim().parse::<i64>().map_err(|_| format!("invalid dilation `{}`", point.trim()))?,
+        point
+            .trim()
+            .parse::<i64>()
+            .map_err(|_| format!("invalid dilation `{}`", point.trim()))?,
         parse_rational(value)?,
     ))
 }
 
-fn validate_flag_lengths(weight: &[u32], upper: Option<&[u32]>, lower: Option<&[u32]>) -> Result<(), String> {
+fn validate_flag_lengths(
+    weight: &[u32],
+    upper: Option<&[u32]>,
+    lower: Option<&[u32]>,
+) -> Result<(), String> {
     for (name, flags) in [("upper flags", upper), ("lower flags", lower)] {
         if let Some(flags) = flags {
             if flags.len() != weight.len() {
-                return Err(format!("{name} has length {}, but weight has length {}", flags.len(), weight.len()));
+                return Err(format!(
+                    "{name} has length {}, but weight has length {}",
+                    flags.len(),
+                    weight.len()
+                ));
             }
         }
     }
@@ -607,12 +787,20 @@ fn validate_flag_lengths(weight: &[u32], upper: Option<&[u32]>, lower: Option<&[
 fn render_value(label: &str, point: i64, value: &BigRational, format: OutputFormat) -> String {
     match format {
         OutputFormat::Text => format!("{label}({point}): {}\n", format_rational(value)),
-        OutputFormat::Json => serde_json::to_string_pretty(&json!({ "point": point, label: format_rational(value) })).expect("JSON value"),
+        OutputFormat::Json => {
+            serde_json::to_string_pretty(&json!({ "point": point, label: format_rational(value) }))
+                .expect("JSON value")
+        }
         OutputFormat::Latex => format!("{}({}) = {}\n", label, point, format_rational(value)),
     }
 }
 
-fn render_verification(point: i64, expected: &BigRational, actual: &BigRational, format: OutputFormat) -> String {
+fn render_verification(
+    point: i64,
+    expected: &BigRational,
+    actual: &BigRational,
+    format: OutputFormat,
+) -> String {
     let passed = expected == actual;
     match format {
         OutputFormat::Text => format!("point: {point}\nexpected: {}\nactual: {}\npassed: {passed}\n", format_rational(expected), format_rational(actual)),
@@ -627,8 +815,14 @@ mod tests {
 
     #[test]
     fn parses_cover_and_edge_syntax() {
-        assert_eq!(parse_covers("0<1,0<2", 3).expect("covers"), vec![(0, 1), (0, 2)]);
-        assert_eq!(parse_edges("0->1,1->2").expect("edges"), vec![(0, 1), (1, 2)]);
+        assert_eq!(
+            parse_covers("0<1,0<2", 3).expect("covers"),
+            vec![(0, 1), (0, 2)]
+        );
+        assert_eq!(
+            parse_edges("0->1,1->2").expect("edges"),
+            vec![(0, 1), (1, 2)]
+        );
         assert!(parse_covers("0<3", 3).is_err());
         assert!(parse_edges("0-1").is_err());
     }
@@ -677,7 +871,9 @@ mod tests {
                 lower_flags: None,
                 max_states: None,
                 positive_only: false,
-                output: OutputArgs { format: OutputFormat::Json },
+                output: OutputArgs {
+                    format: OutputFormat::Json,
+                },
             })),
         })
         .expect("GT dispatch")
@@ -690,7 +886,9 @@ mod tests {
                 mu: "1".to_string(),
                 nu: "2".to_string(),
                 max_states: None,
-                output: OutputArgs { format: OutputFormat::Json },
+                output: OutputArgs {
+                    format: OutputFormat::Json,
+                },
             })),
         })
         .expect("LR dispatch")
@@ -702,12 +900,41 @@ mod tests {
                 lambda: "1".to_string(),
                 sigma: "1".to_string(),
                 max_degree: None,
-                output: OutputArgs { format: OutputFormat::Json },
+                output: OutputArgs {
+                    format: OutputFormat::Json,
+                },
             })),
         })
         .expect("key dispatch")
         .expect("key output");
         assert!(key.contains("hstar"));
+
+        let key_scan = run(Cli {
+            command: Some(Command::KeyScan(KeyScanArgs {
+                n: Some(3),
+                max_n: None,
+                staircase: true,
+                lambda: None,
+                gaps: None,
+                sigma: None,
+                packets: KeyPacketMode::DRoute,
+                rows: false,
+                block_summary: false,
+                block_representatives: false,
+                start_index: 0,
+                limit: None,
+                checkpoint: None,
+                resume: None,
+                sample_checkpoint: None,
+                output: OutputArgs {
+                    format: OutputFormat::Json,
+                },
+            })),
+        })
+        .expect("key-scan dispatch")
+        .expect("key-scan output");
+        assert!(key_scan.contains("route_summary"));
+        assert!(key_scan.contains("d_cover_interlacing"));
 
         let order = run(Cli {
             command: Some(Command::Order(OrderArgs {
@@ -717,7 +944,9 @@ mod tests {
                 shape: None,
                 vertices: Some(2),
                 covers: Some("0<1".to_string()),
-                output: OutputArgs { format: OutputFormat::Json },
+                output: OutputArgs {
+                    format: OutputFormat::Json,
+                },
             })),
         })
         .expect("order dispatch")
@@ -731,7 +960,9 @@ mod tests {
                 netflow: "1,-1".to_string(),
                 max_states: None,
                 positive_only: false,
-                output: OutputArgs { format: OutputFormat::Json },
+                output: OutputArgs {
+                    format: OutputFormat::Json,
+                },
             })),
         })
         .expect("flow dispatch")
@@ -746,7 +977,9 @@ mod tests {
                 dimension: 1,
                 coefficients: None,
                 hstar: Some("1,0".to_string()),
-                output: OutputArgs { format: OutputFormat::Json },
+                output: OutputArgs {
+                    format: OutputFormat::Json,
+                },
             })),
         })
         .expect("hstar dispatch")
@@ -757,7 +990,9 @@ mod tests {
             command: Some(Command::Sum(PolynomialArgs {
                 dimension: 1,
                 coefficients: "1,1".to_string(),
-                output: OutputArgs { format: OutputFormat::Json },
+                output: OutputArgs {
+                    format: OutputFormat::Json,
+                },
             })),
         })
         .expect("sum dispatch")
@@ -769,7 +1004,9 @@ mod tests {
                 dimension: 1,
                 coefficients: "1,1".to_string(),
                 point: "3:4".to_string(),
-                output: OutputArgs { format: OutputFormat::Json },
+                output: OutputArgs {
+                    format: OutputFormat::Json,
+                },
             })),
         })
         .expect("verification dispatch")
@@ -787,7 +1024,9 @@ mod tests {
                 upper_flags: Some("1,2".to_string()),
                 lower_flags: None,
                 max_states: None,
-                output: OutputArgs { format: OutputFormat::Text },
+                output: OutputArgs {
+                    format: OutputFormat::Text,
+                },
             })),
         })
         .expect_err("invalid flags must fail before calculation");

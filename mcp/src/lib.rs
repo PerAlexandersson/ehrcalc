@@ -1,14 +1,15 @@
 //! MCP tools backed directly by the Ehrcalc library.
 
 use ehrcalc::exact::{
-    format_rational, parse_bigint_list, parse_rational_list, BinomialBasisPolynomial,
-    EhrhartData, EhrhartPolynomial, HStarPolynomial,
+    format_rational, parse_bigint_list, parse_rational_list, BinomialBasisPolynomial, EhrhartData,
+    EhrhartPolynomial, HStarPolynomial,
 };
 use ehrcalc::families::{
     flow_ehrhart, gt_ehrhart, key_ehrhart, kostka_count, lr_count, order_ehrhart, FlowInput,
     GtInput, KeyInput, KostkaInput, LrInput, OrderInput,
 };
-use ehrcalc::render::ehrhart_json;
+use ehrcalc::key_scan::{run_key_scan, KeyPacketMode, KeyScanInput};
+use ehrcalc::render::{ehrhart_json, OutputFormat};
 use num_rational::BigRational;
 use rmcp::{
     handler::server::{router::tool::ToolRouter, wrapper::Parameters},
@@ -18,6 +19,7 @@ use rmcp::{
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
+use std::path::PathBuf;
 
 /// MCP server for exact Ehrcalc operations.
 #[derive(Debug, Clone)]
@@ -91,6 +93,23 @@ pub enum FamilyRequest {
         sigma: Vec<usize>,
         max_degree: Option<usize>,
     },
+    KeyScan {
+        n: Option<usize>,
+        max_n: Option<usize>,
+        staircase: bool,
+        lambda: Option<Vec<u32>>,
+        gaps: Option<Vec<u32>>,
+        sigma: Option<Vec<usize>>,
+        packets: Option<KeyScanPacketRequest>,
+        rows: Option<bool>,
+        block_summary: Option<bool>,
+        block_representatives: Option<bool>,
+        start_index: Option<usize>,
+        limit: Option<usize>,
+        checkpoint: Option<String>,
+        resume: Option<String>,
+        sample_checkpoint: Option<String>,
+    },
     OrderCovers {
         vertices: usize,
         covers: Vec<CoverInput>,
@@ -114,6 +133,16 @@ pub enum FamilyRequest {
         max_states: Option<usize>,
         positive_only: Option<bool>,
     },
+}
+
+/// Packet summaries supported by the key scan.
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum KeyScanPacketRequest {
+    Auto,
+    None,
+    HChecks,
+    DRoute,
 }
 
 /// One zero-based cover relation.
@@ -235,7 +264,10 @@ pub fn transform_json(request: &EhrhartTransformRequest) -> Result<Value, String
             result["operation"] = json!(operation_name(&request.operation));
             Ok(result)
         }
-        _ => Ok(polynomial_json(&polynomial, operation_name(&request.operation))),
+        _ => Ok(polynomial_json(
+            &polynomial,
+            operation_name(&request.operation),
+        )),
     }
 }
 
@@ -306,26 +338,80 @@ pub fn family_json(request: &FamilyRequest) -> Result<Value, String> {
                 max_degree: *max_degree,
             })?,
         ),
+        FamilyRequest::KeyScan {
+            n,
+            max_n,
+            staircase,
+            lambda,
+            gaps,
+            sigma,
+            packets,
+            rows,
+            block_summary,
+            block_representatives,
+            start_index,
+            limit,
+            checkpoint,
+            resume,
+            sample_checkpoint,
+        } => {
+            let output = run_key_scan(&KeyScanInput {
+                n: *n,
+                max_n: *max_n,
+                staircase: *staircase,
+                lambda: lambda.clone(),
+                gaps: gaps.clone(),
+                sigma: sigma.clone(),
+                packets: packets
+                    .map(key_scan_packet_mode)
+                    .unwrap_or(KeyPacketMode::Auto),
+                include_rows: rows.unwrap_or(false),
+                include_block_summary: block_summary.unwrap_or(false),
+                block_representatives: block_representatives.unwrap_or(false),
+                start_index: start_index.unwrap_or(0),
+                limit: *limit,
+                checkpoint: checkpoint.as_ref().map(PathBuf::from),
+                resume: resume.as_ref().map(PathBuf::from),
+                sample_checkpoint: sample_checkpoint.as_ref().map(PathBuf::from),
+                format: OutputFormat::Json,
+            })?;
+            serde_json::from_str(&output)
+                .map_err(|error| format!("internal error: key scan JSON did not parse: {error}"))
+        }
         FamilyRequest::OrderCovers { vertices, covers } => ehrhart_family_json(
             "order_covers",
             order_ehrhart(&OrderInput::Covers {
                 vertices: *vertices,
-                covers: covers.iter().map(|cover| (cover.lower, cover.upper)).collect(),
+                covers: covers
+                    .iter()
+                    .map(|cover| (cover.lower, cover.upper))
+                    .collect(),
             })?,
         ),
-        FamilyRequest::OrderChain { elements } => {
-            ehrhart_family_json("order_chain", order_ehrhart(&OrderInput::Chain { elements: *elements })?)
-        }
+        FamilyRequest::OrderChain { elements } => ehrhart_family_json(
+            "order_chain",
+            order_ehrhart(&OrderInput::Chain {
+                elements: *elements,
+            })?,
+        ),
         FamilyRequest::OrderAntichain { elements } => ehrhart_family_json(
             "order_antichain",
-            order_ehrhart(&OrderInput::Antichain { elements: *elements })?,
+            order_ehrhart(&OrderInput::Antichain {
+                elements: *elements,
+            })?,
         ),
-        FamilyRequest::OrderFence { elements } => {
-            ehrhart_family_json("order_fence", order_ehrhart(&OrderInput::Fence { elements: *elements })?)
-        }
-        FamilyRequest::OrderShape { lambda } => {
-            ehrhart_family_json("order_shape", order_ehrhart(&OrderInput::Shape { lambda: lambda.clone() })?)
-        }
+        FamilyRequest::OrderFence { elements } => ehrhart_family_json(
+            "order_fence",
+            order_ehrhart(&OrderInput::Fence {
+                elements: *elements,
+            })?,
+        ),
+        FamilyRequest::OrderShape { lambda } => ehrhart_family_json(
+            "order_shape",
+            order_ehrhart(&OrderInput::Shape {
+                lambda: lambda.clone(),
+            })?,
+        ),
         FamilyRequest::Flow {
             vertices,
             edges,
@@ -342,6 +428,15 @@ pub fn family_json(request: &FamilyRequest) -> Result<Value, String> {
                 use_reciprocity: !positive_only.unwrap_or(false),
             })?,
         ),
+    }
+}
+
+fn key_scan_packet_mode(mode: KeyScanPacketRequest) -> KeyPacketMode {
+    match mode {
+        KeyScanPacketRequest::Auto => KeyPacketMode::Auto,
+        KeyScanPacketRequest::None => KeyPacketMode::None,
+        KeyScanPacketRequest::HChecks => KeyPacketMode::HChecks,
+        KeyScanPacketRequest::DRoute => KeyPacketMode::DRoute,
     }
 }
 
@@ -452,14 +547,17 @@ mod tests {
 
     #[test]
     fn family_json_routes_order_and_flow_requests() {
-        let order = family_json(&FamilyRequest::OrderChain { elements: 2 })
-            .expect("order MCP request");
+        let order =
+            family_json(&FamilyRequest::OrderChain { elements: 2 }).expect("order MCP request");
         assert_eq!(order["family"], "order_chain");
         assert_eq!(order["dimension"], 2);
 
         let flow = family_json(&FamilyRequest::Flow {
             vertices: 2,
-            edges: vec![EdgeInput { tail: 0, head: 1 }, EdgeInput { tail: 0, head: 1 }],
+            edges: vec![
+                EdgeInput { tail: 0, head: 1 },
+                EdgeInput { tail: 0, head: 1 },
+            ],
             netflow: vec![1, -1],
             max_states: None,
             positive_only: Some(false),
@@ -467,6 +565,34 @@ mod tests {
         .expect("flow MCP request");
         assert_eq!(flow["family"], "flow");
         assert_eq!(flow["hstar"], json!(["1", "0"]));
+    }
+
+    #[test]
+    fn family_json_routes_key_scan_requests() {
+        let output = family_json(&FamilyRequest::KeyScan {
+            n: Some(3),
+            max_n: None,
+            staircase: true,
+            lambda: None,
+            gaps: None,
+            sigma: None,
+            packets: Some(KeyScanPacketRequest::DRoute),
+            rows: Some(false),
+            block_summary: None,
+            block_representatives: None,
+            start_index: Some(0),
+            limit: None,
+            checkpoint: None,
+            resume: None,
+            sample_checkpoint: None,
+        })
+        .expect("key scan MCP request");
+        assert_eq!(output["family"], "key");
+        assert_eq!(output["ranks"][0]["rows_total"], 6);
+        assert_eq!(
+            output["ranks"][0]["route_summary"]["d_cover_interlacing"]["pass"],
+            8
+        );
     }
 
     #[test]
