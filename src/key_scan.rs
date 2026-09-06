@@ -4,7 +4,7 @@
 //! uses a faster principal-specialization Demazure evaluator, because the scan
 //! only needs `K_{k lambda, sigma}(1^n)` for every permutation in one rank.
 
-use crate::exact::{format_rational, EhrhartData, EhrhartPolynomial, ExactResult};
+use crate::exact::{format_rational, parse_rational, EhrhartData, EhrhartPolynomial, ExactResult};
 use crate::render::OutputFormat;
 use hashbrown::HashMap;
 use num_bigint::BigInt;
@@ -68,7 +68,7 @@ struct Cover {
     weight: i64,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 struct ScanCover {
     tau: Vec<usize>,
     i: usize,
@@ -76,7 +76,7 @@ struct ScanCover {
     weight: i64,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 struct ScanRow {
     index: usize,
     sigma: Vec<usize>,
@@ -367,7 +367,7 @@ fn scan_rank(n: usize, input: &KeyScanInput) -> ExactResult<RankScan> {
     let permutations = all_permutations(n);
     let rows_total = permutations.len();
     let mut rows_by_sigma = if let Some(path) = &input.resume {
-        read_checkpoint(path, n, &spec)?
+        read_checkpoint(path, n, &spec, &permutations)?
     } else {
         BTreeMap::new()
     };
@@ -754,8 +754,7 @@ fn principal_values(
     degree_bound: usize,
     sample_checkpoint: Option<&PathBuf>,
 ) -> ExactResult<Vec<BigInt>> {
-    let base_alpha = (0..n).map(|j| lambda[sigma[j] - 1]).collect::<Vec<_>>();
-    let plan = KeyEvalPlan::new(n, &base_alpha);
+    let plan = KeyEvalPlan::for_sigma(n, sigma, lambda);
     let mut checkpoint = sample_checkpoint
         .map(|path| SampleCheckpoint::open(path, n, sigma, lambda, degree_bound))
         .transpose()?;
@@ -1384,10 +1383,17 @@ fn row_d(row: &ScanRow) -> ExactResult<&[BigInt]> {
 }
 
 impl KeyEvalPlan {
-    fn new(n: usize, alpha: &[u32]) -> Self {
-        let word = sorting_word(alpha);
-        let mut sorted_lambda = alpha.to_vec();
-        sorted_lambda.sort_unstable_by(|a, b| b.cmp(a));
+    fn for_sigma(n: usize, sigma: &[usize], lambda: &[u32]) -> Self {
+        // Derive the full reduced operator word from sigma, independently of
+        // stabilizers of lambda.  Sorting lambda∘sigma loses operators whenever
+        // lambda has repeated parts, even though those operators need not act
+        // trivially after earlier Demazure operators have been applied.
+        let strict_alpha = sigma
+            .iter()
+            .map(|&value| u32::try_from(n - value).expect("validated rank fits in u32"))
+            .collect::<Vec<_>>();
+        let word = sorting_word(&strict_alpha);
+        let sorted_lambda = lambda.to_vec();
 
         if word.is_empty() {
             return Self {
@@ -2082,6 +2088,7 @@ fn read_checkpoint(
     path: &PathBuf,
     n: usize,
     spec: &ScanSpec,
+    permutations: &[Vec<usize>],
 ) -> ExactResult<BTreeMap<Vec<usize>, ScanRow>> {
     let file = File::open(path)
         .map_err(|error| format!("could not open resume file {}: {error}", path.display()))?;
@@ -2104,50 +2111,155 @@ fn read_checkpoint(
                 path.display()
             )
         })?;
-        validate_checkpoint_metadata(&value, spec)?;
+        validate_checkpoint_metadata(&value, n, spec)?;
         let row = row_from_json(&value)?;
-        if row.sigma.len() != n {
-            return Err(format!(
-                "resume row {} has rank {}, expected {n}",
-                perm_string(&row.sigma),
-                row.sigma.len()
-            ));
+        validate_resume_row(&row, n, spec, permutations)?;
+        if let Some(previous) = rows.get(&row.sigma) {
+            if previous != &row {
+                return Err(format!(
+                    "resume file {} has conflicting rows for sigma {} (latest at line {})",
+                    path.display(),
+                    perm_string(&row.sigma),
+                    line_index + 1
+                ));
+            }
+            continue;
         }
         rows.insert(row.sigma.clone(), row);
     }
     Ok(rows)
 }
 
-fn validate_checkpoint_metadata(value: &Value, spec: &ScanSpec) -> ExactResult<()> {
-    if let Some(lambda_value) = value.get("lambda") {
-        let lambda = u32_json_array(lambda_value, "lambda")?;
-        if lambda != spec.lambda {
-            return Err(format!(
-                "resume row lambda [{}] does not match current lambda [{}]",
-                join_u32s(&lambda),
-                join_u32s(&spec.lambda)
-            ));
-        }
-    } else if value["specialization"].as_str() == Some("staircase") && !spec.is_staircase() {
-        return Err(
-            "cannot resume a legacy staircase checkpoint for a non-staircase scan".to_string(),
-        );
+fn validate_checkpoint_metadata(value: &Value, n: usize, spec: &ScanSpec) -> ExactResult<()> {
+    if value["family"].as_str() != Some("key") {
+        return Err("resume row must have family `key`".to_string());
+    }
+    let row_n = usize_json_field(value, "n", "resume row")?;
+    if row_n != n {
+        return Err(format!("resume row has rank {row_n}, expected {n}"));
+    }
+    let lambda_value = value
+        .get("lambda")
+        .ok_or_else(|| "resume row is missing lambda metadata".to_string())?;
+    let lambda = u32_json_array(lambda_value, "lambda")?;
+    if lambda != spec.lambda {
+        return Err(format!(
+            "resume row lambda [{}] does not match current lambda [{}]",
+            join_u32s(&lambda),
+            join_u32s(&spec.lambda)
+        ));
+    }
+    Ok(())
+}
+
+fn validate_resume_row(
+    row: &ScanRow,
+    n: usize,
+    spec: &ScanSpec,
+    permutations: &[Vec<usize>],
+) -> ExactResult<()> {
+    validate_scan_sigma(&row.sigma, n).map_err(|error| format!("invalid resume row: {error}"))?;
+    let expected_sigma = permutations.get(row.index).ok_or_else(|| {
+        format!(
+            "resume row {} has out-of-range lexicographic index {}",
+            perm_string(&row.sigma),
+            row.index
+        )
+    })?;
+    if expected_sigma != &row.sigma {
+        return Err(format!(
+            "resume row {} has index {}, which belongs to {}",
+            perm_string(&row.sigma),
+            row.index,
+            perm_string(expected_sigma)
+        ));
+    }
+    let expected_length = inv_count(&row.sigma);
+    if row.length != expected_length {
+        return Err(format!(
+            "resume row {} has length {}, expected {}",
+            perm_string(&row.sigma),
+            row.length,
+            expected_length
+        ));
+    }
+
+    let power_coeffs = row
+        .ehrhart_power
+        .iter()
+        .map(|coefficient| parse_rational(coefficient))
+        .collect::<ExactResult<Vec<_>>>()?;
+    if power_coeffs.len() != row.dimension + 1 {
+        return Err(format!(
+            "resume row {} has dimension {} but {} power coefficients",
+            perm_string(&row.sigma),
+            row.dimension,
+            power_coeffs.len()
+        ));
+    }
+    let polynomial = EhrhartPolynomial::new(row.dimension, power_coeffs)?;
+    if polynomial.degree() != row.dimension {
+        return Err(format!(
+            "resume row {} declares dimension {} but has polynomial degree {}",
+            perm_string(&row.sigma),
+            row.dimension,
+            polynomial.degree()
+        ));
+    }
+    let data = EhrhartData::new(polynomial)?;
+    if data.hstar.coeffs() != row.hstar {
+        return Err(format!(
+            "resume row {} has hstar inconsistent with ehrhart_power",
+            perm_string(&row.sigma)
+        ));
+    }
+    let expected_b = data.ehrhart.to_binomial_basis()?.coeffs().to_vec();
+    if expected_b != row.b {
+        return Err(format!(
+            "resume row {} has B inconsistent with ehrhart_power",
+            perm_string(&row.sigma)
+        ));
+    }
+    let expected_d = if spec.is_staircase() {
+        Some(if is_identity(&row.sigma) {
+            vec![BigInt::one()]
+        } else {
+            div_by_one_plus_u(&expected_b)?
+        })
+    } else {
+        None
+    };
+    if expected_d != row.d {
+        return Err(format!(
+            "resume row {} has D inconsistent with B and specialization",
+            perm_string(&row.sigma)
+        ));
+    }
+    let expected_covers = bruhat_covers(&row.sigma, &spec.lambda)
+        .into_iter()
+        .map(|cover| ScanCover {
+            tau: cover.tau,
+            i: cover.i,
+            j: cover.j,
+            weight: cover.weight,
+        })
+        .collect::<Vec<_>>();
+    if expected_covers != row.lower_covers {
+        return Err(format!(
+            "resume row {} has inconsistent lower covers",
+            perm_string(&row.sigma)
+        ));
     }
     Ok(())
 }
 
 fn row_from_json(value: &Value) -> ExactResult<ScanRow> {
-    let index = value["index"]
-        .as_u64()
-        .ok_or_else(|| "resume row is missing integer index".to_string())? as usize;
+    let index = usize_json_field(value, "index", "resume row")?;
     let sigma_text = value["sigma"]
         .as_str()
         .ok_or_else(|| "resume row is missing sigma string".to_string())?;
     let sigma = parse_perm_string(sigma_text)?;
-    let length = value["length"]
-        .as_u64()
-        .ok_or_else(|| "resume row is missing integer length".to_string())?
-        as usize;
+    let length = usize_json_field(value, "length", "resume row")?;
     let dimension = value
         .get("dimension")
         .and_then(Value::as_u64)
@@ -2608,6 +2720,72 @@ fn perm_string(perm: &[usize]) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use ehrcalc_foundations::key_polynomial::key_ehrhart_polynomial;
+    use ehrcalc_foundations::Partition;
+
+    fn assert_fast_matches_kogan(lambda: &[u32], sigma: &[usize]) {
+        let degree_bound = inv_count(sigma);
+        let fast = direct_key_ehrhart(sigma.len(), sigma, lambda, degree_bound, None)
+            .expect("fast key Ehrhart polynomial");
+        let slow =
+            key_ehrhart_polynomial(&Partition::new(lambda.to_vec()), sigma, Some(degree_bound));
+        let slow = EhrhartPolynomial::new(slow.degree, slow.coeffs)
+            .expect("Kogan-face Ehrhart polynomial");
+        assert_eq!(
+            fast, slow,
+            "fast/Kogan mismatch for lambda={lambda:?}, sigma={sigma:?}"
+        );
+    }
+
+    fn dominant_lambdas(n: usize, max_part: u32) -> Vec<Vec<u32>> {
+        fn rec(remaining: usize, ceiling: u32, current: &mut Vec<u32>, out: &mut Vec<Vec<u32>>) {
+            if remaining == 0 {
+                if current.iter().any(|&part| part != 0) {
+                    out.push(current.clone());
+                }
+                return;
+            }
+            for part in (0..=ceiling).rev() {
+                current.push(part);
+                rec(remaining - 1, part, current, out);
+                current.pop();
+            }
+        }
+
+        let mut out = Vec::new();
+        rec(n, max_part, &mut Vec::new(), &mut out);
+        out
+    }
+
+    #[test]
+    fn repeated_part_stabilizer_witness_matches_kogan() {
+        let lambda = [1, 1, 0];
+        let sigma = [2, 3, 1];
+        assert_fast_matches_kogan(&lambda, &sigma);
+
+        let fast =
+            direct_key_ehrhart(3, &sigma, &lambda, 2, None).expect("fast witness polynomial");
+        assert_eq!(
+            fast.power_coeffs(),
+            &[
+                BigInt::one().into(),
+                num_rational::BigRational::new(BigInt::from(3), BigInt::from(2)),
+                num_rational::BigRational::new(BigInt::one(), BigInt::from(2)),
+            ]
+        );
+    }
+
+    #[test]
+    fn fast_scan_matches_kogan_exhaustively_through_s3() {
+        for n in 1..=3 {
+            let permutations = all_permutations(n);
+            for lambda in dominant_lambdas(n, 2) {
+                for sigma in &permutations {
+                    assert_fast_matches_kogan(&lambda, sigma);
+                }
+            }
+        }
+    }
 
     #[test]
     fn staircase_s3_scan_reproduces_route_counts() {
@@ -2810,8 +2988,8 @@ mod tests {
             .iter()
             .find(|row| row["sigma"] == "321")
             .expect("top row");
-        assert_eq!(top["hstar"], json!(["1", "1"]));
-        assert_eq!(top["B"], json!(["1", "2"]));
+        assert_eq!(top["hstar"], json!(["1", "3", "0"]));
+        assert_eq!(top["B"], json!(["1", "5", "4"]));
         assert_eq!(top["D"], Value::Null);
     }
 
@@ -2841,8 +3019,8 @@ mod tests {
         assert_eq!(summary["block_values"], json!([2, 1, 0]));
         assert_eq!(summary["block_sizes"], json!([1, 1, 2]));
         assert_eq!(summary["matrix_class_count"], 7);
-        assert_eq!(summary["hstar_class_count"], 4);
-        assert_eq!(summary["matrix_failure_count"], 0);
+        assert_eq!(summary["hstar_class_count"], 8);
+        assert_eq!(summary["matrix_failure_count"], 5);
         let top_class = summary["classes"]
             .as_array()
             .expect("classes")
@@ -2902,10 +3080,88 @@ mod tests {
             specialization: "staircase",
         };
         let row = compute_key_scan_row(0, &[1, 2, 3], &spec, None).expect("identity row");
-        let parsed = row_from_json(&row_json(&row, &spec)).expect("parse row");
+        let value = row_json(&row, &spec);
+        validate_checkpoint_metadata(&value, 3, &spec).expect("checkpoint metadata");
+        let parsed = row_from_json(&value).expect("parse row");
+        validate_resume_row(&parsed, 3, &spec, &all_permutations(3)).expect("validated row");
         assert_eq!(parsed.sigma, vec![1, 2, 3]);
         assert_eq!(parsed.hstar, vec![BigInt::one()]);
         assert_eq!(parsed.dimension, 0);
+    }
+
+    #[test]
+    fn resume_row_rejects_inconsistent_derived_data() {
+        let spec = ScanSpec {
+            lambda: vec![1, 1, 0],
+            specialization: "lambda",
+        };
+        let permutations = all_permutations(3);
+        let row = compute_key_scan_row(3, &[2, 3, 1], &spec, None).expect("witness row");
+        validate_resume_row(&row, 3, &spec, &permutations).expect("valid witness row");
+
+        let mut invalid = row.clone();
+        invalid.sigma = vec![2, 2, 1];
+        assert!(validate_resume_row(&invalid, 3, &spec, &permutations).is_err());
+
+        let mut invalid = row.clone();
+        invalid.index = 0;
+        assert!(validate_resume_row(&invalid, 3, &spec, &permutations).is_err());
+
+        let mut invalid = row.clone();
+        invalid.length += 1;
+        assert!(validate_resume_row(&invalid, 3, &spec, &permutations).is_err());
+
+        let mut invalid = row.clone();
+        invalid.dimension += 1;
+        assert!(validate_resume_row(&invalid, 3, &spec, &permutations).is_err());
+
+        let mut invalid = row.clone();
+        invalid.hstar[0] += 1;
+        assert!(validate_resume_row(&invalid, 3, &spec, &permutations).is_err());
+
+        let mut invalid = row.clone();
+        invalid.b[0] += 1;
+        assert!(validate_resume_row(&invalid, 3, &spec, &permutations).is_err());
+
+        let mut invalid = row.clone();
+        invalid.lower_covers.clear();
+        assert!(validate_resume_row(&invalid, 3, &spec, &permutations).is_err());
+
+        let staircase = ScanSpec {
+            lambda: staircase_lambda(3),
+            specialization: "staircase",
+        };
+        let mut invalid_d =
+            compute_key_scan_row(1, &[1, 3, 2], &staircase, None).expect("staircase row");
+        invalid_d.d = Some(vec![BigInt::from(99)]);
+        assert!(validate_resume_row(&invalid_d, 3, &staircase, &permutations).is_err());
+    }
+
+    #[test]
+    fn resume_rejects_conflicting_duplicate_rows() {
+        let spec = ScanSpec {
+            lambda: staircase_lambda(3),
+            specialization: "staircase",
+        };
+        let row = compute_key_scan_row(0, &[1, 2, 3], &spec, None).expect("identity row");
+        let first = row_json(&row, &spec);
+        let mut conflicting = first.clone();
+        conflicting["ehrhart_power"][0] = Value::String("2/2".to_string());
+        let path = std::env::temp_dir().join(format!(
+            "ehrcalc-key-conflicting-checkpoint-{}.jsonl",
+            std::process::id()
+        ));
+        let _ = std::fs::remove_file(&path);
+        std::fs::write(&path, format!("{first}\n{conflicting}\n"))
+            .expect("write conflicting checkpoint");
+
+        let error = read_checkpoint(&path, 3, &spec, &all_permutations(3))
+            .expect_err("conflicting duplicate must fail");
+        assert!(
+            error.contains("conflicting rows"),
+            "unexpected error: {error}"
+        );
+        let _ = std::fs::remove_file(&path);
     }
 
     #[test]

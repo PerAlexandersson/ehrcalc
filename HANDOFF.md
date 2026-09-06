@@ -28,3 +28,13 @@
 - Baseline `cargo test --workspace --all-targets`: 193 tests passed.
 - Baseline `ktt-search` had zero tests and failed strict Clippy.
 - Baseline formatting-only dirty diffs were inspected and contain no semantic changes.
+- Checkpoint `a41abd3` preserves the five inherited formatting-only changes and this
+  ownership record.
+- Focused key-scan tests pass: 14 tests, including the repeated-part witness
+  `lambda=(1,1,0), sigma=231`, exhaustive maintained-Kogan comparisons through
+  `S_3`, and malformed/conflicting resume-row regressions.
+- Focused KTT tests pass: 5 tests covering independent flags, terminal status,
+  cached-row validation, exact polynomial parsing, and the square h* regression.
+- `cargo clippy -p ktt-search --all-targets --no-deps -- -D warnings` passes.
+- Workspace-wide strict Clippy currently exposes pre-existing lints in the two
+  maintained internal crates; these remain to be resolved before final handoff.
