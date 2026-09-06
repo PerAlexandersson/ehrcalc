@@ -183,6 +183,7 @@ fn format_int_poly(coeffs: &[BigInt]) -> String {
 ///
 /// Reciprocity requires no row flags; with flags the method silently
 /// falls back to the plain positive-dilation scheme.
+#[allow(clippy::too_many_arguments)]
 pub fn compute_ehrhart(
     lambda: &Partition,
     mu: &Partition,
@@ -207,6 +208,7 @@ pub fn compute_ehrhart(
 }
 
 /// Fallible variant of [`compute_ehrhart`] that reports a state-limit breach.
+#[allow(clippy::too_many_arguments)]
 pub fn try_compute_ehrhart(
     lambda: &Partition,
     mu: &Partition,
@@ -234,6 +236,7 @@ pub fn try_compute_ehrhart(
     )
 }
 
+#[allow(clippy::too_many_arguments)]
 pub fn compute_ehrhart_with_mode(
     lambda: &Partition,
     mu: &Partition,
@@ -258,6 +261,7 @@ pub fn compute_ehrhart_with_mode(
 }
 
 /// Fallible variant of [`compute_ehrhart_with_mode`] that reports a state-limit breach.
+#[allow(clippy::too_many_arguments)]
 pub fn try_compute_ehrhart_with_mode(
     lambda: &Partition,
     mu: &Partition,
@@ -281,6 +285,7 @@ pub fn try_compute_ehrhart_with_mode(
     )
 }
 
+#[allow(clippy::too_many_arguments)]
 pub fn compute_ehrhart_legacy(
     lambda: &Partition,
     mu: &Partition,
@@ -308,6 +313,7 @@ pub fn compute_ehrhart_legacy(
     )
 }
 
+#[allow(clippy::too_many_arguments)]
 pub fn compute_ehrhart_legacy_with_mode(
     lambda: &Partition,
     mu: &Partition,
@@ -332,6 +338,7 @@ pub fn compute_ehrhart_legacy_with_mode(
     .expect("legacy GT Ehrhart DP state limit exceeded")
 }
 
+#[allow(clippy::too_many_arguments)]
 fn compute_ehrhart_impl(
     lambda: &Partition,
     mu: &Partition,
@@ -636,21 +643,20 @@ fn poly_interpolate(points: &[(i64, BigRational)]) -> Vec<BigRational> {
             .expect("poly_interpolate: singular system (duplicate x-values?)");
         mat.swap(col, pivot_row);
         let pivot = mat[col][col].clone();
-        for j in col..=d {
-            let v = mat[col][j].clone() / &pivot;
-            mat[col][j] = v;
+        for entry in &mut mat[col][col..=d] {
+            *entry /= &pivot;
         }
-        for row in 0..d {
-            if row == col {
+        let pivot_tail = mat[col][col..=d].to_vec();
+        for (row_index, row_entries) in mat.iter_mut().enumerate().take(d) {
+            if row_index == col {
                 continue;
             }
-            let factor = mat[row][col].clone();
+            let factor = row_entries[col].clone();
             if factor.is_zero() {
                 continue;
             }
-            for j in col..=d {
-                let sub = factor.clone() * &mat[col][j];
-                mat[row][j] -= sub;
+            for (entry, pivot_entry) in row_entries[col..=d].iter_mut().zip(&pivot_tail) {
+                *entry -= factor.clone() * pivot_entry;
             }
         }
     }
@@ -682,7 +688,7 @@ pub fn verify_reciprocity(
     max_states: Option<usize>,
 ) -> bool {
     let d = poly.degree;
-    let sign_pos = d % 2 == 0; // (-1)^d is +1 iff d is even
+    let sign_pos = d.is_multiple_of(2); // (-1)^d is +1 iff d is even
     let sort_weight = true;
 
     // For degree-0 polytopes (a single point), the relative interior IS the point:
@@ -761,7 +767,7 @@ pub fn compute_hstar(poly: &EhrhartPoly) -> Vec<BigInt> {
 
     let d1 = d + 1;
     let mut hstar = vec![BigInt::zero(); d1];
-    for k in 0..d1 {
+    for (k, hstar_entry) in hstar.iter_mut().enumerate() {
         let mut val = BigInt::zero();
         for j in 0..=k {
             let p_j = poly.eval(j as u64);
@@ -775,7 +781,7 @@ pub fn compute_hstar(poly: &EhrhartPoly) -> Vec<BigInt> {
             };
             val += sign * binom * p_j_int;
         }
-        hstar[k] = val;
+        *hstar_entry = val;
     }
     hstar
 }

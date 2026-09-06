@@ -49,9 +49,9 @@ impl GtPattern {
         let n = self.n();
         let mut w = vec![0u32; n];
         let mut prev_sum = 0u32;
-        for k in 0..n {
-            let cur_sum: u32 = self.rows[k].iter().sum();
-            w[k] = cur_sum - prev_sum;
+        for (entry, row) in w.iter_mut().zip(&self.rows) {
+            let cur_sum: u32 = row.iter().sum();
+            *entry = cur_sum - prev_sum;
             prev_sum = cur_sum;
         }
         w
@@ -169,6 +169,7 @@ fn enumerate_gt_rows(
     );
 }
 
+#[allow(clippy::too_many_arguments)]
 fn enumerate_gt_entries(
     n: usize,
     row_idx: usize,
@@ -695,21 +696,20 @@ fn poly_interpolate_q(points: &[(i64, BigRational)]) -> Vec<BigRational> {
             .expect("poly_interpolate: singular system");
         mat.swap(col, pivot_row);
         let pivot = mat[col][col].clone();
-        for j in col..=d {
-            let v = mat[col][j].clone() / &pivot;
-            mat[col][j] = v;
+        for entry in &mut mat[col][col..=d] {
+            *entry /= &pivot;
         }
-        for row in 0..d {
-            if row == col {
+        let pivot_tail = mat[col][col..=d].to_vec();
+        for (row_index, row_entries) in mat.iter_mut().enumerate().take(d) {
+            if row_index == col {
                 continue;
             }
-            let factor = mat[row][col].clone();
+            let factor = row_entries[col].clone();
             if factor.is_zero() {
                 continue;
             }
-            for j in col..=d {
-                let sub = factor.clone() * &mat[col][j];
-                mat[row][j] -= sub;
+            for (entry, pivot_entry) in row_entries[col..=d].iter_mut().zip(&pivot_tail) {
+                *entry -= factor.clone() * pivot_entry;
             }
         }
     }

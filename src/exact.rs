@@ -187,9 +187,9 @@ impl EhrhartPolynomial {
         }
         let mut result = vec![BigRational::zero(); self.degree()];
         for (degree, coefficient) in self.power_coeffs.iter().enumerate().skip(1) {
-            for lower_degree in 0..degree {
+            for (lower_degree, result_entry) in result.iter_mut().enumerate().take(degree) {
                 let factor = BigRational::from(binomial_bigint(degree, lower_degree));
-                result[lower_degree] += coefficient.clone() * factor;
+                *result_entry += coefficient.clone() * factor;
             }
         }
         Self::new(self.degree().saturating_sub(1), result)
@@ -206,11 +206,11 @@ impl EhrhartPolynomial {
     pub fn dilate_and_shift(&self, scale: i64, shift: i64) -> ExactResult<Self> {
         let mut result = vec![BigRational::zero(); self.degree() + 1];
         for (degree, coefficient) in self.power_coeffs.iter().enumerate() {
-            for lower_degree in 0..=degree {
+            for (lower_degree, result_entry) in result.iter_mut().enumerate().take(degree + 1) {
                 let factor = binomial_bigint(degree, lower_degree)
                     * BigInt::from(scale).pow(lower_degree as u32)
                     * BigInt::from(shift).pow((degree - lower_degree) as u32);
-                result[lower_degree] += coefficient.clone() * BigRational::from(factor);
+                *result_entry += coefficient.clone() * BigRational::from(factor);
             }
         }
         Self::new(self.dimension, result)

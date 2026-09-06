@@ -30,11 +30,18 @@
 - Baseline formatting-only dirty diffs were inspected and contain no semantic changes.
 - Checkpoint `a41abd3` preserves the five inherited formatting-only changes and this
   ownership record.
+- Checkpoint `27de446` fixes repeated-part key scans and rejects invalid resume data.
+- Checkpoint `85d5e72` integrates and hardens `ktt-search`, with generated reports
+  ignored and historical report limitations documented.
 - Focused key-scan tests pass: 14 tests, including the repeated-part witness
   `lambda=(1,1,0), sigma=231`, exhaustive maintained-Kogan comparisons through
   `S_3`, and malformed/conflicting resume-row regressions.
 - Focused KTT tests pass: 5 tests covering independent flags, terminal status,
   cached-row validation, exact polynomial parsing, and the square h* regression.
 - `cargo clippy -p ktt-search --all-targets --no-deps -- -D warnings` passes.
-- Workspace-wide strict Clippy currently exposes pre-existing lints in the two
-  maintained internal crates; these remain to be resolved before final handoff.
+- `cargo clippy --workspace --all-targets -- -D warnings` passes after narrow,
+  behavior-preserving lint cleanup in the maintained crates.
+- `cargo test --workspace --all-targets` passes all 202 tests.
+- Exact command-level comparison for `lambda=(1,1,0), sigma=231` agrees between
+  `key` and `key-scan`: power coefficients `(1,3/2,1/2)`, h* `(1,0,0)`, and
+  binomial coefficients `(1,2,1)`.

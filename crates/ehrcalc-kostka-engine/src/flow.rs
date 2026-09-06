@@ -483,20 +483,20 @@ fn interpolate(points: &[(i64, BigRational)]) -> Vec<BigRational> {
             .expect("flow Ehrhart interpolation: singular system");
         mat.swap(col, pivot_row);
         let pivot = mat[col][col].clone();
-        for j in col..=d {
-            mat[col][j] = mat[col][j].clone() / &pivot;
+        for entry in &mut mat[col][col..=d] {
+            *entry /= &pivot;
         }
-        for row in 0..d {
-            if row == col {
+        let pivot_tail = mat[col][col..=d].to_vec();
+        for (row_index, row_entries) in mat.iter_mut().enumerate().take(d) {
+            if row_index == col {
                 continue;
             }
-            let factor = mat[row][col].clone();
+            let factor = row_entries[col].clone();
             if factor.is_zero() {
                 continue;
             }
-            for j in col..=d {
-                let sub = factor.clone() * &mat[col][j];
-                mat[row][j] -= sub;
+            for (entry, pivot_entry) in row_entries[col..=d].iter_mut().zip(&pivot_tail) {
+                *entry -= factor.clone() * pivot_entry;
             }
         }
     }

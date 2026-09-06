@@ -996,8 +996,8 @@ impl Poset {
         let p = self.natural_relabeling();
 
         let num_positive = (d + 2) / 2; // ceil((d+1)/2)
-        let num_negative = (d + 1) / 2; // floor((d+1)/2)
-        let sign = if d % 2 == 0 {
+        let num_negative = d.div_ceil(2); // floor((d+1)/2)
+        let sign = if d.is_multiple_of(2) {
             BigInt::one()
         } else {
             -BigInt::one()
@@ -1163,9 +1163,10 @@ impl Poset {
         for &v in topo.iter().rev() {
             for &c in &self.children[v] {
                 reach[v][c] = true;
-                for u in 0..self.n {
-                    if reach[c][u] {
-                        reach[v][u] = true;
+                let child_reach = reach[c].clone();
+                for (target, is_reachable) in child_reach.into_iter().enumerate() {
+                    if is_reachable {
+                        reach[v][target] = true;
                     }
                 }
             }
@@ -1899,7 +1900,11 @@ mod tests {
             );
         }
 
-        let sign = if p.num_elements() % 2 == 0 { 1 } else { -1 };
+        let sign = if p.num_elements().is_multiple_of(2) {
+            1
+        } else {
+            -1
+        };
         for k in 1..=4 {
             assert_eq!(
                 eval_big_poly(&ehr, -(k as i64)),

@@ -9,7 +9,7 @@ use num_traits::{One, Zero};
 ///    integrated into the horizontal-strip enumeration.
 ///
 /// 2. **Kostka matrix inversion**: uses the identity
-///      K(λ/μ, α) = Σ_ν c^λ_{μ,ν} K(ν, α)
+///    K(λ/μ, α) = Σ_ν c^λ_{μ,ν} K(ν, α)
 ///    solved by back-substitution in dominance order (K is upper unitriangular).
 use std::collections::HashMap;
 use std::time::Instant;
@@ -53,6 +53,7 @@ fn yamanouchi_extensions(
     results
 }
 
+#[allow(clippy::too_many_arguments)]
 fn yamanouchi_enumerate(
     alpha: &Partition,
     lambda: &Partition,
@@ -152,8 +153,8 @@ pub fn try_lr_dp(
     for beta in horizontal_strip_extensions(mu, lambda, w[0]) {
         let mut d = vec![0u32; n + 1];
         let mut cs = 0u32;
-        for j in 0..n {
-            d[j] = cs;
+        for (j, entry) in d.iter_mut().enumerate().take(n) {
+            *entry = cs;
             cs += beta.part(j).saturating_sub(mu.part(j));
         }
         d[n] = cs;
@@ -161,8 +162,7 @@ pub fn try_lr_dp(
     }
 
     // Levels 1 → 2, 2 → 3, ... with Yamanouchi.
-    for step in 1..w.len() {
-        let strip_size = w[step];
+    for &strip_size in w.iter().skip(1) {
         let mut new_dp: HashMap<DpState, BigUint> = HashMap::new();
 
         for ((alpha, d), count) in &dp {

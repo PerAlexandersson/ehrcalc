@@ -488,7 +488,7 @@ fn horizontal_strip_extensions_restricted_legacy(
     results
 }
 
-#[allow(dead_code)]
+#[allow(dead_code, clippy::too_many_arguments)]
 fn enumerate_strips_restricted(
     alpha: &Partition,
     lambda: &Partition,

@@ -79,8 +79,8 @@ impl Partition {
         let max_part = self.0[0] as usize;
         let mut conj = vec![0u32; max_part];
         for &p in &self.0 {
-            for j in 0..(p as usize) {
-                conj[j] += 1;
+            for entry in conj.iter_mut().take(p as usize) {
+                *entry += 1;
             }
         }
         Partition(conj)
@@ -349,13 +349,7 @@ impl Partition {
             return Partition::empty();
         }
         let parts: Vec<u32> = (0..n)
-            .map(|i| {
-                if beta[i] >= (n - 1 - i) as u32 {
-                    beta[i] - (n - 1 - i) as u32
-                } else {
-                    0
-                }
-            })
+            .map(|i| beta[i].saturating_sub((n - 1 - i) as u32))
             .collect();
         Partition::from_sorted(parts)
     }

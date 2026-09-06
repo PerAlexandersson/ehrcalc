@@ -26,18 +26,19 @@
 /// The dimension is:
 ///   dim = Σ_ℓ max(free_ℓ − 1, 0)
 /// i.e., free entries minus one weight constraint per active level.
-
 /// Dimension of the GT polytope GT(λ/μ, w), optionally with row flags.
 /// Returns `None` if the polytope is empty (infeasible constraints),
 /// or `Some(d)` where d = 0 means a single lattice point.
 /// Core implementation shared by the public functions below.
+type GtBounds = (usize, Vec<Vec<u32>>, Vec<Vec<u32>>);
+
 fn gt_polytope_dim_impl(
     lambda: &[u32],
     mu: &[u32],
     w: &[u32],
     upper_flags: Option<&[u32]>,
     lower_flags: Option<&[u32]>,
-) -> Option<(usize, Vec<Vec<u32>>, Vec<Vec<u32>>)> {
+) -> Option<GtBounds> {
     let n = lambda.len();
     let k = w.len();
 
@@ -359,6 +360,7 @@ pub fn gt_polytope_dim_full(
 ///   (interior levels `ell = 0..k-2`, columns `j = 0..n-1`).
 ///
 /// Used by `strict_skew_kostka` to identify globally-tight constraints.
+#[allow(clippy::type_complexity)]
 pub fn gt_polytope_bounds(
     lambda: &[u32],
     mu: &[u32],
@@ -519,7 +521,7 @@ mod tests {
             let lambdas = Partition::all_of_size(lam_size);
             for lam in &lambdas {
                 let lambda = lam.parts();
-                let max_mu_size = if lam_size >= 2 { lam_size - 2 } else { 0 };
+                let max_mu_size = lam_size.saturating_sub(2);
                 for mu_size in 0..=max_mu_size {
                     let mus = if mu_size == 0 {
                         vec![Partition::empty()]

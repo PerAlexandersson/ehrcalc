@@ -291,6 +291,7 @@ fn binomial_u128(n: usize, k: usize) -> u128 {
     result
 }
 
+#[allow(clippy::too_many_arguments)]
 fn derangement_distribution_backtrack(
     position: usize,
     current: &mut [usize],
