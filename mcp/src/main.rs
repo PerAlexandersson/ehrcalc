@@ -59,8 +59,14 @@ mod tests {
 
     #[test]
     fn parses_local_server_flags() {
-        assert_eq!(parse_args(&["ehrcalc-mcp".to_string()]), Ok(StartupMode::Serve));
-        assert_eq!(parse_args(&["ehrcalc-mcp".to_string(), "--help".to_string()]), Ok(StartupMode::Help));
+        assert_eq!(
+            parse_args(&["ehrcalc-mcp".to_string()]),
+            Ok(StartupMode::Serve)
+        );
+        assert_eq!(
+            parse_args(&["ehrcalc-mcp".to_string(), "--help".to_string()]),
+            Ok(StartupMode::Help)
+        );
         assert!(parse_args(&["ehrcalc-mcp".to_string(), "--bad".to_string()]).is_err());
     }
 }

@@ -55,10 +55,7 @@ impl EhrhartPolynomial {
     }
 
     /// Interpolate from exact values at distinct integral points.
-    pub fn interpolate(
-        dimension: usize,
-        points: &[(i64, BigRational)],
-    ) -> ExactResult<Self> {
+    pub fn interpolate(dimension: usize, points: &[(i64, BigRational)]) -> ExactResult<Self> {
         if points.len() != dimension + 1 {
             return Err(format!(
                 "dimension {dimension} requires {} interpolation points, got {}",
@@ -245,7 +242,10 @@ impl HStarPolynomial {
 
     /// Largest index with nonzero coefficient, or zero for the zero numerator.
     pub fn degree(&self) -> usize {
-        self.coeffs.iter().rposition(|value| !value.is_zero()).unwrap_or(0)
+        self.coeffs
+            .iter()
+            .rposition(|value| !value.is_zero())
+            .unwrap_or(0)
     }
 
     /// Convert from the shifted Ehrhart binomial basis to power coefficients.
@@ -300,8 +300,8 @@ impl BinomialBasisPolynomial {
             for offset in 0..index {
                 basis = multiply_by_linear(&basis, BigInt::from(-(offset as i64)));
             }
-            let scale = BigRational::from(coefficient.clone())
-                / BigRational::from(factorial_bigint(index));
+            let scale =
+                BigRational::from(coefficient.clone()) / BigRational::from(factorial_bigint(index));
             for (power, basis_coefficient) in basis.into_iter().enumerate() {
                 result[power] += scale.clone() * basis_coefficient;
             }
@@ -397,7 +397,9 @@ fn binomial_bigint(n: usize, k: usize) -> BigInt {
 }
 
 fn factorial_bigint(n: usize) -> BigInt {
-    (1..=n).fold(BigInt::one(), |product, value| product * BigInt::from(value))
+    (1..=n).fold(BigInt::one(), |product, value| {
+        product * BigInt::from(value)
+    })
 }
 
 #[cfg(test)]
@@ -415,7 +417,10 @@ mod tests {
             &[(2, integer(9)), (3, integer(16)), (5, integer(36))],
         )
         .expect("quadratic interpolation should succeed");
-        assert_eq!(polynomial.power_coeffs(), &[integer(1), integer(2), integer(1)]);
+        assert_eq!(
+            polynomial.power_coeffs(),
+            &[integer(1), integer(2), integer(1)]
+        );
         assert_eq!(polynomial.evaluate(-2), integer(1));
     }
 
@@ -430,23 +435,40 @@ mod tests {
     fn hstar_preserves_trailing_zero_for_simplex() {
         let polynomial = EhrhartPolynomial::new(
             2,
-            vec![integer(1), BigRational::new(BigInt::from(3), BigInt::from(2)), BigRational::new(BigInt::from(1), BigInt::from(2))],
+            vec![
+                integer(1),
+                BigRational::new(BigInt::from(3), BigInt::from(2)),
+                BigRational::new(BigInt::from(1), BigInt::from(2)),
+            ],
         )
         .expect("valid two-dimensional Ehrhart polynomial");
         let hstar = polynomial.to_hstar().expect("h* should be integral");
-        assert_eq!(hstar.coeffs(), &[BigInt::one(), BigInt::zero(), BigInt::zero()]);
-        assert_eq!(hstar.to_ehrhart().expect("round trip").power_coeffs(), polynomial.power_coeffs());
+        assert_eq!(
+            hstar.coeffs(),
+            &[BigInt::one(), BigInt::zero(), BigInt::zero()]
+        );
+        assert_eq!(
+            hstar.to_ehrhart().expect("round trip").power_coeffs(),
+            polynomial.power_coeffs()
+        );
     }
 
     #[test]
     fn binomial_round_trip_and_discrete_sum_are_exact() {
         let polynomial = EhrhartPolynomial::new(2, vec![integer(1), integer(3), integer(2)])
             .expect("valid polynomial");
-        let binomial = polynomial.to_binomial_basis().expect("integer-valued polynomial");
-        assert_eq!(binomial.coeffs(), &[BigInt::one(), BigInt::from(5), BigInt::from(4)]);
+        let binomial = polynomial
+            .to_binomial_basis()
+            .expect("integer-valued polynomial");
+        assert_eq!(
+            binomial.coeffs(),
+            &[BigInt::one(), BigInt::from(5), BigInt::from(4)]
+        );
         assert_eq!(binomial.to_polynomial().expect("round trip"), polynomial);
 
-        let sum = polynomial.discrete_sum().expect("sum should be integer-valued");
+        let sum = polynomial
+            .discrete_sum()
+            .expect("sum should be integer-valued");
         assert_eq!(sum.evaluate(3), integer(22));
         assert_eq!(sum.evaluate(0), integer(0));
     }
@@ -456,7 +478,10 @@ mod tests {
         let polynomial = EhrhartPolynomial::new(2, vec![integer(1), integer(0), integer(1)])
             .expect("valid polynomial");
         assert_eq!(
-            polynomial.finite_difference().expect("difference").power_coeffs(),
+            polynomial
+                .finite_difference()
+                .expect("difference")
+                .power_coeffs(),
             &[integer(1), integer(2)]
         );
         assert_eq!(
@@ -470,8 +495,14 @@ mod tests {
 
     #[test]
     fn parsing_uses_exact_rationals() {
-        assert_eq!(parse_rational(" -7/ 9 ").expect("parse"), BigRational::new(BigInt::from(-7), BigInt::from(9)));
+        assert_eq!(
+            parse_rational(" -7/ 9 ").expect("parse"),
+            BigRational::new(BigInt::from(-7), BigInt::from(9))
+        );
         assert!(parse_rational("1/0").is_err());
-        assert_eq!(parse_bigint_list("1, 2, -9").expect("parse"), vec![BigInt::one(), BigInt::from(2), BigInt::from(-9)]);
+        assert_eq!(
+            parse_bigint_list("1, 2, -9").expect("parse"),
+            vec![BigInt::one(), BigInt::from(2), BigInt::from(-9)]
+        );
     }
 }

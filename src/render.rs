@@ -45,9 +45,16 @@ pub fn render_polynomial(
 ) -> String {
     match format {
         OutputFormat::Text => {
-            let mut output = format!("dimension: {}\n{label}: {}\n", polynomial.dimension(), format_text_polynomial(polynomial.power_coeffs(), "n"));
+            let mut output = format!(
+                "dimension: {}\n{label}: {}\n",
+                polynomial.dimension(),
+                format_text_polynomial(polynomial.power_coeffs(), "n")
+            );
             if let Some(binomial) = binomial {
-                output.push_str(&format!("binomial_basis: [{}]\n", join_bigints(binomial.coeffs())));
+                output.push_str(&format!(
+                    "binomial_basis: [{}]\n",
+                    join_bigints(binomial.coeffs())
+                ));
             }
             output
         }
@@ -59,9 +66,16 @@ pub fn render_polynomial(
         }))
         .expect("polynomial JSON is serializable"),
         OutputFormat::Latex => {
-            let mut output = format!("{} = {}\n", latex_identifier(label), format_latex_polynomial(polynomial.power_coeffs(), "n"));
+            let mut output = format!(
+                "{} = {}\n",
+                latex_identifier(label),
+                format_latex_polynomial(polynomial.power_coeffs(), "n")
+            );
             if let Some(binomial) = binomial {
-                output.push_str(&format!("\\text{{binomial basis}} = [{}]\n", join_bigints(binomial.coeffs())));
+                output.push_str(&format!(
+                    "\\text{{binomial basis}} = [{}]\n",
+                    join_bigints(binomial.coeffs())
+                ));
             }
             output
         }
@@ -111,7 +125,11 @@ fn bigint_strings(values: &[BigInt]) -> Vec<String> {
 }
 
 fn join_bigints(values: &[BigInt]) -> String {
-    values.iter().map(ToString::to_string).collect::<Vec<_>>().join(", ")
+    values
+        .iter()
+        .map(ToString::to_string)
+        .collect::<Vec<_>>()
+        .join(", ")
 }
 
 fn format_text_polynomial(coeffs: &[BigRational], variable: &str) -> String {
@@ -123,7 +141,11 @@ fn format_latex_polynomial(coeffs: &[BigRational], variable: &str) -> String {
 }
 
 fn format_latex_polynomial_bigint(coeffs: &[BigInt], variable: &str) -> String {
-    let rational = coeffs.iter().cloned().map(BigRational::from).collect::<Vec<_>>();
+    let rational = coeffs
+        .iter()
+        .cloned()
+        .map(BigRational::from)
+        .collect::<Vec<_>>();
     format_latex_polynomial(&rational, variable)
 }
 
@@ -134,7 +156,11 @@ fn format_polynomial(coeffs: &[BigRational], variable: &str, latex: bool) -> Str
             continue;
         }
         let negative = coefficient.numer().is_negative();
-        let magnitude = if negative { -coefficient.clone() } else { coefficient.clone() };
+        let magnitude = if negative {
+            -coefficient.clone()
+        } else {
+            coefficient.clone()
+        };
         let coefficient_text = if latex {
             format_latex_rational(&magnitude)
         } else {
@@ -191,11 +217,8 @@ mod tests {
     #[test]
     fn renders_exact_data_in_all_public_formats() {
         let data = EhrhartData::new(
-            EhrhartPolynomial::new(
-                1,
-                vec![BigRational::one(), BigRational::one()],
-            )
-            .expect("valid interval Ehrhart polynomial"),
+            EhrhartPolynomial::new(1, vec![BigRational::one(), BigRational::one()])
+                .expect("valid interval Ehrhart polynomial"),
         )
         .expect("integral h*");
         assert!(render_ehrhart(&data, OutputFormat::Text).contains("Ehrhart(n): n + 1"));

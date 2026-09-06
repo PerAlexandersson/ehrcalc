@@ -163,7 +163,10 @@ pub fn key_ehrhart(input: &KeyInput) -> ExactResult<EhrhartData> {
     let polynomial = key_ehrhart_polynomial(&lambda, &input.sigma, input.max_degree);
     // The existing key engine exposes the proven degree of this Ehrhart
     // polynomial. A separate Kogan-face dimension routine is future work.
-    EhrhartData::new(EhrhartPolynomial::new(polynomial.degree, polynomial.coeffs)?)
+    EhrhartData::new(EhrhartPolynomial::new(
+        polynomial.degree,
+        polynomial.coeffs,
+    )?)
 }
 
 fn build_poset(input: &OrderInput) -> ExactResult<Poset> {
@@ -253,9 +256,11 @@ mod tests {
         .expect("GT Ehrhart data");
         assert_eq!(gt.ehrhart.evaluate(0), num_rational::BigRational::one());
 
-        let order = order_ehrhart(&OrderInput::Chain { elements: 2 })
-            .expect("order-polytope data");
-        assert_eq!(order.hstar.coeffs(), &[BigInt::one(), BigInt::zero(), BigInt::zero()]);
+        let order = order_ehrhart(&OrderInput::Chain { elements: 2 }).expect("order-polytope data");
+        assert_eq!(
+            order.hstar.coeffs(),
+            &[BigInt::one(), BigInt::zero(), BigInt::zero()]
+        );
 
         let flow = flow_ehrhart(&FlowInput {
             vertices: 2,
@@ -265,7 +270,10 @@ mod tests {
             use_reciprocity: true,
         })
         .expect("flow-polytope data");
-        assert_eq!(flow.ehrhart.evaluate(3), num_rational::BigRational::from(BigInt::from(4)));
+        assert_eq!(
+            flow.ehrhart.evaluate(3),
+            num_rational::BigRational::from(BigInt::from(4))
+        );
     }
 
     #[test]

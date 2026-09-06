@@ -1190,7 +1190,6 @@ impl Poset {
         }
         order
     }
-
 }
 
 impl std::fmt::Display for Poset {
