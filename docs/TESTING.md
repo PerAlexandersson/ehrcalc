@@ -33,7 +33,10 @@ Each family must include:
 GT and flagged examples must match the frozen `kostka` reference fixtures.
 Order-polytope examples must match direct order-preserving-map counts.  Flow
 examples must match small enumerated flows.  Key examples must match checked
-fixtures before a new evaluator becomes the default.
+fixtures before a new evaluator becomes the default.  The fast key scanner is
+cross-checked exhaustively against the maintained Kogan-face route in small ranks,
+including dominant weights with repeated parts.  Resume tests must reject malformed
+permutations, inconsistent derived vectors, and conflicting duplicate rows.
 
 ### Regression Fixtures
 
@@ -57,6 +60,18 @@ Run the full standalone workspace tests during development:
 ```bash
 timeout 60s nice -n 10 cargo test --workspace
 ```
+
+The database-backed KTT research binary has focused tests that do not require a
+database:
+
+```bash
+timeout 60s nice -n 10 cargo test -p ktt-search --all-targets
+timeout 60s nice -n 10 cargo clippy -p ktt-search --all-targets --no-deps -- -D warnings
+```
+
+They cover independent upper/lower flag validation, capped and incomplete terminal
+states, exact cached-polynomial revalidation, and the dimension-two square h* vector
+`(1,6,1)`.
 
 Before a feature is merged, also run the relevant cross-project comparison
 tests and record any long benchmark separately.  Tests that require more than

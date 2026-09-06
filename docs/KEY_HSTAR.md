@@ -60,6 +60,12 @@ The commands deliberately expose two evaluators.
 They are independent computational routes for small cases.  The fast scanner
 does not call the Kogan-face evaluator.
 
+For weights with repeated parts, the fast evaluator derives the full Demazure
+operator word from `sigma`, independently of the stabilizer of `lambda`.  Sorting
+`lambda` after permutation would incorrectly discard operators.  The regression
+`lambda=(1,1,0), sigma=231` and exhaustive comparisons through `S_3` check the fast
+route against the maintained Kogan-face route.
+
 ## Quick start
 
 When running from a source checkout, prefix the examples with
@@ -200,8 +206,11 @@ cargo run --release -- \
 ```
 
 Checkpoint records include the normalized rank, weight, and specialization.
-Ehrcalc rejects a checkpoint that does not match the current scan.  Generated
-checkpoint files are working data and should not be committed by default.
+Ehrcalc validates each resumed permutation and lexicographic index, inversion
+length, dimension and exact coefficient-vector lengths, polynomial-derived h* and
+binomial data, staircase `D`, and lower strong-Bruhat covers.  Conflicting duplicate
+rows are rejected.  Generated checkpoint files are working data and should not be
+committed by default.
 
 ## Resuming one difficult row
 
@@ -299,5 +308,5 @@ timeout 60s nice -n 10 cargo test --workspace
 ```
 
 The key scanner tests include staircase route counts, a general-weight first
-failure, single-row selection, both checkpoint layers, common-factor
-dilations, and block-class summaries.
+failure, single-row selection, both checkpoint layers, malformed resume rows,
+common-factor dilations, repeated-part Kogan cross-checks, and block-class summaries.

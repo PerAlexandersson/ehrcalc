@@ -96,6 +96,11 @@ See [Key h-star computations](docs/KEY_HSTAR.md) for the mathematical
 convention, exact row schema, packet modes, and resumable workflows for
 `key-scan`.
 
+The workspace also contains a database-backed, bounded KTT research scanner.
+It is intentionally separate from the stable CLI; see
+[the KTT search utility guide](docs/KTT_SEARCH.md) for exact validation and
+report-status semantics.
+
 The `ehrcalc-mcp` companion binary exposes the same exact library operations
 over MCP stdio transport.  See [docs/OUTPUT_AND_MCP.md](docs/OUTPUT_AND_MCP.md)
 for its request and output contract.
@@ -122,6 +127,7 @@ See:
   phased migration plan.
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for package boundaries.
 - [docs/KEY_HSTAR.md](docs/KEY_HSTAR.md) for key h-star computations.
+- [docs/KTT_SEARCH.md](docs/KTT_SEARCH.md) for the bounded KTT research scanner.
 - [docs/cli.md](docs/cli.md) for generated CLI documentation.
 - [docs/OUTPUT_AND_MCP.md](docs/OUTPUT_AND_MCP.md) for output and MCP design.
 - [docs/TESTING.md](docs/TESTING.md) for the required test strategy.

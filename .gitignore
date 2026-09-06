@@ -2,3 +2,8 @@
 /.env
 /*.local.json
 /*.jsonl
+/ktt-search/*.json
+/ktt-search/*.jsonl
+/ktt-search/*.log
+/ktt-search/Cargo.lock
+/ktt-search/target/
