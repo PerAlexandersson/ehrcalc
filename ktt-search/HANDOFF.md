@@ -1,6 +1,6 @@
 # KTT Search Handoff
 
-## Current ownership — 2026-09-06
+## Completed ownership record — 2026-09-06
 
 - Owner: Codex, current Ehrcalc audit-fix session.
 - The user explicitly authorized adopting this directory despite its older ownership
@@ -8,6 +8,8 @@
 - Tracked scope: `Cargo.toml`, `src/main.rs`, this handoff, and project documentation.
 - Generated scan JSON, JSONL, logs, local lockfiles, and local target output are ignored
   and must remain untracked.
+- Status: implementation and verification are complete; no KTT file remains actively
+  owned after the final checkpoint.
 
 ## Current implementation
 
@@ -30,8 +32,8 @@ The 2026-09-06 audit fixed these correctness defects:
 - `--continue-after-first` retains the first witness rather than overwriting it.
 
 Five focused unit tests cover flag independence, terminal status, exact stored
-polynomial parsing, cached-row validation, and the square h* regression. Strict
-package Clippy passes with `--all-targets --no-deps -D warnings`.
+polynomial parsing, cached-row coefficient validation, and both endpoints of the Hibi
+range. Strict Clippy passes for the entire workspace with `--all-targets -D warnings`.
 
 ## Historical report warning
 

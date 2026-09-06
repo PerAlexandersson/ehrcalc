@@ -1369,6 +1369,20 @@ mod tests {
     fn hibi_interior_range_excludes_endpoints_for_the_square() {
         let hstar = vec![BigInt::from(1), BigInt::from(6), BigInt::from(1)];
         assert!(first_hibi_stanley_failure(&hstar, 2).is_none());
+
+        let failure = first_hibi_stanley_failure(
+            &[
+                BigInt::from(1),
+                BigInt::from(3),
+                BigInt::from(2),
+                BigInt::from(2),
+            ],
+            3,
+        )
+        .expect("the sole interior index i=2 must be checked");
+        assert_eq!(failure.family, "Hibi");
+        assert_eq!(failure.name, "interior-point");
+        assert_eq!(failure.index, 2);
     }
 
     #[test]
@@ -1419,5 +1433,21 @@ mod tests {
         assert!(validate_cached_row(context, &wrong_hstar)
             .expect_err("mismatched h* must be unverified")
             .contains("polynomial-derived"));
+
+        let negative_context = CaseContext {
+            gt_dimension: 1,
+            ..context
+        };
+        let negative = CachedRow {
+            kostka: "0".to_string(),
+            dimension: Some(1),
+            polynomial: "-1n + 1".to_string(),
+            hstar: Some("[\"1\",\"-2\"]".to_string()),
+        };
+        let failure = validate_cached_row(negative_context, &negative)
+            .expect("self-consistent cached row")
+            .expect("cached coefficients must be checked");
+        assert_eq!(failure.failure_kind, "negative_coefficient");
+        assert_eq!(failure.first_negative_degree, Some(1));
     }
 }
