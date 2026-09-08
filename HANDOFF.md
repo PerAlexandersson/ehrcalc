@@ -302,6 +302,12 @@
   nonflag equalities (`a=7,b=10`, hook outer shape `[11,1^7]`, mask
   `0x100000000000000000`). All evaluated rows were persisted; no negative
   frontier change.
+- A small-seed degree-70-capped batch (population 28, three generations,
+  mutation rate 0.80, seed 20261002, including the degree-67 zero-hole seed)
+  produced no negative. Its exact best was positive degree 67 with three
+  nonflag equalities (`a=8,b=10`, hook outer shape `[11,1^8]`, mask
+  `0x40000000000000200000010000001000`). All evaluated rows were persisted;
+  the degree-72/four-hole negative remains the certified frontier.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
