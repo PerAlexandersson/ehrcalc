@@ -2,6 +2,16 @@
 
 ## Original fan restart — 2026-09-08
 
+Implied-flag saturation plus exact redundancy pruning reduced the current
+degree-21 presentation to 25 internal bans and 18 opposite equations.
+Subsequent shape shrinking reached observation 17018: `GT(1^18,0^19)` mixed
+face, degree 21, 21 internal bans, 15 opposite equations, and negative linear
+coefficient `-4494071/87780`. This is a smaller source than the original
+`20 x 21`; no flagged-Kostka counterexample is claimed. All computations use
+maintained Ehrcalc; coordinate identity certifies the neutral presentation
+changes. Exact bounds, skips, DB lineage, and pending weight adapter are in
+the mutation-search handoff. No live scan remains at this checkpoint.
+
 Presentation audit removes 131 redundant internal bans using label-independent
 coordinate equality/order signatures; observation 14499 is the same degree-21
 polytope, now presented with 50 internal bans and 33 opposite equations.
