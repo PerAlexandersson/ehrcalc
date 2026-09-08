@@ -50,6 +50,8 @@
 - Triple-swap continuation at offsets 630–639 completed 10/10 exact rows,
   with no limited rows and no negative polynomial; the degree-84 two-hole
   frontier remains unchanged.
+- Triple-swap continuation at offsets 640–649 completed 10/10 exact rows,
+  with no limited rows and no negative polynomial; no frontier improvement.
 - A controlled three-hole lineage expansion (3-generation target, 1--2-cell
   mutations, 48 persisted and 16 random immigrants) was cut at the 60-second
   bound after one complete generation. It produced 1,964 proposals/134 unique
