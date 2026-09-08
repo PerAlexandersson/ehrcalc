@@ -318,6 +318,11 @@
   positive degree 65 with three nonflag equalities (`a=9,b=8`, outer hook
   `[9,1^9]`, mask `0x400000100000108`). All rows were persisted in MariaDB;
   the degree-72/four-hole negative remains certified frontier.
+- A degree-64-capped mixed-seed batch (population 36, three generations,
+  mutation rate 0.85, seed 20261005) produced no negative. Its exact best
+  was positive degree 64 with three nonflag equalities (`a=7,b=10`, outer
+  hook `[11,1^7]`, mask `0x300004000000000100`). MariaDB persistence was
+  enabled; no change to the degree-72/four-hole negative frontier.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
