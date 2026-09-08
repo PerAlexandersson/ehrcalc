@@ -2,6 +2,15 @@
 
 ## Original fan restart — 2026-09-08
 
+Presentation audit removes 131 redundant internal bans using label-independent
+coordinate equality/order signatures; observation 14499 is the same degree-21
+polytope, now presented with 50 internal bans and 33 opposite equations.
+Fresh maintained Ehrcalc checks both endpoints. Its next paired neighborhood
+has three negative degree-21 children with 50 internal bans and 32 opposite
+equations. These are still mixed faces, not flagged-Kostka counterexamples.
+The mutation handoff records all 214 structural comparisons, 714 subsequent
+proposals, skips, timing, and the superseded raw-numbering signature audit.
+
 Fresh continuation reaches MariaDB observation 13019: degree 21, negative
 linear coefficient `-168011/330`, and 33 opposite-slant equations (down from
 35). This is NOT 33 certified flagged-Kostka holes: 181 presentation-internal
