@@ -380,6 +380,12 @@
   dimension cap 84) seeded both the degree-84 and degree-88 two-hole masks.
   It independently revalidated the degree-84 certificate in every generation
   and found no smaller two-hole negative. All rows were persisted in MariaDB.
+- A broader sub-73 run (population 28, three generations, seed 20261018,
+  dimension cap 73) independently revalidated a degree-73 negative with four
+  nonflag equalities (`a=b=9`, hook `[10,1^9]`) and a negative coefficient in
+  degree 1. It found no negative below degree 73; all rows were persisted in
+  MariaDB, and the degree-84/two-hole certificate remains the best bad-edge
+  frontier.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
