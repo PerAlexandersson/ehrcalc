@@ -225,6 +225,8 @@
   10 were positive.
 - The offset-390 batch (total cap 400) evaluated proposals 390–399 exactly; all
   10 were positive.
+- The offset-400 batch (total cap 410) evaluated proposals 400–409 exactly; all
+  10 were positive.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
