@@ -477,6 +477,9 @@
 - Triple-swap two-hole continuation at offsets 1570–1579 completed 10/10
   exact rows, with zero limited rows and zero negative polynomials. MariaDB
   persistence was enabled; no frontier change.
+- Triple-swap two-hole continuation at offsets 1580–1589 completed 10/10
+  exact rows, with zero limited rows and zero negative polynomials. MariaDB
+  persistence was enabled; no frontier change.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
