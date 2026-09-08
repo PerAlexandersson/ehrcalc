@@ -399,6 +399,10 @@
   seed 20261021, dimension cap 100) selected the degree-88 two-hole lineage
   in every generation. No smaller two-hole negative or lower-dimensional
   negative was found; all evaluated rows were persisted in MariaDB.
+- A sub-80 lineage run (population 32, three generations, seed 20261022,
+  dimension cap 80) repeatedly selected the degree-73 four-hole negative
+  (`a=b=9`, mask `0x1208000000100000100`). No smaller negative or reduced-hole
+  descendant appeared; all evaluated rows were persisted in MariaDB.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
