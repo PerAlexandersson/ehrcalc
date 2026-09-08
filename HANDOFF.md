@@ -56,6 +56,11 @@
   and 48 random immigrants) completed one generation at the bound: 1,616
   proposals/166 unique, 649 exact rows including 3 newly computed, and 29
   bad-edge prunes. No lower-degree negative or improved hole count appeared.
+- High-radius shrink/escape batch (minimum side 4, mutation strength 5, 32
+  persisted plus 32 random immigrants) completed two generations within the
+  bound. It produced 863 exact statuses (858 cached, 5 new), 83 bad-edge
+  prunes, one deferred and one timeout; no candidate improved the two-hole,
+  degree-84 frontier.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
