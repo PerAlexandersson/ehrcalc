@@ -252,6 +252,10 @@
   `0x200000002010000021000`, and negatives in coefficients 1 and 2. This is
   the current smallest certified negative lineage; hole count is unchanged at
   four.
+- A cap at dimension 71 produced no negative, but did find positive degree-67
+  candidates with only two nonflag holes. This establishes that low dimension
+  and low hole count coexist on the positive side, while the smallest negative
+  remains degree 72 with four holes.
 - Triple-swap continuation at offsets 1350–1359 completed 10/10 exact rows,
   with no limited rows and no negative polynomial; no frontier improvement.
 - Triple-swap continuation at offsets 1360–1369 completed 10/10 exact rows,
