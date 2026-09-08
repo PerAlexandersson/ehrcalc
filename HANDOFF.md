@@ -277,6 +277,13 @@
 - A fresh degree-72-capped batch (population 20, mutation rate 0.45) produced
   no negative; its best reported candidate was positive degree 72 with five
   nonflag holes. The certified negative frontier remains unchanged.
+- A fresh degree-72-capped search (population 20, two generations, size
+  mutation rate 0.75, seed 20260929) produced no negative. Its generation-0
+  best was an unevaluated degree-74 candidate with three holes; the later
+  exact best was positive degree 68 with one nonflag hole (`mask=0x200000000000080`,
+  `a=8,b=9`, hook outer shape `[10,1^9]`). No change to the certified
+  negative frontier (degree 72 with four holes); all rows were persisted in
+  MariaDB and the report remains ignored/untracked.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
