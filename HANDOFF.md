@@ -119,6 +119,9 @@
   50-second bound) produced 1 exact and 12 limited candidates, with zero
   negative coefficients. The best remained the previously known degree-21,
   zero-nonflag candidate.
+- Expanded nonskew batch (128 random seeds, 64 exact cap, 50-second bound)
+  produced 13 limited candidates and no completed exact or negative result;
+  the known degree-21 zero-nonflag candidate remains best.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
