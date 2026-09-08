@@ -262,6 +262,8 @@
 - A cap at dimension 69 likewise produced no negative; its best positive was
   degree 69 with two nonflag holes. The smallest certified negative remains
   degree 72 with four holes.
+- A larger population-32 search capped at dimension 72 produced no negative;
+  its best reported candidate was positive degree 68 with one nonflag hole.
 - Triple-swap continuation at offsets 1350–1359 completed 10/10 exact rows,
   with no limited rows and no negative polynomial; no frontier improvement.
 - Triple-swap continuation at offsets 1360–1369 completed 10/10 exact rows,
