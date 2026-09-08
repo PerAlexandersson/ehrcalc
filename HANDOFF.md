@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## Original fan restart — 2026-09-08
+
+User paused the old mutation sequence and requested the original degree-21
+example. Recovered MariaDB observation 213 in the mutation-search repository:
+the fan quotient in `GT(1^20,0^21)`, with 35 opposite-slant equations.
+Fresh maintained Ehrcalc computation and independent power-sum checks at
+dilations 0--25 agree: degree 21, linear coefficient `-168011/330`.
+The 35 opposite-slant equations are NOT a certified flagged-Kostka hole count.
+First 55 unique single-edge proposals: five negative deletion children at
+degrees 22--23 with 34 opposite equations; one negative boundary-addition
+child at degree 21; 30 dimension prunes and 19 nonreduced prunes. All stored
+in MariaDB. One proposal was recomputed during an explicitly recorded crash
+recovery. Shape and weight mutations remain pending. Source, bounds, and
+ownership are in the mutation-search handoff. The historical offset sequence
+below remains paused and its coverage claims are invalidated as follows.
+
+## Coverage correction — 2026-09-08
+
+The historical hole-swap offset coverage claims below are superseded. An audit
+of the 183 available `turn-holeswap-20261003-offset*.jsonl` reports found 1,830
+rows but only 12 distinct masks. The generator sorted each growing capped prefix
+before applying its offset, so successive slices were not disjoint. Moreover,
+the script loaded historical Ehrhart cache rows without independent validation;
+its `exact` count did not distinguish fresh computations from cache hits.
+These batches do not establish the claimed scanned ranges. No new mathematical
+frontier result follows from them. Codex owns correction of the search script
+and fresh bounded verification in the reduced-kogan-mutation-search repository.
+
 ## Active ownership — 2026-09-08
 
 - Owner: Codex, exact KTT counterexample-search session.
