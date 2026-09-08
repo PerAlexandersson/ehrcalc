@@ -2,6 +2,15 @@
 
 ## Original fan restart — 2026-09-08
 
+The eleven-opposite branch now reaches degree 31: observation 46739,
+`17 x 17`, 17 internal bans, 11 opposite equations, negative linear
+`-4626783419267/534827973680`. Retain it alongside smaller source 46257
+(`17 x 16`, degree 31, 15 internal bans, 12 opposite equations).
+One new shrinking case, 47109 at dimension 35, remains unresolved after
+two- and five-second limits. An accidental duplicate five-second retry is
+documented; the new retry helper now skips all same-bound terminal outcomes,
+and its regression passes. Thirty-two tests pass; no worker remains live.
+
 Local internal-ban shifts produce a smaller selected branch: two shifts reduce
 internal bans 17 -> 16 -> 15, then a zero-content mutation lowers degree
 32 -> 31. Certified deletion of the unused last symbol gives observation
