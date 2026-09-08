@@ -264,6 +264,9 @@
   degree 72 with four holes.
 - A larger population-32 search capped at dimension 72 produced no negative;
   its best reported candidate was positive degree 68 with one nonflag hole.
+- A low-size-mutation degree-72-capped batch (population 24, mutation rate
+  0.30) also produced no negative; its best reported candidate was positive
+  degree 70 with six nonflag holes.
 - Triple-swap continuation at offsets 1350–1359 completed 10/10 exact rows,
   with no limited rows and no negative polynomial; no frontier improvement.
 - Triple-swap continuation at offsets 1360–1369 completed 10/10 exact rows,
