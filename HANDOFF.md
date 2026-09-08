@@ -11,6 +11,13 @@
   reported by the user and no prior handoff ownership remained active.
 - Generated KTT JSON reports and logs remain ignored and untracked. No push or
   publication is authorized.
+- Fresh bounded genetic checkpoint (2026-09-08): the canonical two-hole negative
+  was rerun with 2 generations, 8 elites, 16 persisted immigrants, 8 random
+  immigrants, mutation strength 2, and effective-cell bias 0.15. The 45-second
+  wall bound completed with 863 cache rows independently revalidated (545
+  negative, 20 bad-edge-pruned, 3 deferred), zero new exact rows, and no changed
+  frontier. Best remained mask `0x200000000010000001000`, dimension 84,
+  equality count 3, and holes `(4,6),(6,10)`.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
