@@ -52,6 +52,10 @@
   proposals/166 unique, 649 cached exact rows, and 29 bad-edge prunes. No
   one-hole negative was found; the canonical two-hole certificate remained the
   best retained negative.
+- Broader exploratory batch (max four holes, mutation strength 3, 48 persisted
+  and 48 random immigrants) completed one generation at the bound: 1,616
+  proposals/166 unique, 649 exact rows including 3 newly computed, and 29
+  bad-edge prunes. No lower-degree negative or improved hole count appeared.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
