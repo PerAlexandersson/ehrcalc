@@ -2,6 +2,15 @@
 
 ## Original fan restart — 2026-09-08
 
+Reopened selected dimension-pruned neighborhoods at cap 28 with the same
+two-second per-candidate bound. Direct boundary additions yield four new
+degree-22 negative parents (41461/41465/41467/41469), still with 20 internal
+bans and 14 opposite equations. Other newly exact reopened cases were positive;
+pruned/duplicate signs remain unclaimed. Exact ranges/timing are in the mutation
+handoff. Corrected a reporting distinction: zero-weight 18274 had one empty
+face, not a dimension prune; the DB row was correct, and summaries now count
+empty faces separately. No frontier-size or constraint-count improvement yet.
+
 Explicit lower-flag cuts are now encoded and tested independently against
 small tableau enumeration. Their imposed horizontal equations are separated
 from additional opposite-slant constraints. Five bounded neighborhoods from
