@@ -358,6 +358,11 @@
   positive degree 24 with one nonflag equality (`a=5,b=5`, outer hook
   `[6,1^5]`). All evaluated rows were persisted; no change to the certified
   degree-72/four-hole negative frontier.
+- A degree-15-capped mixed-seed batch (population 40, three generations,
+  mutation rate 0.95, seed 20261013) produced no negative. Its exact best was
+  positive degree 15 with zero nonflag equalities (`a=5,b=3`, outer hook
+  `[4,1^5]`, empty mask). All evaluated rows were persisted; no change to the
+  certified degree-72/four-hole negative frontier.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
