@@ -126,6 +126,11 @@
   hole-swap frontier. A two-swap, one-hole pass evaluated 126 proposals (108
   exact, 18 limited) from 14 negative parents; all were nonnegative, so no
   one-hole counterexample was found.
+- The first two-swap two-hole run found a new exact negative lineage at
+  dimension 85, with nonflag holes `(5,8),(6,10)` and mask
+  `0x100000010001000000`. It is weaker than the dimension-84 certificate but
+  confirms multi-swap reachability of distinct two-hole negatives and is now
+  persisted for further mutation.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
