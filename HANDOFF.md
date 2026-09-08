@@ -134,6 +134,8 @@
 - Mutating that degree-85 lineage with two-swap moves produced 5 additional
   negative records, all still dimension 85 (e.g. holes `(5,7),(5,9)`). No
   degree-84-or-lower or one-hole descendant appeared.
+- A three-swap one-hole pass examined 759 proposals, capped after 120 exact
+  evaluations. All 120 were nonnegative; no one-hole negative was found.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
