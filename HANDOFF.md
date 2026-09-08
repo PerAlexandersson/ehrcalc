@@ -395,6 +395,10 @@
   Every generation independently selected the degree-84 two-hole certificate;
   no smaller two-hole or sub-72 negative appeared. MariaDB persistence was
   enabled for all evaluated rows.
+- A fresh escape run (population 20, three generations, side range 1–16,
+  seed 20261021, dimension cap 100) selected the degree-88 two-hole lineage
+  in every generation. No smaller two-hole negative or lower-dimensional
+  negative was found; all evaluated rows were persisted in MariaDB.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
