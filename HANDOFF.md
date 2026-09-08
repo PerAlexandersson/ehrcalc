@@ -368,6 +368,14 @@
   positive degree 10 with zero nonflag equalities (`a=4,b=3`, outer hook
   `[4,1^4]`). All evaluated rows were persisted; the certified negative
   frontier remains degree 72 with four holes.
+- A broad low-hole run (population 24, two generations, seed 20261016,
+  dimension cap 100, exact DP cap 1,000,000) certified a new two-hole
+  negative at degree 88. It uses hook outer shape `[11,1^8]`, mask
+  `0x10000001000`, with negative coefficients in degrees 1 and 2. This
+  matches the best bad-edge count (two) but is larger than the degree-84
+  two-hole certificate; all rows were persisted in MariaDB. The preceding
+  population-48 attempt timed out before producing a report and is not treated
+  as evidence.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
