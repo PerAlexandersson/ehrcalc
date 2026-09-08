@@ -2,6 +2,16 @@
 
 ## Original fan restart — 2026-09-08
 
+First non-neutral weight mutations now tested exactly while retaining mixed
+equalities: zero one content entry and shorten the complement row by one.
+From degree-23 parent 21718, observations 33301/33303/33305 retain negativity
+at degree 22, with linear `-6330697/298452`. Their lifted shape is
+`(19,1^18)/(1)` and weight has 37 entries, all one except label 35/36/37.
+Source 33305 is the next promising smaller-weight lineage. The new adapter's
+diagonal-zero condition is independently tested against hook-content counts.
+The mutation handoff distinguishes weight-forced from additional equations;
+these mixed faces are not yet unconstrained flagged-Kostka counterexamples.
+
 Complete bounded joint neighborhood from 17018: 5,670 distinct genomes,
 54 exact results (36 negative), 5,616 dimension prunes, no limits, 97.66 s
 across four segments shorter than 45 s. Negative children have degree 23,
