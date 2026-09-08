@@ -413,6 +413,10 @@
   It reached positive degree-71 candidates with one nonflag equality; all
   evaluated rows were persisted in MariaDB and the negative frontier is
   unchanged.
+- Triple-swap two-hole continuation at proposal offsets 1370–1379 completed
+  with 10/10 exact rows, zero limited rows, and zero negative polynomials.
+  MariaDB persistence was enabled; the degree-84/two-hole frontier is
+  unchanged.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
