@@ -2,6 +2,15 @@
 
 ## Original fan restart — 2026-09-08
 
+Observation 33306 is an exactly equivalent `18 x 18` representation of the
+last-zero-weight negative: delete its fixed first GT column and relabel
+coordinates. Full coordinate/order signatures and maintained Ehrcalc outputs
+agree. It has degree 22, linear `-6330697/298452`, lifted shape
+`(19,1^18)/(1)` and all-one weight of length 36. Follow-up single-zero content,
+paired and interior-shrinking passes found no new negative among their fresh
+exact computations; skips and bounds are in the mutation handoff. General
+rectangle support and coordinate-map regressions now pass 28 tests.
+
 First non-neutral weight mutations now tested exactly while retaining mixed
 equalities: zero one content entry and shorten the complement row by one.
 From degree-23 parent 21718, observations 33301/33303/33305 retain negativity
