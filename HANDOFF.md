@@ -92,6 +92,9 @@
   exact, 22 limited) and found 2 negative results; the best is the existing
   canonical degree-84 two-hole certificate, reached by replacing `(8,14)` with
   `(5,14)` at move distance 3. No new lower-degree or one-hole result appeared.
+- Chained the two-hole repair frontier into a one-hole target pass (radius 10,
+  320 proposal cap). Four proposals were exact and all were positive; no
+  one-hole negative was found.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
