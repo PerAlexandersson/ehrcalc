@@ -408,6 +408,11 @@
   positive degree 68 and degree 71 candidates with one nonflag equality; all
   rows were persisted and the degree-72/four-hole negative remains the smallest
   certified negative.
+- An alternate degree-72-capped batch (population 24, three generations,
+  side range 2–16, mutation rate 0.55, seed 20261024) produced no negative.
+  It reached positive degree-71 candidates with one nonflag equality; all
+  evaluated rows were persisted in MariaDB and the negative frontier is
+  unchanged.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
