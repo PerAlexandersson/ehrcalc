@@ -131,6 +131,9 @@
   `0x100000010001000000`. It is weaker than the dimension-84 certificate but
   confirms multi-swap reachability of distinct two-hole negatives and is now
   persisted for further mutation.
+- Mutating that degree-85 lineage with two-swap moves produced 5 additional
+  negative records, all still dimension 85 (e.g. holes `(5,7),(5,9)`). No
+  degree-84-or-lower or one-hole descendant appeared.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
