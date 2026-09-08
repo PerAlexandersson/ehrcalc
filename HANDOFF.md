@@ -256,6 +256,9 @@
   candidates with only two nonflag holes. This establishes that low dimension
   and low hole count coexist on the positive side, while the smallest negative
   remains degree 72 with four holes.
+- A cap at dimension 70 likewise produced no negative; its best positive was
+  degree 68 with a single nonflag equality. This sharpens the positive
+  low-hole boundary but leaves degree 72/four-hole as the smallest negative.
 - Triple-swap continuation at offsets 1350–1359 completed 10/10 exact rows,
   with no limited rows and no negative polynomial; no frontier improvement.
 - Triple-swap continuation at offsets 1360–1369 completed 10/10 exact rows,
