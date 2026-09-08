@@ -18,6 +18,11 @@
   negative, 20 bad-edge-pruned, 3 deferred), zero new exact rows, and no changed
   frontier. Best remained mask `0x200000000010000001000`, dimension 84,
   equality count 3, and holes `(4,6),(6,10)`.
+- A second fresh-seed batch (3 generations, mutation strength 3, minimum side 2,
+  effective-cell bias 0.05, 24 persisted plus 24 random immigrants) completed
+  under the 60-second guard. It evaluated 2,040 proposals (271 unique),
+  independently validated 857 cached rows and 1 new exact row, and found no
+  frontier improvement; the same dimension-84 two-hole certificate remains best.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
