@@ -70,6 +70,10 @@
   with no limited rows and no negative polynomial; no frontier improvement.
 - Triple-swap continuation at offsets 730–739 completed 10/10 exact rows,
   with no limited rows and no negative polynomial; no frontier improvement.
+- A bounded four-swap branch from the current two-hole seed was attempted
+  (target 2, 10-proposal cap). It generated zero proposals because the seed
+  has only three selected pairs; no computation was skipped silently and no
+  frontier claim changed.
 - A controlled three-hole lineage expansion (3-generation target, 1--2-cell
   mutations, 48 persisted and 16 random immigrants) was cut at the 60-second
   bound after one complete generation. It produced 1,964 proposals/134 unique
