@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Active ownership — 2026-09-08
+
+- Owner: Codex, exact KTT counterexample-search session.
+- Scope: the `ktt-search` lane only: audited scanner execution, independently
+  revalidated database rows, ignored reports/logs, and KTT handoff documentation.
+- Search requirements: exact maintained Ehrcalc Kostka/Ehrhart code; bounded,
+  resumable scans; no historical ignored report accepted as certified evidence.
+- Repository state at adoption: clean tracked worktree at `1d53fc3`; no live worker
+  reported by the user and no prior handoff ownership remained active.
+- Generated KTT JSON reports and logs remain ignored and untracked. No push or
+  publication is authorized.
+- Durable result: straight unflagged KTT cases are freshly complete through size 11
+  and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
+  negative coefficient or error was found. Four size-12 holes remain at dimensions
+  38,38,38,39; the first dimension-38 case exceeded a monitored 30-minute bound.
+  See `ktt-search/HANDOFF.md` for exact bounds, pruning, timing, and the blocked pair.
+
 ## Completed ownership record — 2026-09-06
 
 - Owner: Codex, current verification/fix session.

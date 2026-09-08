@@ -1,5 +1,36 @@
 # KTT Search Handoff
 
+## Active ownership — 2026-09-08
+
+- Owner: Codex, exact KTT counterexample-search session.
+- Tracked scope: this handoff and any narrowly necessary audited scanner fixes.
+- Generated scope: bounded/resumable exact scans and fresh JSON/log reports, all
+  ignored and untracked.
+- Every database hit must be parsed and cross-validated by the current scanner;
+  historical ignored reports are planning hints only, not certified results.
+- Starting point: clean tracked worktree at `1d53fc3`, with no live worker reported
+  by the user and no prior KTT ownership remaining active.
+
+## Exact search checkpoint — 2026-09-08
+
+- Focused tests passed: 5/5. The release scanner was built with
+  `CARGO_TARGET_DIR=/cargo-target/ai-projects`.
+- Fresh straight, unflagged revalidation completed for sizes 2--11: 6,717 pairs,
+  3,573 dominance prunes, 3,118 cached rows validated, 26 missing rows recomputed,
+  zero unverified rows/errors/witnesses (`ktt-certified-straight-n2-11-20260908.json`).
+- Size 12 contains 5,929 partition pairs: 3,311 fail dominance and 2,618 are
+  eligible. Exact rows now exist for 2,614 cases, covering every dimension 0--37.
+  Final per-dimension passes through 37 all ended `completed`, with zero cached-row
+  defects, computation/database errors, negative coefficients, or Hibi--Stanley
+  failures. Aggregate recorded compute time for size 12 is 6,009,538 ms.
+- Four size-12 holes remain: three at dimension 38 and one at dimension 39. The
+  first is `lambda=(3,3,2,1,1,1,1)`, `weight=(1^12)`, with empty inner shape and
+  no flags. It stayed CPU-bound with controlled memory but failed to finish first
+  under 60 s and then under a monitored 1,800 s bound. The engine has no
+  within-case checkpoint, so this is the current genuine computational blocker.
+- All fresh JSON/log filenames encode size, dimension, batch, and date. They remain
+  ignored and untracked. Historical reports were used only to plan ranges.
+
 ## Completed ownership record — 2026-09-06
 
 - Owner: Codex, current Ehrcalc audit-fix session.
