@@ -2,6 +2,17 @@
 
 ## Original fan restart — 2026-09-08
 
+Fresh continuation reaches MariaDB observation 13019: degree 21, negative
+linear coefficient `-168011/330`, and 33 opposite-slant equations (down from
+35). This is NOT 33 certified flagged-Kostka holes: 181 presentation-internal
+vertical bans also remain. Separate degree-22 children reduce internal bans
+to 163; internal-ban deletion also preserves degree 21 in 130 cases. All exact
+results use the maintained Rust order engine. The mutation handoff records
+finite ranges, dimension prunes, four timed-out cases, and negative lineages.
+Four smaller corner transports yielded three exact positives and one dimension
+prune. General mixed-slant weight mutations remain pending, not simulated by
+the vertical-only Kostka adapter.
+
 User paused the old mutation sequence and requested the original degree-21
 example. Recovered MariaDB observation 213 in the mutation-search repository:
 the fan quotient in `GT(1^20,0^21)`, with 35 opposite-slant equations.
