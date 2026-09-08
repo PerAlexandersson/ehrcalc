@@ -376,6 +376,10 @@
   two-hole certificate; all rows were persisted in MariaDB. The preceding
   population-48 attempt timed out before producing a report and is not treated
   as evidence.
+- A two-hole-focused run (population 24, two generations, seed 20261017,
+  dimension cap 84) seeded both the degree-84 and degree-88 two-hole masks.
+  It independently revalidated the degree-84 certificate in every generation
+  and found no smaller two-hole negative. All rows were persisted in MariaDB.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
