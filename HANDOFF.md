@@ -28,6 +28,11 @@
   candidates were limited by state/time. Its best positive candidate has zero
   nonflag inequalities and polynomial degree 21, so it does not alter the KTT
   negative frontier.
+- Larger-radius KTT escape batch (2 generations, mutation strength 4, minimum
+  side 3, flag-only bias, 32 persisted plus 32 random immigrants) completed
+  under 60 seconds. It evaluated 843 exact rows (3 new, 840 cached) and 58
+  bad-edge prunes; all 534 negative rows remained on the existing frontier.
+  No candidate beat two holes or dimension 84.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
