@@ -2,6 +2,14 @@
 
 ## Original fan restart — 2026-09-08
 
+Explicit lower-flag cuts are now encoded and tested independently against
+small tableau enumeration. Their imposed horizontal equations are separated
+from additional opposite-slant constraints. Five bounded neighborhoods from
+33306/21718 cover 1,713 proposal outcomes: 109 fresh exact positives, 1,593
+dimension prunes, 11 duplicates not revalidated, no timeouts. No improvement
+to the negative frontier; signs of pruned cases remain unknown. Exact ranges,
+timing and DB-backed resume are in the mutation handoff. Thirty tests pass.
+
 Observation 33306 is an exactly equivalent `18 x 18` representation of the
 last-zero-weight negative: delete its fixed first GT column and relabel
 coordinates. Full coordinate/order signatures and maintained Ehrcalc outputs
