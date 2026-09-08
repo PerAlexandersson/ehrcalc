@@ -222,6 +222,11 @@
   with no limited rows and no negative polynomial; no frontier improvement.
 - Triple-swap continuation at offsets 1340–1349 completed 10/10 exact rows,
   with no limited rows and no negative polynomial; no frontier improvement.
+- A dimension-capped genetic run (`max-dimension=83`, population 20, two
+  generations, size mutation rate 0.65) found a certified negative at degree
+  83, but with three nonflag holes. Shape is still the hook
+  `[11,1,1,1,1,1,1,1,1,1]`; this is a smaller negative lineage, not a
+  two-hole improvement, and is persisted in MariaDB.
 - Triple-swap continuation at offsets 1350–1359 completed 10/10 exact rows,
   with no limited rows and no negative polynomial; no frontier improvement.
 - Triple-swap continuation at offsets 1360–1369 completed 10/10 exact rows,
