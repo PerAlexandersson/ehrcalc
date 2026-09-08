@@ -75,6 +75,10 @@
   polynomials. The best stayed degree 87 with three holes; a new representative
   swaps `(4,6)` to `(5,6)` while retaining `(6,10),(7,12)`. No two-hole or
   lower-degree improvement was found.
+- A radius-6 iteration evaluated 943 proposals (21 exact, 23 limited) and found
+  9 distinct negative polynomials from 11 negative parents. The best remained
+  degree 87 with 3 holes, represented by `(4,6),(5,9),(7,13)`; no degree or
+  hole-count improvement was found.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
