@@ -99,6 +99,10 @@
   48 persisted plus 48 random immigrants) evaluated 3,066 proposals/449
   unique candidates. It produced 1,029 exact rows (8 newly computed, 1,021
   cached), 96 bad-edge prunes, and 2 deferred rows; no frontier improvement.
+- Radius-15 direct repair over the 3-hole frontier evaluated 261 proposals (53
+  exact, 22 limited) from 14 negative parents and found 4 negative results. It
+  recovered only the existing degree-84 two-hole certificate (best move
+  distance 2); no lower-degree two-hole or one-hole result appeared.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
