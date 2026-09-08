@@ -74,6 +74,11 @@
   (target 2, 10-proposal cap). It generated zero proposals because the seed
   has only three selected pairs; no computation was skipped silently and no
   frontier claim changed.
+- Shape/size genetic mutation (population 16, two generations, elite 6,
+  side range 2–12, exact DP cap 2,000,000, 8-second candidate cap) completed
+  under the 60-second guard. It independently rediscovered the canonical
+  negative `GT(1^9,0^10)` certificate (degree 84, two nonflag holes) and did
+  not produce a smaller or lower-hole negative.
 - A controlled three-hole lineage expansion (3-generation target, 1--2-cell
   mutations, 48 persisted and 16 random immigrants) was cut at the 60-second
   bound after one complete generation. It produced 1,964 proposals/134 unique
