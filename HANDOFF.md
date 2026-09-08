@@ -232,6 +232,10 @@
   holes. Other generation bests included degree 82 negatives with four holes;
   this expands the smaller-instance lineage but does not beat the two-hole
   frontier.
+- A further cap at `max-dimension=77` found a certified negative at degree 73
+  with four nonflag holes (`a=b=9`, outer hook `[10,1^9]`, mask
+  `0x1208000000100000100`). This is the current smallest certified negative,
+  but it has more holes than the degree-84 frontier.
 - Triple-swap continuation at offsets 1350–1359 completed 10/10 exact rows,
   with no limited rows and no negative polynomial; no frontier improvement.
 - Triple-swap continuation at offsets 1360–1369 completed 10/10 exact rows,
