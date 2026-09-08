@@ -2,6 +2,16 @@
 
 ## Original fan restart — 2026-09-08
 
+Further mutation yields observation 18274: `18 x 19`, degree 22, 21 internal
+bans and 14 opposite equations, negative linear `-14812659/497420`. Keep it
+alongside the degree-21/15-opposite parent 17018. Their interior row/column
+shrinking passes found no negative among exactly computed cases, but many
+dimension-pruned cases remain uncomputed. The mutation handoff records exact
+proposal bounds and distinguishes duplicate masks from distinct examples.
+Database-aware duplicate suppression and same-run resume now avoid repeating
+exact counts without overwriting existing evidence; a 238-slot resume was
+verified to do no new computations and preserve all original result records.
+
 Implied-flag saturation plus exact redundancy pruning reduced the current
 degree-21 presentation to 25 internal bans and 18 opposite equations.
 Subsequent shape shrinking reached observation 17018: `GT(1^18,0^19)` mixed
