@@ -108,6 +108,10 @@
   candidates with 893 exact
   statuses (890 cached, 3 new) and 138 bad-edge prunes. It found no candidate
   beyond the degree-84, two-hole frontier.
+- High-radius-20 two-hole repair sweep evaluated 279 proposals (53 exact, 22
+  limited) from 14 negative parents and found 4 negative results. It recovered
+  only the canonical degree-84 certificate; no lower-degree or one-hole result
+  appeared.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
