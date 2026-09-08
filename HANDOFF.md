@@ -87,6 +87,10 @@
   candidate cap 6 seconds) completed within the guard. All reported generation
   bests were the canonical degree-84, two-hole negative; no improvement was
   found.
+- A bounded reservoir mutation probe (32 candidates, exact limit 16, 8-second
+  timeout, deduplicated samples) scanned no nonempty reservoir rows, so it
+  yielded no exact evaluations or negatives; this is recorded as a zero-input
+  diagnostic rather than evidence against the frontier.
 - A controlled three-hole lineage expansion (3-generation target, 1--2-cell
   mutations, 48 persisted and 16 random immigrants) was cut at the 60-second
   bound after one complete generation. It produced 1,964 proposals/134 unique
