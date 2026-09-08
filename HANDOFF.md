@@ -87,6 +87,11 @@
   15 negative parents and found 12 distinct negative polynomials (14 negative
   results). The best remains degree 87 with 3 holes, `(4,6),(5,9),(7,13)`;
   no two-hole or lower-degree result appeared.
+- Parameterized hole-swap proposals by target hole count and ran a direct
+  two-hole repair pass from the 3-hole frontier. It evaluated 254 proposals (57
+  exact, 22 limited) and found 2 negative results; the best is the existing
+  canonical degree-84 two-hole certificate, reached by replacing `(8,14)` with
+  `(5,14)` at move distance 3. No new lower-degree or one-hole result appeared.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
