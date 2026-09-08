@@ -79,6 +79,10 @@
   under the 60-second guard. It independently rediscovered the canonical
   negative `GT(1^9,0^10)` certificate (degree 84, two nonflag holes) and did
   not produce a smaller or lower-hole negative.
+- A second fresh-seed shape/weight genetic batch (population 16, two
+  generations, size mutation rate 0.45, side range 2–12) completed under the
+  bounded guard and again returned the canonical degree-84, two-hole negative;
+  no smaller instance or fewer bad edges appeared.
 - A controlled three-hole lineage expansion (3-generation target, 1--2-cell
   mutations, 48 persisted and 16 random immigrants) was cut at the 60-second
   bound after one complete generation. It produced 1,964 proposals/134 unique
