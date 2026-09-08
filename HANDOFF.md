@@ -83,6 +83,10 @@
   generations, size mutation rate 0.45, side range 2–12) completed under the
   bounded guard and again returned the canonical degree-84, two-hole negative;
   no smaller instance or fewer bad edges appeared.
+- A widened fresh-seed genetic batch (population 24, two generations, elite 8,
+  candidate cap 6 seconds) completed within the guard. All reported generation
+  bests were the canonical degree-84, two-hole negative; no improvement was
+  found.
 - A controlled three-hole lineage expansion (3-generation target, 1--2-cell
   mutations, 48 persisted and 16 random immigrants) was cut at the 60-second
   bound after one complete generation. It produced 1,964 proposals/134 unique
