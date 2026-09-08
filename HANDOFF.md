@@ -143,6 +143,8 @@
 - The first full bounded three-swap/two-hole run generated 300 proposals; 24
   reached evaluation and all were limited by the exact state/time cap. No
   negative result was obtained.
+- A long-budget follow-up evaluated 10 three-swap/two-hole proposals exactly
+  (8-second per-candidate cap, 2-million-state ceiling); all 10 were positive.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
