@@ -2,6 +2,15 @@
 
 ## Original fan restart — 2026-09-08
 
+New `15 x 15` tradeoff seeds: 48420 has degree 28, 14 internal bans,
+10 opposite equations, linear `-390146849/104984880`; 48482 has degree 33,
+12 internal bans, 9 opposite equations, negative linear and quadratic terms.
+Their lifted shape is `(16,1^15)/(1)`, weight `(1^30)`. Both were freshly
+computed with maintained Ehrcalc; 48482 also passed saturation revalidation.
+The new dimension-36 timeout 48556 resolved exact positive in a five-second
+retry (2.15 s); older 47109 remains unresolved. All ranges/outcomes are in
+the mutation handoff and MariaDB. No live scan or flagged-Kostka witness.
+
 The eleven-opposite branch now reaches degree 31: observation 46739,
 `17 x 17`, 17 internal bans, 11 opposite equations, negative linear
 `-4626783419267/534827973680`. Retain it alongside smaller source 46257
