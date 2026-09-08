@@ -274,6 +274,9 @@
   mutation rate 0.50) produced no negative; its best positive was degree 70
   with two nonflag holes. The certified negative frontier remains degree 72
   with four holes.
+- A fresh degree-72-capped batch (population 20, mutation rate 0.45) produced
+  no negative; its best reported candidate was positive degree 72 with five
+  nonflag holes. The certified negative frontier remains unchanged.
 - Triple-swap continuation at offsets 1350–1359 completed 10/10 exact rows,
   with no limited rows and no negative polynomial; no frontier improvement.
 - Triple-swap continuation at offsets 1360–1369 completed 10/10 exact rows,
