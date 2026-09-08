@@ -386,6 +386,10 @@
   degree 1. It found no negative below degree 73; all rows were persisted in
   MariaDB, and the degree-84/two-hole certificate remains the best bad-edge
   frontier.
+- A low-mutation two-hole lineage run (population 24, three generations,
+  mutation rate 0.25, seed 20261019, cap 84) revalidated the degree-84
+  two-hole negative in every generation. No smaller two-hole descendant was
+  found; all rows were persisted in MariaDB.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
