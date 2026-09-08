@@ -136,6 +136,10 @@
   degree-84-or-lower or one-hole descendant appeared.
 - A three-swap one-hole pass examined 759 proposals, capped after 120 exact
   evaluations. All 120 were nonnegative; no one-hole negative was found.
+- Fixed multi-swap proposal generation to enforce `--max-proposals` during
+  combination enumeration (rather than after exhaustive construction). A
+  diagnostic three-swap two-hole run now bounded correctly at 30 proposals,
+  with 18 limited evaluations and no negative result.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
