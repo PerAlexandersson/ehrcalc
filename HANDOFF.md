@@ -33,6 +33,11 @@
   under 60 seconds. It evaluated 843 exact rows (3 new, 840 cached) and 58
   bad-edge prunes; all 534 negative rows remained on the existing frontier.
   No candidate beat two holes or dimension 84.
+- A controlled three-hole lineage expansion (3-generation target, 1--2-cell
+  mutations, 48 persisted and 16 random immigrants) was cut at the 60-second
+  bound after one complete generation. It produced 1,964 proposals/134 unique
+  candidates, revalidated 633 cached rows, and found no lower-degree or fewer-hole
+  negative; the best remained the same two-hole degree-84 certificate.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
