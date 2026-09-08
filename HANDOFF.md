@@ -227,6 +227,11 @@
   83, but with three nonflag holes. Shape is still the hook
   `[11,1,1,1,1,1,1,1,1,1]`; this is a smaller negative lineage, not a
   two-hole improvement, and is persisted in MariaDB.
+- A stricter subdegree run (`max-dimension=82`, population 20, two
+  generations) found a certified negative at degree 78 with seven nonflag
+  holes. Other generation bests included degree 82 negatives with four holes;
+  this expands the smaller-instance lineage but does not beat the two-hole
+  frontier.
 - Triple-swap continuation at offsets 1350–1359 completed 10/10 exact rows,
   with no limited rows and no negative polynomial; no frontier improvement.
 - Triple-swap continuation at offsets 1360–1369 completed 10/10 exact rows,
