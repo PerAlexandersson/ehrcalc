@@ -70,6 +70,11 @@
   and found 4 negative polynomials, including a new 3-hole degree-87 negative
   from replacing `(5,14)` with `(7,12)`. This does not beat the two-hole
   degree-84 frontier, but supplies a persisted negative lineage for repair.
+- Iterating that explicit-pairs 3-hole lineage with move distance 3 evaluated
+  154 proposals (26 exact, 23 limited) and found 11 distinct negative
+  polynomials. The best stayed degree 87 with three holes; a new representative
+  swaps `(4,6)` to `(5,6)` while retaining `(6,10),(7,12)`. No two-hole or
+  lower-degree improvement was found.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
