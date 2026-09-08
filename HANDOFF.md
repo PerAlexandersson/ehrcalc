@@ -145,6 +145,10 @@
   negative result was obtained.
 - A long-budget follow-up evaluated 10 three-swap/two-hole proposals exactly
   (8-second per-candidate cap, 2-million-state ceiling); all 10 were positive.
+- The disjoint offset-10 batch (using total cap 20) evaluated the next 10
+  proposals exactly under the same bounds; all were positive. The attempted
+  cap-10/offset-10 invocation correctly produced an empty slice and was not
+  counted as a scan.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
