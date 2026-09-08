@@ -2,6 +2,14 @@
 
 ## Original fan restart — 2026-09-08
 
+New fewer-opposite seed 49178: `15 x 15`, degree 33, 12 internal bans,
+8 opposite equations, negative linear and quadratic coefficients. Keep the
+degree-31/9-opposite siblings 49095/49097/49099. Zero-content child 49152
+also has degree 31 but its missing label is interior, so the existing
+last-label compression is not applicable without a new coordinate proof.
+Two dimension-36 slide cases (49045/49047) remain unresolved after separate
+five-second retries; all statuses are in MariaDB and no scan is live.
+
 New `15 x 15` tradeoff seeds: 48420 has degree 28, 14 internal bans,
 10 opposite equations, linear `-390146849/104984880`; 48482 has degree 33,
 12 internal bans, 9 opposite equations, negative linear and quadratic terms.
