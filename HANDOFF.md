@@ -993,6 +993,8 @@
   frontier improvement was found.
 - Offset 2670–2679 completed 10/10 exactly (0 limited, 0 negative); no
   smaller or fewer-hole candidate appeared.
+- Offset 2680–2689 completed 10/10 exactly (0 limited, 0 negative); no
+  frontier improvement was found.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
