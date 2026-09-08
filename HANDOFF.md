@@ -103,6 +103,11 @@
   exact, 22 limited) from 14 negative parents and found 4 negative results. It
   recovered only the existing degree-84 two-hole certificate (best move
   distance 2); no lower-degree two-hole or one-hole result appeared.
+- Fresh larger-instance genetic batch (minimum side 5, mutation strength 5, 32
+  persisted plus 64 random immigrants) evaluated 2,388 proposals/353 unique
+  candidates with 893 exact
+  statuses (890 cached, 3 new) and 138 bad-edge prunes. It found no candidate
+  beyond the degree-84, two-hole frontier.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
