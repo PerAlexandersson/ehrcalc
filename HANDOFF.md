@@ -2,6 +2,16 @@
 
 ## Original fan restart — 2026-09-08
 
+New smaller mixed-face seed 44009: `17 x 17`, degree 32, 17 internal bans,
+12 opposite equations, negative linear `-311101414951/123421840080`.
+It improves size, degree and both presentation counts over the selected
+thirteen-opposite parent. Saturation/pruning accepts no further change.
+Its next shrinking neighborhood found no fresh negative; the sole two-second
+timeout was resolved positive in a separately recorded five-second retry
+(actual 2.36 s). Dimension-pruned/duplicate cases remain unclaimed. Exact
+lineages, bounds, retry identity and sibling negatives are in the mutation
+handoff. No flagged-Kostka counterexample or live scan at this checkpoint.
+
 Cap-36 reopening found a new thirteen-opposite negative (43014, degree 36).
 Successive exact flag additions reduce its degree 36 -> 35 -> 34 -> 33,
 while retaining 20 internal bans and 13 opposite equations in `18 x 18`.
