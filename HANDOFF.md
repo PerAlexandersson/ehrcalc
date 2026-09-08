@@ -285,6 +285,13 @@
   negative frontier (degree 72 with four holes); all rows were persisted in
   MariaDB and the report remains ignored/untracked.
 - A three-generation degree-72-capped search produced no negative; its best
+- A fresh high-size-mutation degree-72-capped batch (population 24, three
+  generations, mutation rate 0.90, seed 20260930) produced no negative. It
+  reached a certified positive degree-71 candidate with one nonflag equality
+  (`a=8,b=9`, hook outer shape `[10,1^8]`, mask `0x800`). Every evaluated row
+  was persisted in MariaDB; the degree-72/four-hole negative remains the
+  smallest certified negative.
+- A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
   improvement.
