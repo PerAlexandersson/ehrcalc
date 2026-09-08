@@ -874,6 +874,12 @@
   10 were positive.
 - The offset-580 batch (total cap 590) evaluated proposals 580–589 exactly; all
   10 were positive.
+- Resumed the bounded three-swap/two-hole frontier through proposal offsets
+  590–2119 (10-proposal batches, exact arithmetic, 2,000,000-state and
+  8-second candidate caps). Every completed batch was recorded in the ignored
+  search-repo reports and MariaDB; no negative coefficient or improvement over
+  the degree-84 two-hole frontier appeared. The latest offset-2110 batch was
+  10/10 exact, 0 limited, 0 negative.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
