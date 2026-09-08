@@ -291,6 +291,11 @@
   (`a=8,b=9`, hook outer shape `[10,1^8]`, mask `0x800`). Every evaluated row
   was persisted in MariaDB; the degree-72/four-hole negative remains the
   smallest certified negative.
+- A fresh degree-71-capped batch (population 32, three generations, mutation
+  rate 0.80, seed 20260931) produced no negative. Its exact generation best
+  was positive degree 71 with one nonflag equality (`a=8,b=9`, hook outer
+  shape `[10,1^8]`, mask `0x1000000`); all evaluated rows were persisted.
+  The certified negative frontier is unchanged at degree 72 with four holes.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
