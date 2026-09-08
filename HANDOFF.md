@@ -880,6 +880,8 @@
   search-repo reports and MariaDB; no negative coefficient or improvement over
   the degree-84 two-hole frontier appeared. The latest offset-2110 batch was
   10/10 exact, 0 limited, 0 negative.
+- Offset 2120–2129 likewise completed 10/10 exactly (0 limited, 0 negative,
+  14 negative seeds retained); no smaller-degree or fewer-hole candidate arose.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
