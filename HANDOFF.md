@@ -23,6 +23,11 @@
   under the 60-second guard. It evaluated 2,040 proposals (271 unique),
   independently validated 857 cached rows and 1 new exact row, and found no
   frontier improvement; the same dimension-84 two-hole certificate remains best.
+- Complementary straight-shape/weight run (32 random seeds, exact cap 32,
+  50-second bound) produced no negative and no completed new exact row; 11
+  candidates were limited by state/time. Its best positive candidate has zero
+  nonflag inequalities and polynomial degree 21, so it does not alter the KTT
+  negative frontier.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
