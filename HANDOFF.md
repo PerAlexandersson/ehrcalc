@@ -95,6 +95,10 @@
   generations, side range 1–10, size mutation rate 0.55) completed under the
   guard. Every generation best remained the hook-shaped degree-84 negative
   with two nonflag holes; no smaller negative was found.
+- A further fresh-seed small-size genetic batch (population 20, two
+  generations, side range 1–11, mutation rate 0.60, max dimension 90) again
+  returned degree 84 with two nonflag holes in every generation best; no
+  smaller negative appeared.
 - A controlled three-hole lineage expansion (3-generation target, 1--2-cell
   mutations, 48 persisted and 16 random immigrants) was cut at the 60-second
   bound after one complete generation. It produced 1,964 proposals/134 unique
