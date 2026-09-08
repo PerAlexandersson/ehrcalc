@@ -403,6 +403,11 @@
   dimension cap 80) repeatedly selected the degree-73 four-hole negative
   (`a=b=9`, mask `0x1208000000100000100`). No smaller negative or reduced-hole
   descendant appeared; all evaluated rows were persisted in MariaDB.
+- A fresh high-mutation degree-72-capped run (population 32, three
+  generations, seed 20261023) produced no negative. Generation bests included
+  positive degree 68 and degree 71 candidates with one nonflag equality; all
+  rows were persisted and the degree-72/four-hole negative remains the smallest
+  certified negative.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
