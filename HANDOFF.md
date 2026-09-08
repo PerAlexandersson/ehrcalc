@@ -296,6 +296,12 @@
   was positive degree 71 with one nonflag equality (`a=8,b=9`, hook outer
   shape `[10,1^8]`, mask `0x1000000`); all evaluated rows were persisted.
   The certified negative frontier is unchanged at degree 72 with four holes.
+- A diverse-seed degree-71-capped batch (population 24, three generations,
+  mutation rate 0.70, seed 20261001, with three additional historical masks)
+  produced no negative. It reached a positive degree-67 candidate with zero
+  nonflag equalities (`a=7,b=10`, hook outer shape `[11,1^7]`, mask
+  `0x100000000000000000`). All evaluated rows were persisted; no negative
+  frontier change.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
