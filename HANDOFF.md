@@ -38,6 +38,11 @@
   bound after one complete generation. It produced 1,964 proposals/134 unique
   candidates, revalidated 633 cached rows, and found no lower-degree or fewer-hole
   negative; the best remained the same two-hole degree-84 certificate.
+- The persisted two-equality/two-hole seed was independently mutated with
+  minimum side 2, mutation strength 3, and 48 immigrants. The bounded run
+  revalidated 928 cached rows (557 negative), with 35 bad-edge and 3 size
+  prunes and no new exact row. Cross-lineage ranking still selects the canonical
+  degree-84, three-equality certificate as best; no fewer-hole result appeared.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
