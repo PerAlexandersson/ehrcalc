@@ -243,6 +243,15 @@
 - A larger population-32 search capped at dimension 73 produced no negative;
   generation bests were positive degree-73 candidates with 3–4 holes. The
   existing degree-73/four-hole negative remains the certified subdegree best.
+- A fresh population-32 search capped at dimension 77 produced no negative;
+  its generation bests were positive degree-76 candidates with one nonflag
+  equality. This is useful positive near-frontier data but does not replace the
+  degree-73/four-hole negative.
+- An intermediate cap at dimension 75 (population 24, two generations) found a
+  new certified negative at degree 72 with four nonflag holes, mask
+  `0x200000002010000021000`, and negatives in coefficients 1 and 2. This is
+  the current smallest certified negative lineage; hole count is unchanged at
+  four.
 - Triple-swap continuation at offsets 1350–1359 completed 10/10 exact rows,
   with no limited rows and no negative polynomial; no frontier improvement.
 - Triple-swap continuation at offsets 1360–1369 completed 10/10 exact rows,
