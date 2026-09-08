@@ -267,6 +267,9 @@
 - A low-size-mutation degree-72-capped batch (population 24, mutation rate
   0.30) also produced no negative; its best reported candidate was positive
   degree 70 with six nonflag holes.
+- A high-size-mutation degree-72-capped batch (population 24, mutation rate
+  0.85) produced no negative; its best reported candidate was positive degree
+  70 with two nonflag holes. No change to the negative frontier.
 - Triple-swap continuation at offsets 1350–1359 completed 10/10 exact rows,
   with no limited rows and no negative polynomial; no frontier improvement.
 - Triple-swap continuation at offsets 1360–1369 completed 10/10 exact rows,
