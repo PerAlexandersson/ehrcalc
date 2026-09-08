@@ -33,6 +33,11 @@
   under 60 seconds. It evaluated 843 exact rows (3 new, 840 cached) and 58
   bad-edge prunes; all 534 negative rows remained on the existing frontier.
   No candidate beat two holes or dimension 84.
+- Triple-swap two-hole continuation (proposal offsets 590–599, target holes 2,
+  max move distance 10, exact DP-state cap 2,000,000, 8-second candidate cap)
+  completed with 10/10 exact rows and zero negative polynomials. The batch did
+  reach smaller positive dimensions (minimum 73), but produced no certified
+  negative descendant and did not change the degree-84, two-hole frontier.
 - A controlled three-hole lineage expansion (3-generation target, 1--2-cell
   mutations, 48 persisted and 16 random immigrants) was cut at the 60-second
   bound after one complete generation. It produced 1,964 proposals/134 unique
