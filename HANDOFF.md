@@ -2,6 +2,15 @@
 
 ## Original fan restart — 2026-09-08
 
+Local internal-ban shifts produce a smaller selected branch: two shifts reduce
+internal bans 17 -> 16 -> 15, then a zero-content mutation lowers degree
+32 -> 31. Certified deletion of the unused last symbol gives observation
+46257: `17 x 16`, degree 31, 15 internal bans, 12 opposite equations,
+linear `-12924577634203/4813451763120`, shape `(17,1^17)/(1)`, weight `(1^33)`.
+Keep alternative 45668 with 11 opposite equations at degree 35 as well.
+All outcomes/lineages are in MariaDB; 31 tests pass and no live scan remains.
+These are still mixed faces, not unconstrained flagged-Kostka witnesses.
+
 New smaller mixed-face seed 44009: `17 x 17`, degree 32, 17 internal bans,
 12 opposite equations, negative linear `-311101414951/123421840080`.
 It improves size, degree and both presentation counts over the selected
