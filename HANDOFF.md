@@ -91,6 +91,10 @@
   timeout, deduplicated samples) scanned no nonempty reservoir rows, so it
   yielded no exact evaluations or negatives; this is recorded as a zero-input
   diagnostic rather than evidence against the frontier.
+- A small-size-biased shape/weight genetic batch (population 20, two
+  generations, side range 1–10, size mutation rate 0.55) completed under the
+  guard. Every generation best remained the hook-shaped degree-84 negative
+  with two nonflag holes; no smaller negative was found.
 - A controlled three-hole lineage expansion (3-generation target, 1--2-cell
   mutations, 48 persisted and 16 random immigrants) was cut at the 60-second
   bound after one complete generation. It produced 1,964 proposals/134 unique
