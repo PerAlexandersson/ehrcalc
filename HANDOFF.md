@@ -390,6 +390,11 @@
   mutation rate 0.25, seed 20261019, cap 84) revalidated the degree-84
   two-hole negative in every generation. No smaller two-hole descendant was
   found; all rows were persisted in MariaDB.
+- A mixed high-mutation run (population 28, three generations, seed 20261020,
+  dimension cap 84) seeded both two-hole negatives and the degree-73 lineage.
+  Every generation independently selected the degree-84 two-hole certificate;
+  no smaller two-hole or sub-72 negative appeared. MariaDB persistence was
+  enabled for all evaluated rows.
 - A three-generation degree-72-capped search produced no negative; its best
   candidate was positive degree 70 with zero nonflag equalities. This further
   separates the positive and negative frontiers but yields no counterexample
