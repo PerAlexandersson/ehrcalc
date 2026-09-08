@@ -2,6 +2,14 @@
 
 ## Original fan restart — 2026-09-08
 
+Complete bounded joint neighborhood from 17018: 5,670 distinct genomes,
+54 exact results (36 negative), 5,616 dimension prunes, no limits, 97.66 s
+across four segments shorter than 45 s. Negative children have degree 23,
+20 internal bans and 14 opposite equations. Observation 21718 has negative
+linear and quadratic coefficients; retain it with the lower-degree parents.
+No unconstrained flagged-Kostka witness is claimed. The mutation handoff
+contains exact ranges, coefficients, alternate-parent results, and tests.
+
 Further mutation yields observation 18274: `18 x 19`, degree 22, 21 internal
 bans and 14 opposite equations, negative linear `-14812659/497420`. Keep it
 alongside the degree-21/15-opposite parent 17018. Their interior row/column
