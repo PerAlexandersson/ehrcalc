@@ -2,6 +2,15 @@
 
 ## Original fan restart — 2026-09-08
 
+Cap-36 reopening found a new thirteen-opposite negative (43014, degree 36).
+Successive exact flag additions reduce its degree 36 -> 35 -> 34 -> 33,
+while retaining 20 internal bans and 13 opposite equations in `18 x 18`.
+Selected degree-33 seed 43672 and sibling 43730 remain in MariaDB; the latter
+has negative linear coefficient `-225869578496153/1604483921040`.
+No degree-32 negative appeared in that seed's immediate single-edge pass.
+All runs kept two-second exact-count limits, and all prunes/duplicates/empty
+cases are separately recorded in the mutation handoff. No live scan remains.
+
 Reopened selected dimension-pruned neighborhoods at cap 28 with the same
 two-second per-candidate bound. Direct boundary additions yield four new
 degree-22 negative parents (41461/41465/41467/41469), still with 20 internal
