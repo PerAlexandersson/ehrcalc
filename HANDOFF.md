@@ -47,6 +47,11 @@
   bias 0.45, 64 persisted immigrants) completed one generation at the 60-second
   bound: 2,344 proposals/134 unique, 646 cached exact rows, and no new exact
   evaluation. No size or degree improvement was found.
+- Direct one-hole falsification batch (3-generation target, max bad edges 1,
+  flag-only bias, 96 immigrants) completed one generation at the bound: 2,376
+  proposals/166 unique, 649 cached exact rows, and 29 bad-edge prunes. No
+  one-hole negative was found; the canonical two-hole certificate remained the
+  best retained negative.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
