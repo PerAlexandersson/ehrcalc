@@ -115,6 +115,10 @@
 - Larger-side-6 fresh-immigrant batch evaluated 841 cached exact rows and 160
   bad-edge prunes across two generations; no new exact candidate or frontier
   improvement was found.
+- Fresh nonskew straight-shape/weight batch (64 random seeds, 48 exact cap,
+  50-second bound) produced 1 exact and 12 limited candidates, with zero
+  negative coefficients. The best remained the previously known degree-21,
+  zero-nonflag candidate.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
