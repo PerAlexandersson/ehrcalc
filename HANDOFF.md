@@ -79,6 +79,10 @@
   9 distinct negative polynomials from 11 negative parents. The best remained
   degree 87 with 3 holes, represented by `(4,6),(5,9),(7,13)`; no degree or
   hole-count improvement was found.
+- Radius-8 continuation evaluated 959 proposals (30 exact, 23 limited) from 9
+  negative parents and found 14 distinct negative polynomials (15 negative
+  results). The best remains degree 87 with 3 holes, represented by
+  `(4,6),(6,9),(7,13)`; no two-hole or lower-degree result appeared.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
