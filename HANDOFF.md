@@ -44,6 +44,9 @@
 - Triple-swap continuation at offsets 610–619 likewise completed 10/10 exact,
   with no limited rows and no negative polynomial; MariaDB persistence remains
   enabled and the degree-84 two-hole frontier is unchanged.
+- Triple-swap continuation at offsets 620–629 completed 10/10 exact rows,
+  with no limited rows and no negative polynomial. The persisted frontier is
+  unchanged at degree 84 with two nonflag holes.
 - A controlled three-hole lineage expansion (3-generation target, 1--2-cell
   mutations, 48 persisted and 16 random immigrants) was cut at the 60-second
   bound after one complete generation. It produced 1,964 proposals/134 unique
