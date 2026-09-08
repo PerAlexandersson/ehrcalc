@@ -122,6 +122,10 @@
 - Expanded nonskew batch (128 random seeds, 64 exact cap, 50-second bound)
   produced 13 limited candidates and no completed exact or negative result;
   the known degree-21 zero-nonflag candidate remains best.
+- Added a provenance-preserving multi-swap operator (`--swap-count`) to the
+  hole-swap frontier. A two-swap, one-hole pass evaluated 126 proposals (108
+  exact, 18 limited) from 14 negative parents; all were nonnegative, so no
+  one-hole counterexample was found.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
