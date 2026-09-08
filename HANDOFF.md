@@ -43,6 +43,10 @@
   revalidated 928 cached rows (557 negative), with 35 bad-edge and 3 size
   prunes and no new exact row. Cross-lineage ranking still selects the canonical
   degree-84, three-equality certificate as best; no fewer-hole result appeared.
+- Shrink-biased mutation batch (2-generation target, 2-cell mutations, effective
+  bias 0.45, 64 persisted immigrants) completed one generation at the 60-second
+  bound: 2,344 proposals/134 unique, 646 cached exact rows, and no new exact
+  evaluation. No size or degree improvement was found.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
