@@ -61,6 +61,9 @@
   bound. It produced 863 exact statuses (858 cached, 5 new), 83 bad-edge
   prunes, one deferred and one timeout; no candidate improved the two-hole,
   degree-84 frontier.
+- Larger-side one-hole batch (minimum side 4, max bad edges 1, mutation strength
+  4, 48 immigrants) completed two generations: 931 cached exact rows and 66
+  bad-edge prunes, with no new exact row and no one-hole negative.
 - Durable result: straight unflagged KTT cases are freshly complete through size 11
   and, at size 12, through GT dimension 37 (2,614 of 2,618 eligible cases). No
   negative coefficient or error was found. Four size-12 holes remain at dimensions
