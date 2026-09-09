@@ -1,5 +1,23 @@
 # Ehrcalc Handoff
 
+## Degree31,nine/nine,smaller11x14 candidate — 2026-09-09
+
+New127402:degree31,source11x14,shape `(15,1^11)/(1)`,weight `(1^25)`,
+linear `-10129665704623/8022419605200`,9 additional opposite constraints
+and9 internal bans. Six explicit lower-flag forcing equations account for
+6 of15 canonical opposite equations. Coordinate certificates and fresh
+endpoint counts verified;not a minimal-distance theorem or KTT witness.
+Lineage121891 ->123203/retry126847 ->compression126869 ->prune127036
+->certificate127044 ->lower flag127057/certificate127110(degree33)
+->zero label23 result127231 ->compression127238 ->prune127401 ->127402.
+Prior tradeoffs retained;next tested zero-weight cuts nonnegative.
+Twenty old-gap depth5 retries resolve16 cases(2 negative);four old signs
+remain unknown. Six fresh bounded queues:120 slots,105 exact(11 negative),
+7 prunes,6 duplicates,2 limits. No engine errors. All IDs,ranges,bounds,
+timing in MariaDB/mutation handoff. All49 tests pass,source unchanged,
+reports ignored,no live scan. Codex owns continuation,goal active,original213
+restart only,older branches paused,no push/publication.
+
 ## Twenty-three content/removal gaps resolved — 2026-09-09
 
 29 separately recorded retries resolve23 initial121891 full-content/removal
