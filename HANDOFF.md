@@ -1,5 +1,19 @@
 # Ehrcalc Handoff
 
+## Nine-additional branch coverage and twenty resolved gaps — 2026-09-09
+
+Six bounded121891 batches:396 slots,99 fresh exact nonnegative,233 prunes,
+64 initial limits. Twenty smaller lower-flag/removal cases resolve exactly
+nonnegative using separately verified greedy five-second retries;44 new
+signs remain unknown(15 lower-remove,29 full-content/remove). Initial failed
+attempts preserved. Lower-remove124 fully visited;full-content/remove next245
+of582. No frontier improvement,KTT witness,engine errors,or skipped-sign claim.
+Best121891 remains degree37,12x15,9 additional opposite/10 internal bans.
+All ranges,IDs,bounds,timing in MariaDB/mutation handoff. Cap41,two-second
+cases,45-second batches/60-second guards;all47 tests pass,source unchanged,
+reports ignored,no live scan. Codex owns continuation;goal active,original213
+restart only,older branches paused,no push/publication.
+
 ## Nine additional opposite constraints,degree37 — 2026-09-09
 
 New121891:source12x15,degree37,shape `(16,1^12)/(1)`,weight `(1^27)`,
