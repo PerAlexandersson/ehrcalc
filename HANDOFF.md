@@ -1,5 +1,34 @@
 # Ehrcalc Handoff
 
+## Five-opposite retry and weight-mutation queue — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Five-opposite d34 child212604 remains unknown after beam30
+30.059278s,run2436f9dba26fdd3911a41c8ab04755f04bf917159e82def229c1caabaf505275.
+Original5s timeout retained. Do not repeat identical terminal retry.
+
+Raw209610 full-content-remove queue0->76->111->160/580,dimension cap35,
+beam32/5s cases/45s batches/60s guards,40.505348/43.403880/39.907346s.
+No flag-only objective filter applied to original-content constraints before
+compression. Each label is forced into every original tableau column,paired
+with removal of one non-forced equation;payload retains original multiplicity t.
+DB confirms104 initial exact nonnegative,7 time limits,49 dimension prunes,
+no duplicates/empty/errors. Started observations retained separately.
+Runsfca3f3c5d95e5c167f68270682e7beb9b595d1d0a68949ad64a0b4814d26def2,
+15b8c97e0dede028bd74ec221d68415794e60800c855277f401d3108a2ae0860,
+da1d1cc9e8fb4e79f2a32ff7dff1e4f8d012c51596d74580365b3bc6762a5a8a.
+Smallest unresolved213010d33,label4/remove horizontal82,resolves exact
+nonnegative beam30 in5.527803s,
+runfeb931a8d1a5e47e2fa59776cfa3071f1f54b5cba976ca53a57bf9222fe2a760.
+Thus105 exact,6 unresolved among counting cases through160. Original timeout
+retained. Gaps213012d34,212876/212926/213006/213054/213102d35 remain unknown.
+Resume160/580 with identical bounds;do not restart earlier offsets.
+No improved negative;primary174566d33 seven extra opposite/five internal retained.
+No minimal-distance claim or flagged-Kostka witness. All observations in DB,
+reports ignored;source unchanged,no live scan,no push/publication/extra workers.
+Goal remains active;further weight/shape/flag mutations available.
+
 ## Band parent joint and smaller-shape queues completed — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
