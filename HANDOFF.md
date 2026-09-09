@@ -1,5 +1,27 @@
 # Ehrcalc Handoff
 
+## Weight-mutation continuation to256/580 — 2026-09-09
+
+Codex retains ownership and sole local DB writer;clean checkouts/no live scan
+verified at adoption. Previous turn made progress;no global blocker.
+Raw209610 full-content-remove resumed160->197->224->237->256/580,
+39.101037/40.286158/40.590390/39.860766s;capdimension35,beam32/5s cases/
+45s batches/60s guards,no flag-only objective filter. New DB outcomes:
+50 exact nonnegative,11 time limits,35 dimension prunes,no duplicates/empty/errors.
+Runs55a876bd569ce2fa662a38ca26fb660d04f63db2e55fda1ea057510232a0ca04,
+2622df9706077e0e0587f754676d2e2e81550836d4ce6f47ac5b285a8c40d919,
+39ff34540c508d7a715ef07b526024f695346e59930f95d255a237f1a5300cc4,
+318d2d5a2571e8028c854b4e824760d68b5cfe0524da649834136fc7b7004223.
+Cumulative154 initial exact,18 initial limits,84 dimension prunes;including
+previous exact retry213010 gives155 exact and17 unresolved counting cases.
+Small new gaps213282/213290/213308d32,label10/removehorizontal25/40/132;
+213304d33,label10/remove103. Do not interpret timeouts as nonnegative.
+Resume256/580. User requested best-candidate status at this safe checkpoint:
+DB rows174566 and182123 re-read;primary174566d33 seven extra opposite/
+five internal remains retained,smaller182123d30 seven/six. No improved negative.
+All outcomes stored/reports ignored;no live scan/source edits/publication.
+Goal remains active;no blocker.
+
 ## Five-opposite retry and weight-mutation queue — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
