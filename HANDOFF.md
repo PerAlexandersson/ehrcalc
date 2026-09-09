@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Combined queue coverage checkpoint — 2026-09-09
+
+No new negative; ten/ten87727 and other saved tradeoffs unchanged. Eight
+bounded batches add329 fresh exact nonnegative results and four new unknowns
+(104672:36,104724:37,105522:37,105828:37). All871 combined-label slots for
+101281 and all1300 joint slots for87727 now visited in disjoint slices.
+The latter has1291 prunes and9 earlier limits,NO exact signs; completed
+proposal coverage must not be read as a nonnegativity certificate.
+Mutation handoff/MariaDB record all bounds,skips,timing and resume evidence.
+Maintained Ehrcalc,greedy layouts,cap37/45,two-second cases,45-second batches,
+60-second guards;no engine errors. All43 tests pass,source unchanged,reports
+ignored,no live scan. Codex owns handoff continuation,goal active,no global
+blocker or flagged-Kostka witness. Original-restart scope,older branches
+paused,no push/publication.
+
+
 ## Distinct thirteen/thirteen restart lineage — 2026-09-09
 
 Flag additions lower100861 from degree36 to33;shrinking yields101281:
