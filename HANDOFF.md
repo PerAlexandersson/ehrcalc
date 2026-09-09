@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Restarted degree26 branch with13/14 constraints — 2026-09-09
+
+New151502:17x19,degree26,13 additional opposite constraints/14 internal
+bans,cubic `-10159311283213/49423651200`,shape `(20,1^17)/(1)`,weight
+`(1^36)`. Raw opposite24,11 lower-flag forced. Fresh coordinate/endpoint
+certificate agrees (0.145764s). Lineage143802 ->internal146487/certificate
+148716(degree23,13/15) ->internal149389(degree37) ->lower flag151247
+->certificate151502. Keep cheaper degree22/23 options and all siblings.
+Not global-frontier improvement,minimal-distance certificate or KTT witness.
+Thirteen bounded batches:2539 slots,801 exact(31 negative),1701 prunes,
+37 duplicates,no limits/errors/empty cases. All queues fully visited;
+skipped signs unclaimed. IDs,bounds,timing in MariaDB/mutation handoff.
+Caps30/32/40,2s cases,45s batches/60s guards. All49 tests pass,source
+unchanged,reports ignored,no live scan. Codex owns continuation,goal active,
+older branches paused,no push/publication.
+
 ## Restarted degree22 branch improves to13/16 — 2026-09-09
 
 New143802:17x19,degree22,shape `(20,1^17)/(1)`,weight `(1^36)`,linear
