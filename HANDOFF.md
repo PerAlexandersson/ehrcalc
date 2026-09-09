@@ -1,5 +1,45 @@
 # Ehrcalc Handoff
 
+## Interior-band crossover implemented; negative candidate retained — 2026-09-09
+
+Codex owns private frontier/tests/README and both handoffs; sole local DB writer.
+Clean checkout/no live scan verified at adoption. Previous turn made progress.
+Added row-band-crossover and column-band-crossover:strictly interior zero-based
+[lo,hi) intervals,reciprocal children,(m-1)*(m-2) proposals for axis lengthm.
+Stable lower-cut/upper-cut/direction order;distinct mode/ordering identities.
+Shared exact-negative parent validation,matching rectangles and content guards;
+at least3 rows/columns required on the selected axis. Prefix identities unchanged.
+Both parent IDs,band parent,and axis-specific interval survive empty/skipped
+children;parent signs never inherited as child evidence. README updated.
+All67 tests pass1.718s,cover bitwise inheritance,bounds,small axes,required
+donor,exact small-poset CLI comparison,lineage,resume,timeout,empty and duplicates.
+Maintained Rust engine unchanged.
+
+First row-band174551+196437 all56 recorded0->24->56,42.729881/22.592440s.
+Cap seven extra opposite/dimension38,beam32/5s cases/45s batches/60s guards.
+DB confirms2 initial exact nonnegative,12 limits,19 duplicates not revalidated,
+23 objective prunes,no other outcomes. Runs
+1c45a384dbb0a3d6c0a3a131d6231cb79f1f4c8fb5a9e363b8146b7d810fa7be,
+f882371baa563b32c82a09eafd4216f6853b18ec1dfba03eee99505d15183996.
+Gap209553d34 band[3,4),direction1 (band parent196437) resolves EXACT NEGATIVE
+on beam30 in16.372457s,result209610,run
+4dbfa4e3053729c3ac45a0907d26b85636e447adf9f5f9fd6ece6e4899a44aaa.
+Linear-11685727793017/8022419605200;9x15,seven extra opposite/five internal.
+v0x3ff01fe01fc01f801f001e001c00181f1,
+h0x100080008400840104010407040e040c00.
+Original timeout retained;now3 exact(one negative),11 unresolved counting cases.
+This exact polynomial is retained,NOT a certified flagged presentation.
+Fresh beam20 flag-certificate209612 failed at first endpoint timeout20.207482s,
+rune33dad3fe355de38ea8259996fd18e9fa120c5185bc4b9e0dfdb624a306846ca.
+Failure persisted without polynomial evidence;do not repeat same terminal
+certificate identity. Full certificate needs a distinct adequately bounded
+attempt; current helper caps endpoint budget20s. No global blocker.
+Primary174566d33 seven/five remains best;209610 is an unpromoted negative
+mutation parent. Nearby209557/209561/209565d34 remain unresolved.
+Next certify209610 under a new supported finite budget/layout,or run disjoint
+column-band search. No claim of minimum nonflag distance or KTT counterexample.
+All outcomes in DB,reports ignored,no live scan,no push/publication/workers.
+
 ## Targeted five-opposite retries and internal slides — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
