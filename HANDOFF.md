@@ -1,5 +1,62 @@
 # Ehrcalc Handoff
 
+## Abacus remote-compute pilot completed — 2026-09-09
+
+User explicitly selected this KTT worker for the pilot. Prior crossover source
+and documentation were committed; both checkouts clean and no live local scan
+before pilot. Codex retains private profile/model, existing file ownership,
+and sole LOCAL MariaDB-writer role. Read supervisor README Remote compute and
+remote/INSTALL.md; used only supervisor-tool compute. No extra workers,
+credentials/DB/checkouts uploaded, toolchain installs, administration changes,
+pushes, or publication.
+
+Submitted only trusted experiments/abacus_exact_job.py, one selected JSON input,
+and maintained /cargo-target/ai-projects/release/ehrcalc (3,084,600 bytes).
+ELF requires GLIBC2.34; remote verified x86_64,Python3.10.12,GLIBC2.35,
+all dynamic libraries resolved,successful exact execution on both tested cases.
+Kernel affinity[0,1],memory.max8589934592,swap.max0,pids.max128 verified.
+Installed serial queue/limits unchanged. No CPU-compatibility claim beyond
+tested executable paths. No dependency blocker or connection failure occurred.
+
+Jobs (both done,exit0;60s outer limit,20s/case):
+- 20260909T180144-b387aeb75fea: known negative196437,degree30.
+  Fresh local0.276174s,remote0.401477s. Full rational polynomial,hstar and
+  negative linear-573717288983/155272637520 matched exactly.
+- 20260909T180330-3adc4ab17ded: disjoint crossover198861+173929,index7,
+  degree31,remote0.484587s,local validation0.327867s;exact nonnegative.
+  All16 proposals recorded locally:one prepared/count case,nine poset-hash
+  duplicates not revalidated,three coordinate duplicates,three objective
+  prunes. Cap seven extra opposite/dimension38,max two remote cases;only one
+  eligible unique case survived. No unverified result or remote timeout.
+
+SHA-256:
+- wrapper a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+- executable 8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+- baseline input 98c040549f6d1d7e8502bb5f249d8fa5ba1714a4e7172b699e6877b628e55261
+- search input 333f7c4c3b7d718862ec895327752cf781c191b2978d3da5db6a43c06c1b22c0
+- baseline output 848fb4126d8b06f967c6d2abb407a3946f3bea4b9fc21dafa3ef35e422c4ac22
+- search output 887faebb47c0d719a796bbab267bd9e96b622a0ba948d89b71218a3241e7ad6e
+
+Before result ingestion, checked receipt/file/header hashes,terminal job status,
+full exact fresh-local comparisons,and independent rational hstar reconstruction.
+Rebuilt original search quotient and beam permutation/covers against the prepared
+proposal. Local validation ledger
+4f2dcffd8d79115aa1ae96aa927c62cbc8a12b95d3eccf7abd199a4e4ff118fa
+contains baseline199282/result199283. Search ledger
+d279127b41ecad2182dbfedaf399ba089f853ba928508b8094c4fd9ad7292c36
+contains exact result199284 and all skipped proposals. No remote DB access.
+
+Docker fetch copies are outside Dropbox under /home/dev/.local/share/
+supervisor-compute-results/abacus/ with directories
+20260909T180144-b387aeb75fea-kqk3ncdx and
+20260909T180330-3adc4ab17ded-c_g7l7qz. Remote originals retained; host supervisor
+can durably collect both job IDs with compute fetch. Inspect recorded IDs on
+connection failure;never blindly resubmit. Generated local inputs/logs ignored.
+Added self-contained wrapper,exact corruption/transform test,and README notes;
+all65 tests pass0.453s. Source/README/tests/handoffs owned by Codex for this
+increment. No live pilot job. Pilot complete,global KTT goal remains active:
+best174566 degree33 seven/five unchanged,new negative198864 retained.
+
 ## Completed first crossover-child removal queue — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
