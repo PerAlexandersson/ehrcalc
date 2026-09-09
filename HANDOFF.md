@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## Band-negative lower-remove queue completed — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkout/no live scan verified at adoption. Previous turn made progress:
+successful fresh certificate209614 and new mutation coverage,no global blocker.
+Raw209610 lower-remove completed86->123->163,43.187336/41.120477s under
+cap six extra opposite/dimension38,beam32/5s cases/45s batches/60s guards.
+New runs5f94e438572f0c365689e824bef08e8a5639e2ede623c32d965d485189bb4ee4,
+8281e0481181024939f3c49a418f22d45f37002d7c52ff4b7e4a6b86bf3847ae.
+DB confirms whole163:5 initial exact nonnegative,30 limits,26 dimension
+prunes,100 objective prunes,2 duplicates not revalidated,no empty/errors.
+Small six/five gap209861d32 [7,13,132] resolves exact nonnegative beam30
+9.286722s,run80635ae46a6a60f38096f8508d386db33ad26359108d4d4443c0ec581af3c6d1.
+Thus6 exact,29 unresolved counting cases;original timeout retained.
+Nearby209755/209851/209895/209901d33 remain unknown.
+
+Disjoint column-band174551+196437 all182 recorded2.907096s:119 duplicates
+not revalidated,63 objective prunes,no count/other outcomes;cap six extra
+opposite/dimension36,beam32/5s/45s/60s,run
+e83b614d593be3a862a0feca4c61aa6465a81b1137e42763a73503b3292340e4.
+No positivity conclusion for skipped children. No improved negative;
+primary174566d33 seven/five and band209610/cert209614 retained.
+Next paired/internal/content mutations of209610 or disjoint band parent pairs;
+do not repeat completed lower-remove or these column bands at unchanged bounds.
+Selected larger-budget nonflag gaps remain open,including possible Abacus.
+All67 tests pass0.472s,source unchanged,all outcomes in DB,reports ignored.
+No live scan,goal active,no push/publication or extra workers.
+
 ## Band-negative flag certificate completed — 2026-09-09
 
 Follow-up raw209610 lower-remove0->49->86/163,40.057557/43.936482s:
