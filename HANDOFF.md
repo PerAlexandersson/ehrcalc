@@ -1,5 +1,17 @@
 # Ehrcalc Handoff
 
+## Seven/five content-removal checkpoint — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
+at adoption.174551 full-content-remove[0,150)/626:MariaDB confirms107
+exact nonnegative,14 prunes,29 unknown limits,no duplicates/empty/errors.
+Five cap40/beam32/5s slices41.547731/39.419849/43.350704/41.925913/
+39.085954s,45s batches/60s guards,serialized. These mutations vary
+content and remove constraints;no candidate improvement,selected174566
+degree33 seven/five retained. All56 tests pass0.432s,source unchanged,
+all outcomes inMariaDB,reports ignored,no live job. Next offset150/626;
+nonflag reduction primary,ownership retained,goal active,no push/publication.
+
 ## Seven/five paired queue completed — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
