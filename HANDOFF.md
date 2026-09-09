@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Nine/six presentation and shrinking checkpoint — 2026-09-09
+
+Selected geometry unchanged:10x15,degree36,9 additional opposite/6 internal,
+linear `-2689218931133/1146059943600`. Four batches152 slots:78 exact
+nonnegative,37 prunes,37 unknown limits,no duplicate/empty/errors.
+Internal170321 all6 and shrinking146 fully visited;three separate degree31
+shrinking greedy5 retries remain limited. Skipped signs unclaimed.
+Pruning170321 ->170666 removes13/37 tested redundant equations with full
+coordinate/fresh endpoint verification;raw18 horizontal,6 internal remain.
+Fresh certificate170667 confirms unchanged9/6 and polynomial8.179561s.
+Presentation improvement only,not a smaller polytope/fewer nonflag constraints
+or KTT witness. Use pruned170666 for fewer redundant mutation proposals.
+All50 tests pass0.397s,source unchanged,reports ignored,no live job. Codex
+owns continuation,goal active,older branches paused. Full identities,bounds,
+pruning,timing inMariaDB/mutation handoff;no push/publication.
+
 ## Certified restarted nine/six degree36 — 2026-09-09
 
 New170321:10x15,degree36,9 additional opposite constraints/6 internal bans,
