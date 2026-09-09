@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Low-degree diversification descendants — 2026-09-09
+
+Original-restart lineage91866 ->92144 ->92636 ->94094 gives `18 x 20`,
+degree22,16 internal/16 opposite,linear `-40022579/2984520`. Joint sibling
+94348 has degree23,15 internal/16 opposite,negative linear and quadratic.
+Shape `(21,1^18)/(1)`,weight `(1^38)`. Separate depth-layout counts confirm
+both (0.074960/0.062247s). Retain all previous lower-degree/ten-ten tradeoffs;
+no claim of global metric improvement or flagged-Kostka witness.
+Mutation handoff/MariaDB record11 bounded neighborhoods,disjoint shrinking
+completion,all exact lineages/skips/timing. Joint92144 next361 of4896; original
+combined next420. Cap26,two-second cases,45-second batches/60-second guards;
+no new limits/errors. Source unchanged,43-test baseline,reports ignored.
+Codex owns handoff continuation,no live scan,goal active,old branches paused.
+No push/publication.
+
+
 ## Low-degree diversification checkpoint — 2026-09-09
 
 Ten/ten87727 frontier unchanged. Sibling weight/slide and joint-prefix scans
