@@ -1,5 +1,35 @@
 # Ehrcalc Handoff
 
+## Opposite-removal and joint checkpoint — 2026-09-09
+
+Codex retains KTT/private DB and handoff ownership; no live scan at checkpoint.
+Adopted own prior dirty companion handoff after diff/ownership inspection.
+Previous strategy-only turn was no progress; this turn adds exact DB evidence.
+Raw182122 and182773 lower-remove queues both complete96 under cap six
+extra opposite,dimension38,beam32/5s cases/45s batches/60s outer guards.
+Each:34 exact nonnegative,6 initial limits,16 dimension prunes,40 objective
+prunes; no duplicates/empty/errors. Slices0->76->96 took43.642723/10.156720s
+and41.890286/9.885093s respectively. Gap184020 dimension36,six/six,
+resolves exact nonnegative beam30 in9.228539s,run
+26890d5296063577db2cef2e902155478520a57f49739cea9d917a811463ef5a.
+Raw182122 joint0->151/624:4 exact nonnegative,4 initial limits,71 dimension
+prunes,72 objective prunes43.884013s,same bounds. Six/five unknowns:
+184426/184582 dimension36;184366/184522 dimension38.
+184426 beam30 remains unknown30.048378s,run
+9d6813f2cabfcf4b9c42a83a7ccba618a8155fdfc5d89fac278122ca6f0bb0f3.
+No new negative or improved certified presentation. Best174566 degree33
+seven/five; alternates182123/182774 degree30 seven/six retained.
+These are presentation metrics,not certified minimum bad-edge distance.
+MariaDB independently confirms preceding content totals:173399 all604,
+448 exact(two negative),124 dimension prunes,6 limits,26 empty;173929
+all581,426 exact nonnegative,124 prunes,5 limits,25 empty,1 duplicate.
+Their final slices took20.817997/36.747808s. Prior182849 beam30 resolves
+nonnegative7.700391s. All60 tests pass0.429s;source unchanged.
+All outcomes persisted inDB,reports ignored. MCP registry inspected;no MariaDB
+MCP,existing protected MariaDbStore used. rust/CLAUDE.md absent,AGENTS applies.
+Next resume182122 joint151/624 or alternate raw182773 joint; preserve all
+negative lineages and unknowns. No extra workers,no push/publication;goal active.
+
 ## Second smaller negative placement — 2026-09-09
 
 Codex retains KTT/private ownership;clean worktrees/no live scan verified.
