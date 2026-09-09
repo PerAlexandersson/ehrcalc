@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Explicit lower flags lower ten-extra-opposite branch to38 — 2026-09-09
+
+87727 ->106637 ->107370 (exact retry107371) reaches degree38,source `14 x 15`,
+linear `-307759680405013/381637961218800`,shape `(16,1^14)/(1)`,weight `(1^29)`.
+Flags augmented row14>=14,row15>=16 force3 of13 raw opposite equations:
+10 additional opposite constraints and10 internal bans remain. Union of both
+stored forcing masks checked;scanner's per-current-cut field alone does not
+certify accumulated flags. No minimal-distance or flagged-Kostka witness claim.
+Depth-layout exact recount succeeds in1.081490s;degree39 parent separately
+verified. Six bounded neighborhoods,all outcomes/empty/prunes/timing and six
+new unresolved shrinking cases are in mutation handoff/MariaDB. Four prior
+cases remain unknown after distinct five-second retries. Cap45/41,two-second
+cases,45-second batches/60-second guards;no engine errors. Source unchanged,
+43-test baseline,reports ignored,no live scan. Codex owns handoff continuation;
+goal active,original-restart scope,older branches paused,no push/publication.
+
+
 ## Combined queue coverage checkpoint — 2026-09-09
 
 No new negative; ten/ten87727 and other saved tradeoffs unchanged. Eight
