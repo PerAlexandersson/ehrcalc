@@ -1,5 +1,25 @@
 # Ehrcalc Handoff
 
+## Nonflag-budget filter checkpoint — 2026-09-09
+
+Codex retains KTT/private ownership;clean worktrees/no live scan verified
+at adoption. Previous turn made progress.174551 lower-remove-two99->137
+adds13 exact nonnegative,14 dimension prunes,11 limits39.820038/39.969731s.
+Private commitb3386f5 adds optional --max-extra-opposite,sharing the existing
+all-implied-lower-flags helper with certificate code;fresh certificate
+semantics/default DB identities unchanged. Distinct capped runs persist all
+proposal/result skips as objective_pruned,without a sign/minimality claim.
+All60 tests pass0.430s,including identity/DB records/filter bypass and bounds.
+Cap6 slices137->156->168:2 exact nonnegative,13 objective prunes,16 limits,
+43.391666/40.504565s;dimension cap40/beam32/5s cases/45s batches/60s
+guards,serialized. MariaDB confirms unfiltered137:60 exact,40 dimension
+prunes,37 initial limits;filtered31 counts above. Older177140/177130
+retries resolve two initial gaps. New five/five presentation177384 dimension40
+stays unknown on distinct beam30 retry30.079775s;177388/177392 also
+five/five unknowns. No improved negative;selected174566 degree33 seven/five
+retained. Resume168/1786 with cap6;all skipped cases/lineages/gaps retained,
+all outcomes inDB,reports ignored,no live job,goal active,local commits only.
+
 ## Two-removal99 checkpoint — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
