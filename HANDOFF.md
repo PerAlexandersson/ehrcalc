@@ -1,5 +1,26 @@
 # Ehrcalc Handoff
 
+## Removal-first restarted eleven/nine degree25 candidate — 2026-09-09
+
+User reaffirmed fewer bad edges primary,search judgment delegated. New158898:
+13x16,degree25,11 additional opposite constraints/9 internal bans,linear
+`-15368048617/1070845776`,shape `(17,1^13)/(1)`,weight `(1^29)`.
+Lineage157041 ->content/removal158096 ->compression158500 ->prune158719
+->lower flag158737 ->flags158800/158874 ->certificate158898. Fresh
+coordinate/endpoint checks agree (0.502563s). Prune183/212 in2.429952s.
+Additional opposite count unchanged; one internal ban removed and size
+reduced at one-degree cost. Preserve degree24 parent and all siblings.
+Not global-frontier improvement,minimal-distance theorem or KTT witness.
+Eight queues:588 slots,329 exact(98 negative),188 prunes,57 duplicates,
+12 limits,2 empty,no scan engine errors. Two certificate depth5 failures
+preserved separately; later lower-degree descendants freshly certified.
+Two direct opposite-removal depth5 retries remain limited;all12 scan signs
+unknown,skipped signs unclaimed. Content/removal157041 next400/1112;
+other queues complete. Bounds,IDs,timing in MariaDB/mutation handoff.
+Caps32--45,2s cases,45s batches/60s guards. All49 tests pass,source
+unchanged,reports ignored,no live scan. Codex owns continuation,goal active,
+older branches paused,no push/publication. Prioritize fewer nonflag constraints.
+
 ## Smaller restarted degree24 eleven/ten candidate — 2026-09-09
 
 New157041:14x16,degree24,11 additional opposite constraints/10 internal
