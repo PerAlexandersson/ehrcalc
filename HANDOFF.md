@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Complete content/removal and shrinking proposal coverage — 2026-09-09
+
+121891 full-content/removal582 and shrinking176 queues now fully visited.
+Six new batches:523 slots,182 exact nonnegative,304 prunes,1 duplicate,
+36 initial limits. Fifteen separate depth5 retries resolve shrinking cases
+nonnegative;seven shrinking signs and43 full-content/removal signs remain
+unknown. Skipped signs unclaimed. Smallest internal removal hasdegree47;
+separate five-second depth attempt123794 timed out. Other nine internal
+removals dimension56--92 remain pruned. No negative frontier improvement.
+All attempt IDs,bounds,timing in MariaDB/mutation handoff. Caps41/43,
+two-second cases,45-second batches/60-second guards;no engine errors.
+All47 tests pass,source unchanged,reports ignored,no live scan. Best121891
+retained:degree37,12x15,9 additional opposite/10 internal bans. Codex owns
+continuation,goal active,original213 restart only,older branches paused,
+no push/publication or flagged-Kostka witness.
+
 ## Nine-additional branch coverage and twenty resolved gaps — 2026-09-09
 
 Six bounded121891 batches:396 slots,99 fresh exact nonnegative,233 prunes,
