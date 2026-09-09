@@ -1,5 +1,31 @@
 # Ehrcalc Handoff
 
+## Completed alternate-parent two-removal queue — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
+verified at adoption. Previous turn made progress. Raw173903 lower-remove-two
+continued581->858->962->1221->1341->1414,42.494774/39.002017/42.433450/
+40.113431/16.983551s. New833 outcomes:149 exact nonnegative,16 initial
+limits,124 dimension prunes,544 objective prunes,no other outcomes.
+Cap six extra opposite,dimension35,beam32/5s cases/45s batches/60s guards,
+serialized. MariaDB confirms entire1414:163 exact nonnegative,23 initial
+limits,212 dimension prunes,1001 objective prunes,15 duplicates not
+revalidated,no empty/errors. Completion is bounded coverage,not a sign
+exclusion of pruned/limited cases.
+Smallest gap194886 dimension29 [6,11,114,132] resolves exact nonnegative
+beam30 in1.599233s,run
+23ffd18242cf0c13f2bf7977daca0f00fb2af2543158f5e7ec9014601dedbd57.
+Thus164 exact and22 unresolved counting cases after this retry;original
+timeouts preserved. Small gaps194880 dimension30,193880/195570 dimension31;
+193874 dimension32 remains unknown30s. No improved negative. Primary174566
+degree33 seven/five,smaller alternatives and verified190585 retained;
+presentation counts are not minimum bad-edge distance.
+All60 tests pass1.006s,source unchanged,all outcomes inDB,reports ignored,
+no live job. Next raw173903 joint457/1080,selected smaller unresolved cases,
+or a distinct negative lineage;do not repeat completed two-removal queue or
+terminal retry identities. All lineages/gaps retained,ownership/goal active,
+local commits,no push/publication or extra workers.
+
 ## Alternate-parent combined and two-removal continuation — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
