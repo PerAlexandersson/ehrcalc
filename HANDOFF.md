@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Smaller restarted degree24 eleven/ten candidate — 2026-09-09
+
+New157041:14x16,degree24,11 additional opposite constraints/10 internal
+bans,linear `-1968472027/205931880`,shape `(17,1^14)/(1)`,weight `(1^30)`.
+Lineage155516 ->shrink156110[15,15] ->certificate157041. Fresh coordinate
+and endpoint checks agree (0.091477s). New-restart improvement,not global
+frontier,minimal-distance theorem or KTT witness. Degree29 15x17 eleven/ten
+sibling156941 and all alternatives retained. Next shrinking no new negative.
+Seven queues:987 slots,555 exact(88 negative),376 prunes,30 duplicates,
+24 limits,2 empty,no errors. Two separate depth5 retries remain limited;
+all24 new signs unknown,skipped signs unclaimed. Full-content/removal155516
+next400/1220;other queues complete. IDs,bounds,timing in MariaDB/mutation
+handoff. Caps32/34/36/40,2s cases,45s batches/60s guards. All49 tests pass,
+source unchanged,reports ignored,no live scan. Codex owns continuation,
+goal active,older branches paused,no push/publication.
+
 ## Smaller restarted eleven/eleven degree24 candidate — 2026-09-09
 
 New155516:15x17,degree24,11 additional opposite constraints/11 internal
