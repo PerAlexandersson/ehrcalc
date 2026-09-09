@@ -1,5 +1,40 @@
 # Ehrcalc Handoff
 
+## Band parent joint and smaller-shape queues completed — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress
+by finishing and validating Abacus retries; no global blocker. No source edits.
+Raw209610 joint all900:585 objective prunes,315 dimension prunes,no counts,
+25.775531s,run88ffe968342bc62de03e27fac26e347c4e17c763780b01c54b215f719fcfab93.
+Cap six extra opposite/dimension38,beam32/5s cases/45s batches/60s guard.
+Smallest qualifying dimension40 gaps210906/210926/210956/211106 remain uncounted.
+
+Raw209610 interior-shrink all131 creates8x14 children;cap seven extra opposite/
+dimension33,beam32/5s cases/45s batches/60s guards. Actual slices0->31->86->131,
+41.439932/43.585077/31.470582s. DB confirms73 initial exact nonnegative,
+11 time limits,27 dimension prunes,8 objective prunes,12 duplicates not
+revalidated,no empty/errors. Started observations retained separately.
+Runs0c3de5bda9ca7ef7c9ca0798788ee4039753a6ecd9c073084e02ae134c911b44,
+cf66a96cf9414ac7e435ce8ca3a4a5f6f9e63a26a96b09e66a97e3cff7804ffa,
+cb7770b9502d055af7ddf1f2dcab58d0012bb5d3fa8fc894d97d2ce653526b84.
+Six-opposite dimension32 gap212592 [2,1] resolves exact nonnegative under
+beam30 in4.963220s,run3afd77a1f90b91209d0b8f1c5593d9ae2d64c9bf61b0e8a94a0d93a221df71f3.
+Thus74 exact,10 unresolved counting cases;original5s timeout retained.
+Nearby212606/212622d32 and212574d33 remain unknown.
+
+Selected five-opposite dimension34 child212604 [2,7],previously dimension
+pruned,was first counted beam5:time_limited5.013594s,
+run65352386b1f1f71e45551fe7953648ff78973ee530b8bc3db5d88b94b1a3ea07.
+No sign conclusion. Similar five-opposite d34 gaps212634/212692/212722
+remain uncounted. These are priority larger-budget candidates,possibly Abacus.
+Completed neighborhoods must not be rerun unchanged. Next full-content-remove
+on209610 or selected five-opposite retries;source shape/weight may mutate.
+Primary174566d33 seven extra opposite/five internal remains best retained;
+no minimum-distance claim or flagged-Kostka counterexample.
+Focused frontier tests48 pass0.448s. All outcomes in DB,reports ignored.
+No live scan at checkpoint,no push/publication/extra workers;goal remains active.
+
 ## Abacus follow-up and completed paired queue — 2026-09-09
 
 Codex retains ownership and sole local DB writer. Raw209610 paired queue is
