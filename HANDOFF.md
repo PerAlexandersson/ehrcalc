@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Smaller ten/ten restarted candidate — 2026-09-09
+
+New87727: source `14 x 15`, degree41,10 internal bans/10 opposite equations,
+linear `-454598497536619/128105374116720`, shape `(16,1^14)/(1)`, weight `(1^29)`.
+Original-restart lineage86601 ->87268 (zero weight) ->87283 (certified
+alphabet compression) ->87586 (226 redundant equations removed) ->87727
+(shrink). Fresh depth-layout recount agrees in2.161713s. Keep degree32
+twelve/twelve and degree21/22 alternatives. Still mixed faces, not flagged-
+Kostka witnesses or minimal-distance certificates. Mutation handoff/MariaDB
+record10 bounded neighborhoods, disjoint shrink completion, all timing/skips,
+13 new unresolved two-second cases and exact lineages. Cap45, two-second
+cases,45-second batches/60-second outer guards; no engine errors. Reports
+ignored, source unchanged,43-test baseline. Codex owns handoff continuation;
+no live scan, goal active, old branches paused. Next mutate87727.
+No push/publication.
+
+
 ## Eleven-opposite higher-degree restart alternative — 2026-09-09
 
 Targeted exact retry of84358's smallest opposite deletion yields86601:
