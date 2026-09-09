@@ -1,5 +1,23 @@
 # Ehrcalc Handoff
 
+## Certified restarted nine/eight degree29 — 2026-09-09
+
+New164524:11x16,degree29,9 additional opposite constraints/8 internal bans,
+linear `-1210368967/2823138864`,shape `(17,1^11)/(1)`,weight `(1^27)`.
+Lineage163745 ->paired164256(add boundary22,remove155) ->certificate164524.
+Full coordinate and both fresh greedy endpoint counts agree0.244234s.
+Opposite count improves from10 to9,degree unchanged. Not a minimal-distance
+theorem or KTT witness;preserve all alternatives. Following single45 queue
+complete41:35 exact(20 negative),3 prunes,3 limits,no further improvement.
+Internal removal164179 resolves nonnegative at3.246625s;lower flags on that
+intermediate have6 exact nonnegative,4 limits,1 empty. Paired163745 complete
+320 slots:260 exact(1 negative),30 prunes,30 limits. Across current queues:
+380 slots,301 exact(21 negative),39 prunes,39 initial limits,1 empty,no
+duplicates/errors. One retry resolves nonnegative;38 new signs unknown.
+All records inMariaDB,reports ignored. All50 tests pass0.723s,source unchanged.
+No live job at checkpoint;Codex owns continuation,goal active. Next164524
+removal neighborhoods. Bounds,timing,gaps in mutation handoff;no push/publication.
+
 ## Smaller certified ten/eight restart — 2026-09-09
 
 Further fresh certificate163745 lowers degree to29,still11x16 and10/8,
