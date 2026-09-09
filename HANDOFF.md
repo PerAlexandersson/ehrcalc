@@ -1,5 +1,23 @@
 # Ehrcalc Handoff
 
+## Restarted thirteen-opposite alternative — 2026-09-09
+
+Targeted exact retry of the smallest pruned opposite deletion from76956
+finds a degree38 negative with13 opposite/15 internal. Five successive flag
+additions lower degree to33: selected81911, source `17 x 19`, linear
+`-3477883001903/534827973680`, shape `(20,1^17)/(1)`, weight `(1^36)`.
+Verified depth-layout recount agrees (0.432690s). Its next single pass finds
+no degree32 negative. Keep lower-degree76956/74571 alternatives; still mixed
+faces, not flagged-Kostka witnesses or minimal-distance certificates.
+Mutation handoff/MariaDB record all1030 combined-label slots from76956
+(107 exact nonnegative,923 prunes), joint prefix351/3570 entirely pruned,
+six flag neighborhoods, exact lineages/bounds/timing and separate retry IDs.
+Cap26/38 as documented, two-second cases,45-second batches,60-second outer
+guards; no new limits/errors, reports ignored. Codex owns handoff continuation;
+source unchanged,43-test baseline, no live scan. Goal active, old branches
+paused, no push/publication.
+
+
 ## Smaller restarted mixed face: degree22 — 2026-09-09
 
 Codex owns handoff continuation. Original213 restart now yields76956 through
