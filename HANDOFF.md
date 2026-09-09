@@ -1,5 +1,20 @@
 # Ehrcalc Handoff
 
+## Nine/eight neighborhood checkpoint — 2026-09-09
+
+Selected164524 remains11x16,degree29,9 additional opposite/8 internal bans.
+Fresh alternate certificate165753 from164772:degree30,same9/8 and shape
+`(17,1^11)/(1)`,weight `(1^27)`,linear `-68708816183/22181805360`.
+Full geometry/fresh endpoints agree0.896459s. Keep both;no new count
+reduction or KTT witness. Nine batches660 slots:450 exact nonnegative,
+117 prunes,67 initial limits,25 duplicates not revalidated,1 empty,no errors.
+Paired164524 complete310;content/removal next323/1022;others complete.
+Internal165948 degree39 still limited atgreedy5;flag descendant166162
+degree34 resolves nonnegative at4.540208s.66 new signs unknown;skipped signs
+unclaimed. All50 tests pass0.399s,source unchanged,reports ignored,no live job.
+Codex owns continuation,goal active,older branches paused. Full bounds,
+IDs,pruning,timing inMariaDB/mutation handoff. No push/publication.
+
 ## Certified restarted nine/eight degree29 — 2026-09-09
 
 New164524:11x16,degree29,9 additional opposite constraints/8 internal bans,
