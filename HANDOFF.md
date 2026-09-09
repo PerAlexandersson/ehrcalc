@@ -1,5 +1,19 @@
 # Ehrcalc Handoff
 
+## Greedy-layout retries and completed bounded tails — 2026-09-09
+
+Six fresh scan passes on 61480/61478 gave 228 exact nonnegative results;
+prunes, duplicates and timeouts are separately recorded in the mutation
+handoff/MariaDB. Disjoint tails complete both shape queues. No new negative;
+retain the degree-36 nine-opposite candidate and lower-degree alternatives.
+Retry-only `--relabel-greedy` adds another fully verified natural coordinate
+permutation (minimum next live frontier, deterministic ties). It resolves
+six timeouts, including old 60604/60692, as nonnegative under two seconds.
+Independent ideal DP confirms all six polynomials and h* vectors; all prior
+attempts are preserved. Nineteen new scan timeouts remain explicitly unknown.
+39 tests pass; source/README/handoff changes owned by Codex, reports ignored,
+no live scan. No flagged-Kostka witness or global blocker; goal active.
+
 ## Depth-layout scanner and nine-opposite descendant — 2026-09-09
 
 The mutation scanner now accepts the same verified `--relabel-depth` option
