@@ -1,5 +1,35 @@
 # Ehrcalc Handoff
 
+## Redundancy audit and simplified negative presentation — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
+verified at adoption. Previous turn made progress. Raw173903 joint457->685
+adds7 limits,83 dimension prunes,138 objective prunes42.048466s;cap7,
+dimension38,beam32/5s cases/45s batches/60s guards. DB entire685/1080:
+21 limits,244 dimension prunes,420 objective prunes,no exact/other outcomes.
+Audited redundancy before further mutations: raw173903 internal-first greedy
+prune accepts5/26 deletions,all horizontal;6 internal and15 horizontal
+deletions change the fullcoordinate face and remain uncomputed. Both fresh
+5s endpoints agree;pruning loop0.315405s. Final196437 preserves the entire
+negative degree30 polynomial,linear-573717288983/155272637520.
+Prune run d29ee67c56845d8e149ddc5248bf9329bca50504755e0d7644752173a976971a.
+Fresh beam15 certificate196438 passes0.486420s,both endpoints/fullcoordinate
+identity,run624985b9820f1d387f8591c277e5a00de16c2b642e93aca6c68816de3cb1e214.
+Still eight additional opposite/six internal:five removed equations do NOT
+constitute an improved nonflag count. Retain simpler raw196437 for mutations.
+Raw196437 lower-remove-two0->210->410/798,cap6,dimension35,same bounds:
+19 exact nonnegative,8 limits,110 dimension prunes,273 objective prunes,
+41.739865/40.151419s,no other outcomes. DB independently confirms totals.
+Earlier gap194880 dimension30 resolves exact nonnegative beam30 in1.519968s,
+run534fe210cb69486668d6915ad4c35449488398efcd5f8657b822ae2ca33cd2d5.
+Old173903 two-removal queue now165 exact/21 unresolved counting cases after
+two resolved retries;original timeouts and193874 unknown30s retained.
+Primary174566 degree33 seven/five unchanged;all negative lineages retained.
+Presentation counts are not minimum distance. All60 tests pass0.432s,source
+unchanged,all deletion/scan outcomes inDB,reports ignored,no live job.
+Next simplified196437 two-removal410/798 or old173903 joint685/1080.
+Ownership/goal active,local commits,no push/publication or extra workers.
+
 ## Completed alternate-parent two-removal queue — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
