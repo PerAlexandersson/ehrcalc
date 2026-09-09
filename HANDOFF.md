@@ -1,5 +1,29 @@
 # Ehrcalc Handoff
 
+## Column-descendant content mutations through217 — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkout/no live scan verified at adoption. Previous goal turn made
+progress; no global blocker. Raw203068 full-content-remove advanced0->73->
+103->164->217/534,40.247402/41.769731/39.016753/39.368889s.
+Dimension35,beam32/5s cases/45s batches/60s guards,no flag-only objective filter
+before possible full-content compression. DB confirms136 initial exact
+nonnegative,13 initial limits,68 dimension prunes,no duplicates/empty/errors.
+Runs9dbfdc984a024b3395296e136b594a364db1ef906926bc4197f95fef44b24922,
+4cd4ad4f969b3d688a0bcb9ca8baa5783a3413a0dfdb2255891c439503180490,
+901d84abcaa80252db51bbb3227f201446c012d1992383c91f207828da112557,
+1cb2774e6bc42e0c1f37ce2b248dfbaab673fc4fcdd6d06a25cacd00aec35205.
+Small gap205974d31,label4/remove horizontal98 resolves exact nonnegative
+beam30 in6.662140s,run
+661f7c1fc38db5e73a6efbc30db8625a210abc2eb8f891de27e19a76c509df11.
+Thus137 exact,12 unresolved counting cases;original timeout retained.
+Nearby205970/205976/206020/206066d32 remain unknown.
+Resume217/534 with unchanged bounds. No new negative;primary174566d33
+seven/five and column203068/cert203079 retained. Bounds/prunes do not exclude
+negative signs,and presentation metrics are not minimum bad-edge distance.
+All66 tests pass0.446s,source unchanged,all outcomes in DB,reports ignored.
+No live scan,goal active,no push/publication or extra workers.
+
 ## Joint removals and smaller-shape neighborhood completed — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
