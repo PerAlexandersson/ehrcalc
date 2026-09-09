@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## Cross-lineage recombination and targeted gap retries — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkout/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Fresh pair198861+203068 checked against ledger before runs.
+Column all28:21 duplicates not revalidated,7 objective prunes0.432396s;
+run b0456f7b9210c316920f784362b36c9c8a1d443296428dbc3e70cc99cbebd5a2.
+Row all16:7 duplicates,9 objective prunes0.254106s;run
+4b4eebe35b9692500c583e1507ab082add0c938f05b1dd40d8365aefd11b173e.
+Cap six extra opposite/dimension38,beam32/5s cases/45s batches/60s guards.
+No count or sign conclusion for these skipped children; both lineages retained.
+
+Targeted raw203068 lower-remove gaps203209d33 [4,8,98] and203213d33
+[4,8,132],six/five,resolve exact nonnegative on beam30:
+5.754610s/run7a79eea11ed2d88182f92e24cb77046a34faaca2e77438fbb182a271f3fe2247,
+7.325870s/run2df5c7b1f9ed83947e18492498830a2c455eac219fae50382f722433fab30443.
+With earlier203113,that152-proposal queue now has19 exact and17 unresolved
+counting cases;initial16 exact/20 timeout observations retained.
+Internal-ban gap203446d38 [1,2,113],seven/four,remains unknown on beam30
+30.069439s,runa8daea23390447ba29bfe0a290f45d1d5017b113f02af9d04f90363ed9adba41.
+Do not repeat that same budget/layout; no negativity exclusion.
+No improved negative;primary174566d33 seven/five and column203068/cert203079 retained.
+Next diversify compatible smaller8x15 parents182122/182773 or other negative
+parents,or audit a new bounded crossover neighborhood. Current tested prefix
+crosses are heavily duplicate-dominated; no new crossover mode added this turn.
+All66 tests pass0.450s,source unchanged,all outcomes in DB,reports ignored.
+No live scan,goal active,no push/publication or extra workers.
+
 ## Column-descendant content-removal queue completed — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
