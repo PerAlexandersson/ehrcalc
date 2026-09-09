@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## Completed first smaller-parent joint queue — 2026-09-09
+
+Codex retains KTT/private DB and handoff ownership; clean worktrees/no live
+scan verified at adoption. Previous turn made progress. Continued serialized
+joint flag addition + opposite/internal removal scans of raw182122/182773,
+max-extra-opposite6,dimension38,beam32,5s cases/45s batches/60s guards.
+182122 slices151->301->445->589->624:39.785373/39.912006/39.488094/
+16.004473s;4 exact nonnegative,20 initial limits,233 dimension prunes,
+216 objective prunes. Entire624 now DB-confirmed:8 exact nonnegative,
+24 initial limits,304 dimension prunes,288 objective prunes;no other statuses.
+182773 slices0->145->289:39.791139/39.833133s;14 initial limits,
+137 dimension prunes,138 objective prunes,no exact/other outcomes.
+Separate retry184704 (dimension36,six/five,edge[57,83,85]) resolves exact
+nonnegative beam30 in11.255248s,run
+398e6830f59b8c2c438341574fab7919ef53b4aee6311b29b62dc94a0c95d9fa.
+Thus first queue has9 exact nonnegative and23 unresolved counting cases
+after this retry; original timeouts retained. Its completion is bounded
+coverage,not a sign exclusion for pruned/limited cases. Other small unknowns
+184728/184740/184860 dimension36,six/five;184426 remains unknown30s.
+No new negative or improved certified presentation. Primary174566 degree33
+seven/five and alternate182123/182774 degree30 seven/six unchanged.
+Presentation counts are not certified minimum distance. All outcomes inDB,
+reports runs/fan-parent182122-joint38-offset*-extra6-beam5-20260909.jsonl
+and corresponding182773 reports ignored. All60 tests pass0.424s,source
+unchanged,no live job. Next resume182773 joint289/624,then diversify mutation
+neighborhoods rather than repeatedly recount terminal layouts/budgets.
+All negative lineages/gaps retained;goal active,local commits,no push or workers.
+
 ## Opposite-removal and joint checkpoint — 2026-09-09
 
 Codex retains KTT/private DB and handoff ownership; no live scan at checkpoint.
