@@ -1,5 +1,18 @@
 # Ehrcalc Handoff
 
+## Compulsory-label mutation adapter — 2026-09-09
+
+Added a private frontier mode requiring one label in every original tableau
+column. Complement/transposition maps this to exact zero-content equalities;
+direct mixed-tableau/GT checks pass, 41 tests total. This is an original-
+rectangle content condition, not a claimed change of augmented Kostka weight.
+Initial 70 proposals from original seed 213 and current 64864 give 66 exact
+nonnegative results, three empty faces and one duplicate. No negative
+frontier change. Additional zero/shape scans and their disjoint tail are
+recorded in the mutation handoff/MariaDB; eleven new cases remain time-limited.
+All skips/timing are explicit, reports ignored, no live scan. Codex owns
+adapter/tests/docs continuation; goal active, no flagged-Kostka witness.
+
 ## Degree-37 nine/nine negative — 2026-09-09
 
 Pure internal-ban deletion yields 64864 (`15 x 14`, degree 37), with
