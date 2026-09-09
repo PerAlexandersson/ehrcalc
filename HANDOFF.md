@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Low-degree diversification checkpoint — 2026-09-09
+
+Ten/ten87727 frontier unchanged. Sibling weight/slide and joint-prefix scans
+add14 unresolved two-second cases; three old lower-degree cases remain unknown
+after distinct ten-second retries. All bounds/timing/IDs in mutation handoff/DB.
+Direct original213 combined-content offsets120--419 give198 fresh exact
+results (23 negative),102 prunes,no errors/limits. Next420 of8815. New
+degree21 diversification seed91866 comes from90936 ->91349 certified
+compulsory-label compression ->redundancy pruning(476/512 equations):
+source `19 x 21`,18 internal/18 opposite,linear `-161741/660`,shape
+`(22,1^19)/(1)`,weight `(1^40)`. Fresh maintained-engine endpoints agree.
+Not a metric-frontier improvement or flagged-Kostka witness; retain all
+lower-degree/ten-ten alternatives. Codex owns handoff continuation; source
+unchanged,43-test baseline,reports ignored,no live scan,goal active.
+Pre-restart branches paused,no push/publication.
+
+
 ## Ten/ten bounded neighborhoods completed — 2026-09-09
 
 No new negative this checkpoint; retain87727 and lower-degree alternatives.
