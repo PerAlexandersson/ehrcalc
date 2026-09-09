@@ -1,5 +1,37 @@
 # Ehrcalc Handoff
 
+## Completed first column-descendant removal queue — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkout/no live scan verified at adoption. Previous goal turn made
+progress: new certified negative lineage and tested column-crossover source.
+Raw203068 lower-remove resumed48->90->134->152 in39.011932/40.530862/
+20.527730s;cap six extra opposite/dimension38,beam32/5s cases/45s batches/
+60s guards. DB confirms whole152:16 initial exact nonnegative,20 limits,
+25 dimension prunes,89 objective prunes,2 duplicates not revalidated.
+No empty cases or engine errors. New runs
+d6e005928bc12cd850e1c9497f18cc1563a7b53b820377c8d232464a63d5c719,
+21f68a2d2b34e2103b44cd692d5884d9ab8d5659b5a56d73875933d7a317fe53,
+087be821ac331c27975d99c10a20a3ddd7714b43b474229714143ed1b7369324.
+Small six/five gap203113d33 [1,2,98] resolves exact nonnegative beam30
+11.337169s,runf7ebb4fd9b3843b3ccf52e17d94923562e14df3932d4613542bb9205bf49155b.
+Thus17 exact,19 unresolved counting cases;original timeouts preserved.
+Nearby203209/203213d33 remain unknown. Coverage is not negativity exclusion.
+
+Disjoint column cross174551+173399 all28:1 exact negative,3 limits,
+21 duplicates not revalidated,3 objective prunes19.094447s;cap7/dimension38,
+beam32/5s/45s/60s,run
+b520a6db7fc302413d3becf9e591396bb0acd0c8a3dfb9be176fcc1f26297c6f.
+Negative203437d34 has the same polynomial as203068. Fresh full-coordinate
+signature equality confirms same face,not a new geometric lineage;stored
+equivalence a8308a3952423647cff1c178c7c5fc8c3ea50b6a7651f6b216d655c1ed53c100,
+0.010858s,not another polynomial count. Both parent IDs and mask pairs retained.
+Primary174566d33 seven/five remains best;203068/certificate203079 retained.
+Next paired/internal/content mutations of203068 or column cross with173929;
+do not repeat completed lower-remove queue. Metrics are not minimum distance.
+All66 tests pass0.445s,source unchanged,all outcomes in DB,reports ignored.
+No live scan,goal active,no global blocker,push/publication or extra workers.
+
 ## Column crossover verified: new negative lineage — 2026-09-09
 
 Follow-up raw203068 lower-remove0->48/152:1 exact nonnegative,8 limits,
