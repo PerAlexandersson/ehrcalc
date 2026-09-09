@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Restarted nine/seven degree29 siblings — 2026-09-09
+
+Fresh169733/169735:10x15,degree29,9 additional opposite constraints/7
+internal bans,shape `(16,1^10)/(1)`,weight `(1^25)`. Source169265 lower/remove
+169688/169692;linear `-367784497/185732820` and
+`-89252138329/38818159380`. Full coordinate/fresh endpoints agree0.475763s
+and0.356850s. Degree improves31 to29;counts unchanged,not a KTT witness
+or minimum claim. Preserve both and all ancestors. Five batches299 slots:
+218 exact(53 negative),40 prunes,40 unknown timeouts,1 duplicate not
+revalidated,no empty/errors. Lower/remove169265 complete245;paired next54/280.
+No lower opposite count/degree found among stored negatives. Significant
+unrelated Lean host load observed;subsequent scans serialized,other workers
+untouched. All50 tests pass1.774s,source unchanged,reports ignored,no live job.
+Codex owns continuation,goal active,older branches paused. Bounds/IDs/timing
+inMariaDB/mutation handoff;next169735 removal neighborhoods,no push/publication.
+
 ## Smaller restarted nine/seven degree31 — 2026-09-09
 
 New169265:10x15,degree31,9 additional opposite constraints/7 internal bans,
