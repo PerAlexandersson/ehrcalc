@@ -1,5 +1,18 @@
 # Ehrcalc Handoff
 
+## Eight/six removal bottleneck checkpoint — 2026-09-09
+
+Selected170883 unchanged:10x15,degree33,8 additional opposite/6 internal,
+linear `-3944550620261/1444035528936`;not a KTT witness. Four5s batches28
+slots:1 exact nonnegative,8 prunes,19 unknown limits,no duplicate/empty/errors.
+Internal170880 all6 visited;paired next12/210. Degree40 internal child170910
+also times out on separate depth15 retry15.038141s. Its lower-flag queue
+all10 visited:1 nonnegative,9 unresolved;no intermediate sign assumed.
+All19 new signs unknown,skipped signs unclaimed. All52 tests pass0.393s,
+source unchanged,reports ignored,no live job. Codex owns continuation,
+goal active,older branches paused. Full bounds/IDs/timing inMariaDB and
+mutation handoff;next paired12 or verified layout work,no push/publication.
+
 ## Certified restarted eight/six degree33 — 2026-09-09
 
 New170883:10x15,degree33,8 additional opposite constraints/6 internal bans,
