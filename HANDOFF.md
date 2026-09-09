@@ -1,5 +1,19 @@
 # Ehrcalc Handoff
 
+## Nine/seven bounded neighborhood checkpoint — 2026-09-09
+
+Selected168334 unchanged:11x16,degree36,9 additional opposite/7 internal,
+linear `-4300739861017/1504203675975`;not a KTT witness. Seven batches152
+slots:54 exact nonnegative,31 prunes,63 initial limits,3 duplicates not
+revalidated,1 empty,no errors. Lower11/internal7/single43 fully visited;
+content/removal next26/1047,interior shrinking next65/172. Two degree35
+boundary greedy5 retries exact nonnegative;content168464 greedy5 still
+limited5.010766s.61 new signs unknown;skipped signs unclaimed. All records
+inMariaDB,bounds/timing inmutation handoff,reports ignored. All50 tests
+pass0.377s,source unchanged,no live job. Codex owns continuation,goal active,
+older branches paused. Retain cheaper nine/eight and all alternatives;
+next resume bounded shrinking/content removal. No push/publication.
+
 ## Certified restarted nine/seven degree36 — 2026-09-09
 
 New168334:11x16,degree36,9 additional opposite constraints/7 internal bans,
