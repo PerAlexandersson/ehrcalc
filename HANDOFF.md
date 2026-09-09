@@ -1,5 +1,42 @@
 # Ehrcalc Handoff
 
+## Abacus follow-up and completed paired queue — 2026-09-09
+
+Codex retains ownership and sole local DB writer. Raw209610 paired queue is
+complete180/180: DB confirms2 initial exact nonnegative,34 time limits,
+27 dimension prunes,117 objective prunes. Cap six extra opposite/dimension38,
+beam32/5s cases/45s batches/60s guards. Resume slices53->93->133->173->180
+used43.925719/43.562639/42.028897/15.711504s. Original started observations
+are retained separately from these180 outcomes. Retry210433 beam30 remains
+unknown30.056855s,runbc39b52408c5e6a036434d36c8b691101598d364d959e16b89556eafb02c6d18.
+No improved negative; primary174566 degree33 seven extra opposite/five internal
+remains retained, not a certified minimum distance or flagged-Kostka witness.
+
+User reaffirmed Abacus. Remote docs re-read; queue idle before submission,
+serial CPUs0,1/8GiB limits unchanged. Prior exact compatibility pilot retained;
+wrapper/engine SHA freshly match its tested binaries. Two disjoint unresolved
+cases210473/210513d34 (six extra opposite) submitted with20s each/60s job:
+20260909T201132-1b8bd791b489. Original quotient and beam permutations freshly
+reconstructed and compared before upload. Only wrapper/input/engine transferred.
+Code SHA a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a;
+engine SHA 8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367;
+input SHA 215caf339cf3ac8fb2d5848d8246c305474601a61410d0ae723d8c227ad18ee8.
+Local ledger964a8d1c9da5f052348fe176d7d0642bb9497cb3e7182e39d5bf565488411225
+records submission. Job was running on inspection; early fetch refused because
+not finished. Inspect this ID, never resubmit on ambiguous connection. Results
+must be validated before ingestion; remote originals retained for host collection.
+Generated reports remain ignored. No source edits, extra workers or publication.
+
+Job finished done/exit0,wall42.346215s. Both cases time_limited20.124329/
+20.126899s; signs unknown. Fetched outside Dropbox to
+/home/dev/.local/share/supervisor-compute-results/abacus/20260909T201132-1b8bd791b489-5lvaiot8.
+Manifest file hashes/header/case IDs/GLIBC2.35 libraries/CPU affinity/memory,
+swap and PID limits validated before local ledger result ingestion. No exact
+cache rows inserted. Output SHA
+93dee086672ec39220329237d9fbc0f35d6c75a6cc76eab65c91edab733ec92e.
+No live local/remote scan at checkpoint; selected larger-budget cases remain
+open, not a global blocker. Do not repeat these20s attempts unchanged.
+
 ## Band-negative internal removals; paired scan started — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
