@@ -1,5 +1,18 @@
 # Ehrcalc Handoff
 
+## Four additional exact shrinking resolutions — 2026-09-09
+
+Depth-layout five-second retries resolve107836/107908 (dimension34) and
+107906/107929 (dimension35) exactly nonnegative. Shrinking107400 now has35
+unresolved initial limits. Eight other shrinking retries and six lower-flag
+removal retries remain limited under separately recorded layouts/bounds.
+All18 attempts/timing/IDs in MariaDB and mutation handoff;prior evidence
+preserved,no engine errors. Negative frontier unchanged,no flagged-Kostka
+witness. Source unchanged,43-test baseline,reports ignored,no live scan.
+Codex owns handoff continuation;goal active,original-restart scope,old
+branches paused,no push/publication.
+
+
 ## Twelve additional exact gap resolutions — 2026-09-09
 
 Four dimension32 and eight dimension33 shrinking cases resolve exactly
