@@ -1,5 +1,31 @@
 # Ehrcalc Handoff
 
+## Bounded crossover implemented: certified negative descendant — 2026-09-09
+
+Codex owns private frontier/tests/README and handoffs; clean checkout/no live
+scan verified. Previous turn made progress. Added --mode row-crossover with
+required --donor: matching explicit rectangles, exact negative parent rows,
+content-modified parents rejected until compression. Reciprocal prefixes of
+both masks at each interior row cut give exactly2*(a-1) stable proposals.
+Donor/config ordering distinguish DB identity; existing mode identities stay
+unchanged. Both parent IDs/cut/direction survive empty/skipped/duplicate rows;
+parent polynomials never inherited as child evidence. Invalid donors recorded
+as validation failure. All64 tests pass0.464s,cover inheritance/bounds,
+validation,exact adapter integration,lineage,empty/duplicate/timeout/resume.
+README updated; maintained Rust engine unchanged.
+First live cross174551+196437,9x15,all16:3 exact(one negative),3 duplicates
+not revalidated,10 objective prunes,no limits/errors/empty/dimension prunes,
+3.885647s. Cap7/dimension38,beam32/5s cases/45s batch/60s guard.
+Negative raw198861 from cut8,prefix parent174551,count3.263524s:
+degree34,linear-115236644371/164094946470.
+Fresh beam15 certificate198864 passes both endpoints/fullcoordinate identity
+6.641688s,run26e9fc099f7cf9a246b8bbb6f4aecb18a4941d9f443983834f6d3fa89acbede9.
+Seven additional opposite/five internal bans,9x15. Retain new negative lineage;
+not a promotion over primary174566 degree33 seven/five,not a flagged witness.
+Presentation metrics are not minimum distance. All outcomes inDB,reports ignored.
+Next mutate raw198861 toward six opposite constraints,or cross other compatible
+negative parents. Ownership/goal active,local source checkpoint,no push/workers.
+
 ## Completed alternate joint queue; crossover next — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
