@@ -1,5 +1,32 @@
 # Ehrcalc Handoff
 
+## Five-opposite removal queue completed — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkout/no live scan verified at adoption. Previous goal turn made
+progress; no global blocker. Raw203068 lower-remove-two completed607->897->
+1212->1220 in42.606978/39.692236/10.217770s;cap five extra opposite,
+dimension36,beam32/5s cases/45s batches/60s guards.
+New613 proposals:4 exact nonnegative,14 initial limits,66 dimension prunes,
+529 objective prunes. Runs
+ab242752644ff5896fa1da89b35b0606da8bc545331bf08477780d80e006ce1a,
+505ce43dd4d21249505427abc12854833b138336c9fffaccc2b49996dc046bc2,
+90e19414747f23e88735a9a07a413f40997056a2db5e4448ee8f397681eca75c.
+DB confirms all1220:5 initial exact nonnegative,28 initial time limits,
+156 dimension prunes,1031 objective prunes,no duplicates/empty/engine errors.
+Small gap208555d32 [6,12,98,132] resolves exact nonnegative beam30
+7.620829s,run2e87f6723d7c01018c897b4df8ec6aa495fc067d46d3e3bf5ed333c0da155bed.
+Thus6 exact,27 unresolved counts;original timeout retained. Previous207337
+still unknown after30s. Nearby208545/208861d33,208851d34 remain unknown.
+Bounds/pruning do not exclude negative signs; five-opposite metric is not
+minimum bad-edge distance. No improved negative;primary174566d33 seven/five
+and column203068/cert203079 retained.
+Next diversify crossover structure beyond prefixes or alternate negative
+parents; tested prefix crosses are duplicate-dominated. Selected longer-budget
+nonflag gaps remain open; do not repeat completed queue at unchanged bounds.
+All66 tests pass0.446s,source unchanged,all outcomes in DB,reports ignored.
+No live scan,goal active,no push/publication or extra workers.
+
 ## Smaller-parent crosses and five-opposite removals — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
