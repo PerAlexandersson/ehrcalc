@@ -1,5 +1,34 @@
 # Ehrcalc Handoff
 
+## Column-descendant internal removals completed — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkout/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Raw203068 lower-internal all45 completed0->31->45 in
+39.199719/10.701942s;cap seven extra opposite/dimension40,beam32/5s cases/
+45s batches/60s guards. Targets four internal bans; no minimum-distance claim.
+DB confirms1 initial exact nonnegative,9 limits,35 dimension prunes,
+no objective prunes,duplicates,empty cases or engine errors.
+Runsfe0897a511b50661debaa7a89a5e10cc100999b4e7b72f91756376d1a1e7e839,
+de42b338ba6de1a1fc90428be808b30026f3c228783bc49ba9d4523547bdb311.
+Small gap203506d37 [7,13,113] resolves exact nonnegative beam30 in7.785546s,
+run37dc0823761803b9ed1d4e61cda15b3914515c2cd5f077da30fa63961e2fde0c.
+Fresh full-coordinate comparison with old199747 was unequal,so that old
+resolved case was not used as its evidence. Original timeout retained.
+Thus2 exact,8 unresolved counting cases; nearby203446/203476/203516d38.
+Bounds/pruning do not exclude negative signs.
+
+Column cross174551+173929 all28:26 duplicates not revalidated,1 objective
+prune,1 time limit203572d37 cut10/direction0,no fresh exact result;5.692718s,
+run eaa7e15167c51dbd7a5eee434a5693bb4f91e30a570469ab422e51a91514c55c.
+Cap7/dimension38,beam32/5s/45s/60s. No new negative.
+Primary174566d33 seven/five and column203068/certificate203079 retained.
+Next paired mutations of203068 targeting six extra opposite,or disjoint
+shape/content reductions. Completed lower-remove/lower-internal queues should
+not be restarted; retain selected longer-budget gaps,including possible Abacus.
+All66 tests pass0.445s,source unchanged,all outcomes in DB,reports ignored.
+No live scan,goal active,no push/publication or extra workers.
+
 ## Completed first column-descendant removal queue — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
