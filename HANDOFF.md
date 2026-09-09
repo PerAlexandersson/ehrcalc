@@ -1,5 +1,23 @@
 # Ehrcalc Handoff
 
+## Nine additional opposite constraints,degree37 — 2026-09-09
+
+New121891:source12x15,degree37,shape `(16,1^12)/(1)`,weight `(1^27)`,
+linear `-108994039977551/534293145706320`,10 internal bans and9 additional
+opposite constraints. Lower flags augmented row13>=15,row12>=12 force3
+of12 canonical opposite equations. Full coordinate-order certificate and
+two fresh endpoint counts verified. This improves the previous10-additional
+branch's size/count tradeoff,not a minimal-distance theorem or KTT witness.
+Lineage120214 ->120513 ->compression121351 ->internal-first prune121866
+->certificate121891. Private certificate helper,README,scanner dedup and
+two regression tests added;all47 tests pass,no public Ehrcalc API change.
+Five bounded scans:627 slots,60 exact(3 negative),518 prunes,36 duplicates,
+1 empty,12 initial limits. Three resolve exactly nonnegative under distinct
+depth5 retries;nine new signs remain unknown. All IDs,bounds,timing,skips,
+lineages in MariaDB/mutation handoff. Cap41,two-second cases,45-second
+batches/60-second guards;reports ignored,no live scan. Codex owns continuation,
+goal active,original213 restart only,older branches paused,no push/publication.
+
 ## Smaller degree37 ten-additional-constraint chain — 2026-09-09
 
 New119907 ->120028 ->120089 ->lower flags120154/120188/120214:
