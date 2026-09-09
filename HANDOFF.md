@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Certified restarted nine/six degree36 — 2026-09-09
+
+New170321:10x15,degree36,9 additional opposite constraints/6 internal bans,
+linear `-2689218931133/1146059943600`,shape `(16,1^10)/(1)`,weight `(1^25)`.
+Lineage169735 ->internal169964 ->retry170283 ->lowerflag170306 ->retry170319
+->certificate170321. Full coordinate/fresh endpoints agree8.103040s.
+Degree37 nine/six ancestor170285 also certified9.208752s. One fewer internal
+ban;retain degree29 nine/seven and all siblings,not a KTT witness/minimum claim.
+Four batches169 slots:123 exact nonnegative,15 prunes,31 initial limits,
+no duplicates/empty/errors. Nine distinct retries resolve eight source signs:
+two negative/six nonnegative;23 new signs unknown. Lowerflag170283 all10
+now exactly resolved;paired169735 next152/300,internal7 fully visited.
+All50 tests pass1.695s,source unchanged,reports ignored,no live job.
+Codex owns continuation,goal active,older branches paused. Full bounds,
+IDs,timing inMariaDB/mutation handoff;next170321 mutations,no push/publication.
+
 ## Restarted nine/seven degree29 siblings — 2026-09-09
 
 Fresh169733/169735:10x15,degree29,9 additional opposite constraints/7
