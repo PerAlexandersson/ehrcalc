@@ -1,5 +1,26 @@
 # Ehrcalc Handoff
 
+## Completed two-removal queue and alternate parent — 2026-09-09
+
+Codex retains KTT/private ownership;clean worktrees/no live scan at adoption.
+Previous turn made progress.174551 queue finished1745->1764->1786:
+2 exact nonnegative,14 limits,25 objective prunes43.981388/33.303796s.
+MariaDB confirms full1786:257 initial exact nonnegative,345 initial limits,
+267 dimension prunes,917 objective prunes,no duplicates/empty/errors.
+First137 unfiltered,remaining1649 max-extra-opposite6;dimension40,beam32,
+5s cases/45s batches/60s guards. Seven separate retries resolve seven initial
+gaps;completion is bounded coverage,not mathematical exclusion of all cases.
+Fresh beam15 certificate of alternate173399 is180617:degree31,eight
+opposite/six internal,two negative coefficients;fullcoordinate identity and
+both fresh endpoints agree0.506828s. Raw173399 previously unmutated.
+Diversified to173399 joint cap7/dimension40/beam32/5s:229/1080 proposals,
+144 objective prunes,78 dimension prunes,7 unknown limits42.073186s.
+Seven/five unknowns180856/180880/180892/181096/181120 dimension38,
+180820/181060 dimension39. Best174566 degree33 seven/five unchanged.
+All60 tests pass0.422s,source unchanged,all attempts inDB,reports ignored,
+no live job,no extra workers. Next alternative-parent combined/shape/weight
+branches;all lineages/gaps retained,goal active,local commits,no publication.
+
 ## Strategy discussion checkpoint — 2026-09-09
 
 User asks whether to adjust/parallelize. Codex completed already-running
