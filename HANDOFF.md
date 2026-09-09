@@ -1,5 +1,18 @@
 # Ehrcalc Handoff
 
+## Verified bounded ordering retry option — 2026-09-09
+
+Private mutation retry adds --relabel-beam:32-state natural-order search,
+ranked by peak/total live frontier,with original/depth/greedy fallbacks.
+Full coordinate equivalence is mandatory;maintained exact engine unchanged.
+Distinct beam32-peak-total-frontier-v1 identity,stored profiles/permutation/
+layout time;old identities unchanged,inherited evidence cleared. Heuristic,
+not optimal-width/sign proof. Exhaustive small mixed-face and CLI identity/
+permutation tests pass;all55 tests0.424s. README updated,no public API change.
+Paired170880 resumed[12,20):8 limits40.887671s,no exact result;next20/210.
+Selected eight/six degree33 unchanged. Codex owns bounded runtime checks,
+goal active,all records inMariaDB,reports ignored,no push/publication.
+
 ## Eight/six removal bottleneck checkpoint — 2026-09-09
 
 Selected170883 unchanged:10x15,degree33,8 additional opposite/6 internal,
