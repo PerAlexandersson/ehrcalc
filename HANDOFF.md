@@ -1,5 +1,18 @@
 # Ehrcalc Handoff
 
+## Fourteen/fourteen original-seed descendant — 2026-09-09
+
+Fresh zero-content compression and redundant-equation pruning give 55806:
+source `18 x 18`, degree 21, 14 internal bans / 14 opposite equations,
+linear `-2716195/596904`, shape `(19,1^18)/(1)`, weight `(1^36)`.
+Full coordinate-order equivalence and fresh maintained-engine endpoint
+computations agree. Retain degree-20 54009 as a lower-degree tradeoff.
+Ten finite cap-24 mutation neighborhoods, all outcomes, 400 structural
+comparisons and timing are in the mutation handoff/MariaDB; no new limits.
+55806's immediate singles/slides found no fresh negative. Counts remain
+presentation metrics, not a flagged-Kostka witness. Reports ignored, no
+source changes, no live scan; Codex owns handoff continuation. Goal active.
+
 ## Renewed degree-21 seed branch — 2026-09-09
 
 Current freshly restarted low-degree selection: 54009, source `18 x 19`,
