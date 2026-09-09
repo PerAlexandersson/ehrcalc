@@ -1,5 +1,20 @@
 # Ehrcalc Handoff
 
+## Shrinking coverage complete; eleven gaps resolved — 2026-09-09
+
+All206 shrinking proposals from degree37 lower-flag107400 now visited in
+disjoint slices. Initial results:32 exact nonnegative,95 prunes,16 duplicates,
+1 empty,62 time limits. Eleven separate depth-layout retries resolve nine
+degree24 and two degree32 cases as nonnegative;51 shrinking signs remain
+unknown. Four greedy five-second retries were limited before two of those
+cases resolved with depth. All attempts preserved in MariaDB;mutation handoff
+records IDs,layouts,bounds and timing. No frontier improvement or flagged-
+Kostka witness. Cap41,two-second scans,45-second batches/60-second guards;
+five-second retry bounds,no engine errors. Codex owns handoff continuation,
+source unchanged,43-test baseline,reports ignored,no live scan,goal active.
+Original-restart scope,old branches paused,no push/publication.
+
+
 ## Explicit lower-flag degree37 checkpoint — 2026-09-09
 
 New107400:degree37,linear `-108994039977551/534293145706320`,source `14 x 15`,
