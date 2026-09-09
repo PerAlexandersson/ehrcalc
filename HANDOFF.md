@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## Targeted five-opposite retries and internal slides — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkout/no live scan verified at adoption. Previous goal turn made
+progress; no global blocker. Ledger checked for previous retries before work.
+Five-opposite lower-remove-two gap208545d33 [6,12,82,132] resolves exact
+nonnegative beam30 in5.178064s,run
+039b4203c67c897429529eef23b72078d256c4d67e50a1dcd15b975b42bed0a5.
+Gap208861d33 [7,13,98,132] remains unknown beam30 in30.071895s,run
+271dbd85431c1bc0d54063ff437163c8de4444cff6a863f84601434421cefcb8.
+Original timeouts retained. With earlier208555,whole1220 queue now7 exact
+and26 unresolved counting cases; do not repeat30s budgets for208861/207337.
+
+Raw203068 slide-internal all7 recorded under cap7/dimension38,beam32/5s/
+45s/60s;all dimension-pruned0.334661s,no other outcomes,run
+124d4ce2a7cf8fab4ee707fe04130386eb810a5144bee355091443bfe5aba806.
+Smallest209483d39 slide[113,99],then209485d40 [113,112].
+First bounded count209483 beam5 remains unknown5.018588s,run
+70a99b16a5677538d0130a94dc3fbbc8f37f84057e4f751c5c1d789dd48d8287.
+No improved negative;primary174566d33 seven/five and column203068/cert203079 retained.
+Next structural diversification could exchange interior row/column bands
+between negative parents (two cuts,not just prefixes); this is NOT implemented.
+Require bounded stable order,parent validation,lineage and exact CLI/resume
+tests before use. Existing selected nonflag gaps also remain available.
+All66 tests pass0.451s,source unchanged,all outcomes in DB,reports ignored.
+No live scan,goal active,no push/publication or extra workers. Presentation
+counts are not minimum distance; pruning/timeouts do not exclude negative signs.
+
 ## Five-opposite removal queue completed — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
