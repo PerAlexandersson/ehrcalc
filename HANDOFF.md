@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Degree32 alternative lineage continuation — 2026-09-09
+
+Codex owns KTT/private DB/handoff continuation;worktrees clean at adoption.
+172187 lower-remove [0,94)/198:67 exact(4 negative),15 prunes,12 limits,
+no duplicate/empty/engine errors;three45s batches/60s guards,cap40,beam32,
+5s cases. Fresh certificate172452 of172425:10x15,degree32,eight additional
+opposite/six internal,linear `-263100760739/80224196052`,both greedy5
+endpoints/full coordinate equality verified8.910616s. Additional parent,
+not fewer nonflag constraints or KTT witness. Direct internal172251 remains
+unknown after separate beam30 retry30.101829s.
+172425 lower-remove [0,75)/207:52 exact(4 negative),12 prunes,10 limits,
+1 duplicate not revalidated,no empty/engine errors. Negative descendants
+retained;no count improvement certified. Full timing/IDs in private handoff
+and MariaDB,all55 tests pass0.422s,no source changes,reports ignored.
+No live job at checkpoint;next172425 offset75 or172187 offset94.
+Ownership retained,goal active,nonflag reduction primary,no push/publication.
+
 ## Degree32 eight/six tie-break improvement — 2026-09-09
 
 New selected172248,source172187 from170880 lower-flag/remove [9,14,71]:
