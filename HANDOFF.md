@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Smaller certified ten/eight restart — 2026-09-09
+
+Certificate163351:11x16,degree30,10 additional opposite constraints/8 internal
+bans,linear `-68708816183/22181805360`,shape `(17,1^11)/(1)`,weight `(1^27)`.
+Lineage161618 ->162326 ->compression162636 ->prune162820 ->163003
+->flag163329 ->163351. Full coordinate/fresh endpoint checks agree0.392713s.
+Smaller at unchanged counts;retain degree24 ten/nine and all siblings.
+Not a minimal-distance theorem or KTT witness. Eight bounded batches:
+796 slots,550 exact(99 negative),149 prunes,46 initial limits,51 empty,
+no duplicates/errors. Five separate5s retries resolve two nonnegative;
+44 initial signs unknown. Content/removal161618 next346/1143;others complete.
+Exact IDs,bounds,pruning,timing in MariaDB and mutation handoff. All50 tests
+pass,source unchanged,reports ignored. No live scan at checkpoint;Codex
+owns continuation,prioritizes fewer constraints,older branches paused.
+Goal active,no push/publication;next combined removals on163351.
+
 ## Certified restarted ten/eight tradeoff and greedy endpoints — 2026-09-09
 
 New161620:13x16,degree31,10 additional opposite constraints/8 internal
