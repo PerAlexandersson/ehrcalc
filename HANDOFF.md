@@ -1,5 +1,30 @@
 # Ehrcalc Handoff
 
+## Content-removal scan advanced through372 — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkout/no live scan verified at adoption. Previous goal turn made
+progress; no global blocker. Raw198861 full-content-remove resumed319->335->
+346->361->372 under dimension36,beam32/5s cases/45s batches/60s guards.
+No flag-only objective filter before potential content compression.
+Slices39.017042/40.430978/43.584903/42.299716s;14 exact nonnegative,
+22 initial limits,17 dimension prunes,no duplicates/empty/errors.
+Runs3a8373608ecbb1047f045a476ff5cf2f70537696079915c2b296fb078c09ff79,
+4cc0ece86f9ac37e006b2b25994cd12bed4ea211ed08a42b7d400304972e6ecc,
+9726bc30201c63c480e4789552d4cf9ea2a84c0026903073c0a0d49e9871a409,
+59eaa16f6396a3d78e45233c25f65f58b47667df33d8514fb0fe9c66ef3ab5f2.
+Gap202431 dimension32,label14/remove horizontal11 resolves exact nonnegative
+beam30 in5.216309s,run
+415478e858880ebddd7dd6deeee4c984bee45a8c1a01fde41c0de4dd391fe3d4.
+Original timeout retained. Nearby202437/202439/202447/202453 dimension32
+remain unknown. DB confirms all372:101 initial exact nonnegative,60 initial
+limits,100 dimension prunes,111 duplicates not revalidated,no other outcomes.
+After retries202283 and202431:103 exact,58 unresolved counting cases.
+Resume372/626 with unchanged bounds. Prunes/duplicates are not sign exclusions.
+No new negative;primary174566 degree33 seven/five and crossover198864 retained.
+All65 tests pass0.448s,source unchanged,all outcomes in DB,reports ignored.
+No live scan at checkpoint; focused documentation commits,no push/publication.
+
 ## Content-removal scan advanced through319 — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
