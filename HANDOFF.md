@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Smaller restarted nine/seven degree31 — 2026-09-09
+
+New169265:10x15,degree31,9 additional opposite constraints/7 internal bans,
+linear `-168866117347/45842397744`,shape `(16,1^10)/(1)`,weight `(1^25)`.
+Lineage168334 ->interior shrink169187(row11,column14) ->fresh certificate169265.
+Full coordinate/fresh endpoints agree0.322230s. Smaller/lower degree at
+unchanged counts;retain all alternatives,not a KTT witness or minimum claim.
+Six batches354 slots:243 exact(15 negative),64 prunes,46 new limits,
+1 duplicate not revalidated,no empty/errors. Shrinking168334 complete172;
+content/removal next228/1047. New internal7/single38 complete,no further
+count/degree improvement. Prior shrinking gap168530 resolves nonnegative
+atgreedy5;new internal169268 degree39 still limited5.007764s. All46 new
+signs unknown;skipped signs unclaimed. All50 tests pass0.384s,source unchanged,
+reports ignored,no live job. Codex owns continuation,goal active,older branches
+paused. Bounds,IDs,pruning,timing inMariaDB/mutation handoff. Next169265
+combined removal neighborhoods;no push/publication.
+
 ## Nine/seven bounded neighborhood checkpoint — 2026-09-09
 
 Selected168334 unchanged:11x16,degree36,9 additional opposite/7 internal,
