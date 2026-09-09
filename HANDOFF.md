@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Low-degree coverage and new alternative — 2026-09-09
+
+Seven bounded neighborhoods of95922/95858 completed without new negative;
+all1029 combined-content slots visited in disjoint slices. Pruned/duplicate
+signs unclaimed. Targeted retry of95922's smallest opposite deletion yields
+degree37 fourteen/fourteen100830;flag child100861 lowers degree to36 with
+negative cubic/quartic coefficients. Source `17 x 19`,shape `(20,1^17)/(1)`,
+weight `(1^36)`. Separate depth-layout count agrees in0.175774s. Retain
+ten/ten and cheaper low-degree alternatives;no global frontier improvement
+or flagged-Kostka witness claimed. Mutation handoff/MariaDB record all
+bounds,skips,timing,lineages and exact coefficients. Cap28/37 as documented,
+two-second cases,45-second batches/60-second guards;no new limits/errors.
+Codex owns handoff continuation,source unchanged,43-test baseline,reports
+ignored,no live scan,goal active. Old branches paused,no push/publication.
+
+
 ## Smaller degree22 alternative — 2026-09-09
 
 New original-restart descendant95922: `17 x 19`,degree22,14 internal/15
