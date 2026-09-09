@@ -1,5 +1,20 @@
 # Ehrcalc Handoff
 
+## Smaller degree22 alternative — 2026-09-09
+
+New original-restart descendant95922: `17 x 19`,degree22,14 internal/15
+opposite,linear `-14376701/2238390`,shape `(20,1^17)/(1)`,weight `(1^36)`.
+Lineage94094 ->94787 (shrink) ->95922 (flag). Separate depth-layout exact
+recount agrees in0.027914s. Weight-compressed alternative95858 retains
+degree22,15 internal/16 opposite; full coordinate-map/pruning endpoint
+checks agree. Preserve all prior low-degree/ten-ten tradeoffs; no global
+metric improvement or flagged-Kostka witness claimed. Mutation handoff/DB
+record10 finite neighborhoods,all skips/timing/certificates. Cap28,two-second
+cases,45-second batches/60-second guards; no new limits/errors. Source
+unchanged,43-test baseline,reports ignored,no live scan. Codex owns handoff
+continuation; goal active,old branches paused,no push/publication.
+
+
 ## Low-degree diversification descendants — 2026-09-09
 
 Original-restart lineage91866 ->92144 ->92636 ->94094 gives `18 x 20`,
