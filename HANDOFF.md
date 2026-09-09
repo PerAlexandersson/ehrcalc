@@ -2,6 +2,11 @@
 
 ## Bounded crossover implemented: certified negative descendant — 2026-09-09
 
+Follow-up raw198861 lower-remove0->54/183:2 exact nonnegative,7 limits,
+9 dimension prunes,36 objective prunes41.703379s;cap6/dimension38,
+beam32/5s/45s/60s,same serialized bounds. All results inDB,report ignored,
+no live job. Resume54/183;no improved child. Private source checkpointf553e4b.
+
 Codex owns private frontier/tests/README and handoffs; clean checkout/no live
 scan verified. Previous turn made progress. Added --mode row-crossover with
 required --donor: matching explicit rectangles, exact negative parent rows,
