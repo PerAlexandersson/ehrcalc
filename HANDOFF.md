@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Shrinking gaps resolved and dual presentation checks — 2026-09-09
+
+Seven remaining shrinking121891 time limits resolve exactly nonnegative
+with separate depth5 retries. Full176 queue now96 exact nonnegative,
+79 prunes,1 duplicate,no remaining time limits;skipped signs unclaimed.
+Private transpose-complement helper/tests/README/scanner dedup added.
+Full coordinate reversal/mark/slant certificate and exhaustive small mixed
+mask tests pass,including fresh endpoint-layout wiring;all49 tests pass.
+Large15x12 dual of121891 passes coordinate certificate and source count,
+but both depth/greedy target5s recounts time out. DB126773/126776 remain
+verification_failed with no inherited negative evidence. No new verified
+negative/frontier improvement. Bounds,timing,IDs in mutation handoff/MariaDB.
+No public Ehrcalc API change,reports ignored,no live scan. Codex owns
+continuation,goal active,original213 restart only,older branches paused,
+no push/publication or flagged-Kostka witness.
+
 ## Higher-degree joint-removal bounds recorded — 2026-09-09
 
 All1440 joint and20 slide-internal proposals from121891 exceed cap43:
