@@ -1,5 +1,24 @@
 # Ehrcalc Handoff
 
+## Smaller restarted eleven/eleven degree24 candidate — 2026-09-09
+
+New155516:15x17,degree24,11 additional opposite constraints/11 internal
+bans,linear `-1968472027/205931880`,shape `(18,1^15)/(1)`,weight `(1^32)`.
+Lineage153513 ->content/removal154528 ->compression154917 ->prune155288
+->certificate155381 ->lower flag155402 ->flag155476 ->certificate155516.
+Fresh full-coordinate/endpoint checks agree (final0.091049s);prune240/272
+deletions in3.195189s. Retain degree23 16x17 12/11 sibling155383 and all
+negative alternatives. New-restart improvement,not global-frontier
+improvement,minimal-distance theorem or KTT witness.
+Ten queues:891 slots,471 exact(146 negative),369 prunes,24 duplicates,
+27 initial limits. One greedy5 retry resolves internal limit negative;
+26 new signs unknown. No errors/empty cases,skipped signs unclaimed.
+Full-content/removal153513 next356/1100;other queues complete. All bounds,
+IDs,timing in MariaDB/mutation handoff. Caps32/34/36/40,2s cases,45s
+batches/60s guards. All49 tests pass,source unchanged,reports ignored,
+no live scan. Codex owns continuation,goal active,older branches paused,
+no push/publication.
+
 ## Smaller degree23 restarted twelve/twelve candidate — 2026-09-09
 
 New153513:16x17,degree23,12 additional opposite constraints/12 internal
