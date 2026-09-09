@@ -1,5 +1,24 @@
 # Ehrcalc Handoff
 
+## Certified degree30 eight/six — 2026-09-09
+
+New selected173480:9x15,degree30,eight additional opposite/six internal,
+linear `-5180116423/1350196848`. Source173391 is173215 lower/remove
+[4,7,88];fresh full coordinate/flag certificate and both greedy5 exact
+endpoints agree0.866715s. Shape `(16,1^9)/(1)`,weight `(1^24)`.
+Degree-only improvement;not fewer constraints/KTT witness/minimality theorem.
+
+Fewer-internal173247 lower-flag9:3 exact nonnegative,6 initial limits;
+lowest-degree173269/173271 resolve nonnegative on separate beam15 retries
+11.030218/13.960918s. Four remaining signs unknown.173215 lower-remove142
+fully visited:MariaDB confirms92 exact(14 negative),24 prunes,14 unknown
+limits,12 duplicates not revalidated,no empty/errors. Every negative lineage
+retained,including degree30 alternatives not freshly flag-certified.
+All scans cap40,beam32,5s cases,45s batches/60s guards;full timing/IDs
+in private handoff and MariaDB. All55 tests pass0.428s,no source changes,
+reports ignored,no live job. Codex retains ownership;next nonflag mutations
+of173391,older parents preserved,goal active,no push/publication.
+
 ## Smaller certified eight/six degree31 — 2026-09-09
 
 New selected173244:9x15,degree31,eight additional opposite/six internal,
