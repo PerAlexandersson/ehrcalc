@@ -1,5 +1,34 @@
 # Ehrcalc Handoff
 
+## Completed second joint and first two-removal queues — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
+verified at adoption. Previous turn made progress. Raw182773 joint resumed
+289->433->570->624,39.480183/39.010332/21.467494s. New335 outcomes:
+4 exact nonnegative,14 initial limits,167 dimension prunes,150 objective
+prunes. MariaDB confirms entire624:4 exact,28 limits,304 dimension prunes,
+288 objective prunes,no duplicates/empty/errors. Cap six extra opposite,
+dimension38,beam32/5s cases/45s batches/60s guards,serialized.
+Diversified to raw182122 stronger lower flag + two opposite removals,
+cap five extra opposite,dimension36,same timing/layout bounds.
+All535 in slices0->230->446->535,39.020252/39.789975/24.812842s.
+DB totals:37 exact nonnegative,11 initial limits,120 dimension prunes,
+367 objective prunes,no other outcomes. Five/six gaps187086 dimension32
+and187286 dimension31 resolve exact nonnegative on beam30 retries,
+20.924159/5.541523s respectively;run keys
+47f13583d5cc71e65d50e8c178eb123fb84a88a31d5d670b8e70f5f56fe21696
+and f1614885c53a13b8ceeeaf9adea47b750dad8e299425842b4d85b4abb04110d2.
+Thus39 exact and9 unresolved counting cases after retries;original timeouts
+retained. Other small gaps187376/187846 dimension32;186916/187272/187676
+dimension34. Completed means bounded coverage,not exclusion of pruned/limited
+cases. No negative child or promoted presentation. Primary174566 degree33
+seven/five,alternates182123/182774 degree30 seven/six unchanged;presentation
+metrics are not minimum bad-edge distance. All60 tests pass0.432s,source
+unchanged,all outcomes inDB,reports ignored,no live job. Next alternate
+raw182773 lower-remove-two cap5/dimension36,or diversified content/weight
+mutations of retained negative parents;preserve lineages and unresolved cases.
+Ownership/goal retained,local commits,no push/publication or extra workers.
+
 ## Completed first smaller-parent joint queue — 2026-09-09
 
 Codex retains KTT/private DB and handoff ownership; clean worktrees/no live
