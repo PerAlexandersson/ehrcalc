@@ -1,5 +1,32 @@
 # Ehrcalc Handoff
 
+## Completed alternate two-removal and smaller content queues — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership; clean worktrees/no live scan
+verified at adoption. Previous turn made progress. Raw182773 lower-remove-two
+completed535 in slices0->245->357->535,39.620916/43.141205/38.660454s.
+DB confirms37 exact nonnegative,15 initial limits,116 dimension prunes,
+367 objective prunes,no duplicates/empty/errors. Cap five extra opposite,
+dimension36,beam32/5s cases/45s batches/60s guards,serialized.
+Diversified to raw182122 full-content-remove,dimension34,same timing/layout
+bounds,without flag-only objective cap before content compression.
+All424 in slices0->117->214->424,39.007162/41.692304/33.133150s.
+DB confirms273 exact nonnegative,5 initial limits,127 dimension prunes,
+19 empty,no duplicates/errors. Smallest content gap189316 dimension32,
+label11/vertical85 resolves exact nonnegative beam30 in4.852808s,run
+f358b28cdc0e47f7827a00a42f5e02f17a46364faabee5c95f8fd043e3d098ec.
+Thus274 exact and4 unresolved counting cases after retry;original timeout
+retained. Remaining content gaps189388/189426 dimension33,189050/189428
+dimension34. Completed means bounded coverage,not exclusion of skipped cases.
+No negative child or improved certified presentation. Primary174566 degree33
+seven/five and alternate182123/182774 degree30 seven/six retained;presentation
+counts are not minimum bad-edge distance. All60 tests pass0.430s,source
+unchanged,all attempts/outcomes inDB,reports ignored,no live job.
+Next alternate raw182773 full-content-remove dimension34,or selectively
+resolve small five/six gaps;avoid repeating terminal layout/budget identities.
+Negative lineages preserved,ownership/goal active,local commits,no push,
+publication,or extra workers.
+
 ## Completed second joint and first two-removal queues — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
