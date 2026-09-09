@@ -1,5 +1,19 @@
 # Ehrcalc Handoff
 
+## Twelve additional exact gap resolutions — 2026-09-09
+
+Four dimension32 and eight dimension33 shrinking cases resolve exactly
+nonnegative under separate five-second depth-layout retries. Shrinking107400
+now has39 unresolved initial limits; six dimension33 retries remain limited.
+New lower-flag/removal queue107400:all106 visited,1 exact nonnegative,
+75 prunes,22 duplicates,2 empty,6 limits,19.697739s. Cap41,two-second cases,
+45-second batch/60-second guard. Mutation handoff/MariaDB record all IDs,
+bounds/layouts/timing;old attempts preserved,skipped signs unclaimed.
+Negative frontier unchanged,no flagged-Kostka witness. All43 tests pass,
+source unchanged,reports ignored,no live scan. Codex owns continuation;
+goal active,original-restart scope,old branches paused,no push/publication.
+
+
 ## Shrinking coverage complete; eleven gaps resolved — 2026-09-09
 
 All206 shrinking proposals from degree37 lower-flag107400 now visited in
