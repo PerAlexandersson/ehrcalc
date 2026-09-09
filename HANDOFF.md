@@ -1,5 +1,23 @@
 # Ehrcalc Handoff
 
+## Eleven-opposite higher-degree restart alternative — 2026-09-09
+
+Targeted exact retry of84358's smallest opposite deletion yields86601:
+source `15 x 17`, degree45,12 internal/11 opposite equations, shape
+`(18,1^15)/(1)`, weight `(1^32)`. Negative linear coefficient
+`-102494679063787327/1682069314071861`, also negative quadratic. Fresh greedy
+count (0.509278s) and depth-layout repeat (1.316601s) agree. Retain degree32
+twelve/twelve84358 and lower-degree alternatives. Still mixed-face data,
+not a flagged-Kostka witness or certified minimal nonflag distance.
+Mutation handoff/MariaDB record nine bounded neighborhoods, completed disjoint
+combined-content queue, all skips/timing and eight unresolved cases after
+separate two-second depth retries. Cap38, two-second cases,45-second batches,
+60-second outer guards; no engine errors. Reports ignored; source unchanged,
+43-test baseline. Codex owns handoff continuation, no live scan, goal active.
+Next try degree-lowering flags on86601; old pre-restart branches paused.
+No push/publication.
+
+
 ## Smaller twelve/twelve restarted negative — 2026-09-09
 
 Original-restart lineage81911 ->82317 (internal slide) ->82998 (shrink)
