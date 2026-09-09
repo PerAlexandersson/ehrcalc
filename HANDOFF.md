@@ -1,5 +1,32 @@
 # Ehrcalc Handoff
 
+## Band-negative flag certificate completed — 2026-09-09
+
+Codex owns private certificate helper/tests/README and both handoffs;sole local
+DB writer unchanged. Clean checkout/no live scan verified. Previous turn made
+progress with tested band crossover and exact negative polynomial.
+Extended --endpoint-seconds accepted range1..30 (default5 unchanged). Existing
+version2 identity includes budget;old20s failed attempt retained and not repeated.
+Tests cover30s wiring to BOTH endpoint calls and rejection of31/zero/fractional
+bounds;all67 tests pass1.034s. README documents monitored90s outer allowance
+for two bounded30s endpoints plus overhead after prior smaller attempts.
+Maintained exact engine unchanged.
+
+Fresh beam30 certificate209614 for negative209610 PASSES24.031952s,
+run765d57cbd5550591d7c605e8218b193aaf7d60fc5fef4eaca59663f06a3256f5.
+Both fresh endpoint rational polynomials match source;full-coordinate signature
+and both counting permutations verified. Degree34,seven extra opposite/five
+internal bans;linear-11685727793017/8022419605200.
+Raw209610 (exact retry of209553) is the mutation parent;certificate209614
+has expanded implied-flag mask and should not replace raw for mutations.
+Original failed209612/20s retained as historical unknown verification outcome.
+This resolves the local certificate gap,NOT the global KTT goal. Primary174566
+degree33 seven/five remains best. No claim of minimal nonflag distance or
+flagged-Kostka counterexample.
+Source/README/tests verified;all results in DB,reports ignored,no live scan.
+Next mutate209610 toward six opposite constraints or try disjoint column bands.
+No push/publication or extra workers.
+
 ## Interior-band crossover implemented; negative candidate retained — 2026-09-09
 
 Codex owns private frontier/tests/README and both handoffs; sole local DB writer.
