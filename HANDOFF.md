@@ -1,5 +1,26 @@
 # Ehrcalc Handoff
 
+## Smaller certified eight/six degree31 — 2026-09-09
+
+New selected173244:9x15,degree31,eight additional opposite/six internal,
+linear `-674599361503/84446522160`,quadratic
+`-13884924050228981/2432784680726400`. Shape `(16,1^9)/(1)`,weight
+`(1^24)`. Source173215 from171666 lower/remove[6,10,71];fresh full
+coordinate/flag certificate and both greedy5 exact endpoints agree0.989857s.
+Reduces smaller backup's nine opposites to eight;improves best size/degree
+tie-breaks,not overall best nonflag counts. Not a KTT witness/minimality proof.
+
+172425 paired[38,88)/230 added33 exact nonnegative,6 prunes,11 limits.
+Diversified to171666:internal6 gave4 prunes/2 unknowns;lower-remove[0,94)
+/139 gave57 exact(10 negative),19 prunes,10 limits,8 duplicates not
+revalidated. All negative siblings retained,one freshly certified above.
+New173215 internal6 likewise4 prunes/2 unknowns (173247 degree38,
+173249 degree43),10.335941s,no exact. Full bounds/timings/IDs in private
+handoff and MariaDB;cap40/45,beam32,5s cases,45s batches/60s guards.
+All55 tests pass0.426s,no source changes,reports ignored,no live job.
+Codex retains ownership;next nonflag removal on173215 or compensating
+flags on173247. Older queues preserved,goal active,no push/publication.
+
 ## Alternative nonflag queue completion — 2026-09-09
 
 Codex owns KTT/private DB/handoff continuation;clean worktrees/no live scan
