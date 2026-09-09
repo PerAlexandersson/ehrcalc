@@ -1,5 +1,30 @@
 # Ehrcalc Handoff
 
+## User-directed original degree-21 restart — 2026-09-09
+
+New direct-original lineage 213 -> 69153 -> 70540 -> 71249 gives a smaller
+`19 x 21` mixed face, still degree 21, linear `-8737469/87780`, 21 internal
+bans / 17 opposite equations. Shape `(22,1^19)/(1)`, weight `(1^40)`.
+Compulsory-label compression checks the full coordinate order and fresh
+maintained-engine endpoint polynomials. Pruning removes 472 redundant
+equations in 510 structural comparisons (11.014399 seconds). Still NOT a
+flagged-Kostka witness or minimal-distance certificate. The mutation handoff
+records 120 combined-content proposals (13 negative), all 700 paired slots,
+all prunes/duplicates/timing, four new unknowns and one unresolved shrinking
+retry. Bounds: cap24, two-second cases, 45-second batches, 60-second outer
+guard. Next original combined offset120 of8815. All 43 tests pass, reports
+ignored, no live scan. Later branches remain paused; search goal active.
+
+Codex owns KTT handoff continuation. Latest user steering pauses later mutation
+branches and selects original MariaDB observation 213 again. Fresh labeled
+audit verifies degree 21, linear `-168011/330`, all coefficients/h* and
+independent counts at dilations 0--25; maintained Rust took 0.234277 seconds.
+Mutation work remains in the authorized mutation-search repository, using
+the existing protected DB adapter (no MariaDB MCP registered). No live scan
+at adoption; worktrees clean. Earlier negatives remain saved but are not
+active parents. No flagged-Kostka witness is claimed.
+
+
 ## Certified height compression; eight opposite equations — 2026-09-09
 
 Combined compulsory-label/equation-deletion mutations yield negative faces.
