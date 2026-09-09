@@ -1,5 +1,24 @@
 # Ehrcalc Handoff
 
+## Direct degree21 restart diversification — 2026-09-09
+
+Eleven bounded DB-backed batches visit2463 slots:782 fresh exact results,
+39 negative,1562 dimension prunes,119 duplicate skips. No time limits or
+engine errors. Cap24,two-second cases,45-second batches/60-second guards,
+verified depth/greedy layouts and maintained Ehrcalc. Original213 lower-
+flag/removal queue676 fully visited; full-content/removal next720 of8815.
+Skipped signs unclaimed. Mutation handoff records every range/timing/lineage.
+
+New original213 ->109661 ->compression110184 ->prune110698 ->shrink111556:
+degree21,18x20,15 raw opposite/18 internal bans,linear `-2365057/87780`.
+Internal removal112884 givesdegree22,15 opposite/17 internal,linear
+`-19596637/175560`,confirmed by separate fresh depth-layout count in0.024830s.
+Shape `(21,1^18)/(1)`,weight `(1^38)`. Distinct saved negative lineages,
+not global frontier improvements or flagged-Kostka witnesses;raw counts
+are not certified minimal bad-edge distances. All prior tradeoffs retained.
+All43 mutation tests pass,source unchanged,reports ignored,no live scan.
+Codex owns handoff continuation;goal active,older branches paused,no push.
+
 ## Four additional exact shrinking resolutions — 2026-09-09
 
 Depth-layout five-second retries resolve107836/107908 (dimension34) and
