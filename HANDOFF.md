@@ -1,5 +1,20 @@
 # Ehrcalc Handoff
 
+## Restarted combined queues complete; twelve gaps resolved — 2026-09-09
+
+133713 full-content/remove1067 and lower-remove221 queues fully visited.
+Six new bounded batches:1048 slots,380 fresh exact nonnegative,652 prunes,
+16 initial limits,no errors/duplicates/empty cases. Twenty separate retries
+resolve12 limits nonnegative. Remaining signs unknown:136635 degree37,
+136661 degree38,136687 degree39,136031 degree40. Smallest also exceeds
+depth10 (10.024551s); case-specific gaps,not a global blocker. Skipped signs
+unclaimed. Full-content queue aggregate322 exact/745 prunes; lower-remove
+after retries68 exact/149 prunes/4 unresolved. No negative/frontier change.
+All identities,bounds,timing,layouts in MariaDB/mutation handoff. Caps28/40,
+2s cases,45s batches/60s guards;5s retries and one10s retry. All49 tests
+pass,source unchanged,reports ignored,no live scan. Codex owns continuation,
+goal active,older branches paused,no push/publication or KTT witness.
+
 ## Smaller degree22 restarted branch,13/17 constraints — 2026-09-09
 
 New133713:17x19,degree22,shape `(20,1^17)/(1)`,weight `(1^36)`,linear
