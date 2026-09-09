@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Verified layout retries and ten opposite equations — 2026-09-09
+
+New seed 60789: `16 x 15`, degree 38, 11 internal bans / 10 opposite
+equations, linear `-16214767175092789/2671465728531600`. Retain degree-29
+11/11 and lower-degree alternatives; no flagged-Kostka witness yet.
+The mutation retry adapter now offers a fully verified depth-based coordinate
+relabeling before calling the SAME maintained Ehrcalc order engine. This
+resolves a degree-25 case in 0.048 s after its original ordering timed out
+at 15 s; full coordinate/order signatures agree. Seventeen of 19 two-second
+relabeled retries resolve (15 negative, two nonnegative); degree-36 inputs
+60604/60692 remain unknown. Independent ideal DP confirms every resolved
+polynomial and h* in original labeling; all attempts/checks are in MariaDB.
+Bounds, skips, timing, 37 passing tests and exact lineage are in the mutation
+handoff. Reports ignored; no live scan. Codex owns adapter/docs continuation;
+goal active, no engine implementation replaced or publication authorized.
+
 ## Degree-29 eleven/eleven checkpoint — 2026-09-09
 
 Fresh original-fan descendant 59240 is `16 x 15`, degree 29, with 11
