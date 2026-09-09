@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Combined nonflag-removal continuation — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
+verified at adoption. Previous turn made progress,not blocked.174551 joint
+21->37 adds8 prunes/8 unknown limits40.995649s;total37/990:21 prunes,
+16 limits,no exact results. Diversified to lower-remove-two: stronger lower
+flag plus two opposite removals,cap40/beam32/5s cases,45s batches/60s
+guards. Slices0->17 and17->35 take41.356326/43.528540s;MariaDB confirms
+20 exact nonnegative,5 prunes,10 unknown limits,no other outcomes.
+Seven/four presentation176966 dimension37 resolves exact nonnegative on
+distinct beam30 retry17.407517s;earlier5/15 limits retained. No improved
+negative candidate;selected174566 degree33 seven/five retained. All58 tests
+pass0.426s,source unchanged,all attempts inDB,reports ignored,no live job.
+Next lower-remove-two35/1786 or remaining seven/four gaps,joint37/990
+paused. Nonflag count primary;all lineages/gaps preserved,goal active,
+ownership retained,focused local docs commits,no push/publication.
+
 ## Nonflag-first mutation checkpoint — 2026-09-09
 
 User redirects effort from shrinking to fewer nonflag constraints. Codex
