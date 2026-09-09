@@ -1,5 +1,18 @@
 # Ehrcalc Handoff
 
+## Seven/five paired queue completed — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
+at adoption.174551 paired198 fully visited;MariaDB confirms106 exact
+nonnegative,18 prunes,74 unknown limits,no duplicates/empty/errors.
+This turn[119,198) added39 exact,6 prunes,34 limits. Scans cap40,beam32,
+5s cases,45s batches/60s guards,serialized;full slice timings in private
+handoff/database. No improvement;selected174566 degree33 seven/five
+retained. All56 tests pass0.439s,source unchanged,reports ignored,no live
+job. Next content/removal174551 to vary weights and target fewer nonflag
+constraints;all earlier lineages/gaps preserved,ownership retained,
+goal active,no push/publication. No KTT witness/minimality claim.
+
 ## Seven/five paired119 checkpoint — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
