@@ -1,5 +1,19 @@
 # Ehrcalc Handoff
 
+## Seven/five bounded continuation — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
+at adoption.174551 internal5:3 prunes,2 unknown limits(174569 degree39,
+174571 degree43),10.293882s. Lower-remove[0,78)/183:52 exact nonnegative,
+8 prunes,18 unknown limits,no duplicates/empty/errors. Four slices
+40.828876/42.885961/40.917262/42.228583s,cap40,beam32,5s cases,
+45s batches/60s guards. Read-only ranked degree33 six/five presentations
+174615/174619 both remain beam15 limited15.045846/15.029235s;
+neither sign nor metric certified. Selected174566 degree33 seven/five
+unchanged. All56 tests pass0.422s,source unchanged,all outcomes inMariaDB,
+reports ignored,no live job. Next lower-remove78 or compensating flags
+on174569;nonflag reduction primary,ownership retained,goal active,no push.
+
 ## Certified seven/five degree33 improvement — 2026-09-09
 
 New primary174566:9x15,degree33,SEVEN additional opposite/FIVE internal
