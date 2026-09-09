@@ -1,5 +1,23 @@
 # Ehrcalc Handoff
 
+## Nonflag-first mutation checkpoint — 2026-09-09
+
+User redirects effort from shrinking to fewer nonflag constraints. Codex
+retains KTT/private search ownership. Selected174566 remains degree33,
+seven additional opposite constraints/five internal bans; no minimum-distance
+claim or KTT witness. Pause remaining shrinking retries176720/176808:
+176838 beam15 resolves nonnegative10.026271s;176868/176660/176690
+remain unknown15s limits. Shrink coverage94 exact,22 prunes,5 gaps,10
+duplicates not revalidated. Older six/five gap174695 beam30 resolves
+nonnegative5.821469s. New174551 joint[0,21)/990:13 prunes,8 limits,
+41.250757s;paused next21. Private commit5838bd1 adds lower-internal mode:
+strengthen a lower flag and remove an internal ban, stable finite product,
+DB records and exact engine unchanged. All58 tests pass0.422s. First12/45
+mutations:4 prunes,8 limits,40.712677s;next12 running. Cap45 allows dimension
+growth from removing constraints;beam32 ordering,5s cases,45s batches/60s
+outer guards,serialized. Every attempt inMariaDB,reports ignored. Maintained
+Rust engine unchanged; focused local checkpoints only, no push/publication.
+
 ## Seven/five alternatives checkpoint — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
