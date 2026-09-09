@@ -13,6 +13,15 @@ Pruned170666 lower/remove40 [0,30)/162:2 exact nonnegative,9 prunes,19 limits,
 Codex owns next bounded5s continuation from30;all records inMariaDB,
 reports ignored,goal active,older branches paused,no push/publication.
 
+Runtime follow-up:5s [30,44) gives3 exact nonnegative/4 prunes/7 limits in
+41.221918s;[44,59) gives7 exact nonnegative/4 prunes/4 limits in39.714623s.
+Both guards exit normally;DB config readback verifies5s/45s/distinct identity.
+Across3 slices59 slots:12 exact nonnegative,17 prunes,30 unknown timeouts,
+no duplicates/empty/errors. Next59/162 at5s;earlier2s evidence retained.
+No count improvement. All52 tests pass,source checkpoint committed privately,
+no public engine change,reports ignored,no live job. Codex retains ownership
+and active goal;full bounds/timing inmutation handoff/MariaDB.
+
 ## Nine/six presentation and shrinking checkpoint — 2026-09-09
 
 Selected geometry unchanged:10x15,degree36,9 additional opposite/6 internal,
