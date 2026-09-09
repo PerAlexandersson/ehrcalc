@@ -1,5 +1,17 @@
 # Ehrcalc Handoff
 
+## Seven/five content274 checkpoint — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
+at adoption.174551 full-content-remove[150,274)/626 added85 exact
+nonnegative,21 prunes,18 unknown limits. Four cap40/beam32/5s slices
+42.139952/39.786788/43.444527/42.942150s,45s batches/60s guards.
+MariaDB confirms total274:192 exact nonnegative,35 prunes,47 unknown
+limits,no duplicates/empty/errors. No improvement;selected174566 degree33
+seven/five retained. All56 tests pass0.426s,source unchanged,reports
+ignored,no live job. Next274/626,nonflag reduction primary,all negative
+lineages preserved,ownership retained,goal active,no push/publication.
+
 ## Seven/five content-removal checkpoint — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
