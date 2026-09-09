@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Distinct thirteen/thirteen restart lineage — 2026-09-09
+
+Flag additions lower100861 from degree36 to33;shrinking yields101281:
+`16 x 18`,degree33,13 internal/13 opposite,linear
+`-2092314867403/1604483921040`,shape `(19,1^16)/(1)`,weight `(1^34)`.
+Fresh depth-layout count agrees in0.130059s;redundancy pruning accepts no
+deletion. Full polynomial equals earlier82998,but coordinate-identified
+faces differ. Preserve this distinct lineage without claiming a new global
+best or flagged-Kostka witness. Mutation handoff/DB record nine bounded
+neighborhoods,all skips/timing/lineages and certificate checks. Cap37,
+two-second cases,45-second batches/60-second guards,no new limits/errors.
+Codex owns handoff continuation,source unchanged,43-test baseline,reports
+ignored,no live scan. Goal active,original-restart scope,old branches paused.
+No push/publication.
+
+
 ## Low-degree coverage and new alternative — 2026-09-09
 
 Seven bounded neighborhoods of95922/95858 completed without new negative;
