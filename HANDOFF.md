@@ -1,5 +1,29 @@
 # Ehrcalc Handoff
 
+## Diversified content search: new negative alternate — 2026-09-09
+
+Codex retains KTT/private ownership;clean worktrees/no live scan verified.
+Previous turn made progress. Alternated content-plus-equation-removal scans
+between two freshly certified negative parents.173399 content[0,269)/604:
+209 exact(one negative),59 dimension prunes,1 limit,41.771866/39.907223s.
+173929 content[0,171)/581:141 exact nonnegative,28 prunes,1 limit,1 duplicate
+not revalidated39.130514s. Dimension caps36/34,beam32/5s cases/45s batches/
+60s guards. No flag-only objective cap before content compression.
+Fresh certificate181467 verifies parent173929 degree29,eight/six0.391719s.
+New negative181988 from173399:content label11,horizontal removal82,degree30,
+linear-90004117681/155272637520,exact count0.255365s. Exact full-content
+compression182003:8x15,shape(16,1^8)/(1),weight1^23;both fresh5s endpoints
+and fullcoordinate lattice map agree. Pruning182122 accepts95/114 equivalent
+deletions,loop1.291227s,then fresh beam15 flag certificate182123 agrees
+0.492645s:seven extra opposite/six internal bans. Smaller negative alternate,
+not a promotion over primary174566 degree33,9x15,seven/five.
+182122 internal all6:4 dimension prunes,2 limits10.311258s.182126 dimension36
+resolves nonnegative on beam30 retry11.186897s;182128 dimension40 unknown5s.
+All60 tests pass0.434s,source unchanged,all attempts inDB,reports ignored,
+no live job,no extra workers. Next alternate content173399 offset269 and
+173929 offset171,and flag/internal mutations of smaller raw182122. Lineages/
+gaps retained,goal active,local documentation commits,no push/publication.
+
 ## Completed two-removal queue and alternate parent — 2026-09-09
 
 Codex retains KTT/private ownership;clean worktrees/no live scan at adoption.
