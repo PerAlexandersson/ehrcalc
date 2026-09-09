@@ -1,5 +1,25 @@
 # Ehrcalc Handoff
 
+## Certified restarted ten/eight tradeoff and greedy endpoints — 2026-09-09
+
+New161620:13x16,degree31,10 additional opposite constraints/8 internal
+bans,linear `-26354632895/21879326196`,shape `(17,1^13)/(1)`,weight `(1^29)`.
+Lineage159634 ->159690 ->160342 ->160775 ->161308 ->greedy certificate161620.
+Fresh coordinate/endpoint checks agree0.432258s. Separate depth failure161412
+preserved (5.015183s). Smaller ten/nine branch161618:12x16,degree24,linear
+`-17095754261/5354228880`,shape `(17,1^12)/(1)`,weight `(1^28)`;compression,
+pruning and fresh certificate verified. Keep both and all siblings;not a
+minimal-distance theorem or KTT witness.
+Private lower-flag certificate helper adds verified greedy endpoint option,
+distinct identity preserving default depth behavior. Both fresh counts and
+full geometry checks remain mandatory. README/regression updated;all50 tests
+pass,no public Ehrcalc API change. Four queues:484 slots,366 exact(122
+negative),101 prunes,3 duplicates,14 limits,no scan errors/empty cases.
+Content/removal159634 next349/1185;others complete. All14 scan signs unknown,
+skipped signs unclaimed. Bounds,IDs,timing in MariaDB/mutation handoff.
+Caps36--40,2s cases,45s batches/60s guards. Reports ignored,no live scan;
+Codex owns continuation,goal active,older branches paused,no push/publication.
+
 ## Genuine opposite reduction: restarted ten/nine degree24 — 2026-09-09
 
 New159634:13x16,degree24,10 additional opposite constraints/9 internal
