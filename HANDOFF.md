@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Alternative nonflag queue completion — 2026-09-09
+
+Codex owns KTT/private DB/handoff continuation;clean worktrees/no live scan
+at adoption. Completed172425 lower-remove207 queue with cap40,beam32,
+5s cases,45s batches/60s guards. Independent MariaDB aggregation:142 exact
+(6 negative),28 prunes,27 unknown timeouts,10 duplicates not revalidated,
+no empty/engine errors. This turn added132 slots;new negative172807/172819
+degree32,provisional eight/six only,no certified primary-metric improvement.
+Switched to paired boundary flag/opposite removal on172425:[0,38)/230,
+25 exact(1 negative),6 prunes,7 limits,no other outcomes. Negative172915
+degree32 retained,not freshly flag-certified. Full bounds/timing/IDs in
+private handoff and MariaDB. Selected172248/172452 remain degree32 eight/six,
+not a KTT witness/minimal-distance theorem. All55 tests pass0.430s,source
+unchanged,reports ignored,no live job. Next paired172425 offset38 or
+172187 lower-remove94;ownership retained,goal active,no push/publication.
+
 ## Degree32 alternative lineage continuation — 2026-09-09
 
 Codex owns KTT/private DB/handoff continuation;worktrees clean at adoption.
