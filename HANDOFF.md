@@ -1,5 +1,42 @@
 # Ehrcalc Handoff
 
+## Column crossover verified: new negative lineage — 2026-09-09
+
+Codex owns private frontier/tests/README and both handoffs; sole local DB writer.
+Clean checkout/no live scan verified before source edits; previous turn made progress.
+Added --mode column-crossover with required donor,shared parent validation and
+exact counting. Reciprocal column prefixes give2*(b-1) proposals in original
+rectangle coordinates. Axis-specific queue identity/model/cut metadata preserve
+both parents,including skipped/empty children. Row mode identities unchanged.
+All66 tests pass0.458s,including column inheritance/bounds,one-row rectangle,
+CLI exact small-poset comparison,lineage,resume,timeout,empty and duplicates.
+README updated; maintained Rust engine unchanged.
+
+Fresh row cross174551+173929 all16:1 exact nonnegative,12 duplicates not
+revalidated,3 objective prunes0.558915s,run
+f813a4e318c2a31551374a07c0bbaaaaf34617016391c4a72455109f14ed00cc.
+Column cross174551+196437 all28:2 exact negative,2 limits,21 duplicates,
+3 objective prunes17.136852s,run
+b9d05fa0dd677573e98d0823315b3addd059f891654d19e0f7785d4e6161abf8.
+Both cap seven extra opposite/dimension38,beam32/5s cases/45s batch/60s guard.
+Negative raw203068(cut12,prefix174551) and203072(cut13) have degree34,
+linear-296662246687/1266697832400,seven extra opposite/five internal bans.
+Full-coordinate equality freshly reconstructed and persisted,not a recount:
+runff11728e04218dd01d9d641214667e432485551b3f63b7e05272e7ae445e58c0,
+0.010341s. Thus two mask presentations of the same face,not two independent
+geometric lineages. Raw203068 uses
+v0x3ff01fe01fc01f801f001e001c00181f1,
+h0x1000000084008401040184030406040c00.
+Fresh beam15 flag certificate203079 checks both endpoint polynomials and
+full-coordinate equality6.657198s,run
+efb7bb1f97ce3623b62fc4c3a56ca3d922835909fc5816cbf602d5efa1682b5f.
+Retain this new negative for mutations;primary174566 degree33 seven/five
+remains best. Counts are presentation metrics,not minimum bad-edge distance,
+and no flagged-Kostka witness is claimed. Gaps203060d37/203064d34 remain unknown.
+All outcomes in DB,reports ignored,no live scan. Next mutate raw203068 toward
+six opposite constraints,or additional disjoint column crosses.
+No push/publication or extra workers.
+
 ## Completed crossover-parent content-removal queue — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
