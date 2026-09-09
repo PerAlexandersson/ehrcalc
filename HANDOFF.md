@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Nonflag-first continuation — 2026-09-09
+
+Codex owns KTT/private mutation DB and handoff continuation. User prioritizes
+nonflag removal over further shrinking. Selected170883 remains degree33,
+10x15,eight additional opposite/six internal constraints,not a KTT witness.
+Content/remove170880 [0,116)/654 produced three degree31 negatives among69
+exact cases;32 pruned,15 limited,no duplicate/empty/scan errors. Smaller
+backup171667 certified9x15,degree31,nine opposite/six internal,negative
+linear and quadratic coefficients;therefore not the primary improvement.
+Full coordinate compression171530/prune171666/fresh certificate171667
+verified with maintained Rust exact engine. Failed transpose171483 target
+timeout preserved,not certified. Full bounds/timing/lineages in private
+handoff and MariaDB;reports ignored,all55 tests pass0.434s,no source changes.
+Next bounded joint mutations on170880 add a flag while removing opposite
+and internal constraints;cap45,beam32,5s cases,45s batches/60s guards.
+No push/publication;goal active,older branches paused.
+
 ## Verified beam mutation scanner wiring — 2026-09-09
 
 Private scanner now accepts --relabel-beam using the tested32-state helper.
