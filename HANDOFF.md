@@ -1,5 +1,18 @@
 # Ehrcalc Handoff
 
+## Nine/six five-second continuation checkpoint — 2026-09-09
+
+Selected10x15 degree36 nine/six geometry unchanged;not a KTT witness.
+Three5s batches34 slots:2 exact nonnegative,15 prunes,17 unknown timeouts,
+no duplicate/empty/errors. Lower/remove170666 next83/162;earlier identities
+preserved. Targeted degree43 internal-removal170324 greedy15 still limited
+15.058607s. Its lower-flag neighborhood all10 visited:8 above40,2 limited;
+smallest degree39 descendant170854 also greedy15 limited15.059735s.
+No intermediate sign or certified opposite count inferred;skipped signs
+unclaimed. All records inMariaDB,full bounds/timing inmutation handoff.
+All52 tests pass0.413s,source unchanged,reports ignored,no live job. Codex
+owns continuation,goal active,older branches paused,no push/publication.
+
 ## Bounded per-case screen budgets — 2026-09-09
 
 Private mutation scanner adds `--candidate-seconds`1--30,default2 unchanged.
