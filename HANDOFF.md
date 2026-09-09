@@ -1,5 +1,20 @@
 # Ehrcalc Handoff
 
+## Ten/ten bounded neighborhoods completed — 2026-09-09
+
+No new negative this checkpoint; retain87727 and lower-degree alternatives.
+Nine DB-backed batches visit974 proposals:253 fresh exact nonnegative,
+668 dimension prunes,11 duplicates not revalidated,2 empty,40 time limits.
+All206 shrinking and570 combined-content slots completed in disjoint slices;
+skipped signs unclaimed. Three separate alternate-layout retries remain
+time-limited. Mutation handoff records exact IDs, bounds, timing and next
+options. Maintained Ehrcalc, verified greedy layouts, cap45, two-second cases,
+45-second batches/60-second outer guards. All43 tests pass, source unchanged,
+reports ignored, no live scan. Codex owns handoff continuation; goal active,
+not globally blocked. No flagged-Kostka witness; original-restart scope and
+paused older branches unchanged. No push/publication.
+
+
 ## Smaller ten/ten restarted candidate — 2026-09-09
 
 New87727: source `14 x 15`, degree41,10 internal bans/10 opposite equations,
