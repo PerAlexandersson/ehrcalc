@@ -1,5 +1,23 @@
 # Ehrcalc Handoff
 
+## Smaller degree23 restarted twelve/twelve candidate — 2026-09-09
+
+New153513:16x17,degree23,12 additional opposite constraints/12 internal
+bans,linear `-191262307/41186376`,shape `(18,1^16)/(1)`,weight `(1^33)`.
+Lineage151502 ->shrink151632/certificate152260 ->internal152500/152971
+->zero label34 result153150 ->compression153196 ->prune153512 ->153513.
+Coordinate-map certificates and fresh endpoint counts agree;final certificate
+0.069070s. Redundancy pruning277/311 deletions,3.572589s. Keep degree22
+16x18 13/13 alternate152258. New-restart improvement,not global-frontier
+improvement,minimal-distance theorem or KTT witness. All siblings retained.
+Nine queues:823 slots,394 exact(95 negative),338 prunes,75 duplicates,
+16 initial limits,no errors/empty cases. Three separate greedy5 retries
+resolve cases nonnegative;13 new signs remain unknown. All queues visited,
+skipped signs unclaimed. Bounds,IDs,timing in MariaDB/mutation handoff.
+Caps32/36/40,2s cases,45s batches/60s guards. All49 tests pass,source
+unchanged,reports ignored,no live scan. Codex owns continuation,goal active,
+older branches paused,no push/publication.
+
 ## Restarted degree26 branch with13/14 constraints — 2026-09-09
 
 New151502:17x19,degree26,13 additional opposite constraints/14 internal
