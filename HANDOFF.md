@@ -1,5 +1,19 @@
 # Ehrcalc Handoff
 
+## Certified height compression; eight opposite equations — 2026-09-09
+
+Combined compulsory-label/equation-deletion mutations yield negative faces.
+New exact height-compression map preserves all free coordinates and the full
+quotient order; fresh maintained-engine endpoint polynomials agree. After
+redundancy pruning, 67453 has source `14 x 14`, degree 37, 9 internal bans /
+8 opposite equations, linear `-27713322577159507/2671465728531600`, shape
+`(15,1^14)/(1)`, weight `(1^28)`. Still mixed-face data, not a flagged-Kostka
+witness. All 513 combined proposals, 25 limits, 188 structural comparisons,
+exact bounds/timing/lineage and the no-improvement next single pass are in
+the mutation handoff/MariaDB. Scanner/compression/pruning now share verified
+optional greedy counting layouts. 43 tests pass; no live scan, reports
+ignored. Codex owns private adapter/docs continuation; goal active.
+
 ## Compulsory-label mutation adapter — 2026-09-09
 
 Added a private frontier mode requiring one label in every original tableau
