@@ -1,5 +1,34 @@
 # Ehrcalc Handoff
 
+## Completed crossover-parent content-removal queue — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkout/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Raw198861 full-content-remove completed372->392->583->626,
+39.012268/44.014796/1.526895s. Same dimension36,beam32/5s cases/45s batches/
+60s guards,no flag-only objective filter before potential content compression.
+New254 proposals:185 exact nonnegative,11 initial limits,31 dimension prunes,
+27 empty,no duplicates/errors. Runs
+21a5d1ab12285ebfecbd08fec9ba02ba6d6f6d01908c265e36e29dfe06a4f73e,
+4a7c4171caf04a8cf36aeb495d21297e81a3538ad1cd95303001d7779140e92d,
+6bea6cf2758c5a26313f7bde31f223999f4ea8b7b869538967fb864ec52b5ec8.
+DB confirms all626:286 initial exact nonnegative,71 initial time limits,
+131 dimension prunes,111 duplicates not revalidated,27 empty,no engine errors.
+Gap202511 dimension32,label15/remove horizontal66 resolves exact nonnegative
+beam30 in5.009284s,run
+ac57d2ce7b57e5b496252096ed84c23539c98c120b10abe0f6ab48e7df8193b1.
+After retries202283,202431,202511:289 exact,68 unresolved counting cases.
+Original limits retained; bounded coverage is not a sign exclusion.
+Nearby202525 dimension33,202515/202521 dimension34 remain unknown.
+No new negative;primary174566 degree33 seven/five and crossover198864 retained.
+Next choose a disjoint negative-parent crossover or new column-prefix crossover
+implementation (not yet implemented),rather than repeat this completed queue.
+Longer-budget unresolved cases remain eligible,including Abacus with local
+validation and sole local DB ingestion. Counts are presentation metrics,
+not minimum bad-edge distance or a flagged-Kostka witness.
+All65 tests pass0.444s,source unchanged,all outcomes in DB,reports ignored.
+No live scan at checkpoint; focused documentation commits,no push/publication.
+
 ## Content-removal scan advanced through372 — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
