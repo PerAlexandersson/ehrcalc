@@ -1,5 +1,43 @@
 # Ehrcalc Handoff
 
+## Additional Abacus batch — 2026-09-09
+
+User authorized further Abacus work. Codex retains existing private profile,
+KTT ownership and sole local DB-writer role; no additional AI workers.
+Submitted job 20260909T181922-14fba127f303: pending paired children
+199322 and199328 of raw198861,dimension34,six extra opposite/five internal.
+Both original 5s attempts remain unknown; original quotient and beam32 order
+freshly reconstructed, no matching poset-hash exact cache row before submission.
+20s per case,60s outer bound; installed serial CPU0,1/8GiB limits unchanged.
+Only the previously verified wrapper,binary,and selected covers input uploaded.
+Input SHA256 0afaa3e6f4972641f14b4021fcf4cb1eb2fc2f292871c2b51a4c099a6c56f14c.
+Wrapper/binary hashes unchanged from pilot below.
+Local prepared ledger 6d98995ddd4c106efd742f6b847f44277de5306afd8977642bb08be9ec156ba7.
+Job done exit0 in40.332241s; both cases time limited,20.119551/20.087735s.
+Validated receipt/file/header hashes, CPU/memory limits, exact input IDs and
+fresh original quotient/beam covers before persisting both unknown outcomes.
+No polynomial returned, hence no exact-sign claim or Ehrhart cache insertion.
+Output SHA256 9963839ffe893cb9ff5d9444890ce0db8d7450a8d2bc16f47eb5e037755521ff.
+Fetched outside Dropbox to /home/dev/.local/share/supervisor-compute-results/
+abacus/20260909T181922-14fba127f303-b4xsantg; remote original retained.
+Host supervisor may collect this job ID durably. No connection failure.
+Inspect this exact ID on ambiguity; do not repeat this budget automatically.
+No remote DB access or unvalidated result ingestion. No live job at checkpoint.
+
+Local raw198861 paired queue also completed all198 under cap six extra
+opposite/dimension38,beam32/5s cases,45s batches/60s guards.
+DB confirms2 exact nonnegative,34 initial limits,27 dimension prunes,
+135 objective prunes;198 separate started proposal records retained.
+Slices0->44->88->132->176->198 took41.146374/39.568224/39.557930/
+41.122356/20.561935s. No duplicates,empty cases or engine errors.
+Both remote retries are among these34 limits and remain unknown.
+All65 tests pass0.436s; no engine/source changes. Reports/inputs ignored.
+Primary174566 degree33 seven extra opposite/five internal remains best;
+negative crossover198864 degree34 seven/five retained. Counts are presentation
+metrics, not minimum bad-edge distance or a flagged-Kostka witness.
+Further Abacus batches authorized; choose disjoint unresolved cases or new
+mutations, preserve serial limits and local validation/DB ownership.
+
 ## Abacus remote-compute pilot completed — 2026-09-09
 
 User explicitly selected this KTT worker for the pilot. Prior crossover source
