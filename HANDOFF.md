@@ -1,5 +1,18 @@
 # Ehrcalc Handoff
 
+## Twenty-three content/removal gaps resolved — 2026-09-09
+
+29 separately recorded retries resolve23 initial121891 full-content/removal
+limits exactly nonnegative:all degree34/36/37 cases. Six earlier retry limits
+preserved. Remaining20 signs atdimensions38--41 unknown;pruned signs still
+unclaimed. Most depth5 retries suffice;degree34 required a justified depth30
+attempt(finished7.080377s),then depth10 siblings(7.108956/7.072282s).
+All outer60s guards,reduced priority,maintained exact engine;no engine errors.
+Full IDs,timing,layouts,bounds in MariaDB/mutation handoff. Negative frontier
+unchanged,all49 tests pass,source unchanged,reports ignored,no live scan.
+Codex owns continuation,goal active,original213 restart only,older branches
+paused,no push/publication or flagged-Kostka witness.
+
 ## Shrinking gaps resolved and dual presentation checks — 2026-09-09
 
 Seven remaining shrinking121891 time limits resolve exactly nonnegative
