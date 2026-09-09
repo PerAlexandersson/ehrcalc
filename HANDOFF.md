@@ -1,5 +1,23 @@
 # Ehrcalc Handoff
 
+## Degree22 flag descendant and paired-removal coverage — 2026-09-09
+
+Eleven bounded queues fully visited:1141 slots,233 fresh exact,21 negative,
+860 dimension prunes,38 duplicate skips,4 empty,6 initial limits. Three
+limits resolve exactly nonnegative under distinct five-second depth retries;
+115778/115802/115824 (dimension37) remain unknown. All evidence in MariaDB
+and mutation handoff;no engine errors,skipped signs unclaimed.
+New112882 ->114023 internal removal ->114121 boundary flag:degree22,
+15 raw opposite/16 internal bans,linear `-42068777/1279080`,18x20,
+shape `(21,1^18)/(1)`,weight `(1^38)`. Separate fresh depth count agrees.
+Not a global frontier improvement or flagged-Kostka witness. Lower-count
+and lower-degree saved alternatives retained. Paired-removal107400 all456
+visited;ancestor flag certificates not automatically inherited on deletion.
+Caps26/28/41,two-second cases,45-second batches/60-second guards. All43
+mutation tests pass,source unchanged,reports ignored,no live scan. Codex
+owns handoff continuation,original213 restart only,older branches paused,
+goal active,no push/publication.
+
 ## Direct degree21 restart diversification — 2026-09-09
 
 Eleven bounded DB-backed batches visit2463 slots:782 fresh exact results,
