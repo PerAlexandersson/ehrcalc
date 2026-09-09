@@ -17,6 +17,11 @@ Next bounded joint mutations on170880 add a flag while removing opposite
 and internal constraints;cap45,beam32,5s cases,45s batches/60s guards.
 No push/publication;goal active,older branches paused.
 
+Joint170880 [0,73)/1260:57 prunes,16 time limits,no exact result in two
+42.540810/42.235956s batches. Degree39 child171706 also beam15 limited
+15.059097s. Signs unknown;resume73. No candidate improvement/no live scan
+at checkpoint. Next direct opposite/flag-plus-removal work;ownership retained.
+
 ## Verified beam mutation scanner wiring — 2026-09-09
 
 Private scanner now accepts --relabel-beam using the tested32-state helper.
