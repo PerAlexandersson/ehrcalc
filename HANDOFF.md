@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Degree30 removal coverage checkpoint — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
+at adoption.173391 internal6:4 prunes,2 limits(173567 degree37,173569
+degree42),11.156238s. Lower-remove164 fully visited:MariaDB confirms128
+exact(6 negative),18 prunes,18 unknown limits,no duplicates/empty/errors.
+Six negative lineages retained;none provisionally improves best eight/six
+degree30,not freshly flag-certified. Selected173480 unchanged.
+173567 compensating lower-flags9:5 exact nonnegative,4 limits32.597858s;
+degree34 gap173919 resolves nonnegative via beam15 retry6.256115s.
+Three flags still unknown. Scans cap40/45,beam32,5s cases,45s batches/
+60s guards,serialized;full timing/IDs in private handoff and MariaDB.
+All55 tests pass2.417s,source unchanged,reports ignored,no live job.
+Next paired or content/removal on173391;nonflag reduction primary,
+ownership retained,goal active,no push/publication. No KTT witness.
+
 ## Certified degree30 eight/six — 2026-09-09
 
 New selected173480:9x15,degree30,eight additional opposite/six internal,
