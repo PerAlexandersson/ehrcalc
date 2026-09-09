@@ -1,5 +1,20 @@
 # Ehrcalc Handoff
 
+## Filtered1507 checkpoint — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
+verified at adoption. Previous turn made progress.174551 lower-remove-two
+1334->1402->1466->1492->1507 adds27 exact nonnegative,18 limits,31
+dimension prunes,97 objective prunes;40.786847/39.651097/43.817570/
+40.545163s,no other outcomes. Max-extra-opposite6,dimension40,beam32/5s
+cases/45s batches/60s guards,serialized. MariaDB confirms filtered[137,1507):
+178 exact,248 initial limits,196 dimension prunes,748 objective prunes.
+Five earlier retries resolve five initial filtered gaps;old timeout observations
+retained. No improved negative;selected174566 degree33 seven/five retained.
+All60 tests pass0.430s,source unchanged,all attempts inDB,reports ignored,
+no live job. Resume1507/1786 with cap6;lineages/gaps retained,ownership
+retained,goal active,focused local docs commits,no push/publication.
+
 ## Filtered1334 checkpoint — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
