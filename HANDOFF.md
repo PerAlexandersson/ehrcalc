@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Certified seven/five degree33 improvement — 2026-09-09
+
+New primary174566:9x15,degree33,SEVEN additional opposite/FIVE internal
+bans,linear `-15109773697/66853496710`. Source174551 is174320
+lower/remove[6,11,114];fresh full coordinate/flag certificate and both
+beam15 exact endpoints agree4.556579s. Shape `(16,1^9)/(1)`,weight
+`(1^24)`. Improves opposite8->7 and degree35->33;not KTT witness or
+minimal bad-edge distance proof. Preserve all previous negative lineages.
+174320 lower-remove[32,108)/162 added76 slots:44 exact(1 negative),
+11 prunes,18 initial limits,3 duplicates not revalidated,no empty/errors.
+Degree34 seven/five gap174485 separately resolves nonnegative beam15
+10.139339s. Full bounds/timings/IDs in private handoff and MariaDB.
+Scans cap40,beam32,5s cases,45s batches/60s guards,serialized. All56
+tests pass0.421s,source unchanged,reports ignored,no live job. Codex
+retains ownership;next174551 nonflag mutations or oldqueue108/162,
+goal active,no push/publication.
+
 ## Eight/five bounded continuation — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
