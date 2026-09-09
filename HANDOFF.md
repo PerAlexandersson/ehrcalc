@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Explicit lower-flag degree37 checkpoint — 2026-09-09
+
+New107400:degree37,linear `-108994039977551/534293145706320`,source `14 x 15`,
+shape `(16,1^14)/(1)`,weight `(1^29)`. Strongest lower flags row14>=14,
+row15>=17;union of ALL ancestor forcing masks contains4 of14 raw opposite
+equations,leaving10 additional constraints and10 internal bans. Fresh
+depth-layout retry succeeds in1.402080s. Next degree36 lower cut is exactly
+nonnegative (3.687296s). No flagged-Kostka witness/minimal-distance claim.
+Six bounded scans and separate retries are in mutation handoff/MariaDB;
+shrinking next97 of206,with39 unresolved shrinking cases in visited slices
+plus two internal and one weight case. Original failed attempts retained.
+Cap41,two-second cases,45-second batches/60-second guards;reports ignored,
+source unchanged,43-test baseline,no live scan. Codex owns continuation,
+goal active;next target degree24 unknowns or remaining disjoint tail.
+Original-restart scope,old branches paused,no push/publication.
+
+
 ## Explicit lower flags lower ten-extra-opposite branch to38 — 2026-09-09
 
 87727 ->106637 ->107370 (exact retry107371) reaches degree38,source `14 x 15`,
