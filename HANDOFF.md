@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Smaller restarted mixed face: degree22 — 2026-09-09
+
+Codex owns handoff continuation. Original213 restart now yields76956 through
+shrinking74503: `17 x 19`, degree22, 15 internal bans / 14 opposite equations,
+linear `-14228681/746130`, shape `(20,1^17)/(1)`, weight `(1^36)`.
+Maintained-engine greedy result repeated with verified depth layout (0.027199s).
+Retain degree21 candidate74571. Still mixed-face data, not a flagged-Kostka
+counterexample or minimal-distance certificate. A separate zero-weight lineage
+75499 ->76214 ->77431 has certified alphabet compression and redundant-edge
+pruning, but is larger. Mutation handoff/MariaDB record15 bounded neighborhoods,
+all prunes/duplicates/timing and lineage. Cap26, two-second cases, 45-second
+batches, 60-second outer guard; no new timeouts/errors. All43 tests pass;
+source unchanged, reports ignored, no live scan. Next consider combined-content
+or joint moves on76956; all earlier pre-restart branches remain paused.
+Goal active; no push/publication.
+
+
 ## Original-restart descendants: fifteen/fourteen opposite equations — 2026-09-09
 
 Codex owns KTT handoff continuation. Original213 lineage now reaches74571:
