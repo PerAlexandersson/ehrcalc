@@ -1,5 +1,17 @@
 # Ehrcalc Handoff
 
+## Verified beam mutation scanner wiring — 2026-09-09
+
+Private scanner now accepts --relabel-beam using the tested32-state helper.
+Full coordinate equivalence/permutation/profiles/layout time retained with
+original geometry;maintained exact Rust engine unchanged. Distinct layout
+identity preserves defaults/depth/greedy behavior. CLI wiring regression
+extended;all55 tests pass0.428s,README updated,no public API change.
+Three beam15 retries170962/170954/170964 remain unknown after15.060101/
+15.014097/15.059872s. Codex owns next bounded shrinking scan on170880,
+selected degree33 eight/six unchanged,goal active,all attempts inMariaDB,
+reports ignored,older branches paused,no push/publication.
+
 ## Verified bounded ordering retry option — 2026-09-09
 
 Private mutation retry adds --relabel-beam:32-state natural-order search,
