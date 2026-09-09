@@ -2,6 +2,16 @@
 
 ## Original fan restart — 2026-09-08
 
+General single-zero alphabet compression is now proved by a full coordinate
+order check and tested on small mixed faces. Interior-zero child 49152 gives
+an equivalent `15 x 14` source; opposite-first redundancy pruning produces
+49539, degree 31, 10 internal bans, 9 opposite equations, linear
+`-87887067115/16889304432`, shape `(15,1^15)/(1)`, weight `(1^29)`.
+A local shift gives 49605: degree 32, 9 internal bans, 9 opposite equations,
+linear `-765183135727/382019981200`. Eight-opposite degree-32 siblings remain
+saved. Several new two-second limits are explicitly unresolved in the mutation
+handoff; no scan is live. Thirty-three tests pass. No flagged-Kostka witness.
+
 New fewer-opposite seed 49178: `15 x 15`, degree 33, 12 internal bans,
 8 opposite equations, negative linear and quadratic coefficients. Keep the
 degree-31/9-opposite siblings 49095/49097/49099. Zero-content child 49152
