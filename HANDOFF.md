@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Filtered536 checkpoint — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
+verified at adoption. Previous turn made progress. Five/five177898 dimension35
+remains unknown on distinct beam30 retry30.060831s.174551 lower-remove-two
+414->485->523->536 adds12 exact nonnegative,21 limits,25 dimension
+prunes,64 objective prunes;43.663551/40.238936/43.843488s,no other
+outcomes. Max-extra-opposite6,dimension40,beam32/5s cases/45s batches/
+60s guards,serialized. Filtered[137,536):32 exact,95 initial limits,56
+dimension prunes,216 objective prunes;separate177472 retry resolved one
+initial gap. New five/five177914 dimension34 remains unknown at5s. No
+improved negative;selected174566 degree33 seven/five retained. All60 tests
+pass0.439s,source unchanged,all attempts inDB,reports ignored,no live job.
+Resume536/1786 with cap6 or retry177914;lineages/gaps retained,ownership
+retained,goal active,focused local documentation commits,no push/publication.
+
 ## Filtered414 checkpoint — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
