@@ -2,6 +2,15 @@
 
 ## Band-negative flag certificate completed — 2026-09-09
 
+Follow-up raw209610 lower-remove0->49->86/163,40.057557/43.936482s:
+4 exact nonnegative,14 initial limits,15 dimension prunes,51 objective prunes,
+2 duplicates not revalidated. Cap six extra opposite/dimension38,beam32/5s
+cases/45s batches/60s guards. Runs
+5b026d91d7d1c509a3ce08ebd1c43f5287262f48cf3b84b1e2863904a5b15a36,
+3ad090dd872668547878772de9fbfd4f0a00622dc7700842cb7a41f206a316a4.
+No improved child;all outcomes in DB,reports ignored,no live scan.
+Resume86/163 with unchanged bounds. Certificate209614 remains retained.
+
 Codex owns private certificate helper/tests/README and both handoffs;sole local
 DB writer unchanged. Clean checkout/no live scan verified. Previous turn made
 progress with tested band crossover and exact negative polynomial.
