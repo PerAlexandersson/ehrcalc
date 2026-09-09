@@ -1,5 +1,20 @@
 # Ehrcalc Handoff
 
+## Seven/five alternatives checkpoint — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
+at adoption. Older six/five gaps174619/175099 resolve exact nonnegative
+on separate beam30 retries6.757393/17.591838s.174551 internal-slide7:
+5 prunes,2 unknown limits10.377979s,no exact results. Interior-shrink131
+fully visited:MariaDB confirms93 exact nonnegative,22 prunes,6 unknown
+limits,10 duplicates not revalidated,no empty/errors. Three slices
+39.743819/39.048202/18.659768s. Scans cap40(slide)/33(shrink),beam32,
+5s cases,45s batches/60s guards,serialized. No improvement;selected174566
+degree33 seven/five retained. All56 tests pass0.432s,source unchanged,
+all outcomes inMariaDB,reports ignored,no live job. Next shrinking gaps
+or other negative lineages/combined removals;nonflag reduction primary,
+ownership retained,goal active,no push/publication.
+
 ## Seven/five content queue completed — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
