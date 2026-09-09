@@ -1,5 +1,28 @@
 # Ehrcalc Handoff
 
+## Second smaller negative placement — 2026-09-09
+
+Codex retains KTT/private ownership;clean worktrees/no live scan verified.
+Previous turn made progress:new certified negative alternate.182122 lower-
+internal48 complete:5 exact nonnegative,32 dimension prunes,11 initial limits,
+39.356989/29.995367s;cap7/dimension40/beam32/5s. Seven/five gap182212
+dimension34 resolves nonnegative beam30 7.762448s.173929 content171->281:
+70 exact nonnegative,39 prunes,1 limit39.724174s.173399 content269->368:
+64 exact(one negative),31 prunes,4 limits40.082665s. Content caps34/36,
+beam32/5s/45s batches/60s guards,serialized. New negative182534 content13/
+horizontal66,degree30,linear-90004117681/155272637520,count0.223968s.
+Fresh compression182655 and pruning182773 (94/113 equivalent deletions,
+loop1.299187s) pass fullcoordinate/lattice and both fresh5s endpoints.
+Fresh beam15 certificate182774 passes0.492935s:8x15,degree30,seven/six.
+Exact coefficient arrays equal182123,but fullcoordinate quotient signatures
+differ. Retain as alternate placement,not a new polynomial/improved distance.
+Primary174566 degree33 seven/five unchanged. DB totals173399 content368/604:
+273 exact(two negative),90 prunes,5 limits;173929 content281/581:211 exact,
+67 prunes,2 limits,1 duplicate not revalidated. All60 tests pass0.429s,source
+unchanged,all outcomes inDB,reports ignored,no live job. Next alternate content
+173929 offset281,173399 offset368,and raw182773/182122 nonflag mutations.
+Lineages/gaps retained,goal active,local commits,no push/publication.
+
 ## Diversified content search: new negative alternate — 2026-09-09
 
 Codex retains KTT/private ownership;clean worktrees/no live scan verified.
