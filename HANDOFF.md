@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Degree29 nine/nine negative candidate — 2026-09-09
+
+New128214:degree29,source11x14,shape `(15,1^11)/(1)`,weight `(1^25)`,
+linear `-884916547/750109360`,9 additional opposite/9 internal bans.
+Lineage127402 ->127786/certificate128012(degree30) ->128035 ->128214.
+Version2 lower-flag certificate includes all weaker implied zero masks;
+fixes conservative version1 overcount without changing geometry/polynomial.
+Full coordinate checks and two fresh endpoint counts agree. Not a minimal-
+distance theorem or KTT witness. Sibling128023/earlier tradeoffs retained.
+Nine bounded scans:377 slots,193 exact(3 negative),137 prunes,17 duplicates,
+30 limits,no errors. Shrinking150 visited with19 unknowns;lower-remove11
+unknowns. Separate degree41 direct-removal127455 depth5 attempt times out.
+All bounds,IDs,timing in MariaDB/mutation handoff;skipped signs unclaimed.
+Helper/README/regression updated,all49 tests pass,no public Ehrcalc API change.
+Reports ignored,no live scan. Codex owns continuation,goal active,original213
+restart only,older branches paused,no push/publication.
+
 ## Degree31,nine/nine,smaller11x14 candidate — 2026-09-09
 
 New127402:degree31,source11x14,shape `(15,1^11)/(1)`,weight `(1^25)`,
