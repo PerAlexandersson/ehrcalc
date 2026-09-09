@@ -1,5 +1,24 @@
 # Ehrcalc Handoff
 
+## Degree32 eight/six tie-break improvement — 2026-09-09
+
+New selected172248,source172187 from170880 lower-flag/remove [9,14,71]:
+10x15,degree32,eight additional opposite/six internal,linear
+`-4147071266201/4813451763120`. Fresh full coordinate/flag certificate
+and both maintained exact greedy5 endpoints agree,7.455316s. No fewer
+nonflag constraints yet;not a KTT witness/minimal-distance certificate.
+170880 lower-remove196 fully visited with beam32,cap40,5s cases,
+45s batches/60s guards:143 exact(16 negative),28 pruned,25 unknown limits,
+no duplicates/empty/engine errors. All lineages/outcomes inMariaDB,
+reports ignored. Prune171904 final endpoint failure separately persisted;
+not certified. All55 tests pass0.429s,no source changes. Full slice timing
+and IDs in private handoff. Codex owns direct internal-removal continuation
+on172187;nonflag reduction primary,older branches retained,goal active.
+
+Direct internal queue6 completed10.393457s:4 pruned,2 unknown5s limits
+(172251 degree39,172253 degree44),no exact results. Selected172248 remains;
+next flag-plus-removal mutations,no live job at checkpoint,ownership retained.
+
 ## Nonflag-first continuation — 2026-09-09
 
 Codex owns KTT/private mutation DB and handoff continuation. User prioritizes
