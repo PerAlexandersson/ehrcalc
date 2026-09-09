@@ -1,5 +1,18 @@
 # Ehrcalc Handoff
 
+## Degree-29 eleven/eleven checkpoint — 2026-09-09
+
+Fresh original-fan descendant 59240 is `16 x 15`, degree 29, with 11
+internal bans / 11 opposite equations and linear `-152045488051/155272637520`.
+Shape `(16,1^16)/(1)`, weight `(1^31)`. Weight mutation, certified unused-label
+compression, redundant-equation pruning and a freshly computed shape cut
+produce this smaller/fewer-restriction seed. Retain degree-20/21 alternatives.
+Ten bounded cap-34 scans, exact lineages, all skips/timing and 309 structural
+checks are recorded in the mutation handoff/MariaDB; no new time limits.
+Immediate singles from 59240 find no new negative. Still a mixed face, not
+a flagged-Kostka witness. Reports ignored; no source change or live scan.
+Codex owns handoff continuation; goal remains active.
+
 ## Thirteen-opposite alternative — 2026-09-09
 
 Opening the smallest dimension-pruned opposite deletion from 55806 gives
