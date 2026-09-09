@@ -1,5 +1,24 @@
 # Ehrcalc Handoff
 
+## Genuine opposite reduction: restarted ten/nine degree24 — 2026-09-09
+
+New159634:13x16,degree24,10 additional opposite constraints/9 internal
+bans,linear `-17095754261/5354228880`,shape `(17,1^13)/(1)`,weight `(1^29)`.
+Lineage158898 ->lower flag/removal159180 ->certificate159634. Fresh
+coordinate/endpoint checks agree (0.088652s). Actual additional-opposite
+reduction from eleven;degree25 sibling159655 also certified10/9. Keep all
+alternatives. Not global-frontier improvement,minimal-distance theorem or
+KTT witness. Internal-removal159690/flag160342 are exactly negative with8
+internal bans,but separate degree33 certificate160343 times out5.015482s;
+its inherited per-cut opposite count is NOT certified. Selected159634 retained.
+Eight batches:773 slots,522 exact(76 negative),113 prunes,40 limits,
+98 empty,no duplicates/scan engine errors. All queues fully visited;
+40 new signs unknown,skipped signs unclaimed. Certificate failure separately
+recorded. IDs,bounds,timing in MariaDB/mutation handoff. Caps36--45,2s
+cases,45s batches/60s guards. All49 tests pass,source unchanged,reports
+ignored,no live scan. Codex owns continuation,goal active,older branches
+paused,no push/publication. Continue removal-first prioritization.
+
 ## Removal-first restarted eleven/nine degree25 candidate — 2026-09-09
 
 User reaffirmed fewer bad edges primary,search judgment delegated. New158898:
