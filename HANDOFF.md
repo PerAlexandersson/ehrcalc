@@ -1,5 +1,23 @@
 # Ehrcalc Handoff
 
+## Certified restarted nine/seven degree36 — 2026-09-09
+
+New168334:11x16,degree36,9 additional opposite constraints/7 internal bans,
+linear `-4300739861017/1504203675975`,shape `(17,1^11)/(1)`,weight `(1^27)`.
+Lineage164524 ->lower/remove167691 ->certificate167894 ->internal168147
+->retry168305 ->lowerflag168325 ->retry168332 ->certificate168334.
+Full coordinate and both fresh greedy endpoint counts agree4.756786s.
+Degree38 nine/seven sibling168307 also certified6.661300s. Keep degree29
+nine/eight and all siblings;one fewer internal ban,not minimal-distance
+theorem or KTT witness. Eight batches1059 slots:749 exact(24 negative),
+188 prunes,59 initial limits,1 duplicate not revalidated,62 empty,no errors.
+Three separate greedy5 retries resolve two negative/one nonnegative;56 new
+signs unknown. Content/removal164524 complete1022 across turns;lower/remove
+complete300;other current queues complete. All50 tests pass0.379s,source
+unchanged,reports ignored,no live job. Codex owns continuation,goal active,
+older branches paused. Bounds,IDs,pruning,timing inMariaDB/mutation handoff.
+Next168334 mutation neighborhoods;no push/publication.
+
 ## Nine/eight neighborhood checkpoint — 2026-09-09
 
 Selected164524 remains11x16,degree29,9 additional opposite/8 internal bans.
