@@ -1,5 +1,23 @@
 # Ehrcalc Handoff
 
+## Smaller degree37 ten-additional-constraint chain — 2026-09-09
+
+New119907 ->120028 ->120089 ->lower flags120154/120188/120214:
+finaldegree37,source13x15,shape `(16,1^13)/(1)`,weight `(1^28)`,linear
+`-108994039977551/534293145706320`. Ten internal bans;union of ALL three
+ancestor forcing masks accounts for4 of14 raw opposite equations,leaving
+10 additional opposite constraints. Same degree/count tradeoff as older
+14x15 chain in smaller instance. No minimal-distance or flagged-Kostka claim.
+Fresh exact depth5 recount agrees in1.417226s;next degree36 flag cut is
+exact nonnegative. Prior negative alternatives retained.
+Ten complete bounded queues:146 slots,26 exact(7 negative),44 prunes,
+54 duplicates,22 initial limits. Four distinct depth5 retries resolve limits
+nonnegative;18 new signs remain unknown. No engine errors/empty cases.
+Mutation handoff/MariaDB record every range,bound,timing,mask and retry.
+Caps42--44,two-second cases,45-second batches/60-second guards. All45 tests
+pass,source unchanged,reports ignored,no live scan. Codex owns continuation,
+goal active,original213 restart only,older branches paused,no push/publication.
+
 ## Smaller degree37 negative face and depth endpoint support — 2026-09-09
 
 107400 ->119153 ->compression119623 ->prune119830 reduces source14x15
