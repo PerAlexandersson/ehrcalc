@@ -1,5 +1,34 @@
 # Ehrcalc Handoff
 
+## Alternate-parent nonflag-removal checkpoint — 2026-09-09
+
+Codex retains KTT/private DB and handoff ownership;clean worktrees/no live scan
+verified at adoption. Previous turn made progress. Raw173903 joint0->229/1080:
+7 initial limits,78 dimension prunes,144 objective prunes,41.822992s,no exact.
+Cap seven extra opposite,dimension38,beam32/5s cases/45s batches/60s guards.
+Raw173903 lower-internal all54:3 exact nonnegative,6 initial limits,
+45 dimension prunes,36.884063s,cap eight opposite/dimension38,same timing.
+Allow opposite count to stay eight while reducing internal bans as an
+intermediate-lineage strategy,not a promotion over primary174566.
+Eight/five gaps192288 dimension34 [6,11,99] and192300 dimension35 [7,12,99]
+resolve exact nonnegative beam30 in5.370280/6.163518s,runs
+90bea0a2ad37c110bb2bd1bd8580c1d394fd865c1df7d4bdc2e90cd28cfa817e
+and f84b729b447664526b2d57fddbe9a8aa37a2e39e2d4d2b94046f041f6d698def.
+Four remaining lower-internal limits192240/192276/192312/192324 dimension36;
+original timeout evidence retained. Raw173903 lower-remove all163 in
+0->138->163,39.095121/3.241731s,cap seven opposite/dimension35:
+50 exact nonnegative,3 limits,31 dimension prunes,76 objective prunes,
+3 duplicates not revalidated. Unknowns192532 dimension34 [6,11,66],
+192362/192570 dimension35;seven/six presentation,not certified negative.
+MariaDB independently confirms all totals/no engine errors. No improved
+negative;primary174566 degree33 seven/five,smaller alternatives and freshly
+certified190585 retained. Presentation counts are not minimum bad-edge distance.
+All60 tests pass0.431s,source unchanged,all outcomes inDB,reports ignored.
+No live job. Next raw173903 joint229/1080,paired or two-opposite mutations,
+or distinct retained negative parent;avoid repeated terminal retry identities.
+All lineages/gaps preserved,ownership/goal active,local commits,no push,
+publication,or extra workers.
+
 ## Diversified negative parent and completed content queues — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
