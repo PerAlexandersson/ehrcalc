@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Renewed degree-21 seed branch — 2026-09-09
+
+Latest user direction pauses later branches and restarts from MariaDB 213.
+Codex owns KTT handoff updates; mutation source/DB work stays in the existing
+authorized mutation-search repository. Fresh labeled audit verifies degree 21,
+linear `-168011/330`, all coefficients/h*, and independent counts at 0--25.
+Direct shrinking finds degree-20 child 50464 (`19 x 20`), linear
+`-192203/1596`. Direct zero-weight child 50420 compresses to `20 x 20`
+without changing the original polynomial; pruning gives 51775, 18 internal
+bans / 18 opposite equations, shape `(21,1^20)/(1)`, weight `(1^40)`.
+These are mixed-face negatives, not flagged-Kostka counterexamples.
+The mutation handoff records 20 lower-flag, 41 weight and 416 shrinking
+proposals, all prunes/duplicates, three unresolved two-second cases and
+exact lineages. Thirty-five tests pass; labeled audits now preserve prior
+evidence and skip same-label terminal attempts. No DB MCP is registered;
+the existing local MariaDB adapter remains available. No push/publication.
+
 ## KTT mutation checkpoint — 2026-09-09
 
 New children 49687/49689 retain negativity at degree 31 with 9 internal bans
