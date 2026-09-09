@@ -18,6 +18,16 @@ growth from removing constraints;beam32 ordering,5s cases,45s batches/60s
 outer guards,serialized. Every attempt inMariaDB,reports ignored. Maintained
 Rust engine unchanged; focused local checkpoints only, no push/publication.
 
+Lower-internal queue now complete45; MariaDB confirms28 unknown timeouts,
+15 prunes,2 duplicates not revalidated,no exact/empty/engine errors. Remaining
+slices40.863361/40.605395/20.470402s. Read-only seven/four presentation
+176966 dimension37 remains unknown on distinct beam15 retry15.015975s;
+no negative claim. Older six/five gap174765 beam30 resolves nonnegative
+3.286994s. No improvement;selected174566 retained. All58 tests pass,
+all attempts persisted,reports ignored,no live job at checkpoint. Next
+joint21/990 or lower-remove-two mutations,not shrinking;ownership retained,
+goal active,no push/publication. All negative lineages and gaps preserved.
+
 ## Seven/five alternatives checkpoint — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
