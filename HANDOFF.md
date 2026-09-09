@@ -1,5 +1,20 @@
 # Ehrcalc Handoff
 
+## Certified restarted eight/six degree33 — 2026-09-09
+
+New170883:10x15,degree33,8 additional opposite constraints/6 internal bans,
+linear `-3944550620261/1444035528936`,shape `(16,1^10)/(1)`,weight `(1^25)`.
+Lineage170321 ->prune170666 ->lower/remove170880(row6,lower10,remove130)
+->certificate170883. Full coordinate/fresh endpoints agree8.781897s.
+Opposite count improves9 to8 and degree36 to33. Retain all alternatives;
+not a minimum theorem or KTT witness. Two batches19 slots:11 exact(1 negative),
+8 initial limits,no other outcomes. Degree31 flag child170902 resolves
+nonnegative atgreedy10;degree32 child170904 still limited10.032332s.
+7 new signs unknown. Parent lower/remove next92/162;new lowerflag all10
+visited. All52 tests pass0.410s,source unchanged,reports ignored,no live job.
+Codex owns continuation,goal active,older branches paused. Exact identities,
+bounds,timing inMariaDB/mutation handoff;next170880 removals,no push/publication.
+
 ## Nine/six five-second continuation checkpoint — 2026-09-09
 
 Selected10x15 degree36 nine/six geometry unchanged;not a KTT witness.
