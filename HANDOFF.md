@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## Diversified negative parent and completed content queues — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
+verified at adoption. Previous turn made progress. Raw182773 content-remove
+all424 in0->142->232->424,40.256238/42.283849/21.554942s.
+DB confirms278 exact nonnegative,5 initial limits,122 dimension prunes,
+19 empty,no duplicates/errors. Dimension34,beam32/5s cases/45s batches/
+60s guards,serialized,no flag-only cap before content compression.
+Fresh beam15 certificate190585 of previously unmutated raw173903 passes
+both endpoints/fullcoordinate identity in0.464764s,run
+5849441b9cc119a75901f2b37766f70d3d39397022c366ebd2fefed37ba30850.
+9x15,degree30,eight additional opposite/six internal bans;linear coefficient
+-573717288983/155272637520. Retain this distinct negative polynomial as
+a diversified parent,not a promotion over primary174566 seven/five degree33.
+Raw173903 content-remove dimension35,same timing/layout bounds,all604 in
+0->181->292->475->604,39.054001/39.399551/39.014394/5.676961s.
+DB confirms426 exact nonnegative,5 initial limits,126 dimension prunes,
+26 empty,21 exact-genome duplicates not revalidated,no engine errors.
+No new negative child. Queues complete only under stated bounds,not exclusion
+of timeouts/skips. Degree30 seven/six alternates182123/182774 retained.
+Presentation counts are not certified minimum bad-edge distance.
+All60 tests pass0.426s;source unchanged. Every outcome inDB,reports ignored,
+no live job. Next nonflag-reduction mutations of freshly verified raw173903
+(e.g. joint cap7/dimension38),or a distinct retained negative parent;do not
+repeat completed content queues or terminal retry identities.
+All negative lineages/gaps preserved,ownership and goal active,local commits,
+no push/publication or extra workers.
+
 ## Completed alternate two-removal and smaller content queues — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership; clean worktrees/no live scan
