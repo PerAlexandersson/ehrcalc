@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Strategy discussion checkpoint — 2026-09-09
+
+User asks whether to adjust/parallelize. Codex completed already-running
+174551 lower-remove-two1666->1715->1728->1745:24 limits,11 dimension
+prunes,44 objective prunes,41.421831/40.542539/40.604168s,no exact/other
+outcomes. Max-extra-opposite6,dimension40,beam32/5s cases/45s batches/
+60s guards. MariaDB confirms filtered[137,1745):195 exact nonnegative,
+294 initial limits,227 dimension prunes,892 objective prunes;unfiltered137:
+60 exact,37 initial limits,40 dimension prunes. Separate retries resolve five
+filtered/two unfiltered gaps. No improvement;selected174566 degree33 seven/
+five retained. All60 tests pass0.431s,source unchanged,reports ignored,
+all outcomes inDB,no live job. Pause launches to answer strategy question;
+resume1745/1786 if continuing current queue. Goal remains active;diversified
+negative populations,hard-gap counting,structural/proper-flag lanes are
+proposals,not authorization for extra workers. No push/publication.
+
 ## Filtered1666 checkpoint — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
