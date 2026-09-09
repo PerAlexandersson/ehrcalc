@@ -2,6 +2,20 @@
 
 ## Smaller certified ten/eight restart — 2026-09-09
 
+Further fresh certificate163745 lowers degree to29,still11x16 and10/8,
+linear `-1210368967/2823138864`,same shape/weight. Source163433 is a
+lower-flag/removal child of163351;fresh endpoints/geometry agree0.249575s.
+Its parent's lower-remove45 queue complete302 slots:217 exact(32 negative),
+30 prunes,32 timeouts,23 empty,no duplicates/errors. No opposite-count
+improvement found among those negatives. Next joint mutations explicitly
+delete opposite+internal constraints together;selected first24 above cap45.
+Joint follow-up[96,188) has72 prunes/20 timeouts,no exact result;next188/2560
+with explicit earlier gaps in mutation handoff. Targeted degree41 simultaneous
+removal164153 still limited on separate greedy10 retry10.018476s.
+52 new signs unknown across these scans;no inferred sign for skipped cases.
+All50 tests pass0.373s,no source change,no live job at checkpoint. Codex owns
+continuation;goal remains active,all examples persisted,older branches paused.
+
 Certificate163351:11x16,degree30,10 additional opposite constraints/8 internal
 bans,linear `-68708816183/22181805360`,shape `(17,1^11)/(1)`,weight `(1^27)`.
 Lineage161618 ->162326 ->compression162636 ->prune162820 ->163003
