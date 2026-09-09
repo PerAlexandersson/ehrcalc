@@ -1,5 +1,32 @@
 # Ehrcalc Handoff
 
+## Completed first crossover-child removal queue — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
+verified at adoption. Previous turn made progress:new certified crossover
+negative and tested source implementation. Raw198861 lower-remove resumed
+54->95->161->183,42.830202/42.972843/20.567803s:13 exact nonnegative,
+16 limits,16 dimension prunes,84 objective prunes. Cap six extra opposite,
+dimension38,beam32/5s cases/45s batches/60s guards,serialized.
+DB confirms entire183:15 exact nonnegative,23 initial limits,25 dimension
+prunes,120 objective prunes,no duplicates/empty/errors.
+Smallest six/five gap199175 dimension32 [7,13,132] resolves exact nonnegative
+beam30 in8.907779s,run
+7af8c2664c2454bdc9b6f345b37142a92354f12f8de6fce1f954bba8bedef674.
+Thus16 exact and22 unresolved counting cases after retry;original timeouts
+retained. Small gaps199019/199219 dimension33;do not promote from metrics.
+Alternated another row crossover174551+173399 (previously fresh-certified
+negative180617),all16:1 exact nonnegative,4 duplicates not revalidated,
+11 objective prunes0.528947s,same cap7/dimension38/beam32/5s bounds.
+No new negative. Child198861/certificate198864 degree34 seven/five retained;
+primary174566 degree33 seven/five remains best. All lineages/gaps preserved.
+All64 tests pass0.436s,source unchanged,all outcomes inDB,reports ignored,
+no live job. Next paired/content mutations of198861 or other compatible
+negative-parent crossovers. Column-prefix crossover is a possible future
+extension for diversity,but is NOT implemented. Completed queues are bounded
+coverage,not negativity exclusions;counts are not minimum bad-edge distance.
+Ownership/goal active,local commits,no push/publication or extra workers.
+
 ## Bounded crossover implemented: certified negative descendant — 2026-09-09
 
 Follow-up raw198861 lower-remove0->54/183:2 exact nonnegative,7 limits,
