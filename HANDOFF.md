@@ -1,5 +1,32 @@
 # Ehrcalc Handoff
 
+## Completed alternate joint queue; crossover next — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
+verified at adoption. Previous turn made progress. Raw173903 joint resumed
+685->835->1069->1080,39.800859/42.100212/5.569595s;new395 outcomes:
+15 initial limits,152 dimension prunes,228 objective prunes,no exact/other.
+Cap seven extra opposite,dimension38,beam32/5s cases/45s batches/60s guards,
+serialized. MariaDB confirms entire1080:36 initial limits,396 dimension
+prunes,648 objective prunes,no exact/duplicates/empty/errors. Completed means
+bounded coverage,not a negativity exclusion. First dimension37 seven/five
+gap191962 [15,98,99] stays unknown on beam30 retry30.038981s,run
+3829b550cb81bba8a8429dec30cd851e75572f1ebdb654a68b3fd832137da3ec.
+Original timeouts retained. No improved negative;primary174566 degree33
+seven/five and all alternative lineages preserved.
+Inspected frontier integration point for a new bounded genetic crossover:
+compatible9x15 negative raw174551 and196437 could exchange row prefixes
+of both equality masks,with reciprocal children at each interior cut.
+This is a proposed next implementation,NOT an implemented or tested mode.
+Require explicit donor ID,both parent IDs in DB,matching rectangle/model,
+stable bounded queue,resume/dedup tests,and exact maintained-engine evaluation.
+Reuse current scanner counting/recording;never infer sign from parent scores.
+Next source work should add/test this small crossover mode rather than
+blindly repeating completed one-parent neighborhoods. No source edit yet.
+All60 tests pass0.428s,all outcomes inDB,reports ignored,no live job.
+Presentation counts are not minimum distance. Ownership/goal active,local
+commits,no push/publication or extra workers.
+
 ## Completed simplified-parent queue and equivalence links — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
