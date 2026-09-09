@@ -12,6 +12,16 @@ Three beam15 retries170962/170954/170964 remain unknown after15.060101/
 selected degree33 eight/six unchanged,goal active,all attempts inMariaDB,
 reports ignored,older branches paused,no push/publication.
 
+Runtime beam scan on170880:interior-shrink146 fully visited in4 bounded
+slices,95 exact nonnegative,34 prunes,16 initial limits,1 duplicate not
+revalidated,no empty/errors. Two lowest-degree gaps171042/171190 resolve
+nonnegative on beam15 retries10.288116/5.830071s;14 new signs unknown.
+Three older fewer-ban retries remain limited. No candidate improvement;
+degree33 eight/six retained. Every geometry/permutation/profile/outcome inDB,
+reports ignored,all55 tests pass,private source checkpoint2570dc6,no live job.
+Codex retains ownership/active goal;next shape/content-removal mutations
+retaining width or paired20/210. Full bounds/timing inmutation handoff.
+
 ## Verified bounded ordering retry option — 2026-09-09
 
 Private mutation retry adds --relabel-beam:32-state natural-order search,
