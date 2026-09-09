@@ -1,5 +1,20 @@
 # Ehrcalc Handoff
 
+## Depth-layout scanner and nine-opposite descendant — 2026-09-09
+
+The mutation scanner now accepts the same verified `--relabel-depth` option
+as retries, sharing one coordinate-signature/layout module. It counts in the
+new natural order but preserves original-order DB identities and explicitly
+records the permutation. All 38 tests pass, including counting/persistence
+wiring. Maintained Ehrcalc remains the exact computation engine.
+Shrinking 60789 gives `15 x 14` negatives; flag addition yields 61480:
+degree 36, 10 internal bans / 9 opposite equations, linear
+`-203940654205061/72201776446800`, shape `(15,1^15)/(1)`, weight `(1^29)`.
+Still mixed-face data, not a flagged-Kostka witness. Seven finite scan passes,
+disjoint shrinking resume, all skips/timing and nine unresolved two-second
+cases are in the mutation handoff/MariaDB. Reports ignored; no live scan.
+Codex owns scanner/layout/docs continuation; goal active, no publication.
+
 ## Verified layout retries and ten opposite equations — 2026-09-09
 
 New seed 60789: `16 x 15`, degree 38, 11 internal bans / 10 opposite
