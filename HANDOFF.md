@@ -1,5 +1,30 @@
 # Ehrcalc Handoff
 
+## Certified eight/five nonflag improvement — 2026-09-09
+
+New primary selected174324:9x15,degree35,eight additional opposite/FIVE
+internal bans,linear `-14848560603761/24067258815600`. Shape
+`(16,1^9)/(1)`,weight `(1^24)`. Lineage173391 ->paired173929 ->internal
+174289(remove99) ->lower-flag174317(row9 bound14) ->exact beam15 retry
+174320 ->fresh beam15 certificate174324. Both fresh endpoint polynomials
+and full coordinate/flag equality verified12.419535s. Internal6->5 improves
+primary objective despite degree29->35. Not KTT witness/minimal-distance proof.
+Retain degree29 eight/six backup174024 (fresh certificate0.681592s).
+
+173391 paired180 complete:MariaDB confirms144 exact(9 negative),18 prunes,
+18 unknown limits.173929 internal6:3 limits/3 prunes;174289 lower-flags9:
+7 exact nonnegative,2 initial limits. Separate beam15 retries resolve174315
+nonnegative7.739759s and174317 negative8.966838s. All attempts inMariaDB.
+Private certificate now supports --endpoint-seconds1..20(default5) and
+--relabel-beam;old identities unchanged,new budgets/layouts distinct.
+Existing verified beam32 helper and full two-endpoint checks retained.
+Greedy15 certificate174322 failed15.019606s;beam15 succeeds174324.
+CLI budget/layout plumbing and invalid-bound tests pass,all56 tests0.426s,
+README updated,no maintained Rust/public API changes. Private budget source
+checkpoint9111fc3;beam/runtime checkpoint follows. Reports ignored,no live job.
+Codex owns next174320 mutations with nonflag reduction primary;all negative
+lineages preserved,goal active,no push/publication.
+
 ## Degree30 removal coverage checkpoint — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
