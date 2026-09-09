@@ -13,6 +13,17 @@ Paired170880 resumed[12,20):8 limits40.887671s,no exact result;next20/210.
 Selected eight/six degree33 unchanged. Codex owns bounded runtime checks,
 goal active,all records inMariaDB,reports ignored,no push/publication.
 
+Runtime verification:known-negative170883 ->beam retry170983 exactly
+reproduces full rational polynomial,1.993462s counting/0.015267s layout;
+peak/total frontier improves6/116 to5/70 relative to greedy. Stalled170910
+still beam15 limited15.063187s. Three older gaps170904/170958/170960
+resolve exact nonnegative in1.897163/2.031394/8.545474s (DB170987/170989/
+170991). Every geometry/permutation/profile/outcome persisted.8 new paired
+signs still unknown,next20/210. No candidate improvement;selected degree33
+eight/six unchanged. All55 tests pass,private source checkpoint eff3b53,
+no maintained engine change,reports ignored,no live job. Codex retains
+ownership and active goal;next verified beam retries/scans,no push/publication.
+
 ## Eight/six removal bottleneck checkpoint — 2026-09-09
 
 Selected170883 unchanged:10x15,degree33,8 additional opposite/6 internal,
