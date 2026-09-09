@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Seven/five removal queue completed — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
+at adoption.174551 lower-remove183 queue now fully visited;MariaDB confirms
+118 exact nonnegative,17 prunes,48 initial timeouts,no duplicates/empty/
+engine errors. This turn completed[78,183),bounded cap40/beam32/5s cases,
+45s batches/60s guards;full slice timing in private handoff and database.
+Read-only six/five ranking selected174815 degree30 and174729/174735
+degree32;separate beam15 retries resolve all nonnegative in3.294742/
+2.591569/6.576709s. Thus121 exact nonnegative,45 signs remain unknown.
+No candidate improvement;selected174566 degree33 seven/five retained,
+not KTT witness/minimal-distance proof. All56 tests pass1.334s,source
+unchanged,reports ignored,no live job. Next paired/content-removal on
+174551 or flags on fewer-internal174569;nonflag reduction primary,
+ownership retained,goal active,no push/publication.
+
 ## Seven/five bounded continuation — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
