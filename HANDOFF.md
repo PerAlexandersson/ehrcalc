@@ -1,5 +1,26 @@
 # Ehrcalc Handoff
 
+## Smaller degree37 negative face and depth endpoint support — 2026-09-09
+
+107400 ->119153 ->compression119623 ->prune119830 reduces source14x15
+to13x15 with exact coordinate-order and fresh endpoint polynomial agreement.
+Degree37,linear `-108994039977551/534293145706320`,shape `(16,1^13)/(1)`,
+weight `(1^28)`,12 raw opposite/12 internal bans. Further opposite removal
+119834 ->exact retry119907 givesdegree38,11/12,linear
+`-405244004991473/89048857617720`. Smaller tradeoffs,not certified minimal
+bad-edge counts or flagged-Kostka witnesses. Prior candidates retained.
+
+Private compression/pruning helpers now support existing verified depth
+layouts with distinct DB identities; README and two wiring tests added,
+all45 tests pass. No public Ehrcalc code change. Five bounded scans:286 slots,
+78 fresh exact(6 negative),158 prunes,24 duplicate skips,26 initial limits.
+Two separate depth5 retries resolve one negative/one nonnegative. Remaining
+24 new full-content/removal signs unknown;107400 next235 of682. Mutation
+handoff/MariaDB record IDs,ranges,bounds,timing,failed greedy compression.
+Cap41,two-second cases,45-second batches/60-second guards;reports ignored,
+no live scan. Codex owns continuation;goal active,original213 restart only,
+older branches paused,no push/publication.
+
 ## Sibling coverage and retained computational gaps — 2026-09-09
 
 Six bounded114125 batches visit1586 slots:269 fresh exact nonnegative,
