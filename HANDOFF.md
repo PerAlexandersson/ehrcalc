@@ -1,5 +1,18 @@
 # Ehrcalc Handoff
 
+## Degree-37 nine/nine negative — 2026-09-09
+
+Pure internal-ban deletion yields 64864 (`15 x 14`, degree 37), with
+9 internal bans / 9 opposite equations and linear
+`-27713322577159507/2671465728531600`. Shape `(15,1^15)/(1)`, weight
+`(1^29)`; retain the degree-36 and lower-degree alternatives. Still mixed
+faces, not a certified flagged-Kostka witness. All 1,350 combined proposals
+were visited in disjoint batches; 1,345 are dimension-pruned, not certified
+nonnegative. Ten of twelve alternate-layout retries resolve nonnegative;
+four new scan cases remain unknown. Precise bounds, timing, skipped cases
+and lineages are in the mutation handoff/MariaDB. Reports ignored; no source
+change or live scan, baseline 39 tests. Codex owns handoff; goal active.
+
 ## Greedy-layout retries and completed bounded tails — 2026-09-09
 
 Six fresh scan passes on 61480/61478 gave 228 exact nonnegative results;
