@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Original-restart descendants: fifteen/fourteen opposite equations — 2026-09-09
+
+Codex owns KTT handoff continuation. Original213 lineage now reaches74571:
+source `18 x 20`, degree21, 18 internal bans / 15 opposite equations, linear
+`-1394849/248710`. Sibling74503 has degree24, 18 internal / 14 opposite,
+negative quadratic `-4127447/277200`. Shape `(21,1^18)/(1)`, weight `(1^38)`.
+Both fresh greedy-layout results repeated exactly with verified depth layouts
+(0.026845/0.037284 s). These are still mixed faces, not flagged-Kostka
+witnesses or certified minimal nonflag distances. Later pre-restart branches
+remain paused. Mutation handoff/MariaDB record14 bounded neighborhoods,
+all prunes/duplicates/timing, saturation/pruning checks and exact lineages.
+Cap24, two-second cases, 45-second batches, 60-second outer bounds; no new
+limits/errors. Joint71487 next500 of5472; original combined next120 of8815.
+Reports ignored; source unchanged, 43-test baseline. No live scan at checkpoint;
+goal active, no push/publication. Next prioritize74571/74503 tradeoffs.
+
+
 ## User-directed original degree-21 restart — 2026-09-09
 
 New direct-original lineage 213 -> 69153 -> 70540 -> 71249 gives a smaller
