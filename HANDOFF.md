@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Smaller degree22 restarted branch,13/17 constraints — 2026-09-09
+
+New133713:17x19,degree22,shape `(20,1^17)/(1)`,weight `(1^36)`,linear
+`-32641909/2238390`,13 additional opposite constraints/17 internal bans.
+Lineage131665 ->132483 internal removal ->132591 flag ->133403 shrinking
+->133477 internal removal ->133613 flag ->certificate133713. Full coordinate
+checks and fresh endpoint counts agree (0.049211s). New-restart improvement,
+not global-frontier improvement,minimal-distance certificate or KTT witness.
+Fourteen bounded queues:1234 slots,457 fresh exact(34 negative),738 prunes,
+39 duplicate skips,no limits/errors/empty cases. Skipped signs unclaimed.
+First13 queues complete;133713 full-content/remove next300/1067. All exact
+IDs,lineages,bounds,timing in MariaDB/mutation handoff. Caps26/28,2s cases,
+45s batches/60s guards. All49 tests pass,source unchanged,reports ignored,
+no live scan. Codex owns continuation,goal active,older branches paused,
+no push/publication.
+
 ## Renewed direct original degree21 restart — 2026-09-09
 
 User steering pauses current branches; original DB213 is the active root
