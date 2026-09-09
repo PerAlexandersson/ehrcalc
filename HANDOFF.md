@@ -1,5 +1,17 @@
 # Ehrcalc Handoff
 
+## KTT mutation checkpoint — 2026-09-09
+
+New children 49687/49689 retain negativity at degree 31 with 9 internal bans
+and 9 opposite equations in `15 x 14`; 49689 has linear
+`-1396680158221/2674139868400`. Two timed slide cases (49747/49749) resolved
+exact positive under distinct 15-second bounds, taking 4.97/8.23 s.
+Other limited cases remain explicitly unresolved. Retry bounds are now
+configurable (1--30 seconds), and frontier deduplication recognizes exact
+retry/compression/presentation records without claiming fresh sign validation.
+Thirty-four tests pass; all results are in MariaDB, reports ignored, no live
+worker. These remain mixed faces rather than flagged-Kostka witnesses.
+
 ## Original fan restart — 2026-09-08
 
 General single-zero alphabet compression is now proved by a full coordinate
