@@ -1,5 +1,17 @@
 # Ehrcalc Handoff
 
+## Thirteen-opposite alternative — 2026-09-09
+
+Opening the smallest dimension-pruned opposite deletion from 55806 gives
+57430: degree 34, 14 internal bans / 13 opposite equations, `18 x 18`.
+Exact flag additions lower degree to 33; selected child 57687 has linear
+`-81860962697061/382019981200`, shape `(19,1^18)/(1)`, weight `(1^36)`.
+Its immediate single-edge pass finds no new negative. Retain the degree-21
+14/14 and degree-20 alternatives; these are still mixed faces, not a
+flagged-Kostka witness. Nine bounded passes, all prunes/duplicates, precise
+coverage and timing are recorded in the mutation handoff/MariaDB. No new
+time limits; 35 tests pass. Reports ignored, no live scan, goal active.
+
 ## Fourteen/fourteen original-seed descendant — 2026-09-09
 
 Fresh zero-content compression and redundant-equation pruning give 55806:
