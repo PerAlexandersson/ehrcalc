@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Two-removal99 checkpoint — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
+verified at adoption. Previous turn made progress.174551 lower-remove-two
+35->68->84->99 adds27 exact nonnegative,21 prunes,16 initial limits;
+39.207917/43.772275/42.822085s. Cap40/beam32/5s cases,45s batches/60s
+guards,serialized. MariaDB confirms initial99:47 exact nonnegative,26
+prunes,26 timeouts,no duplicates/empty/errors. Distinct beam30 retries
+177140(dimension33) and177130(dimension34),six/five presentations,resolve
+nonnegative5.654387/5.490103s. Coverage after retries49 exact nonnegative,
+26 prunes,24 unresolved;old timeout observations retained. No improvement;
+selected174566 degree33 seven/five unchanged. All58 tests pass0.433s,
+source unchanged,every attempt inDB,reports ignored,no live job. Resume
+99/1786;nonflag reduction primary,all lineages/gaps preserved,ownership
+retained,goal active,focused local docs commits,no push/publication.
+
 ## Combined nonflag-removal continuation — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
