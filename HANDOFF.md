@@ -1,5 +1,25 @@
 # Ehrcalc Handoff
 
+## Renewed direct original degree21 restart — 2026-09-09
+
+User steering pauses current branches; original DB213 is the active root
+again. Fresh audit129268--129270 verifies degree21,linear `-168011/330`,
+independent t=0..25 values and maintained Rust coefficients/h* (0.012503s).
+New direct lineage213 ->129600 ->compression130471 ->prune130983 gives
+19x21,degree21,linear `-101918449/1492260`,shape `(22,1^19)/(1)`,weight
+`(1^40)`,16 additional opposite/22 internal bans,certificate131588.
+Shrinking child131665/certificate132409:18x20,degree22,14 additional
+opposite/20 internal,linear `-39799937/8953560`. Full coordinate checks
+and fresh endpoint counts agree. Not a global-frontier improvement or
+flagged-Kostka witness. Prior later branches saved but paused.
+Five bounded queues:1329 slots,491 exact(114 negative),817 prunes,21
+duplicate skips,no limits/errors/empty cases; all skipped signs unclaimed.
+Original full-content/remove next1020/8815, joint next300/126700. Other
+three queues fully visited. Exact bounds,timing,IDs and prior pending batch
+terminal results in MariaDB/mutation handoff. All49 tests pass,source
+unchanged,reports ignored,no live scan. Codex owns continuation,goal active,
+no push/publication. Protected local MariaDB adapter; no DB MCP registered.
+
 ## Degree29 nine/nine negative candidate — 2026-09-09
 
 New128214:degree29,source11x14,shape `(15,1^11)/(1)`,weight `(1^25)`,
