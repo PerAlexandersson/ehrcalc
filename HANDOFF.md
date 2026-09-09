@@ -1,5 +1,19 @@
 # Ehrcalc Handoff
 
+## Higher-degree joint-removal bounds recorded — 2026-09-09
+
+All1440 joint and20 slide-internal proposals from121891 exceed cap43:
+dimensions46--93 and47--91 respectively. Proposal coverage only,no sign
+certificate. Five degree46 joint cases remain unknown after greedy5/depth5
+retries;degree47 internal123794 remains unknown after greedy5. One monitored
+depth30 retry of123838 also timed out;at8s CPU99.5%,RSS81020KiB (not peak).
+All12 new retries persisted separately,prior evidence preserved,no engine
+errors. Negative frontier unchanged. Local counting obstacle,not global
+blocker;other neighborhoods/lineages remain. Exact bounds,IDs,timing in
+mutation handoff/MariaDB. All47 tests pass,source unchanged,reports ignored,
+no live scan. Codex owns continuation,goal active,original213 restart only,
+older branches paused,no push/publication or flagged-Kostka witness.
+
 ## Complete content/removal and shrinking proposal coverage — 2026-09-09
 
 121891 full-content/removal582 and shrinking176 queues now fully visited.
