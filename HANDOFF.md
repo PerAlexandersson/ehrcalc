@@ -1,5 +1,35 @@
 # Ehrcalc Handoff
 
+## Completed simplified-parent queue and equivalence links — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
+verified at adoption. Previous turn made progress. Raw196437 lower-remove-two
+continued410->508->690->798,39.693421/39.349985/23.825026s.
+New388 outcomes:75 exact nonnegative,14 initial limits,90 dimension prunes,
+209 objective prunes,no other outcomes. Cap six extra opposite,dimension35,
+beam32/5s cases/45s batches/60s guards,serialized. DB confirms entire798:
+94 exact nonnegative,22 initial limits,200 dimension prunes,482 objective
+prunes,no duplicates/empty/errors. Completed means bounded coverage,not
+exclusion of skipped/limited cases.
+Avoided redundant retries by freshly reconstructing fullcoordinate signatures:
+197463 dimension29 equals exact retry195951 (old source194886),and197457
+dimension30 equals exact retry197260 (old source194880). Compared full
+signatures,not just hashes;equalities include blocks,marks,and full order.
+Persisted both coordinate_equivalent_not_recounted records in MariaDB,
+search_kind fan_coordinate_equivalence_audit,run
+d314e6efd35a93ba04e491d2daa19518f27f0c370628636dff4080593b08ba80,
+elapsed0.031455s. Payloads retain target/reference IDs,both mask pairs,
+signature hashes,and fresh_count_performed=false. These are geometric
+equivalence checks,not fresh Ehrhart counts;original timeouts preserved.
+No improved negative. Primary174566 degree33 seven/five,smaller alternatives,
+and simplified negative196437/certificate196438 retained. Counts are
+presentation metrics,not minimum distance. All60 tests pass0.425s,source
+unchanged,all attempts/outcomes inDB,reports ignored,no live job.
+Next old173903 joint685/1080 or distinct negative lineage. Check fullcoordinate
+equivalence before retrying simplified-parent gaps;mask-only cache misses
+equivalent faces. Preserve lineages/gaps,ownership/goal active,local commits,
+no push/publication or extra workers.
+
 ## Redundancy audit and simplified negative presentation — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live scan
