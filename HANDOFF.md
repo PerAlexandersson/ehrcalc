@@ -1,5 +1,36 @@
 # Ehrcalc Handoff
 
+## Joint removals and smaller-shape neighborhood completed — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkout/no live scan verified at adoption. Previous goal turn made
+progress; no global blocker. Raw203068 joint all810 recorded23.675498s under
+cap six extra opposite/dimension38,beam32/5s/45s/60s. DB confirms495 objective
+prunes,315 dimension prunes,no counts/other outcomes;run
+da66c2025829feb4600f95aae034d9e2363d39e9c23b890b1b532b27bb127375.
+Smallest eligible cases dimension40:204050[10,82,113],204070[10,98,113],
+204090[10,132,113],204230[29,82,113]. First count204050 beam5 remains
+unknown5.016588s,run2334b1776a98dc54199770d8223bb9c29a3046465b9d9a87b36c26a0815ebe3b.
+
+Raw203068 interior-shrink all131 recorded0->42->109->131,
+40.124753/43.032224/15.975956s;cap seven extra opposite/dimension33,
+beam32/5s cases/45s batches/60s guards. New8x14 faces,not equivalences.
+DB confirms86 exact nonnegative,5 initial limits,28 dimension prunes,
+12 duplicates not revalidated,no empty/objective prunes/engine errors.
+Runsc9501161c9ade91f0a31b723071fcb1f30916cc91ab85d94b4b06e884a7c8e52,
+539e57ec8f7026f618ca9e0fa2a01665f68ed2de9abc2158458e39c0e8e1db57,
+9e29295c867663a39a48f0d6c98fe0ec24bb0aded93e66094f1d04453a1611cb.
+Gap205582d32 shrink[2,8] resolves exact nonnegative beam30 in5.161946s,
+runb5b5260f2aecbc8d214da9a8b87162ce4739ae7160ddd0855e681dfad74caeef.
+Thus87 exact,4 unresolved counts:205612/205642/205758/205788,all dimension32.
+Original timeouts retained; bounds/prunes do not exclude negative signs.
+No improved negative;primary174566d33 seven/five and column203068/cert203079 retained.
+Next content/removal mutations of203068 or disjoint crossover parents; completed
+paired/lower-remove/lower-internal/joint/interior-shrink queues stay closed
+under these budgets. Presentation counts are not minimum bad-edge distance.
+All66 tests pass0.450s,source unchanged,all outcomes in DB,reports ignored.
+No live scan,goal active,no push/publication or extra workers.
+
 ## Column-descendant paired removals completed — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
