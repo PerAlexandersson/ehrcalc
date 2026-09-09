@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Restarted degree22 branch improves to13/16 — 2026-09-09
+
+New143802:17x19,degree22,shape `(20,1^17)/(1)`,weight `(1^36)`,linear
+`-14376701/2238390`,13 additional opposite constraints/16 internal bans.
+Lineage133713 ->slide138372 ->internal removal141994 ->flag143073
+->certificate143802. Fresh endpoint counts and full coordinate checks
+agree (0.051307s). New-restart improvement,not global-frontier improvement,
+minimal-distance certificate or flagged-Kostka witness. Siblings retained.
+Eleven bounded batches:4699 slots,367 exact(7 negative),4277 prunes,
+55 duplicate skips,no limits/errors/empty cases. Joint133713 all3757
+visited in disjoint slices;68 exact nonnegative,3689 prunes. All other
+queues complete;skipped signs unclaimed. Prior four unknown signs remain.
+All IDs,bounds,timing,lineages in MariaDB/mutation handoff. Cap30,2s cases,
+45s batches/60s guards. All49 tests pass,source unchanged,reports ignored,
+no live scan. Codex owns continuation,goal active,older branches paused,
+no push/publication.
+
 ## Restarted combined queues complete; twelve gaps resolved — 2026-09-09
 
 133713 full-content/remove1067 and lower-remove221 queues fully visited.
