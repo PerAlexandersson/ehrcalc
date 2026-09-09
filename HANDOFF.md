@@ -1,5 +1,32 @@
 # Ehrcalc Handoff
 
+## Content-mutation continuation — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkout/no live local scan verified at adoption. Previous turn made
+progress with new bounded nonflag-removal coverage; no global blocker.
+First count of joint candidate199939 dimension40,six extra opposite/four
+internal,remains unknown after beam5 in5.018321s,run
+bc9d0612a092b2c807044f6f6e824530b9b63a51f35941ab782071109112418b.
+Original dimension-pruned observation retained; this is not a sign exclusion.
+Raw198861 full-content-remove cap dimension36,beam32/5s cases/45s batches/
+60s guards,without flag-only objective pruning before possible compression:
+0->96/626:0 exact,8 limits,15 dimension prunes,73 duplicates not revalidated,
+42.648147s,run44574e18564ed49f73781ffd7c937c4e1c8e27f826559f60f6937736426ac144.
+96->163:3 exact nonnegative,7 limits,19 dimension prunes,38 duplicates,
+39.892710s,runde693d169c54eef9deb66cc22e22d1e0a1565e8bf95032c700ab8df152025bbe.
+All outcomes in DB,including skipped genomes; no cached polynomial promoted
+to fresh evidence. Small first-slice gaps201807/201861 dimension34 involve
+content labels1/2 and internal-ban removal128;201949 dimension34 label4/h66.
+163->206:31 exact nonnegative,2 limits,10 dimension prunes,no duplicates,
+42.413706s,run3f107cdca37dcb2afc316e4e59272d954e13d9c8cfa9b710f76146e117d58440.
+DB confirms combined206:34 exact nonnegative,17 limits,44 dimension prunes,
+111 duplicates not revalidated,no empty cases or engine errors. Resume206/626
+with the same bounds; preserve distinct run identities and actual next offset.
+All65 tests pass0.453s,source unchanged. No live scan at checkpoint.
+Generated reports ignored. Focused documentation commits,no push/publication.
+No new negative; primary174566 degree33 seven/five and crossover198864 retained.
+
 ## Internal-ban reduction neighborhood — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
