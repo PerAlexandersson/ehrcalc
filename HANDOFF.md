@@ -1,5 +1,38 @@
 # Ehrcalc Handoff
 
+## Internal-ban reduction neighborhood — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live local scan verified at adoption. Previous goal turn
+made progress: recorded additional bounded Abacus attempts, not a global blocker.
+Raw198861 lower-internal all45 completed in slices0->36->45,
+43.340981/5.456248s. Cap seven extra opposite,dimension40;beam32/5s cases,
+45s batches/60s guards. These proposals strengthen a lower flag and remove one
+internal ban, targeting seven extra opposite/four internal presentation counts.
+DB confirms1 exact nonnegative,9 initial time limits,35 dimension prunes;
+no duplicates,empty cases,objective prunes or engine errors.
+Runs a8a3e713f4b81d8441ee8bb748905780f92e6c8651fa41200df1311947ad5c0c
+and36b62641ae1ad1c4d0501b0e625d82a3468f4e297aa7f5c0e74015bf594f14e8.
+Smallest gap199747 dimension37 [7,13,113] resolves exact nonnegative on
+beam30 retry10.281711s,run
+02d3cbfd37d3f5fb38bf658a65461522c44491cf8afac3cc724b3fb4d8039793.
+Thus2 exact and8 unresolved counting cases after retry;original limits retained.
+Remaining gaps include199717/199757 dimension38,199687/199697/199707/
+199727 dimension39,199739 dimension40. Pruning is not sign exclusion.
+All65 tests pass0.443s. Source unchanged,all attempts in DB,reports ignored.
+No new negative;best174566 degree33 seven/five and crossover198864 retained.
+Raw198861 joint all990 completed26.616525s under cap six/dimension38,
+beam32/5s cases/45s batch/60s guard. DB confirms675 objective prunes and
+315 dimension prunes,no counts or other outcomes;run
+1581fe49a5639c8e16440319748215f3c5609350c3a742d455a26c3d22f62b19.
+Smallest objective-eligible candidates have dimension40:199939[15,82,113],
+199959[15,98,113],199989[15,132,113],200159[29,82,113],
+200179[29,98,113]. Six extra opposite/four internal presentation counts.
+Next consider bounded first counts of these dimension40 cases,including on
+Abacus,or disjoint shape/content mutations. None was counted in this queue.
+No live local scan at checkpoint. Goal active; no counterexample or global
+blocker. Focused documentation commits only,no push/publication.
+
 ## Additional Abacus batch — 2026-09-09
 
 User authorized further Abacus work. Codex retains existing private profile,
