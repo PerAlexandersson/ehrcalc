@@ -1,5 +1,19 @@
 # Ehrcalc Handoff
 
+## Four-internal flags and paired continuation — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
+at adoption.174569 lower-flags9:1 exact nonnegative,8 initial timeouts,
+41.880050s. Degree36 gap174967 resolves nonnegative on beam15 retry
+7.005323s;seven other signs unknown.174551 paired[0,36)/198:25 exact
+nonnegative,4 prunes,7 limits,no duplicates/empty/errors,three slices
+41.113569/39.550446/42.174833s. Scans cap40,beam32,5s cases,45s
+batches/60s guards,serialized;full bounds/IDs in private handoff andDB.
+No candidate improvement;selected174566 degree33 seven/five retained.
+All56 tests pass0.428s,source unchanged,reports ignored,no live job.
+Next paired36 or content/removal on174551;nonflag reduction primary,
+all negative lineages preserved,ownership retained,goal active,no push.
+
 ## Seven/five removal queue completed — 2026-09-09
 
 Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
