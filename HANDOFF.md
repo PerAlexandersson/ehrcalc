@@ -1,5 +1,18 @@
 # Ehrcalc Handoff
 
+## Bounded per-case screen budgets — 2026-09-09
+
+Private mutation scanner adds `--candidate-seconds`1--30,default2 unchanged.
+Version4/default DB identity preserved;larger budget has distinct identity.
+Loop reserves candidate budget+1 before45s cutoff;60s outer guard retained.
+Tests cover identity,actual timeout argument,cutoff and invalid input beforeDB;
+README updated,all52 tests pass2.454s. No public Ehrcalc API change.
+Reason:negative parent takes about4s;2s screens leave nearby cases unknown.
+Pruned170666 lower/remove40 [0,30)/162:2 exact nonnegative,9 prunes,19 limits,
+43.943812s. No count improvement;selected10x15 degree36 nine/six unchanged.
+Codex owns next bounded5s continuation from30;all records inMariaDB,
+reports ignored,goal active,older branches paused,no push/publication.
+
 ## Nine/six presentation and shrinking checkpoint — 2026-09-09
 
 Selected geometry unchanged:10x15,degree36,9 additional opposite/6 internal,
