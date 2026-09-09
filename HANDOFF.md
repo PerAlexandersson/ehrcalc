@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Smaller twelve/twelve restarted negative — 2026-09-09
+
+Original-restart lineage81911 ->82317 (internal slide) ->82998 (shrink)
+->84358 (shrink) reaches `15 x 17`, degree32, 12 internal bans /12 opposite
+equations, linear `-281272388967/534827973680`. Shape `(18,1^15)/(1)`,
+weight `(1^32)`. Maintained-engine greedy result repeated with verified
+depth layout in0.125882s. Keep lower-degree21/22 alternatives. Still mixed
+faces, not a flagged-Kostka counterexample or certified minimal distance.
+Mutation handoff/MariaDB record12 bounded neighborhoods, disjoint shrinking
+resume, all prunes/duplicates/empty cases/timing and exact lineages. One new
+dimension38 case82400 remains unknown after separate two-/five-second attempts.
+Cap38, two-second cases,45-second batches/60-second outer guards; reports
+ignored. Codex owns handoff continuation; source unchanged,43-test baseline.
+No live scan; next mutate84358. Goal active; pre-restart branches paused,
+no push/publication.
+
+
 ## Restarted thirteen-opposite alternative — 2026-09-09
 
 Targeted exact retry of the smallest pruned opposite deletion from76956
