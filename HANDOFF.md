@@ -2,6 +2,17 @@
 
 ## Renewed degree-21 seed branch — 2026-09-09
 
+Current freshly restarted low-degree selection: 54009, source `18 x 19`,
+degree 20, 18 internal bans / 16 opposite equations, linear `-457039/19380`.
+Shape `(20,1^18)/(1)`, weight `(1^37)`. Saved degree-21 siblings 53975/53977
+trade one more internal ban for one fewer opposite equation. Explicit lower
+flag/deletion mutations also preserve negative degree-20 quadratic terms
+(53937/53939). None is a flagged-Kostka counterexample. All new lineages,
+eight further bounded neighborhoods, structural flag/pruning certificates
+and skipped cases are recorded in the mutation handoff and MariaDB.
+The three original-shrink time limits remain unknown after separately
+persisted five-second retries. No scan is live; the search goal remains active.
+
 Latest user direction pauses later branches and restarts from MariaDB 213.
 Codex owns KTT handoff updates; mutation source/DB work stays in the existing
 authorized mutation-search repository. Fresh labeled audit verifies degree 21,
