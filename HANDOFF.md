@@ -2,6 +2,13 @@
 
 ## Column crossover verified: new negative lineage — 2026-09-09
 
+Follow-up raw203068 lower-remove0->48/152:1 exact nonnegative,8 limits,
+9 dimension prunes,30 objective prunes43.456629s,cap six extra opposite,
+dimension38,beam32/5s cases/45s batch/60s guard,run
+7916075b3d325e7296f7fe82181b6bc118d1109e54c3bc344f05b49351be4abf.
+All outcomes in DB,report ignored,no new negative and no live scan.
+Resume48/152; use raw203068,not expanded certificate203079,for mutations.
+
 Codex owns private frontier/tests/README and both handoffs; sole local DB writer.
 Clean checkout/no live scan verified before source edits; previous turn made progress.
 Added --mode column-crossover with required donor,shared parent validation and
