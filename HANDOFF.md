@@ -1,5 +1,27 @@
 # Ehrcalc Handoff
 
+## Band-negative internal removals; paired scan started — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkout/no live scan verified at adoption. Previous goal turn made
+progress; no global blocker. Raw209610 lower-internal all45 recorded0->36->45,
+41.842370/5.460726s;cap7/dimension40,beam32/5s cases/45s batches/60s guards.
+DB confirms9 initial time limits,36 dimension prunes,no exact/other outcomes.
+Runs66f518e747d1da9c261daa8d8004e0755181ea9739837dc4bb9a075d6e0436e8,
+2d7ac838e28d5d0c83f9272365270dda0267417cb2936be6015ad150d003a566.
+Small seven/four gap210369d37 [7,13,113] resolves exact nonnegative beam30
+14.829513s,run108c4b4b7fb879ec371a48fff163b26dc1ef658c53b5e4842aef8b39a3efdbac.
+Thus1 exact,8 unresolved counts;original timeout retained. Nearby210339/
+210379d38,210309d39 remain unknown. No negative-sign exclusion.
+
+Raw209610 paired0->53/180:2 exact nonnegative,7 limits,9 dimension prunes,
+35 objective prunes42.754086s;cap six extra opposite/dimension38,beam32/5s/
+45s/60s,runc8080fbef6413f7b9b6df0b10f1b7863d386ea25628a02ff1a08111c09b9e05a.
+No duplicates,empty or errors. Resume53/180 with unchanged bounds.
+No improved negative;primary174566d33 seven/five and band209610/cert209614 retained.
+All67 tests pass0.710s,source unchanged,all outcomes in DB,reports ignored.
+No live scan,goal active,no push/publication or extra workers.
+
 ## Band-negative lower-remove queue completed — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
