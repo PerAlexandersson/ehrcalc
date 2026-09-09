@@ -1,5 +1,18 @@
 # Ehrcalc Handoff
 
+## Sibling coverage and retained computational gaps — 2026-09-09
+
+Six bounded114125 batches visit1586 slots:269 fresh exact nonnegative,
+1291 dimension prunes,25 duplicate skips,1 empty,no engine errors/scan
+limits. Full-content/removal queue1163 fully visited;skipped signs unclaimed.
+Separate greedy5 and depth10 retries of115778/115802/115824 all time out;
+these three paired-removal signs remain unknown. Original evidence preserved.
+All identities,bounds,timing in MariaDB/mutation handoff. Cap26,two-second
+cases,45-second batches/60-second guards,maintained Ehrcalc,verified layouts.
+Negative frontier unchanged,no flagged-Kostka witness. Source unchanged,
+43-test baseline,reports ignored,no live scan. Codex owns continuation;
+goal active,original213 restart only,older branches paused,no push/publication.
+
 ## Degree22 flag descendant and paired-removal coverage — 2026-09-09
 
 Eleven bounded queues fully visited:1141 slots,233 fresh exact,21 negative,
