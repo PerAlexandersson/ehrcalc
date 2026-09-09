@@ -1,5 +1,32 @@
 # Ehrcalc Handoff
 
+## Smaller-parent crosses and five-opposite removals — 2026-09-09
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkout/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Checked smaller8x15 parent pair182122+182773 against ledger.
+Column all28:1 exact nonnegative,26 duplicates not revalidated,1 objective
+prune1.915821s,run542f89b4536e95351876b92ccb6d883cd12ddb5f46d3c17f6c0536aa77d92810.
+Row all14:12 duplicates,2 objective prunes0.220786s,run
+409dc5f543fbcc6624663f8033c3071907f01ebc1f85406e278064eef27fabe5.
+Both cap six extra opposite/dimension36,beam32/5s/45s/60s,no other outcomes.
+
+Raw203068 lower-remove-two targets five extra opposite by strengthening a lower
+flag and deleting two horizontal equations. New queue0->421->607/1220,
+43.511318/41.881359s,dimension36,beam32/5s cases/45s batches/60s guards.
+DB confirms1 exact nonnegative,14 initial time limits,90 dimension prunes,
+502 objective prunes,no duplicates/empty/engine errors.
+Runs3707781f1b5dbc8d5d2271ac9b937374885960f5cb181456f335344730a25d29,
+ee7c00324538657ddf0c1f165b76f8a89c0d62991b7fd39e66eb6389d6013ee5.
+Gap207337d34 [1,2,98,132],five extra opposite,remains unknown on beam30
+30.062129s,runf348be2c656bb1907978ed8e9d0ef8ef38d94ded50e8c9f5194b2ac16a005b51.
+Original timeout retained; do not repeat same layout/budget. Nearby207323/
+207327/207643 dimension35 remain unknown. Resume607/1220 with same bounds.
+No improved negative;primary174566d33 seven/five and column203068/cert203079 retained.
+Counts are presentation metrics,not minimum distance; prunes do not exclude signs.
+All66 tests pass0.453s,source unchanged,all outcomes in DB,reports ignored.
+No live scan,goal active,no push/publication or extra workers.
+
 ## Cross-lineage recombination and targeted gap retries — 2026-09-09
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
