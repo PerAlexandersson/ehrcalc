@@ -1,5 +1,20 @@
 # Ehrcalc Handoff
 
+## Eight/five bounded continuation — 2026-09-09
+
+Codex retains KTT/private DB/handoff ownership;clean worktrees/no live worker
+at adoption.174320 lower-flags9:5 exact nonnegative,1 limit,3 duplicates
+not revalidated,15.897578s. Gap174343 resolves nonnegative beam15
+7.700799s. Lower-remove[0,32)/162:18 exact nonnegative,6 prunes,
+6 initial limits,2 duplicates not revalidated,42.053093/41.706796s.
+Lowest-degree gap174383 resolves nonnegative beam15 in11.451411s;
+5 new signs remain unknown. No empty/errors;selected174324 degree35
+eight additional opposite/five internal unchanged,not KTT witness.
+Scans cap40,beam32,5s cases,45s batches/60s guards,serialized;every
+outcome inMariaDB,full timing/IDs in private handoff,reports ignored.
+All56 tests pass0.420s,source unchanged,no live job. Next lower-remove
+offset32,nonflag reduction primary,ownership retained,goal active,no push.
+
 ## Certified eight/five nonflag improvement — 2026-09-09
 
 New primary selected174324:9x15,degree35,eight additional opposite/FIVE
