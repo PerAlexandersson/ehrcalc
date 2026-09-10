@@ -1,5 +1,36 @@
 # Ehrcalc Handoff
 
+## Three degree34 five-opposite shrink children resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Fresh Git clean/no-engine
+checks;DB found seven198861 interior-shrink dimension-pruned d34 children
+with5 extra opposite constraints,no prior retries. Selected first three
+under serial beam128/30s counts,full-coordinate verification,60s outer,nice10.
+All EXACT NONNEGATIVE:
+221649 cut[2,7],19.028558501042426s,
+rund02dfdc85ba984e522b0dad605f6615f330f0204dad7171837e48b7704192159;
+221679 cut[3,7],22.490116961998865s,
+runb88f316006f120b0fb71c3bcb2ee9af1eb3c3464e8160d787e9124826e8d7c11;
+221709 cut[4,7],18.740208237082697s,
+rundc4556d72add8ae51c068a1ab2eb0d2eaa1840f0b8377e8d182501af5d81ef5c.
+Fresh DB readback confirms exact statuses,timings,empty negative lists.
+Observed resource samples(not peaks):PID2881019 at13s CPU99.9%,RSS305064KiB;
+PID2881808 at14s CPU100%,RSS323468KiB;NI19. Same live handles monitored
+through terminal exit0,no remaining engine at final check.
+Original dimension-prune observations retained;not reclassified scan counts.
+198861 interior-shrink neighborhood now80 exact nonnegative,25 original
+dimension prunes uncounted,26 duplicates not revalidated. No sign claims for
+uncounted/pruned/skipped cases. No negative witness.
+Remaining d34 five-opposite children for next bounded attempts:
+221737 cut[5,6],221767 cut[6,6],221797 cut[7,6],221855 cut[9,6].
+Reports runs/fan-retry{221649,221679,221709}-beam128-30-20260910.jsonl
+ignored/untracked;all started/outcome records in DB. Do not repeat terminal
+budget/layout identities. Source unchanged.
+Best negative remains174566d33 seven/five,not flagged Kostka witness.
+No push/publication,extra workers,admin changes or remote submission this turn.
+Goal active,no global blocker.
+
 ## Row-parent shrink timeouts resolved and corners completed — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
