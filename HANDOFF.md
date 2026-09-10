@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## Four degree33 paired children resolved exactly — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+selected retries. Source unchanged. Serial coordinate-verified beam128/30s,
+60s outer,nice10,ALL EXACT NONNEGATIVE:
+225768d33[10,98],2.7859753200318664s,
+runa4ea92b282e6c1f4d5cb980b9c006d88f5a2c521a6a71e5536414d76aa9faa3e;
+225810d33[29,98],2.8500081499805674s,
+run27a6b1d8ec3fd3f9f05c4c6c9c7b7d88abf10ebc9fcfb1c6884dc3a147ca9cb3;
+225852d33[47,98],2.878967994940467s,
+runece929d959147ecfe21ee089c39f17d7d4f05e84a91c1d4caea4891be9e01ad0;
+225858d33[47,132],22.632266194093972s,
+run0d7a1fcb9b816665ba299b17ddc237a75a1dc9c8053e7e9e06e9ff649d251a14.
+Fresh DB readback confirms statuses/empty negative lists;original5s attempts
+retained. SamplePID2978109 at10s CPU100%,RSS572700KiB,NI19,not peak.
+All handles terminal exit0,no engine remains.
+222055 paired neighborhood now7 exact nonnegative,29 unknown,
+27 dimension prunes,125 objective prunes,1 duplicate not revalidated.
+Next smallest unknown225900d33[69,132];fresh full query before further work.
+Do not repeat terminal budget/layout identities unchanged.
+Reports runs/fan-retry{225768,225810,225852,225858}-beam128-30-20260910.jsonl
+ignored/untracked. No remote submission this turn.
+Retain negative222055/cert222064 and174551/cert174566,d33 seven/five,
+presentation counts not minimum distance. No improved negative or flagged
+Kostka counterexample. Goal active,no global blocker;no push/publication,
+extra AI workers or admin changes.
+
 ## New lineage paired boundary-flag/removal neighborhood completed — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
