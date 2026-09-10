@@ -1,5 +1,47 @@
 # Ehrcalc Handoff
 
+## Six degree37 paired candidates exactly resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Fresh Git clean/no-engine
+checks and DB inspection found six original dimension prunes,no prior retries.
+Raw182773 paired children220086/220112/220138/220164/220190/220216,
+edges[15,50]/[29,50]/[47,50]/[81,50]/[109,50]/[141,50],
+all d37 with6 extra opposite constraints after implied lower flags.
+Serialized beam128 full-coordinate-verified30s counts,60s outer,nice10.
+All EXACT NONNEGATIVE:
+220086,12.850411259103566s,
+run837abfcbb6eef437fdb9e2987aaba25e30ebefc2522bd7b26332a754eced9ef5;
+220112,12.867493455996737s,
+run93baba29ba5c7eaa829df73dc142bdbf4ed0668fa4c050cffe1ef033d031b7bf;
+220138,13.233919081976637s,
+run2e1947c2aad07981de2e82ed009c08cfb6be395aed2396f6dae4c1fa0fbb2b14;
+220164,13.097988888970576s,
+runb5caf8a9071cbd5aa60146c4d199f9ae7e8aa28f900db39d1fb6c1907ad5b89f;
+220190,12.834477162105031s,
+runf673b42bde13c3f1e906c37abfb426def7324a10e02ee69a17ac4b8afdb61b15;
+220216,12.429944441071711s,
+run4332bae99f4e9a91fd6e3bba4d784fe27514fe593206ebd15b58dced7aee4eab.
+DB readback confirms all6 statuses,timings,empty negative lists.
+Original prune observations retained. Reports
+runs/fan-retry{220086,220112,220138,220164,220190,220216}-beam128-30-20260910.jsonl
+ignored/untracked. One resource sample:PID2849168 at7s CPU99.8%,
+RSS213972KiB,NI19,not peak. All live handles monitored to terminal exit0.
+
+Fresh full-coordinate-signature audit of six source faces:
+run6951d44c9aac036b3eeb13be4f8f71403bbe5582f438200b917555f9b3957947,
+0.0340579180046916s,all six signatures distinct,hashes persisted in DB.
+Includes equality blocks,marked blocks and full order;not a polynomial recount.
+Distinct coordinate faces do not rule out abstract poset isomorphism.
+Raw182773 paired neighborhood now38 exact nonnegative counting outcomes
+(32 initial+6 retries),18 original dimension prunes still uncounted,
+48 objective prunes. No sign claim for uncounted/pruned cases.
+Do not repeat terminal identities;next distinct mutations or higher-degree
+selected gaps. No improved negative;primary174566d33 seven/five remains,
+not flagged Kostka witness or minimum-distance certificate.
+Source unchanged,no push/publication,extra workers,admin changes or remote job.
+Goal remains active,no global blocker.
+
 ## Paired and single mutations of smaller negative parents — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
