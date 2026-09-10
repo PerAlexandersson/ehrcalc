@@ -1,5 +1,41 @@
 # Ehrcalc Handoff
 
+## Three monitored longer retries resolve five-opposite gaps — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Source unchanged. Three selected finite dimension36 posets
+with verified peak-five orders had prior30s timeouts;tested120s helper and
+controlled prior runs justify serialized120s counts/150s outer guards.
+All reduced priority,effective engineNI19;same live handles monitored,never
+restarted on observation timeout. Results EXACT NONNEGATIVE:
+214309 beam128,39.791392s,
+runc3679f8c2bf01e47db6896c98d0618bdaa03100933ddd99e2ceff7a73fa8ff8f;
+214651 beam32(same order as128),45.377098s,
+run54dea688e082c1a60500b4db8a6431098304213c577e3808c326126b4d088882;
+214891 beam128,45.094058s,
+runccea055c216e91bc98c7229d0068228756412229a2fe684b9f772662e2e9558f.
+Observed resource samples(not peaks):
+PID2803885 at33s CPU100%,RSS385228KiB;
+PID2805052 at35s CPU99.9%,RSS498572KiB;
+PID2805985 at29s CPU100%,RSS534564KiB.
+Each terminal check confirmed no engine remaining. Original30s timeouts kept.
+Reports runs/fan-retry{214309,214651,214891}-beam{128,32,128}-120-20260910.jsonl
+remain ignored/untracked;all count outcomes in DB.
+
+Raw209610 two-removal neighborhood now25 exact nonnegative,5 unresolved
+counting cases,plus159 dimension prunes,1218 objective prunes,1 duplicate.
+Fresh DB exclusion query confirms remaining:
+215123d35 [4,8,82,132],already timed out beam128/120;
+215377d35 [5,9,98,132],beam128/30 timeout;
+216789d35 [9,15,98,132],beam128/30 timeout;
+215363d36 [5,9,82,132],unchanged beam32/128,beam32/30 timeout;
+216775d36 [9,15,82,132],beam128/30 timeout.
+Next a selected new120s bound for these30s gaps or new mutation/layout;
+do not repeat215123's terminal120s identity. No sign exclusions from timeouts.
+No improved negative;primary174566d33 seven/five retained,not a flagged witness.
+No live scan,push/publication or extra workers;goal active,no global blocker.
+
 ## Extended finite retry bound tested and monitored — 2026-09-10
 
 Codex owns private retry helper/tests/README and both handoffs;sole local DB
