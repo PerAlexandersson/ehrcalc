@@ -1,5 +1,28 @@
 # Ehrcalc Handoff
 
+## Two degree32 shrinking cases resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+selected retries. Source unchanged. Serial coordinate-verified beam128/30s,
+60s outer,nice10,both EXACT NONNEGATIVE:
+226228d32[2,13],11.204734291997738s,
+runb6cf0d49ea6a25b5e9a17d7e6ff6db823cb4e6f48c42709cc50fc25b187c6ecf;
+226258d32[3,13],11.548042502021417s,
+run2dd7e397935f1a6343507eca6f540eb7d4834aafb7854afb082c04b5caa911ac.
+Fresh DB readback confirms statuses/empty negative lists;original5s attempts
+retained. Both finished before resource samples;no peak claim.
+All handles terminal exit0,no engine remains.
+222055 interior-shrink now84 exact nonnegative,6 unknown,
+19 dimension prunes,8 objective prunes,14 duplicates not revalidated.
+Fresh DB remaining d32 cuts226276[4,7],226394[8,6];d33 cuts226216[2,7],
+226246[3,7],226334[6,6],226364[7,6]. Do not repeat terminal identities.
+Reports runs/fan-retry{226228,226258}-beam128-30-20260910.jsonl untracked.
+No remote submission this turn. Retain negative222055/cert222064 and
+174551/cert174566,d33 seven/five,presentation counts not minimum distance.
+No smaller negative or flagged Kostka counterexample.
+Goal active,no global blocker;no push/publication,extra AI workers or admin changes.
+
 ## Three more smaller-shape exact results — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
