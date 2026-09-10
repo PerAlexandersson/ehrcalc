@@ -1,5 +1,48 @@
 # Ehrcalc Handoff
 
+## Abacus resumed; five-opposite result validated — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress.
+Raw209610 full-content-remove resumed256->276->294->311/580,capdimension35,
+beam32/5s cases/45s batches/60s guards,no flag-only objective filter.
+Times42.761242/40.450828/40.898581s. DB confirms8 new exact nonnegative,
+20 time limits,27 dimension prunes,no other outcomes.
+Runs7654374306c2b2ef9fa0bbcf7978db70ab3bdf0dada148109ddd99d6bad25f4b,
+427bab3a60a5cbfe199fd92b30ac146c0c7741409f82e2e5cac8fab0843c1576,
+c4a54a2d1e256098f6911ab99d046ff2161b49f02e9895349afda35e0cb06200.
+Cumulative162 initial exact,38 initial time limits,111 dimension prunes.
+Small gap213282d32,label10/removehorizontal25,resolves exact nonnegative beam30
+4.917055s,runffdadaeaa807889d33095f3a83a69e25d0a64316b7030f1b7fb65c44e2c3b821.
+Including previous213010 retry gives164 exact,36 unresolved counts. Resume311/580.
+Reports retain launch-date20260909 in filenames;subsequent retries use20260910.
+
+User reported Abacus awake after suspension. Status confirmed enabled/idle;
+prior jobs terminal,not resubmitted. Same trusted wrapper/engine hashes verified.
+Job20260910T051743-2f98ecb7f70a:known negative196437 plus disjoint previously
+dimension-pruned five-opposite d34 children212634/212692;20s each/60s whole.
+Original quotient/beam permutations freshly reconstructed and compared before
+upload. No credentials/DB/checkouts transferred. CPU0,1/8GiB limits unchanged.
+Code SHA a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a;
+engine SHA 8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367;
+input SHA 3e7cf94d264c8fb9b48fec7a2921c9fd9c2c9a83b5b087a5154c4638bec5f48b.
+Job done/exit0,36.299557s. Baseline full polynomial/hstar/sign matches fresh
+local0.276577s vs remote0.413092s. Child212634 time_limited20.071760s,
+unknown. Child212692 exact NONNEGATIVE15.508762s,full rational polynomial/
+hstar exactly matches fresh local beam30 count8.025394s,
+runb2163ea66f87679999923710b64ed6e7f1206bf045279f813af5b68d0373c068.
+Metadata,manifest file hashes,header,case IDs,GLIBC2.35/libraries and actual
+CPU/memory/swap/PID limits checked before remote result ingestion. Exact hstar
+transform independently checked. Local retry supplies exact candidate cache.
+Ledger a5f7561947e5ec6cebc9199fa97714772aef995d1a9e70916f0621f1c73ac311.
+Output SHA 880a61dafaadd4f76a4df1e2ff39aead821e06494a5a822cd3dfb4339f9d595d.
+Fetched outside Dropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T051743-2f98ecb7f70a-x32dnywv.
+Remote originals retained for host collection by ID. No connection failures.
+No improved negative;174566d33 seven/five remains primary,not a flagged witness.
+No live local/remote scan at checkpoint;source unchanged,all results stored,
+reports ignored,no push/publication/extra workers. Goal active,no global blocker.
+
 ## Weight-mutation continuation to256/580 — 2026-09-09
 
 Codex retains ownership and sole local DB writer;clean checkouts/no live scan
