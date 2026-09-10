@@ -1,5 +1,43 @@
 # Ehrcalc Handoff
 
+## New lineage internal-removal neighborhood and two exact retries — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn completed a new mutation neighborhood(progress);no global blocker.
+Fresh Git clean/no-engine checks;DB found no222368 retry or222055 lower-internal
+queue. Source unchanged.
+Smallest prior six-opposite gap222368d32 edge[8,14,132],verified beam128/30s,
+EXACT NONNEGATIVE21.652309602941386s,
+run9595034670f863760b5fc03d9fcec990fde915d8a7afd20b8a9a669f4d861048.
+Original5s timeout retained;222055 lower-remove neighborhood now12 exact
+nonnegative,25 unknown,24 dim prunes,105 objective prunes,6 duplicates.
+SamplePID2918932 at17s CPU100%,RSS898196KiB,NI19,not peak.
+
+Raw222055 lower flag plus internal-ban removal:all45 proposals,cap7 extra
+opposite/d40,beam32 verified layouts,5s/case,45s batches,60s outer,nice10.
+Offsets0->32->45,41.6412309280131s/10.64648766501341s:
+first8 timeouts/24 dimension prunes,
+run82941bd3ecdf3e6d5b5f9027ee4fa957f701a38764ddba9b24dc5f41fadc64d0;
+last2 timeouts/11 dimension prunes,
+run8a70a5d29cf62022d9173fcb03938c6e397b39e772ed51f65cccb3b20be94198.
+Total10 initial unknown,35 dimension prunes;no exact/negative/duplicate/
+objective prune/empty/error. Every proposal/outcome persisted,actual offsets
+resumed without repeating timeouts. Fresh DB aggregation confirms.
+Smallest4-internal-ban child222476d36 edge[7,13,113],verified beam128/30s,
+EXACT NONNEGATIVE13.257966834004037s,
+runbdc448211925416f1c3c73eb1bd68e789b73e45c2a0e6de629b4f56eebad3b5e.
+DB readback verifies both retries;original5s attempt retained.
+Lower-internal neighborhood now1 exact nonnegative,9 unknown,35 dim prunes.
+Next d37 unknown222456[5,10,113],222486[8,14,113];or new five-opposite
+lower-remove-two neighborhood from222055. Do not repeat terminal identities.
+Reports runs/fan-retry{222368,222476}-beam128-30-20260910.jsonl and
+runs/fan222055-lowerinternal-seven-d40-offset{0,32}-20260910.jsonl untracked.
+All counts60s outer/reduced priority;no engine left at terminal check.
+Retain222055/cert222064 and174551/cert174566 as negative starting points,
+both d33 seven/five;no reduced-nonflag negative certified this turn.
+No push/publication,extra workers,admin changes or remote job.
+Goal active,no global blocker.
+
 ## New negative lineage:complete six-opposite removal neighborhood — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
