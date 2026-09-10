@@ -1,5 +1,49 @@
 # Ehrcalc Handoff
 
+## Smaller-parent interior shrink neighborhoods completed — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous goal turn made exact progress;no global blocker. Fresh Git checks clean,
+no engine live before launch. DB mode inventory showed no prior interior-shrink
+queue for either raw negative182122 or182773. Source unchanged.
+Both complete queues enumerate116 row/column cuts (all8x15 cuts except four
+corners), producing7x14 children. Bounds:dimension<=32,extra opposite<=6
+after all implied lower flags,beam32 coordinate-verified layout,5s/candidate,
+45s batch,60s outer,nice10. All proposal/result/prune rows persisted flush1.
+182122 offset0->116,20.87110741296783s:
+89 exact nonnegative (degrees9..32),0 timeouts,16 dimension prunes,
+8 objective prunes,3 duplicates not revalidated.
+Run8d7bf8e7e37fff3677dc1e7af5294043dae73c321e178120551914a9e0c790b1.
+182773 offset0->116,17.921435066033155s:
+80 exact nonnegative (degrees9..31),0 timeouts,16 dimension prunes,
+8 objective prunes,12 duplicates not revalidated.
+Run401ff4a83329c51115103ce5d8ed7f6cc0fcdbf3b20386b669aecd92ef83c0fe.
+Fresh DB aggregation matches reports;no negative/empty/error outcomes.
+Reports runs/fan{182122,182773}-interiorshrink-six-d32-offset0-20260910.jsonl
+remain ignored/untracked. These are bounded scans,not exclusions of pruned cases.
+
+Two smallest objective-pruned children both retain7 extra opposite constraints
+but have degree28:219504 from182122 and219736 from182773,cut[8,13].
+Selected fresh beam32/5s retries (60s outer) both EXACT NONNEGATIVE:
+219504,0.20489783200901002s,
+run9ef87a059479df997420c964116070e20187ca4d4a6233e6dbfef07f3837a15f;
+219736,0.20350221206899732s,
+rundaf1453f909e269bbbc0795a496c007af194efb240d8e879d43c4708a2c05012.
+DB readback confirms statuses/times/empty negative coefficient lists.
+Reports runs/fan-retry{219504,219736}-beam32-5-20260910.jsonl untracked.
+Original prune observations retained,not rewritten as fresh scan counts.
+Do not infer same face from equal polynomial;no coordinate-equivalence claim.
+
+Uncounted dimension-pruned five-opposite children of182122 start atdegree35:
+219312 cut[2,6],219342 cut[3,6];degree36:219370/219400/219430/219460.
+Other pruned candidates remain in DB. Smaller rectangle need not lower degree.
+Next distinct shape/weight/flag changes or selected pruned-case exact attempts;
+do not repeat these completed queue identities unchanged.
+No improved negative;primary174566degree33 seven/five and smaller degree30
+seven/six remain. Neither is a flagged Kostka counterexample or minimum-distance
+certificate. No engine live at terminal check. No push/publication,extra workers,
+admin changes or remote submission this turn. Goal remains active.
+
 ## Two remaining30s five-opposite gaps resolved — 2026-09-10
 
 Codex owns both handoffs and bounded local KTT counts;sole local DB writer.
