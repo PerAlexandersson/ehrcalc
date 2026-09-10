@@ -1,6 +1,29 @@
 # Ehrcalc Handoff
 
-## Structural flagged-reciprocity repair — 2026-09-10 (active)
+## Corrected full KTT ranking — 2026-09-10 (active)
+
+The private size-50 audit now terminates with 260 structurally valid ranked
+classes, 121 durable deficient-span exclusions, 14 size prunes, and zero
+timeouts.  Affine audit version `scale-one-affine-v2` prevents repeated work.
+The seven-tail leader `161a292e...` is zero-hole degree 24, but its partial
+known-ends score becomes positive when extended through strict dilation 10;
+tail scores are being used only as heuristics.
+
+For structural degree-25 `a2be13af...`, exact strict dilations 8 and 9 match
+locally and on Abacus: `295545638645753468` and `9102474961949084714`.
+Local/remote timings were 67.970/91.249 s and 224.477/319.714 s.  Dilation 10
+is active locally and in bounded Abacus retry `20260910T200302-bc3142e84596`.
+Its predecessor `20260910T200013-c7393f5e4055` was rejected before counting
+because 2400 seconds exceeded the runner's 1800-second cap; both attempts and
+the diagnosis are stored.
+
+Abacus independently matched `42d92b82...` at
+`L(17)=392796087462135314187172131` (5393.744 s, 34,921,826 peak states),
+job `20260910T171434-ce38e10af4fa`, output SHA `a94dd1f3...`, completed ledger
+`f1059741...`.  BEST NEGATIVE remains degree-84/two-hole `612334d7...`; best
+fully certified proper near-miss remains positive degree-23 `42d92b82...`.
+
+## Structural flagged-reciprocity repair — 2026-09-10 (superseded checkpoint)
 
 Codex remains the sole KTT/private-companion worker and sole local MariaDB
 writer.  Exact recounting exposed a correctness defect in the private tail

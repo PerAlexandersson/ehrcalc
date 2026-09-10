@@ -1,6 +1,21 @@
 # KTT Search Handoff
 
-## Corrected structural-hull checkpoint — 2026-09-10 (active)
+## Full corrected tail audit — 2026-09-10 (active)
+
+- Size-50 audit complete: 395 classes = 260 structurally valid ranked + 121
+  durable deficient-span exclusions + 14 size prunes; zero timeouts.
+- Degree-24 zero-hole `161a292e...` leads at tail depth 7, but becomes positive
+  at tail depth 10.  Partial tail ordering is heuristic only.
+- Structural degree-25 `a2be13af...` has locally/remotely matched exact strict
+  counts through dilation 9.  Dilation 10 is active locally and on Abacus job
+  `20260910T200302-bc3142e84596`; the over-cap predecessor is fully recorded.
+- Abacus job `20260910T171434-ce38e10af4fa` independently matched proper
+  `42d92b82...` at exact `L(17)=392796087462135314187172131`.
+- Best actual negative remains degree 84 with two bad edges (`612334d7...`).
+  Best fully certified proper near-miss remains positive degree 23
+  (`42d92b82...`, normalized minimum ~`8.64986e-5`).
+
+## Corrected structural-hull checkpoint — 2026-09-10 (superseded checkpoint)
 
 - Owner remains Codex, sole KTT/private-companion worker and local MariaDB
   writer.  Generated reports/logs remain ignored; no push or publication.
