@@ -1,5 +1,46 @@
 # Ehrcalc Handoff
 
+## Internal slides and two row-band crossovers audited — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Source unchanged,all outcomes in DB,reports ignored.
+Raw209610 slide-internal all7 dimension-pruned undercap7/d38,0.346278s,
+runfff7765088b8b2f1a1537eae2e90e99258e8727fc485a3210bc3f5cd8a9c20ae.
+No exact count/sign conclusion for those slides.
+
+Row-band174551+173399 all56,0->24->56,40.695518/23.511514s,
+cap seven extra opposite/d38,beam32/5s cases/45s batches/60s guards.
+DB confirms2 exact(one negative),12 time limits,30 objective prunes,
+12 duplicates not revalidated,no other outcomes.
+Runs54ab23e796ea51e51e8cb2ccef25495c688e728807fadf2109eaf8ace2058c55,
+b1d0ae26ad05b6c5a55a53ee3cc2608618d4ec4485a252cd137a8e06cc6cfff3.
+Exact negative216891d33,band[4,6),direction1,2.486032s,linear
+-15109773697/66853496710. Fresh full-coordinate comparison with174551
+proves SAME FACE,not new lineage. Audit0.011331s,
+run80b84b25c5d5cd0f8c84e21ee51240126c1654d532532b8eab5c432093e7822d;
+signatureSHA f71e7f12d937d669b606edf2364ddc050bc8408f7b1cd1f17a1965e0b99df0b7.
+Masks differ by redundant equation;mere polynomial equality was not used as proof.
+
+Timed-out216867d34,band[3,4),direction1,fresh full-coordinate comparison
+proves same face as retained negative209610. Original timeout remains;
+equivalence audit does not claim a new exact engine run. Audit0.010807s,
+runff5e512d417f4516f25ca3b43933b127fd73a10f0c3655e56c532ff6297bd868;
+signatureSHA da48c5b6a7403f27b9ce5add94c9dceb2356e19760051e2781c2c07795354475.
+Thus one of12 timeouts has resolved geometric identity;11 others not resolved
+by this comparison. Nearby216871/216875/216879d34 remain unknown.
+
+Row-band174551+173929 all56,0->24->56,40.687797/20.725270s,samebounds.
+DB confirms12 time limits,21 objective prunes,23 duplicates not revalidated,
+no exact/empty/dimension-prune/errors.
+Runs1941dfdea70126e453bab8a96266ce14de16fd8a2f993219b0aa13e35c4bf018,
+83ff275385c566d0b9cecf0bc9b6ab641256db3df5420deb4468d7b7fca28b3a.
+Do not repeat either completed row-band queue unchanged. Next disjoint column
+bands or lower-budget-gap retries;consider tested full-coordinate deduplication
+to avoid recounting redundant presentations (current cache remains mask-based).
+No improved negative;primary174566d33 seven/five retained,not a flagged witness.
+No live scan,no push/publication/extra workers;goal active,no global blocker.
+
 ## Band-parent five-opposite two-removal queue completed — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
