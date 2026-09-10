@@ -1,5 +1,84 @@
 # Ehrcalc Handoff
 
+## Two remaining30s five-opposite gaps resolved — 2026-09-10
+
+Codex owns both handoffs and bounded local KTT counts;sole local DB writer.
+Previous status-only turn was no new search progress;this turn adds fresh exact
+evidence. No global blocker. Source unchanged. Selected finite d36 posets had
+prior30s timeouts;tested120s helper and controlled prior runs justify serial
+120s counts with150s outer guards,nice10/effective engineNI19.
+215363 beam32 EXACT NONNEGATIVE32.60179156099912s,
+run2559d42c63883bf7c2276f80d1a1f4ee50d44dfcb338e3e44f885bea3320ec43;
+216775 beam128 EXACT NONNEGATIVE33.09586167591624s,
+runcad57597b481384760a6b6522158abe3c26077780b3de0f33d8b88ee986625e4.
+Same live handles monitored to exit0;resource samples,not peaks:
+PID2827129 at10s CPU100%,RSS222088KiB;
+PID2828102 at14s CPU99.9%,RSS393340KiB,at31s RSS32888KiB.
+Both prior30s timeouts retained. Reports
+runs/fan-retry{215363,216775}-beam{32,128}-120-20260910.jsonl ignored.
+Raw209610 lower-remove-two bounded neighborhood now29 exact nonnegative,
+one unresolved counting case215123d35 (already beam128/120 timeout),
+plus159 dimension prunes,1218 objective prunes,1 duplicate not revalidated.
+This is not a positivity proof over pruned/skipped cases.
+
+Smaller-shape follow-up212722d34,8x14,interior-shrink edge[6,6]:
+DB confirmed only dimension_pruned original,no prior local exact retry.
+Fresh beam128/5s time_limited5.01145396695938s,
+run3219f0ea1f4bae88b79e176e3682ccac1211e045f8bcd79d1589ac19dc0a333e;
+new30s bound EXACT NONNEGATIVE8.32254731701687s,
+run13816ab7d7ee768061187118cfdc9227d6adfbf45937c74bd0597d8db606da8a.
+Both60s outer/reduced priority;sample first enginePID2828911 at1s
+CPU100%,RSS49048KiB,NI19. Full-coordinate-verified layout before counting.
+DB readback confirms all three exact results this turn and preserves timeouts.
+Reports runs/fan-retry212722-beam128-{5,30}-20260910.jsonl untracked.
+No improved negative:primary174566d33 seven/five remains,not flagged witness.
+Next distinct shape/weight/flag mutation or unresolved neighborhood,not repeated
+terminal attempts. No live engine at terminal check;goal active,no global blocker.
+No push/publication,admin changes or extra workers.
+
+## Validated Abacus retry and two local five-opposite results — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+The intervening user status turn was not a new search increment. Clean worktrees
+and no live engine confirmed before the next retry; no global blocker.
+Fresh DB inspection confirms local exact NONNEGATIVE results:
+215377 beam128/120s,37.656594596919604s,
+run7d2e537084d8e93b2f85b2d3de2ecc5f7d39d178f70f62c3b1b267846cd58507;
+216789 beam128/120s,38.04084962699562s,
+runa5b5d328dc7b827cbdad94c8db8e8d87c65a456a24b752edbe7f239183b6359b.
+Both had prior30s timeouts, retained. Reports
+runs/fan-retry{215377,216789}-beam128-120-20260910.jsonl remain untracked.
+No in-flight resource sample was retained for these two runs.
+Raw209610 two-removal neighborhood now27 exact nonnegative,3 unresolved,
+plus159 dimension prunes,1218 objective prunes,1 unrevalidated duplicate.
+Remaining215123d35 already timed out120s;215363/216775d36 have30s gaps.
+
+Abacus job20260910T061625-2b372ab61d07 completed exit0 in32.27877736091614s.
+Known negative196437 matched freshly recomputed local full polynomial/hstar:
+remote0.4018353859864874s,local0.27388003293890506s.
+Candidate212634 remained time_limited30.115326583996648s,sign unknown.
+This was a new30s bound after20s timeout, not a duplicate submission.
+Input runs/abacus-five212634-30-20260910.json SHA256
+f042c3019e90684a7aab952aa684a9ca292e6774d1d8daf305859a5133e0df52;
+wrapper SHA256 a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a;
+engine SHA256 8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367;
+output SHA256 7da615f63ec73d2d03daf2a61b10ccf454dd3fe925ab77657d38e13fcee09801.
+Fetched outside Dropbox under
+/home/dev/.local/share/supervisor-compute-results/abacus/20260910T061625-2b372ab61d07-14f9putm.
+Manifest/input/code/engine hashes, exact baseline, independent rational transform,
+case IDs, exit status, resolved libraries and effective CPU0,1/8GiB limits were
+validated before local ledger ingestion. Ledger
+8dd3a54b33f0698920d4cbc9c97d78a8a504f545cd4706479d2770f270e40634
+contains receipt and both validated outcomes, completed; no exact cache for
+the timeout. Fresh DB inspection confirms both results. No credentials/DB/
+shared checkout uploaded; no admin changes. Host supervisor can fetch this job
+ID durably; remote originals retained. Latest compute status enabled, no live job.
+
+Primary negative remains174566d33 seven extra opposite/five internal constraints,
+not a flagged witness or a certified minimum distance. Source unchanged.
+Next selected215363/216775 finite120s retries are owned by this session;
+retain all timeout identities and monitor serialized counts.
+
 ## Three monitored longer retries resolve five-opposite gaps — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
