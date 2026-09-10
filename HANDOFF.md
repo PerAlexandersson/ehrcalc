@@ -1,5 +1,75 @@
 # Ehrcalc Handoff
 
+## Five-opposite proposal pass complete; next Abacus batch validated — 2026-09-10
+
+Codex retains KTT/companion ownership, private profile/model and sole local DB
+writer role. Previous turn was progress; fresh Git/process/remote checks found
+clean repositories and no live counting workers. No source edits, new test
+claims, extra AI workers, administrative changes, pushes or publication.
+All handles terminal at this checkpoint. Goal active; no global blocker.
+Best negative unchanged: RAW230740/cert230749 d33, seven extra opposite
+equalities/five internal bans, alongside prior leaders. Counts are presentation
+metrics, not a proved minimum nonflag distance.
+
+RAW230740 lower-remove-two completed ALL1531 proposals, cap five extra
+opposites/degree36, beam32/5s,45s internal batch/60s outer,nice10,
+CARGO_TARGET_DIR=/cargo-target/ai-projects. All outcomes persisted in MariaDB.
+642->1403:54exact NONNEG,4timeouts,83dimension prunes,608objective prunes,
+12duplicates,39.00937469198834s, run
+76f3e254214a0f7cbb0edd64bac7888e166fbf699cff24ce2c85c48a16863ba9.
+1403->1531:98exact NONNEG,0timeouts,22dimension prunes,8objective prunes,
+0duplicates,24.184841039939784s, run
+79b81dfb7156e87c7aaa03fc4e9fe2325326aff7728ef08c343428efd7b878a0.
+All152 fresh exact rows independently reconstructed over Q from h*.
+CURRENT whole pass after wider retries:162exact NONNEG,8UNKNOWN,
+174dimension prunes,1166objective prunes,21duplicates. No positivity claim
+for unknown/pruned/duplicate cases. Eight unknown original sources:
+234802d35,235346d34,235082d35,235324d36 already remote20/local30 UNKNOWN;
+235381d33,235939d35,235945d35,235959d34 only initial5s UNKNOWN.
+Next audit the latter four for a disjoint Abacus batch; do not repeat the
+already exhausted identical remote/local attempts.
+
+Abacus20260910T130429-5919f5be4432 done/exit0, wall109.02368950843811s.
+Seven serial cases including fresh control,20s/case/180s whole; established
+finite bound monitored under the same job ID, no resubmission.
+Six sources pairwise coordinate-distinct, no actual GT-coordinate tuple
+matches in older222055/203068/209610 lower-remove-two neighborhoods.
+Scope/method persisted in prepared ledger, not a global isomorphism claim.
+Control196437 freshlocal0.23343335511162877/remote0.4147809909773059s match.
+Source,degree,remote/local seconds,local run:
+235088d34 exact18.618621424015146/exact10.902950990013778,
+ea07edddd16d3ebd7add45621c503315304a9f7fdc89b9bc7267a956ac723928;
+235346d34 TIME LIMITED20.10252788802609/TIME LIMITED30.071056157001294,
+288a8275db881e0bd2134217f76f26f7f323ba5c5ff2e9978170766c4d2e818b;
+235082d35 TIME LIMITED20.114172504021553/TIME LIMITED30.01454179303255,
+3d8ba452d43c3923ee2eade597e04f105832efacf909257d54ff62cab9904636;
+235314d36 exact17.381742997007677/exact9.189628668944351,
+9b0ccb47af3fdeaa14f7da42567b50acd6cd13e79ebc131d330aa1e36f083b6a;
+235318d36 exact11.24300663502072/exact6.209928774973378,
+c00bf7e0e544e9b59a88ec6cf89861f0c5f6358aa39e4e6a0d8be1addd8d3512;
+235324d36 TIME LIMITED20.124271626991685/TIME LIMITED30.036559015978128,
+4d819e719475de04eff17f955e64b06a5f32611a601d6b8a1d061454bac5a7a1.
+Three search exact NONNEG full polynomials/h*/sign lists match fresh local,
+independent rational reconstruction passed. Three timeouts sign UNKNOWN,
+no inherited polynomial/sign evidence. Local beam128/30s each60s outer,
+strictly serialized after proposal scan; no concurrent local DB writers.
+All seven original quotient/permuted covers, receipt/file/header hashes,
+Python3.10.12,x86_64,glibc2.35/libraries,CPU[0,1],8GiB memory,swap0,pids128
+verified before ingestion. Installed limits unchanged. Only selected trusted
+wrapper/input/engine uploaded; no credentials/database/checkouts.
+Input runs/abacus-230740-six-fiveop-b-20260910.json SHA
+19f4f374dc4ef47e2a7f20ec3cf32cf964ad05c5c43edd0aa872cc4a1655556d.
+Wrapper SHA a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a.
+Engine SHA 8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367.
+Output SHA 07c6fb6eb2e8423d15503481a9303cbb46655d3dc849a908f6e9f1c6dc5a5956.
+Completed ledger44299407770fe9852336ccbc1228f94c8e69091dcf236aee7c1aaf20e9b7a824;
+readback prepared235366,receipt235367,validated236902..236908.
+Fetch outside Dropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T130429-5919f5be4432-clzpci7y
+Host supervisor can collect durable originals by job ID.
+Generated input and eight scan/retry reports remain ignored/untracked.
+
+
 ## Five-opposite search and Abacus comparison — 2026-09-10
 
 Codex retains KTT/companion ownership, private profile/model and sole local
