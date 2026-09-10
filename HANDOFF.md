@@ -1,5 +1,73 @@
 # Ehrcalc Handoff
 
+## Degree34 paired gaps resolved; joint proposal pass complete — 2026-09-10
+
+Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
+Previous turn progress; freshclean Git/DB/remote-idle checks.
+No source edits,testclaims,extraAIworkers,admin/toolchain changes,push/publication.
+
+Abacus job20260910T123800-8fd5cccdc62b done/exit0,wall100.98947s.
+8serialcases includingfreshcontrol,20s/case/180swhole,establishedfinitebound,
+monitoredsamejob,no resubmission. Selected7degree34pairedsources had no prior
+retry/remote identities; actual GT-coordinate tuples pairwisedistinct and
+absent from222055/203068/198861/209610/174551 paired and230740 lower-remove
+neighborhoods. Scope inpreparedledger,notglobal non-isomorphism.
+Control196437 freshlocal0.22619666706304997/remote0.3990145970019512s fullmatch.
+All7search exactNONNEG remote/local seconds/localrun:
+23176613.917968605994247/8.050471887923777,
+090c29aad4500c6fb9481be0571026b2d81a7d626604f7cadaee011698cac183;
+23180814.06758540699957/8.120813749032095,
+cc79808b13a32681e67e54a778c455fcc3681f0af4208911de85112e15fda764;
+23185014.010850257007405/8.122453631018288,
+31e3629fbfdf6c21e15c4eed70f45932e1207ab1c9f387027328d493f6c7e2f5;
+23189214.100559440004872/8.14052780799102,
+fe531fc7ef0ebe32d5b132eeb10dda6192d162cf7aed22984e6173fb0ec6f96e;
+23193414.307148419000441/8.194831228000112,
+9ff445796dfa2fa8b010b173e1cfd8738ac8c0c2b8f1609979f22078b73955d3;
+23197614.179692003992386/8.114618432940915,
+1734f18ad8e52ea3638cfd2b1707d98f3686c93f0fc3c409d4d77b4e49e6fd95;
+23201814.023839711007895/8.157746737007983,
+30d5019c9910c2423956a46f1608e2789e948ae0a74e95c5e7365360d289192f.
+Localbeam128/30s each60souter/nice10/CARGO_TARGET_DIR,strictlyserialized
+after jointscan terminal. All8remote fullpolynomials/h*/signlists match
+freshlocal and independently reconstructed overQ.
+All8quotients/permutedcovers andreceipt/file/header hashes verified before
+localingestion. CPU[0,1],8GiBmemory,swap0,pids128,x86_64,
+Python3.10.12/glibc2.35/libraries verified; installedlimits unchanged.
+Onlytrustedwrapper/input/engine uploaded,no credentials/DB/checkouts.
+A bounded live-log preview began midJSON,causing summaryparsererror;
+samejob status inspected,then fullbundle fetched. Not a failedjob or
+connection-triggered resubmission. Fulloutput parses/validates normally.
+Input SHA82ad41a6401a3f255c439c4f8b311b85707b08944620854346e25624f0b29196
+Wrapper SHAa4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHAec1dcd5d5657bed778c08065d463f7be2f596fdc2c705d601f987c300deb1b11
+Completedledger6b62a499cf913e0a25d1f57933aa872daa28b59b4422e55d79bbc16dd7d8efb3,
+readback prepared233275,receipt233276,validated233999..234006.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T123800-8fd5cccdc62b-355_mdyx
+Hostsupervisor cancollect durable originals byjobID.
+CURRENT230740 paired26exactNONNEGATIVE,10unknown,
+27dimprunes125objectiveprunes1duplicate. No wholequeue positivity claim.
+
+230740 joint finished591->731->926->945 (ALL945),
+samecap6extra/d40,beam32/5s,45sbatch/60souter,nice10/CARGO_TARGET_DIR,
+39.062616651994176/40.45273305103183/5.620470116962679s,runs
+de3d582c287f180bf2e75ee77bf63549c70de9cec630705b0808f74a9651bc67
+809b2848da770a2be7f17a9ddc7c68ac46ed9654eae408fe969470be55e31974
+1f35e0e6e014a5c83263f20bf2ca60d28551ad99f86d11c510b499379a6fb0bc.
+CURRENTwholejointqueue36timeouts UNKNOWN,279dimprunes630objectiveprunes,
+0exact/negative/duplicates. Allproposals/outcomes DBstored.
+Completed proposalenumeration does NOT resolve any timedout sign.
+Next: coordinate/layout audit these36six-extra/four-internal children,
+prioritize tractable distinct cases forAbacus;10pairedgaps alsoavailable.
+Ignored runs/abacus-230740-seven-paired-d-20260910.json,7retryJSONL and
+3jointreports stayuntracked. Allhandles terminal. No improvednegative;
+goalactive,noglobalblocker. RetainRAW230740/cert230749 d33 sevenextra/
+fiveinternal alongsidepriorleaders; counts not provenminimum nonflagdistance.
+
+
+
 ## Seven paired gaps resolved; joint search at591 — 2026-09-10
 
 Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
