@@ -1,5 +1,41 @@
 # Ehrcalc Handoff
 
+## Direct internal-ban removal from seven-opposite parents — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn established a new runtime bound and layout audit(progress);
+no global blocker. Fresh Git clean/no-engine checks;DB found no internal
+queues for198861/203068/209610. Source unchanged.
+All5 direct internal-ban removals per parent,offset0->5,cap7 extra opposite,
+dimension cap40,beam32 coordinate-verified layouts,5s/case,45s batch,
+60s outer,nice10,serialized. Each queue:1 timeout,4 dimension prunes,
+no exact count,negative,duplicate,objective prune,empty or error.
+198861,5.2613710089353845s,
+run6dc3245f47a8e66a6246ffbd6369386e860262d1c49a07ffd5e60594c10507b4;
+203068,5.2783546190476045s,
+run8b1ba166e4f08cea5c828f628579d8a56e24fbb6e25ace8477218606b5599ee9;
+209610,5.283071193960495s,
+run9620c330c9483cd1fb81d54affc8ffae6315c3d66d8a0bd76f5bd3f84960881d.
+Each direct removal reduces presentation internal bans5->4.
+d40 edge113 timeout children221921/221931/221941 respectively.
+Remaining four per parent degrees44/47/49/50,edges128/144/161/179,
+remain uncounted. No sign inference from prune/timeout.
+Selected column-parent child221931 got fresh beam128/30s attempt,
+time_limited30.094048516941257s,
+run862559e685587ee256557fcd047b919b496072c382f1ec922175d05590b0bbbb.
+Unknown sign,no polynomial/exact cache assigned. Original5s attempt retained.
+SamplePID2903192 at10s CPU100%,RSS739612KiB,NI19,not peak.
+Same handle observed terminal exit0,no engine remaining.
+Fresh DB aggregation/readback confirms all three queues and retry.
+Reports runs/fan{198861,203068,209610}-internal-seven-d40-offset0-20260910.jsonl
+and runs/fan-retry221931-beam128-30-20260910.jsonl ignored/untracked.
+Next distinct verified layouts or selected bounded attempts for221921/221941;
+do not repeat completed identities. Three four-internal-ban candidates are
+not verified negative and do not improve certified best.
+Best negative remains174566d33 seven/five,not flagged Kostka witness.
+No push/publication,extra workers,admin changes or remote job this turn.
+Goal active,no global blocker.
+
 ## Degree37 five-opposite longer bound and layout audit — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
