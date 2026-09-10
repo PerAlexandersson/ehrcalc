@@ -1,5 +1,46 @@
 # Ehrcalc Handoff
 
+## Complete new-lineage five-opposite neighborhood — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made concrete progress;fresh Git clean/DB/no-engine checks.
+No source edits. Resumed RAW222055 lower-remove-two at465,not prior timeouts.
+All1572 proposals now covered,cap5 extra opposite/d36,verified beam32,
+5s/case,45s batches,60s outer,nice10,serialized:
+465->761,39.5423513710266s,1 exact nonnegative/6 timeouts/40 dim prunes/
+245 objective prunes/4 duplicates,
+runbf0d7eb45f193a7c3d3ec56d985f042c56d6dba8aaa749af7835aa0ad2236518;
+761->1121,42.62244090298191s,1 exact nonnegative/7 timeouts/33 dim/
+319 objective/0 duplicates,
+run531b66d0c9464c2caf3df5350c3da8fc3d26bf917262abde90627d6abeb556cf;
+1121->1349,42.50756799499504s,1 exact nonnegative/7 timeouts/15 dim/
+203 objective/2 duplicates,
+runca63f953e251662bf92a96cccbe26483f78b9bf60f6775024364f59e0876f2b7;
+1349->1572,29.26848475006409s,0 exact/5 timeouts/18 dim/200 objective/
+0 duplicates,run826a132659a156467745843ba71eed76038da7caf990da948bcc3be022d97fea.
+With previous0->465:3 initial exact nonnegative,31 timeouts,153 dimension
+prunes,1376 objective prunes,9 duplicates not revalidated;0 negative/empty/
+errors. Fresh DB aggregation confirms1572 terminal plus1572 started records.
+Prunes and duplicates are not sign conclusions;timeouts remain unknown.
+
+Smallest gap224808d32 edge[7,13,98,132],fresh verified beam128/30s retry:
+EXACT NONNEGATIVE21.809044553898275s,
+runada0370cb2a0c72e17a74115f82b80be49d1000abfb780a4dbd50f0f79047169.
+Fresh DB readback confirms;original5s attempt retained.
+Neighborhood now4 exact nonnegative,30 unknown,prunes/skips unchanged.
+Next smallest unknown224794d33[7,13,82,132],225228d33[8,14,98,132],
+then222888/223268d34;eligible for distinct-budget local or Abacus batches.
+Do not repeat completed queue or terminal retry identities unchanged.
+SamplePID2937817 at7s CPU100%,RSS186408KiB,NI19;not peak.
+Reports runs/fan222055-lowerremovetwo-five-d36-offset{465,761,1121,1349}-20260910.jsonl
+and runs/fan-retry224808-beam128-30-20260910.jsonl ignored/untracked.
+No engine remains after terminal monitoring. No remote submission this turn.
+Retain negative222055/cert222064 and174551/cert174566,d33 seven/five;
+no improved nonflag negative certified. Counts are presentation metrics,
+not proven minimum bad-edge distance;no flagged Kostka counterexample.
+Goal active,no global blocker. No push/publication,extra AI workers,
+administration changes or unrelated edits.
+
 ## Four-internal retries and new five-opposite queue — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
