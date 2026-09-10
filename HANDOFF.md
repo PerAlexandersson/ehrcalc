@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## Four smallest interior-shrink gaps resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+selected retries. Source unchanged. Serial coordinate-verified beam128/30s,
+60s outer,nice10,ALL EXACT NONNEGATIVE:
+226220d30[2,9],1.8343608169816434s,
+run078a7a6e5f3b84d6715df96b81f0de47a1056e6757173c273f741c82a1dcd2d4;
+226218d31[2,8],2.222233423963189s,
+run0584ea308d2c92555ebba137c008c6c63d8820f4d27e7a73a25988f7e03b113d;
+226248d31[3,8],3.6233510290039703s,
+run1b9a09638243540b990e33038afc00abb364827f7e19abdb4fd9a6ce864ab95c;
+226288d31[4,13],6.180804442963563s,
+runfca237f8d88a039aba05e447772d73b8aa417fbf569662dd3356a5e5bf5cf669.
+Fresh DB readback confirms statuses/empty negative lists;original5s attempts
+retained. All finished before resource samples;no peak claim.
+All handles terminal exit0,no engine remains.
+222055 interior-shrink now79 exact nonnegative,11 unknown,
+19 dimension prunes,8 objective prunes,14 duplicates not revalidated.
+Next smallest known gap226318d31[5,13];fresh full query before further work.
+Do not repeat terminal budget/layout identities unchanged.
+Reports runs/fan-retry{226220,226218,226248,226288}-beam128-30-20260910.jsonl
+ignored/untracked. No remote submission this turn.
+Retain negative222055/cert222064 and174551/cert174566,d33 seven/five,
+presentation counts not minimum distance. No smaller negative or flagged
+Kostka counterexample. Goal active,no global blocker;no push/publication,
+extra AI workers or admin changes.
+
 ## New negative lineage interior-shrink neighborhood completed — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
