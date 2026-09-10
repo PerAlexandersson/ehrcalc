@@ -1,5 +1,30 @@
 # Ehrcalc Handoff
 
+## Three more smaller-shape exact results — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/full DB next-gap query
+found never-retried selected sources. Source unchanged.
+Serial coordinate-verified beam128/30s,60s outer,nice10,ALL EXACT NONNEGATIVE:
+226318d31[5,13],6.113725772011094s,
+runbb8af4990cddea21a699a8eeb550d667a99b6602dd052273ffeb8fe7e3425336;
+226424d31[9,7],5.882796018035151s,
+run9137d7fe6413e32662be2b0c525eabf928c2fdb6205dc08c8c13410fb28c8651;
+226186d32[1,6],5.901621041004546s,
+rund1240e22c62602292e0ec759269859a4fb776a63cf9a1435fe849f042a76b027.
+Fresh DB readback confirms statuses/empty negative lists;original5s attempts
+retained. All finished before resource samples;no peak claim.
+All handles terminal exit0,no engine remains.
+222055 interior-shrink now82 exact nonnegative,8 unknown,
+19 dimension prunes,8 objective prunes,14 duplicates not revalidated.
+Initial d31 gaps resolved;next d32 sources226228[2,13],226258[3,13],
+fresh full query before further work. Do not repeat terminal identities.
+Reports runs/fan-retry{226318,226424,226186}-beam128-30-20260910.jsonl untracked.
+No remote submission this turn. Retain negative222055/cert222064 and
+174551/cert174566,d33 seven/five,presentation counts not minimum distance.
+No smaller negative or flagged Kostka counterexample.
+Goal active,no global blocker;no push/publication,extra AI workers or admin changes.
+
 ## Four smallest interior-shrink gaps resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
