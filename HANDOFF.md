@@ -1,5 +1,39 @@
 # Ehrcalc Handoff
 
+## Six-opposite band queues and two five-opposite exact retries — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Four disjoint queues completed under cap six extra opposite/
+dimension36,beam32/5s cases/45s batches/60s guards:
+- column-band174551+173399 all182:111 duplicate-not-revalidated,71 objective
+  prunes,2.833406s,run37222217da6c085ea342adb554a2cdb46160445151b0308d3780b75ccfacd7bd.
+- column-band174551+173929 all182:156 duplicates,26 objective prunes,
+  2.825230s,runf228fe559feeaf3b0597dff01cdda6e7a8aa1b02d3789c3c36c551ce8683ab97.
+- row-band209610+203068 all56:14 duplicates,42 objective prunes,
+  0.875337s,run0650cf3263ba591ca945fa9cd51887d65dd06b808c464d02f9c1213275ebbf7e.
+- column-band209610+203068 all182:94 duplicates,88 objective prunes,
+  2.840769s,run2a5c2b104b783a13045dbb362c52dac5f83083150035bdc6610c81216cb4f80a.
+
+DB confirms all602 outcomes;no new exact counts,empty,dimension prunes or
+engine errors. Started rows retained separately. Skips do not certify signs.
+Do not repeat these four queues unchanged.
+
+Raw209610 lower-remove-two gaps freshly resolve exact NONNEGATIVE beam30:
+215137d34 [4,8,98,132],26.722668s,
+runf1ed4b37d3b0282fe59ebf572c57fa3dea6a14b2bf595587ece7f9f273e0aed2;
+216009d34 [7,13,82,98],9.522487s,
+run5b9bd584a192957192b40964f5e1fbc697c55654a34f1e94b7677d296b04d0bd.
+Both satisfy five-extra-opposite bound;original5s timeouts retained.
+That1408 neighborhood now5 exact nonnegative,25 unresolved counting cases,
+with159 dimension prunes,1218 objective prunes,1 unrevalidated duplicate.
+Nearby216015/216409d34 remain unknown,as do selected Abacus candidates.
+No improved negative;primary174566d33 seven/five retained,not a flagged witness.
+Next selected five-opposite retries or new mutations of smaller negative parents;
+current negative-parent band combinations show heavy presentation redundancy.
+All observations stored,reports ignored,source unchanged,no live local scan.
+No push/publication/extra workers;goal active,no global blocker.
+
 ## Internal slides and two row-band crossovers audited — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
