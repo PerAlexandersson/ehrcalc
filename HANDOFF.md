@@ -1,5 +1,42 @@
 # Ehrcalc Handoff
 
+## All attempted content-mutation counts resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+selected retries. Source unchanged. Serial coordinate-verified beam128/30s,
+60s outer,nice10,all EXACT NONNEGATIVE:
+227150d32,5.228216855903156s,
+run47dfe73fc00bf7da848c8acac74a72f7d6f021d6ba915985cf774cfee97929db;
+227156d32,23.069939199951477s,
+runacfabc7cd80ef9c9a15748fc389882a82ead928be1eec85c741d6b423ff922ee;
+227194d32,5.445529004908167s,
+run5377ffe5763dafa22032388a2aeaf07b3e9f69d9cc83fc2e36d6088a61db5c97;
+227208d32,23.45812780794222s,
+run82e042455ddd118693a535e4ade20ab15065f9673d599367eedc7dce30347aa8;
+226662d33,6.583967222017236s,
+runc4f619cec9a6597381dc289a367a9e30aae27de1df5bb59de8bd7a4d81fd6db3;
+227146d33,5.786938423989341s,
+run1ade675b9f3f133a06b1eb4b0ba59db03fc2b6b39f0e66a07c653be05ffa8521;
+227198d33,3.219451645971276s,
+runcf175024f8a503ca564bf88b8feb2062d9fe9c93f3e44c8ec07e71d1f78e21d6.
+Fresh DB readback and independent rational hstar reconstruction pass all7.
+Fresh full-family anti-join confirms zero original timeouts without an exact
+retry. Original5s attempts retained. No peak measurements claimed.
+All handles terminal exit0,no local engine remains.
+
+RAW222055 full-content-remove CURRENT394 exact NONNEGATIVE,0attempted unknown,
+165dimensionprunes,18duplicates unvalidated,26empty;all603 proposals visited.
+This is NOT a positivity certificate for the full family:183pruned/duplicate
+cases were not counted. New mutation neighborhood (joint flag/nonflag removal,
+internal removal/slide,or crossover from222055) remains in scope after fresh DB
+checks;avoid repeating completed content queue unchanged.
+Reports runs/fan-retry{227150,227156,227194,227208,226662,227146,227198}-beam128-30-20260910.jsonl
+ignored/untracked. No remote submission this turn.
+Best negative222055 and174551 remain d33 seven/five presentation counts,
+not minimum distance. No flagged Kostka witness. Goal active,no global blocker.
+No source edits/test claims,extra AI workers,admin changes,push/publication.
+
 ## Six degree32 content-mutation gaps resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
