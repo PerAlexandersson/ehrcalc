@@ -1,5 +1,62 @@
 # Ehrcalc Handoff
 
+## Abacus degree34-36 batch validated — 2026-09-10
+
+Codex retains private profile/model,sole local DB writer,KTT/companion ownership.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no selected
+retries/priorremote bundles. Abacus enabled/idle,limits unchanged.
+Job20260910T110609-d6e4a070d3c9 done/exit0,wall100.883434s.
+Tested wrapper:8serialcases,20s each,180s whole;finite largerbound justified by
+prior successful batch and monitored samejob. No resubmission.
+RuntimeverifiedCPUs[0,1],memory.max8589934592,swap0,pids128,x86_64,
+Python3.10.12/glibc2.35/resolvedlibraries. Only trustedwrapper/input/engine sent.
+Control196437 freshlocal0.22926716692745686s,remote0.4033229390042834s,
+full exact match.
+
+Six-extra-opposite lower-remove children from222055;remote / local seconds:
+222274d34 exactNONNEG3.9087572380085476 /2.372880766983144,
+localrundbc7075665b04b880898687aa73188a3109f4cfd6dc58c00d5a787cda04542db;
+222310d34 exactNONNEG10.786184922995744 /6.872618773020804,
+localrun6e006d51a02792efd9cb0425496c25446fd5a06041636a89d5e5caebaed6c249;
+222400d34 exactNONNEG7.558063559001312 /5.743034165003337,
+localrun6c6db9d75cd9e068da1b431ad24ffccaa407d4c435bba56ab99193c8ffcbe4d4;
+222232d35 remoteTIME LIMITED20.025277102016844,localexactNONNEG26.37907601497136,
+localrunc0d070d71533b1faef4feefbe4eefa94a176a6b025d4d0d6c490e2e771c85cd2;
+222352d35 exactNONNEG17.51817229000153 /10.052258868003264,
+localrunb06496d4c9c1407ecfe0583d9420bc8c3b69ea1ba41d2dd8d2b73c7bda54cc84;
+222092d36 remoteTIME LIMITED20.11214021098567,localexactNONNEG24.31213321897667,
+localrunef87c483546d7856af941ba0b05fd45b749b1f8f1e31069de00071c71f056095;
+222132d36 remoteTIME LIMITED20.109142022993183,localTIME LIMITED30.004549685050733,
+localrun7613e204c5340dec0b44dfa9eaf6c79ffb1aa642965b11931f38582383b80011.
+Localbeam128/30s each60souter/nice10,strictly serialized by terminalhandle checks.
+Original5s andremote20s retained. 222132 signUNKNOWN,not nonnegative.
+All6 localexact polynomials independently reconstructed overQ fromhstar;
+4remote search exact fullpoly/hstar/sign lists agree with freshlocal results.
+Originalquotient and uploaded beamcovers/permutations verified all8.
+No inherited exact evidence on timeout rows.
+Lower-remove222055 CURRENT29exact NONNEGATIVE,8unknown,24dimprunes,
+105objectiveprunes6duplicates. FreshDBanti-join unknown:
+222132/222168/222198/222268/222394d36,222306d37,222228/222348d38.
+Nextremote batch may take seven never-remotely-attempted sources excluding
+222132;do not repeat itsremote20/local30 identities.
+
+Input SHA 8908ad931381331707aa3c67c9f8a0857c08596ab57cce6bf4df623b3d5b7c7c
+Wrapper SHA a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA 8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHA 6cf9f00519dfe35f199d227d5caeb38e811cd069c46f2374c3c0a93febcb1c8e
+Receipt/file/header hashes validated beforeingestion. Ledger
+97a5c7cb218614293fbfdc68e0afe7aa2b6dc7d2fc12f36b595d48cda534e671
+completed;DBreadback prepared230160,receipt230161,validated230176..230183.
+Remoteunknowns222232/222092/222132 keptdistinct fromlocalunknown222132.
+No remoteDBaccess. Dockerfetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T110609-d6e4a070d3c9-7634aett
+Remoteoriginals retained;hostsupervisor cancollectjobID above.
+Ignored runs/abacus-lowerremove-seven-b-20260910.json and7localretryreports
+untracked. Allhandles terminal,no localengine/remotejob remains,nopeakclaim.
+No source edits/test claims,credentials/DB/checkouts transferred,toolchain/admin
+changes,extra AIworkers,push/publication. Goalactive,no flagged witness.
+Bestnegative same d33 seven/five;equivalent simplerRAW230106/cert230116 retained.
+
 ## Larger routine Abacus batch: seven cases resolved locally — 2026-09-10
 
 Codex retains private profile/model,sole local DB writer,KTT/companion ownership.
