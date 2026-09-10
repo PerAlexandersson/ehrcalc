@@ -1,5 +1,74 @@
 # Ehrcalc Handoff
 
+## New negative branch: six-opposite neighborhood and Abacus — 2026-09-10
+
+Codex retains KTT/companion ownership,private profile/model and sole local
+MariaDB-writer role. Previous turn made progress. Fresh Git/DB/engine/Abacus
+checks: clean repos,no live local count,remote queue enabled/idle.
+No source edits,test claims,extra AI workers,admin/toolchain changes or pushes.
+
+RAW230740 lower-remove completed all170proposals, <=6extra opposite,
+dimension<=35,beam32/5s,45sbatch/60souter,nice10,CARGO_TARGET_DIR.
+Offsets0->69->144->170, times40.01173483999446/40.84396925603505/
+11.873429293977097s, runs:
+1007984ea7dfc72645a845e589e90073e1d9f59b131fdf8981c44ee9f5fd6783
+fb82f03f00aa096a46064e75ac5aa1b2d3370ccceeece58e1cfd0f22de3a58ef
+e6dece868ad17441430b08d3b606312aeb6a680276db334537853e1262e5840a
+Initial24exact NONNEGATIVE,15timeouts,32dimprunes,87objectiveprunes,
+12maskduplicates not revalidated. All24 fresh polynomials independently
+reconstructed overQ fromh*. All proposals/outcomes DB stored.
+Six first-batch timeouts compared by full actual GT-coordinate tuples against
+222055/230106 lower-remove neighborhoods: no matches; also pairwise distinct.
+Prepared ledger records comparison scope; not a global equivalence claim.
+
+Abacus job20260910T113951-55449901d20f done/exit0,wall56.4993457s.
+Seven serial cases including fresh negative control,20s/case/180swhole;
+established finite wrapper bound,monitored samejob,no resubmission.
+Control196437 local0.2315101649146527s,remote0.4106413570116274s exactfullmatch.
+Six search sources all exact NONNEGATIVE,remote/localseconds and localrun:
+230793d33 10.44432532801875/5.625037853955291,
+2e9629fb317290c688a66c7da33d91b9e7adeded2f89cf6a479b5d73dbb3e10d;
+230867d33 4.071743664011592/2.1794164429884404,
+872d8baaa6bc924882838896f50a6225e0dfad0c88423a01aa107ed80df3fd4a;
+230891d33 1.3020546569896396/0.8528703670017421,
+46871489b92c83732bbdb09c08da6c71b1f0127fe4b62b3c3216119f9512a0a9;
+230785d34 13.20955664399662/7.720070765004493,
+b4a2c699f3e44fab491fe38908559dc2141c0cb12dde22d87e27d74b3c34bb76;
+230825d34 14.42082892000326/8.399915206013247,
+52a5a6c2b0b9af356ffe57fc89154ced7ece66ad19d514e4987901b18a21871b;
+230887d35 12.287446769012604/6.284533647005446,
+75db95e8d375aed915e4d6b218efdbf18912c045ef86c4b88467e225cf560658.
+Localbeam128/30s each60souter,strictly serialized after mutation terminal.
+All7remote exact polynomials/h*/sign lists match fresh local; independent
+rational reconstruction,originalquotient/permutedcovers verified beforeingestion.
+CPU[0,1],8GiB memory,swap0,pids128,x86_64,Python3.10.12/glibc2.35/libraries
+verified; installedlimits unchanged. Only trustedwrapper/input/engine uploaded.
+No credentials,DB,checkouts transferred.
+Input SHAe710198ac64b92efb36846986bdde2f0b36701a752bb7d307901626ed46271dc
+Wrapper SHAa4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHA609bf863c45194ba0492d480d5e169cc76e560e2f9df3512b8067a8fdf346d21
+File/receipt/header hashes checked. Completedledger
+7aa5104845fefd6d8e57d107197168a86d38a52ef92bada9df5913c231023088,
+readback prepared230892,receipt230893,validated231108..231114.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T113951-55449901d20f-gp8_ou0_
+Hostsupervisor cancollect durable originals byjobID.
+Ignored input runs/abacus-230740-six-lowerremove-20260910.json,
+3localproposal and6retry JSONL stay untracked. Allhandles terminal.
+Sample localNI19/RSS216328 and38948KiB,not peaks.
+
+CURRENT230740 lower-remove30exact NONNEGATIVE,9unknown,32dimprunes,
+87objectiveprunes12duplicates. Remaining original5s timeouts:
+230903d32;230967/230973/231003/231047/231053d33;
+230963/231043d34;230999d35. No retries yet for these nine at checkpoint.
+Next: coordinate-check and send disjoint subset to Abacus; other mutation
+neighborhoods of230740 remain untried. No improved negative,goalactive,
+no globalblocker. Retain RAW230740/cert230749 degree33 seven/five alongside
+existingleaders; presentation counts not proven minimum nonflag distance.
+
+
+
 ## Abacus finds a distinct negative branch, degree33 — 2026-09-10
 
 Codex retains KTT/companion ownership,private profile/model,sole local DB-writer
