@@ -1,5 +1,41 @@
 # Ehrcalc Handoff
 
+## Four dimension36 five-opposite gaps resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Source unchanged. Original5s attempts retained.
+Unchanged-order214651 beam32/30s remains time_limited30.045254s,
+run8ad6e476979244c8ae118278c59615da01353ca95551ad0683062889db57eed7.
+
+Fresh full-coordinate-verified beam32/128 layout audit,all dimension36:
+215357(6,118)->(5,104),0.084194s;
+215363(6,127)->(6,127),0.079860s,identical;
+215629(6,124)->(5,105),0.083924s;
+215635(6,133)->(5,114),0.083089s;
+215983(5,115)->(5,115),0.097322s,identical;
+215987(5,117)->(5,117),0.098584s,identical;
+215993(6,134)->(6,122),0.095254s,changed;
+216769(6,127)->(5,108),0.091373s;
+216775(6,136)->(6,136),0.088275s,changed.
+Layout ledgerfc3f09865a64f894eb9b35c5aaafc8d55154d0b36db9180593520624f21fc126,
+both full orders stored. Scores are heuristics,not optimality/sign proofs.
+Identical orders not recounted as beam128;unchanged-peak changed orders deferred.
+
+Four peak-reducing beam128/30s retries resolve EXACT NONNEGATIVE:
+215357,8.574119s,run1951618882deb38f801ee4974356edbeac0efe228da6c018f17a9980b0f0f029;
+215629,18.477250s,run88caa1bb36695868e0550cb13d9e6a5aea38804ac222d445f52b7bdce6c0e8f1;
+215635,12.392566s,run833ea9d8c62ea4e5da2defd1fad66511f973688c73fc6b17de897d633c25cb63;
+216769,14.358402s,run999ba094b928459c555ae7ced35f163bfff6ee7c5e21b576e21f962e223a82ce.
+All counts60s outer/reduced priority. Raw209610 two-removal neighborhood
+now19 exact nonnegative,11 unresolved counting cases(DB exclusion query confirms),
+plus159 dimension prunes,1218 objective prunes,1 unrevalidated duplicate.
+Next deferred215993/216775 changed-order retries or new30s bounds for
+215363/215983/215987 unchanged orders;do not repeat terminal identities.
+No improved negative;primary174566d33 seven/five retained,not a flagged witness.
+All outcomes stored,reports ignored,no live scan,push/publication or extra workers.
+Goal remains active,no global blocker.
+
 ## Three five-opposite gaps resolved; dimension36 layout audit — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
