@@ -1,5 +1,32 @@
 # Ehrcalc Handoff
 
+## Two degree35 gaps resolved beyond previous time limit — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found only30s
+attempts for selected sources. Source unchanged. Serial coordinate-verified
+beam128/120s,150s outer,nice10. Finite extension justified by smallest remaining
+five-opposite d35 cases and preceding d34 successes;maintained120s support,
+no global cap change.
+223258d35,EXACT NONNEGATIVE31.184147646999918s,
+rune543e8c0f2eb1a5b0d2c7ce13dbff338748985c62ea45f772ff68afcb9ad8499;
+223530d35,EXACT NONNEGATIVE31.71710367000196s,
+run86b64dd0d9a79e14928b740811e8e8795325c22f9747a2719bae65a441bb36a4.
+Fresh DB readback confirms120s exact results alongside retained30s timeouts;
+original5s attempts retained. Samples(not peaks):PID2964905 at10s CPU99.9%,
+RSS386572KiB;PID2965695 at6s CPU99.5%,RSS153288KiB;bothNI19.
+Same handles monitored to terminal exit0,no engine remains.
+222055 lower-remove-two now30 exact nonnegative,4 unknown,
+153 dimension prunes,1376 objective prunes,9 duplicates not revalidated.
+Remaining30s unknowns223762/225634d35;225172/225178d36.
+Next selected finite longer count or distinct mutation;do not repeat terminal
+budget/layout identities unchanged.
+Reports runs/fan-retry{223258,223530}-beam128-120-20260910.jsonl untracked.
+No remote submission this turn. Retain negative222055/cert222064 and
+174551/cert174566,d33 seven/five,presentation counts not minimum distance.
+No improved negative or flagged Kostka counterexample.
+Goal active,no global blocker;no push/publication,extra AI workers or admin changes.
+
 ## Both remaining degree34 gaps resolved with finite longer counts — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
