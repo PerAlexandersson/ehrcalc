@@ -1,5 +1,47 @@
 # Ehrcalc Handoff
 
+## New band crossovers and row-parent shrink neighborhood — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Fresh Git clean/no-engine
+checks,DB inventory confirmed no selected band-cross or198861 interior-shrink
+queues. Source unchanged. All scans5s/case,45s batch,60s outer,nice10,
+beam32 full-coordinate-verified layouts when counted,all proposals persisted.
+
+Crossovers cap6 extra opposite,dimension cap38,all finite bands:
+198861+203068 row56:17 duplicates,39 objective prunes,0.8893096370156854s,
+runbb1e11c9ce446aedd4a7695597e0005f18791b5cd780d0de09607f3bb70b1c55;
+column182:113 duplicates,69 objective prunes,2.849870938109234s,
+run9f47183379b79ce67a7a28da6baeedd8d5556cad70d8ef8a3c6ad6821bca05f7.
+209610+198861 row56:41 duplicates,15 objective prunes,0.8796999440528452s,
+run3029e4e8c30a943d7024796c14098f55171baed10bf59de25e0223f150b444d7;
+column182:145 duplicates,37 objective prunes,2.8751443709479645s,
+runc6e53a945d2a1dc8325a5cd817f5d9b196def23798d3b76294ad42078cbc01f8.
+All476 proposals completed:316 duplicates not revalidated,160 objective prunes,
+no counts. DB aggregation matches. No polynomial-sign claims for skips.
+
+Raw198861 interior-shrink all131 noncorner row/column cuts,children8x14,
+cap7 extra opposite/d33. Resumed actual offsets0->37->95->131:
+0 batch40.15738877898548s,23 exact,9 dimension prunes,5 duplicates,
+run430592bfdb270c742307906e2c9f1819971dd28545ba84c1af0e19137e66f26e;
+37 batch39.45952826610301s,36 exact,14 dimension prunes,8 duplicates,
+run61b7d8ea21cde2f2fbee693289c57d289cfe9ded0684baf0d592592921f144b2;
+95 batch23.35509730700869s,15 exact,3 timeouts,5 dimension prunes,13 duplicates,
+runfb5ec25f4fc4d85aefcbd78ae9a2f025ef8f154dcc68d9ee76f9f383eb01f0ad.
+Total74 exact nonnegative(degrees15..33),3 unknown,28 dimension prunes,
+26 duplicates not revalidated;no negative,objective prunes,empty or errors.
+Fresh DB aggregation confirms totals and gaps:
+221811d32 cut[7,13],221827d33 cut[8,6],221857d31 cut[9,7].
+SamplePID2872240 under1s CPU98.4%,RSS77916KiB,NI19,not peak.
+No repeated batches;all started/outcomes stored,original timeout signs unknown.
+Reports runs/fan{198861-203068,209610-198861}-{rowband,columnband}-six-d38-offset0-20260910.jsonl
+and runs/fan198861-interiorshrink-seven-d33-offset{0,37,95}-20260910.jsonl
+ignored/untracked. Next selected221857d31/221811d32 retries or new mutation;
+do not repeat completed queues unchanged.
+No improved negative;primary174566d33 seven/five remains,not flagged witness.
+No live engine at terminal check;no push/publication,extra workers,admin changes
+or remote submission this turn. Goal active,no global blocker.
+
 ## Degree40 removal bounds and corner shrink scans — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
