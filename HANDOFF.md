@@ -1,5 +1,77 @@
 # Ehrcalc Handoff
 
+## Shrink attempted gaps closed with Abacus; weight mutations — 2026-09-10
+
+Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
+Previous turn progress; freshclean Git/DB/remote-idle checks.
+No code edits,testclaims,extraAIworkers,admin/toolchain changes,push/publication.
+
+Actual-coordinate audit of7shrink gaps against222055/203068/198861/209610/
+174551 interior-shrink neighborhoods:
+5feb1c0f4b44d9e6dbdfc6bfa48ec46dd2b8bba35e1b239be682e1c6392909d8.
+231285 equals212574,an original5stimeout with no wider retry. Other6distinct
+within selectedbatch and absent from comparison scope. All mappings DBstored.
+231285 excluded fromremote,then retried ONCE locally atnewbeam128/30budget:
+exactNONNEG5.8756941159954295s,
+cd72a7f929d3e4057e7fbaa3ff21470578a4b108908a7c7ead8f5ea5ce37c891.
+Independent Q reconstruction passed. Do not separately redo212574 unchanged;
+coordinate audit supplies identity to fresh231285 result.
+
+Abacus job20260910T120346-ded693b6aa09 done/exit0,wall113.0280698s.
+7serialcases includingcontrol,20s/case/180swhole,established finitebound,
+monitoredsamejob,no resubmission. Control196437 freshlocal0.2357090211007744/
+remote0.40620347901131026s exactfullmatch.
+All6local search retries exactNONNEG,remote/local seconds:
+231523d31 exact14.548512218985707/7.823370718979277,
+0f2c4eed9e21723806090753044bc7798320cbd068facc6154277f0c8d4b006f;
+231493d32 exact18.671159974997863/10.716887788032182,
+68e9a39e60eaee1814dc529afe2cb8e893dbd3a77b1773af7fb583b5c8f684f1;
+231315d33 remoteTIME LIMITED20.104724737990182/localexact12.699588811956346,
+3e88caeeee93aaae8842f06b1ca150288fe0d8b0a8c9278339b14e9f3b846429;
+231345d33 remoteTIME LIMITED20.01321775201359/localexact11.764757750905119,
+48b2e4f7e641d8a83bb95499156b9605601cef9324c0c8c3d5b570ef5ee7feeb;
+231387d33 remoteTIME LIMITED20.112126142979832/localexact12.703126516076736,
+c5e43fc6e6f98aeefa7aa2a1aae89821a4d6880417d40b7dbb6221ebc2149ace;
+231463d33 exact18.425219732976984/9.873912398004904,
+7addfe1218353e11ef37ef71c16d6e727ef638fc62537207fd9a5d545725c82d.
+Localbeam128/30s each60souter/nice10/CARGO_TARGET_DIR,strictlyserialized
+after localweightscan terminal. All6freshlocal exact independently
+reconstructed overQ. All3remote search exact fullpolynomials/h*/signlists
+match freshlocal,controltoo; remote timeouts kept separate fromlocalexact.
+All7quotients/permutedcovers and receipt/file/header hashes verified before
+localingestion. CPU[0,1],8GiBmemory,swap0,pids128,x86_64,
+Python3.10.12/glibc2.35/libraries verified; installedlimits unchanged.
+Onlytrustedwrapper/input/engine uploaded,no credentials/DB/checkouts.
+Input SHA74f99e0e2d99307498ffb265196885c47f6391356af735992b657ca654bef4ad
+Wrapper SHAa4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHA002b89e28e5af76d94bdc89af7ce52f9b451e3def4099c6d6f2c21b5b6ad3490
+Completedledgere09484aeba3a39f3ea30a81dd804b9100e2ada4e6e357e74b8df814442f7d797,
+readback prepared231552,receipt231553,validated231614..231620.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T120346-ded693b6aa09-1y3p330e
+Hostsupervisor cancollect durable originals byjobID.
+CURRENT230740 interior-shrink82exact NONNEGATIVE,zeroattemptedholes,
+21dimprunes8objectiveprunes20maskduplicates (131total). FreshDBanti-join0.
+Prunes/duplicates not a positivity certificate or larger-range conclusion.
+
+230740 zero-weight ALL24labels completed,dimensioncap33,no flag-only
+objectivefilter,beam32/5s,45sbatch/60souter.
+Offsets0->23->24,times42.56119466701057/0.03301770007237792s,runs
+fe9fc2c600749229e602a440662f56c78d89ea61351f083e45d9b018a337d441
+15cb886fc07d7d0b884976f68227a96316f2ecac5616227114a91b78eba81870.
+18exact NONNEGATIVE independently reconstructed overQ,4timeouts UNKNOWN,
+2maskduplicates,no prunes. Unretried d32 sources231585/231587/231589/231591
+for zero-weight labels16/17/18/19. Allproposals/outcomes DBstored.
+Ignored runs/abacus-230740-six-shrinks-20260910.json,2weightreports,
+7retryJSONL stay untracked. Allhandles terminal. No improvednegative,
+goalactive,no globalblocker. Next: bounded coordinate-checked weight retries
+onAbacus ornew paired/joint/full-content mutations of230740.
+RetainRAW230740/cert230749 d33 sevenextra/fiveinternal alongsidepriorleaders;
+presentation counts not provenminimum nonflagdistance.
+
+
+
 ## Four-ban Abacus attempts and interior shrink pass — 2026-09-10
 
 Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
