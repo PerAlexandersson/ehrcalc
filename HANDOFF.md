@@ -1,5 +1,37 @@
 # Ehrcalc Handoff
 
+## Three dimension35 five-opposite retries — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Three raw209610 lower-remove-two children independently
+reconstructed and retried beam32/30s,each under60s guard/reduced priority:
+214661d35 [2,4,98,132] EXACT NONNEGATIVE8.262669s,
+runa2e8379121f13525fba4c4cef7614d36bc0ffbb6f901c166b202e3f9fc2d2113;
+214897d35 [3,6,98,132] time_limited30.044952s,
+runc66d0fba030353babe41ea72cf277993eafa23e7a14c1e82ffcc089daad550c1;
+215123d35 [4,8,82,132] time_limited30.074922s,
+runb05db70066017f1f15efd1811cc321512dcc637053876d8f5f9954ea04dc68a0.
+DB confirms source dimensions/edges/five extra opposite constraints and terminal
+retry statuses. Original5s attempts retained. Timeouts have no sign conclusion.
+That1408 neighborhood now9 exact nonnegative,21 unresolved counting cases,
+plus159 dimension prunes,1218 objective prunes,1 unrevalidated duplicate.
+Do not repeat these terminal30s layout/budget identities unchanged.
+
+Before starting smaller-parent two-removal work,checked DB and handoff:
+raw182122 lower-remove-two was already completed undercap5/d36,beam5,
+offsets0->230->446->completion,runs64ec27f9518d0523662612295eea3ee90262da414000cce49e0e312270f3bf49,
+7d02f8adf29abe5180f78bc64826fe3235ec2703c6310817553be0cf4754ebd4,
+0d8a67304cca8a1908a1bb2780f51a54cd24c093f7817b5183bc55c61c41828c.
+No duplicate scan launched;these historical ranges were checked for ownership/
+planning,not promoted to fresh coefficient verification. Raw182773 also has
+documented completed two-removal work;read its detailed entry before proceeding.
+Next distinct negative-donor crossover,shape/weight mutation or different verified
+counting layout for timed-out five-opposite gaps. No global search blocker.
+No improved negative;primary174566d33 seven/five retained,not a flagged witness.
+All outcomes in DB,reports ignored,source unchanged,no live local scan.
+No push/publication/extra workers;goal remains active.
+
 ## Smaller-parent band queues and three five-opposite retries — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
