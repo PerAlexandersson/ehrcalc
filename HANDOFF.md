@@ -1,5 +1,45 @@
 # Ehrcalc Handoff
 
+## Joint-candidate coordinate/layout audit and one exact count — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no selected
+retries. Source unchanged. Audited all36 RAW222055 joint timeouts by rebuilding
+original GT quotient equality blocks,marked blocks,and full order relations.
+Actual coordinate-signature tuples compared,not just hashes:all36 distinct.
+This does not rule out abstract poset isomorphism. No counting in this audit.
+Verified beam32 andbeam128 coordinate permutations for every candidate,stored
+full permutations/frontier profiles/scores in36 DB layout observations.
+Auditkindfan_joint_layout_audit,3.772077666944824s,
+run7942f44277adba6a1dbcaf250403ebdac9d1c0dd42c3472123e4fbd01b21be34.
+Fresh DB confirms completed/36records/singleton coordinate groups.
+Initial attempted longer search_kind failed SQL column-length check before any
+case execution/insertion;used shorter kind,without changing schema/admin.
+Selected improvements:227836d39 beam32(peak7,total137)->beam128(6,117);
+227856d39(7,134)->(6,118);228096d39 retains identical(5,148) order
+at both widths,smallest peak among this list. Width is heuristic,not runtime proof.
+
+Serial bounded retries,coordinate-verified beam128/30s,60s outer,nice10:
+227836d39[10,82,113],TIME LIMITED30.059480119030923s,
+runf7f4fef36678d7d442b4409578e28ab82d4ad38db9c8b53bd7a45616f7108606;
+228096d39[29,132,113],EXACT NONNEGATIVE11.261287886067294s,
+rune76675eccf5e4944337ddaf135a028bd2776b12c5397e9fbf9145fc79444c166.
+Original5s attempts retained. Fresh DB readback confirms both statuses,
+no inherited polynomial/negative evidence for timeout;independent rational
+hstar reconstruction and sign list check pass for228096.
+Joint945 CURRENT1exact NONNEGATIVE,35unknown,279dimensionprunes,
+630objectiveprunes;no duplicates/empty. Six extra opposite/four internal
+presentation bans remain promising unknowns,not negative witnesses.
+Next degree39 cases227856/227886/228046 have no known retry;fresh DB before
+acting. Do not repeat227836 beam128/30 unchanged.
+Reports runs/fan-retry{227836,228096}-beam128-30-20260910.jsonl ignored/untracked.
+All handles terminal exit0 except initial handled SQL-length failure;
+no local engine remains,no peak measurement claimed. No remote submission.
+Best negative222055/174551 stilld33 seven/five,presentation not minimum counts.
+Content-removal remains394exact nonnegative,0attempted holes,165dimprunes,
+18unvalidatedduplicates26empty. No flagged witness,goal active,no globalblocker.
+No source edits/test claims,extra AI workers,admin changes,push/publication.
+
 ## Joint flag and two-nonflag-removal queue processed — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
