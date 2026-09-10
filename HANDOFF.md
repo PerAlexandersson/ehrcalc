@@ -1,5 +1,49 @@
 # Ehrcalc Handoff
 
+## Four degree-pruned five-opposite shrink children resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Both worktrees clean and
+no engine live at launch. Fresh DB checks found no local retry of selected
+children before first count. Source unchanged.
+Selected7x14 interior-shrink children all have5 extra opposite constraints:
+182122 children219312d35 cut[2,6],219342d35 cut[3,6];
+182773 children219544d34 cut[2,6],219574d34 cut[3,6].
+All had been dimension-pruned under32 cap,not counted in that scan.
+Full-coordinate-verified beam128 layouts,serialized5s then new30s counts,
+each under60s outer guard,nice10. All started/results persisted in DB.
+5s attempts remained unknown and are retained:
+219312,5.018988959025592s,
+run8bc6ed2a1d95f57c45bad63cc4a1dff16b5d39796bbe54416f6e2a3b056284ca;
+219342,5.0181585809914395s,
+runf0e225a10c207e431ba12c2d376fdf522dabdff3e3421ecdcec1c4785ecc16e1;
+219544,5.018454781034961s,
+run66f3931bcbe930685f0d2863591649fc25c592ad3abbb630eb6cf42054796ccf;
+219574,5.017965027014725s,
+runf9912f0e6a7671259dacbbc695816e3c848cdf788c2cc018372902ebd14d698e.
+
+All four30s attempts EXACT NONNEGATIVE:
+219312,8.566590850008652s,
+run2612d752dd132590e0683fd98cbd1c5c182c59389ad234768cec6ac646b01658;
+219342,8.293287552078255s,
+run407584bd70ee36eef239e59e36b30b3d7e0a93ca3f0c7814cf6545f57be33cde;
+219544,7.708932022913359s,
+runc8cfd368bf34479ebfa71c0f18ebb6c8ee05dce9722e0e6bceb101fbe94507ad;
+219574,7.853076440980658s,
+run6fb5f80fbb7db864acf22e5a2f946e9bc63876bce1708e59bfe646ef8dbe0f79.
+Fresh DB readback confirms all8 statuses,times,and exact sign lists.
+Observed checks found engines already terminal;no retained in-flight RSS sample.
+Beam128 frontier peak/total:219312(5,100),219544(5,94),heuristic scores only.
+No geometric equivalence inferred from matching polynomial or shape.
+Reports runs/fan-retry{219312,219342,219544,219574}-beam128-{5,30}-20260910.jsonl
+ignored/untracked. Prior dimension prunes retained,not reclassified scan counts.
+Remaining original dimension-pruned cases:14 per smaller-parent neighborhood.
+Next low-degree five-opposite gaps include219602/219632/219692d35 from182773,
+and219370/219400/219430/219460d36 from182122. Do not repeat terminal identities.
+No improved negative;primary174566d33 seven/five remains,not flagged witness.
+No push/publication,extra workers,admin changes or remote submission this turn.
+Goal remains active;no global blocker.
+
 ## Smaller-parent interior shrink neighborhoods completed — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
