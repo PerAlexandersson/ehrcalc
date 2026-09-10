@@ -1,5 +1,28 @@
 # Ehrcalc Handoff
 
+## Remaining degree32 shrinking cases resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+selected retries. Source unchanged. Serial coordinate-verified beam128/30s,
+60s outer,nice10,both EXACT NONNEGATIVE:
+226276d32[4,7],5.361237645032816s,
+runbb0bd5cc1c6a309230e6ed6da6542ee4dddf89d3d5fe681f0007b8fb84570220;
+226394d32[8,6],6.59636452794075s,
+runa2d9fef036ef028f5dc45da59ab5855fda836830d734b01a60c8fc0b63fb68d1.
+Fresh DB readback confirms statuses/empty negative lists;original5s attempts
+retained. Both finished before resource samples;no peak claim.
+All handles terminal exit0,no engine remains.
+222055 interior-shrink now86 exact nonnegative,4 unknown,
+19 dimension prunes,8 objective prunes,14 duplicates not revalidated.
+Remaining initial d33 gaps226216[2,7],226246[3,7],226334[6,6],226364[7,6].
+Do not repeat terminal budget/layout identities unchanged.
+Reports runs/fan-retry{226276,226394}-beam128-30-20260910.jsonl untracked.
+No remote submission this turn. Retain negative222055/cert222064 and
+174551/cert174566,d33 seven/five,presentation counts not minimum distance.
+No smaller negative or flagged Kostka counterexample.
+Goal active,no global blocker;no push/publication,extra AI workers or admin changes.
+
 ## Two degree32 shrinking cases resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
