@@ -1,5 +1,65 @@
 # Ehrcalc Handoff
 
+## Joint coordinate/layout audit; first exact joint result — 2026-09-10
+
+Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
+Previous turn progress; freshclean Git/DB/remote-idle checks.
+No source edits,testclaims,extraAIworkers,admin/toolchain changes,push/publication.
+
+Audited ALL36unresolved230740joint cases by actualGT-coordinate tuples,
+compared to attemptedjoint cases from222055/203068/198861/209610.
+All36pairwisedistinct,no comparisonmatches. Stored full verifiedbeam32/128
+permutations,frontierprofiles,cost(maxfrontier,sumfrontier),coordinatehashes:
+7c6c86b5fe7ecc9d48296891a99e51dce0fcc2a94980daa9e0fb6e212b322ccd,
+3.976306793978438s,36layout_audit rows,completed,fresh_count=false.
+Scope is coordinateequivalence,notabstract poset-isomorphism.
+Topdegree39case232482 edge[29,132,113],bothlayouts cost(5,153).
+Next232198[10,82,113] beam32(7,121)->128(6,122);
+232408[29,82,113] (6,154)->(6,122);
+232218[10,98,113] (7,155)->(6,123);
+232428[29,98,113] (6,151)->(6,123).
+Otherprofiles inDB. Rank is a computational heuristic,not sign evidence.
+
+Abacus job20260910T124601-2d205683de6e done/exit0,wall82.7988164s.
+4serialcases includingfreshcontrol,30s/case/150swhole. Larger finite
+casebudget justified by auditedlayout/degree39 and testedwrapper support;
+jobcap covers4x30plusstartup. Monitoredsamejob,no resubmission.
+Control196437 freshlocal0.22994855500292033/remote0.40020246102358215s fullmatch.
+232482d39 exactNONNEG remote21.041463179979473/local11.29968491604086s,
+e1b92da2a63e9cb0fc2cb63641e9b09b3f129838b1bd20558dcd2a936b50b0e6.
+232198d39 remoteTIME LIMITED30.07939386999351/localTIME LIMITED30.076924331951886s,
+2acfe922d33802dae437f2f8e57f0905127104bfa6d1f58238ed0195239fad22.
+232408d39 remoteTIME LIMITED30.17331276499317/localTIME LIMITED30.080410107970238s,
+3512153ad657b5bc6a4d542462202538b64d8942908754124aa449b9e4cafeb7.
+Lasttwo signsUNKNOWN,no inheritedpolynomial/sign evidence; do not repeat
+unchangedremote30/local30 identities. Original5s attempts retained.
+Localbeam128/30s each60souter/nice10/CARGO_TARGET_DIR,strictlyserialized.
+Bothremote exact polynomials/h*/signlists matchfreshlocal,independent Q
+reconstruction passes. All4quotients/permutedcovers andreceipt/file/header
+hashes verified beforeingestion. CPU[0,1],8GiBmemory,swap0,pids128,x86_64,
+Python3.10.12/glibc2.35/libraries verified; installedlimits unchanged.
+Onlytrustedwrapper/input/engine uploaded,no credentials/DB/checkouts.
+Input SHA8bb6229befd14826e5fa7719be1d42a2e688ee34433a824caf35167944a27e4a
+Wrapper SHAa4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHAd2f8b8493f7e82b9554bdeb0627b4c05c5c1081b67a12774874e06063ba34430
+Completedledger0ccffc32bbbc6de8c253bb6935ba1c55662172fc1304277cf2ee4a64a0e83b13,
+readback prepared234043,receipt234044,validated234051..234054.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T124601-2d205683de6e-ax84cjnf
+Hostsupervisor cancollect durable originals byjobID.
+CURRENT230740joint1exactNONNEGATIVE,35unknown,279dimprunes630objectiveprunes.
+No wholequeue positivity claim. Sixextra/fourinternal remainsunachieved
+withnegative coefficients. Paired10unknown remainsunchanged.
+Ignored runs/abacus-230740-three-joint-20260910.json and3retryJSONL untracked.
+Allhandles terminal. Next: newjointlayout-ranked cases or new lower-remove-two/
+full-content mutations of230740; no need repeat identical exhausted attempts.
+No improvednegative;goalactive,noglobalblocker. RetainRAW230740/cert230749
+d33 sevenextra/fiveinternal alongsidepriorleaders; presentationcounts not
+provenminimum nonflagdistance.
+
+
+
 ## Degree34 paired gaps resolved; joint proposal pass complete — 2026-09-10
 
 Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
