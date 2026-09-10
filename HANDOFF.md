@@ -1,5 +1,88 @@
 # Ehrcalc Handoff
 
+## Restore two-hole frontier; Abacus verification complete — 2026-09-10
+
+IMPORTANT USER CORRECTION: earlier status called the compact mixed-face lineage
+the best without including the older two-hole catalog. That was incomplete.
+Prioritize fewer nonflag constraints, not merely smaller degree. Restore the
+two-hole family to the active frontier; independent fresh count still pending.
+Codex retains KTT/companion ownership, private profile/model, sole DB writer.
+Previous turn progress. No source edits, new tests, extra workers, admin changes,
+push/publication. All local and Abacus handles terminal; goal active, no blocker.
+
+Fresh MariaDB query of kogan_genetic_candidates:4445 negative-marked genomes,
+all hole_count2, dimensions84..88. Not4445 independent polynomials/faces.
+Minimum dimension84, minimum selected equality count at that degree3.
+Representative key
+612334d74e3ba8f384a8647c90a4a7fcd46f129dde61c9f2999d9a1e77fab474,
+9x10,mask0x200000000010000001000, recorded score978016.0.
+Reconstructed KoganTriangle, checked reduced word, quotient dimension84,
+complement-row lift and nonflagged_holes freshly: exactly[(4,6),(6,10)].
+Three selected equalities give forbidden labels[(4,6),(5,14),(6,10)];
+(5,14) is absorbed by flags. Shape(11,1^9)/(1),weight1^19.
+Cached full h*->power reconstruction independently verified over Q;
+degree84, negative coefficients at degrees1 and2:
+-521557363663994321728331529347910631/79176774063173546519549708863744800;
+-34367516038053202174706965110119606280354365131856381/3103748900391665120968760615294953306918236875136000.
+This is cached-transform consistency, not fresh independent lattice counting.
+Fresh maintained ehrcalc count, original natural layout,30s/case/60s outer,
+nice10/CARGO_TARGET_DIR, timed out30.042443377897143s, no fresh sign evidence.
+Sample24s RSS356884KiB; no memory pressure. Run
+3a22b6a37c4edf7bb80f800967f155845fba05c22542e80b86d07069c291b258.
+Do not repeat that identical30s attempt. Next: bounded larger count or audited
+layout, then mutations preserving <=2holes. Abacus should remain in use.
+Catalog/structure/transform review DB run
+d00a00ea8c624d473d5892a0346ae39607f6bf3da809e482dfdd68d47088fb21,
+fresh_count=false. Historical genetic score is not directly comparable with
+the mixed-face extra-opposite/internal-ban metrics. Compact RAW230740 d33
+seven extra/five internal remains a separate degree-focused branch.
+
+Abacus20260910T131117-83724db95f0e done/exit0,wall64.64939546585083s.
+Four distinct new five-opposite children+control,20s/case/120s whole,
+established finite bound monitored under same job ID, no resubmission.
+Actual-coordinate audit found pairwise distinct/no matches against
+222055/203068/209610 lower-remove-two neighborhoods; scope in preparedledger.
+Control196437 freshlocal0.22936847107484937/remote0.4181352949817665s fullmatch.
+All four search results exact NONNEG,remote/local seconds/localrun:
+235381d33 13.3384724019852/7.121153192012571,
+d4d42b305ee4d0dc03ef2aaa868d94ba2827b9883cbab3a277c872475cec123a;
+235959d34 15.174348983011441/7.902168761007488,
+7a3649620df2701f804ec1ad79a21d340988f2e1132c177efa940b9cab03a9f9;
+235939d35 17.432968821987743/9.885180006036535,
+ccead28a2c95d9fa52f01d2f07ce470682fb54dd9c64d23b6c0ad58d8ca5675c;
+235945d35 16.563520313997287/8.48161388700828,
+caddde18b1c9ba99ddd6b452e75a3691348e2a8d4f8ea8fb62437b8d65827016.
+Localbeam128/30s each60s outer, serialized. Full polynomials/h*/signs match;
+all independently reconstructed over Q. All quotient/permutedcovers,
+receipt/file/header hashes, runtimePython3.10.12,x86_64,glibc2.35/libraries,
+CPU[0,1],8GiB,swap0,pids128 checked before DB ingestion; limits unchanged.
+Only selected trusted wrapper/input/engine uploaded; no secrets/DB/checkouts.
+Input runs/abacus-230740-four-fiveop-c-20260910.json SHA
+d30b1434a482001bbb198fd237f4b1ef99c7e70696c5c8139cd88887ab8e8a22.
+Wrapper SHA a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a.
+Engine SHA 8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367.
+Output SHA 8d713a0b06659e342af1bfd7f5cc84daf8b94649adc25f23e43d0a604e24936a.
+Completedledger feb75638face068d92e8b7ce101569a165429969fbc6dd16760265c5b19979ad;
+readback prepared237165,receipt237166,validated237361..237365.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T131117-83724db95f0e-0glb3yhh
+Host supervisor can collect byjobID.
+CURRENT230740lower-remove-two:166exactNONNEG,4UNKNOWN234802/235346/235082/235324,
+174dimprunes1166objectiveprunes21duplicates across1531proposals. Not positivity
+of unknown/pruned/duplicate cases.
+
+Before user's correction, started230740full-content-remove capd33,
+NO flag-only objective filter,beam32/5s,45s internal/60s outer.
+Forces multiplicity t of a label in ORIGINAL rectangle, then removes one
+non-forced equality. Do not confuse original content with overall augmented
+complement-row weight. Total603,offset0->93:63exactNONNEG1timeout25dimprunes
+4duplicates,42.33791685895994s,
+071ff8b15b3504c806662432e9815dc1180edbe1798c11e79c5ee17f687a6657.
+All63 fresh exact independently reconstructed over Q. Resume93 only if this
+secondary branch is selected again; pause it while restoring two-hole frontier.
+Generated input and five reports remain ignored/untracked.
+
+
 ## Five-opposite proposal pass complete; next Abacus batch validated — 2026-09-10
 
 Codex retains KTT/companion ownership, private profile/model and sole local DB
