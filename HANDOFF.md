@@ -1,5 +1,82 @@
 # Ehrcalc Handoff
 
+## Abacus seven-case follow-up; lower-flag and internal neighborhoods — 2026-09-10
+
+Codex retains KTT/companion ownership,private profile/model,sole local DB writer.
+Previous turn made progress; fresh clean Git/DB/remote checks. No source edits,
+new AIworkers,admin/toolchain changes,limits changes,push or publication.
+
+Abacus job20260910T114445-ee1463700eb9 done/exit0,wall88.817805s.
+Established8serialcases including fresh control,20s/case/180swhole finite
+bound,monitored samejob,no resubmission. Selected7sources had no prior retry
+or remote identities and actual GT-coordinate signatures distinct pairwise
+and from222055/230106 lower-remove neighborhoods. Comparison scope recorded
+in preparedledger,not a global non-isomorphism claim.
+Control196437 freshlocal0.23018697497900575s,
+remote0.39758646400878206s exactfullmatch.
+Search remote/local seconds,all local exact NONNEGATIVE:
+230903d32 12.311902653018478/6.512050368008204,
+31f1a3ee70b6b5fbfc96eb6711887e7e9abd30105514e4cca125edbb30dc5249;
+230967d33 9.788157823990332/5.537146490998566,
+de5de098b1f8fd1f0fc06cf359da14a4889370f7037cc92c377c668f5480d976;
+230973d33 10.569637830980355/5.530390658997931,
+6ab8860b9415aa4bc923e9748bf673c364959afc2b94beba2893fa430035cfa5;
+231003d33 10.249090126017109/6.4621848029783,
+dc1bdad865cbce886b15b14190849c3b4633f0344d8e57e3c696372d9151f688;
+231047d33 10.110512382001616/6.1407442960189655,
+0b4b449c0acf1d93cc8877ca54a183f9a51b1a4e679defdf5d891188feffdd6c;
+231053d33 remoteTIME LIMITED20.119436348002637/localexact24.81265000498388,
+9f791dad9368a2076f38ca07b113e5dc2a61cb76276e649e28517a05896c9a5c;
+230963d34 13.792569932993501/8.885593403945677,
+1f4442e2bab26400f32a023b1f21855bcd5a20ae93d5f627cb719f7a029369d1.
+All6remote search exact polynomials/h*/signlists match freshlocal; controltoo.
+All7local results independently reconstructed overQ,all8quotient/covers
+reconstructed and checked beforeingestion. Remote231053 remains timeout,
+not assigned the local exact result. Localbeam128/30s,60souter/nice10/
+CARGO_TARGET_DIR,strictly serialized after mutation handle terminal.
+CPU[0,1],8GiBmemory,swap0,pids128,x86_64,Python3.10.12/glibc2.35/libraries
+verified; onlytrustedwrapper/input/engine transferred,no secrets/DB/checkouts.
+Input SHA42fd1b6b226b7e6f6a25cbd45a1ef5ec8b6a3187707c691f38177614cbf8eee3
+Wrapper SHAa4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHAda34a5566ba74c3bfb039d527d4700f11c82482137e54a8600b981c16df49e09
+Receipt/file/header hashes verified. Completedledger
+dded94c48dc3fa8d52c2166a752f408ed618966de2a4e5441db1d4f07b226d3c,
+readback prepared231115,receipt231116,validated231239..231246.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T114445-ee1463700eb9-kjprl3sh
+Hostsupervisor cancollect durable remote originals byjobID.
+CURRENT230740 lower-remove37exact NONNEGATIVE,2unknown231043d34/230999d35,
+32dimprunes87objectiveprunes12duplicates; lasttwo original5s only.
+
+230740 lower-flag completed9proposals,cap7extra/d33,beam32/5s/45sbatch/
+60souter,14.383622364024632s:
+375699de57c02192951afa9a16a3c7ababd10f7ed4d062e747eb43e705cdb5d8.
+Initial6exactNONNEG,1timeout231128d32[6,11],2maskduplicates.
+Retry231128beam128/30exactNONNEG5.223243072046898s:
+3ae27284affaa981e8db1b6630fc074ca2474cf7b5212240483443517f15168d.
+All7exact independently reconstructed overQ; no attempted holes.
+
+230740 lower-internal completed45proposals,cap7extra/d40,beam32/5s,
+45sbatch/60souter. Offsets0->41->45,times42.02538759296294/
+0.19501323509030044s,runs
+cddeb3a7b2ad499384bbe60236f9d1a85bf98595976852fb1d599b97a5a5dfa6
+bbe06067504e90ed016cc5392ad370a83f4cdc68f9ced9a7272df7b8240d5be5.
+8timeouts UNKNOWN,36dimprunes,1maskduplicate,no fresh exact.
+Four-internal-ban timeout sources:
+231166d37[4,8,113];
+231136/231146/231156/231176/231186/231206/231216d38
+edges[1,2,113]/[2,4,113]/[3,6,113]/[5,9,113]/[6,11,113]/[8,14,113]/[9,16,113].
+No wider retries yet. Allproposals/outcomes DB stored.
+Ignored runs/abacus-230740-seven-lowerremove-20260910.json and local
+lowerflag/lowerinternal/retry JSONL remain untracked. Allhandles terminal.
+Next: lasttwo lower-remove gaps and coordinate-checked lower-internal retries
+on Abacus,plus other new-parent neighborhoods. Bestnegative unchanged,
+RAW230740/cert230749 d33 sevenextra/fiveinternal retained with priorleaders.
+Counts not proven minimum nonflag distance. No flaggedwitness;goalactive.
+
+
+
 ## New negative branch: six-opposite neighborhood and Abacus — 2026-09-10
 
 Codex retains KTT/companion ownership,private profile/model and sole local
