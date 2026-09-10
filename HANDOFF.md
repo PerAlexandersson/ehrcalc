@@ -1,5 +1,43 @@
 # Ehrcalc Handoff
 
+## Deferred five-opposite retry and new donor crossover — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Source unchanged. Deferred changed-order216395d35 five-
+opposite child resolves EXACT NONNEGATIVE beam128/30s in21.594916s,
+run59e8d6ddaaeec3b8941c2f9345a3a5e56a1685e1112556294b817f3186d0a69f.
+Raw209610 two-removal neighborhood now12 exact nonnegative,18 unresolved
+counting cases,plus159 dimension prunes,1218 objective prunes,1 duplicate.
+
+DB check found no earlier174551+173215 crossover runs before launch.
+Row-band all56,0->24->48->56,40.666345/40.921167/0.721547s,cap7/d38,
+beam32/5s cases/45s batches/60s guards.
+DB confirms2 initial exact nonnegative,16 limits,30 objective prunes,8
+duplicates not revalidated,no other outcomes.
+Runs7f23106193d83b4b9263518856d237cc011a4f2285a52be145f492ab78677c43,
+bad84ad1043db52e847d53075f23003adddf9190e82c656db876fa21c433ad6e,
+d25605fb64617b2a86647154c8c21d199e9573959dc2efc76d2b1353be7748a4.
+Column-band all182,cap6/d36,same count/time bounds,112 duplicates,
+70 objective prunes,no counts,2.840861s,
+run6e72e05d4e01a4d3b2c1dd105750b3d70ac950cad5c752785b97a27f09fd447a.
+All started observations separate;skips/prunes do not certify signs.
+
+Small row gap218788d34 band[3,4),direction1 resolves EXACT NEGATIVE
+beam128/30s in5.692205s,result219209,
+runddda089f5afb8d6e6f4ad9186ae8d71287551e2df7aef612165f23e0d5057c0d.
+Linear-11685727793017/8022419605200. Fresh full-coordinate comparison
+with209610 proves SAME FACE,not new lineage;not inferred from polynomial.
+Audit0.010788s,run8d66102d1e1efb2377df8797cd7ea72b2722e7f53c95a7ac9383d8b9fec58355,
+signatureSHA da48c5b6a7403f27b9ce5add94c9dceb2356e19760051e2781c2c07795354475.
+Original timeout retained;row neighborhood now3 exact(one negative),15
+unresolved counting cases. Nearby218792/218812/218816d34 remain unknown.
+Do not repeat completed donor queues unchanged. Coordinate-equivalence cache
+would avoid these redundant-presentation recounts;implementation still deferred.
+No improved negative;primary174566d33 seven/five retained,not a flagged witness.
+All outcomes in DB,reports ignored,no live scan,push/publication or extra workers.
+Goal remains active,no global blocker.
+
 ## Seven layout comparisons and four five-opposite retries — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
