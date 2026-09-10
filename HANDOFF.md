@@ -1,5 +1,113 @@
 # Ehrcalc Handoff
 
+## Strict two-hole genetic search and exact Abacus DP — 2026-09-10
+
+Codex retains KTT/companion ownership, private profile/model and sole local DB
+writer. User requested continued genetic-type search, now correctly optimizing
+few holes first and low degree/size second. Compact mixed-face branch remains
+paused. No extra AI workers, administrative changes, pushes or publication.
+All local and remote handles terminal. Goal active; no global blocker.
+BEST NEGATIVE unchanged:9x10,d84,three selected equalities,exactly two nonflag
+holes[(4,6),(6,10)],key
+612334d74e3ba8f384a8647c90a4a7fcd46f129dde61c9f2999d9a1e77fab474.
+No negative with fewer holes or degree<84 found.
+
+Completed upper-flag suffix neighborhood of that parent. Original audit had
+90proposals:45nonreduced,1unchanged,44eligible rows. Exact scan first40 rows:
+35exactNONNEG,5actual-coordinate duplicates,41.82178402203135s,
+2032b9960e59ab4a97f27311a0f4cc2a0bf1fdc1d3e13356dcb83d9cfd9d3882.
+Remaining distinct d76,d76,d78 cases exactNONNEG in
+1b4186a65c5b97f1c101b863a456436b63175abd76b80246b6d4ccee1588da37
+(4.420030815992504/3.8249582740245387/4.631791427964345s); d80 case was
+already freshly NONNEG in prior c668... audit. Thus all39distinct coordinate
+classes exactNONNEG and5duplicates; no extrapolation beyond this neighborhood.
+
+Added selected-source exact companion descent-DP Abacus adapter:
+private commits91d5322,6867655. It accepts natural transitive predecessor
+masks,<=8cases,<=30s/case,<=500000states, verifies hash-allowlisted ZIP of
+only kogan_search/{__init__,quotient,ehrhart}.py without extraction, validates
+exact transforms/control, and checks remoteCPU/memory constraints. README and
+tests included;72 tests passed in0.545s. No counting-algorithm changes.
+RunnerSHA cacc046442f494dadaefb7389d1e5e479a4eeddae0d797711bb33095d09cd4a4,
+helperSHA a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a,
+archiveSHA048cb293da34c49e51d5d617f294a62e7f08f6bb455e41309f09652add521bb7.
+SourcesSHA: __init__ b1958d8b91608437a4b72095b438bc7912bddab0056a626f03b642dcdfce1d2c,
+quotient f08515b3c39e4321c0bbf30cb3053fbaf460f3e3bfb50bae10a21adfbf5f8b16,
+ehrhart68dece902b753d70f460e4963dcd6ab8d4690f54b34ee0e3aa5595e3a394ecd0.
+
+First pilot20260910T133203-196c6574e803 failed/exit1 after d40 control passed:
+initial JSON rounded degree84 h* integers above2^53 through JavaScript. Same
+job inspected/fetched,no blind resubmit,no search ingestion. Files verified;
+outputSHA34dfa09a0b8694453af07924894ac29ba086e1b7f51f24718344e992bfbf9d66.
+Ledger9c41c975e6bca7c9d4a7d44341981c44c786fec74a6c49022c41134d4d8f2f7c,
+prepared237561,receipt237562,failed237569. Fixed by decimal-string h* controls
+and >2^53 regression test; corrected input passed both controls locally.
+
+Corrected pilot20260910T134228-c2185e92c0c8 done/exit0,wall38.423155546188354s.
+Controlsd40NONNEG and parentd84NEG full local/remote matches. Three search
+children237410d76,237431d76,237421d78 exactNONNEG remote/local full matches.
+Remote seconds10.072961052006576(parent),8.42533970400109,7.060902491997695,
+8.771355484990636; local5.2285941750742495,4.442786686006002,
+3.954176373081282,4.64716413593851. InputSHA
+3ef1ff744a114e519229ebf5b60a859fdede45b083fa49014f29dcd54d925f16,
+outputSHA19d3bf5c760dc9a8432387a7139729e0b5b2b3661b3b024343c71267d6a8f90f.
+Ledger92cb62bbafefdaaa8d52b14627659bbd2c7fbe6cc49d9d7ba0c4bac9d54b9d28,
+prepared237571,receipt237572,validated237575..237579.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T134228-c2185e92c0c8-7e8hp92w
+
+Strict two-hole genetic runseed202609101342,effective-bias0.25,
+mutation-strength3,16elite/32local,16frontier+16random-shape immigrants,
+500000states,5s/case,55s internal. Initial60s guard stopped terminal after
+durable generations0/1; exact same ledger resumed with tested120s outer caps.
+Complete generation2:1387exact attempt rows,208bad-edge prunes,0deferred;
+51 new exact results across completed resumptions, no improvednegative.
+Run cd0a3bf6715b05a1c8c61caf74bec007a6f50de52640b90a83f948a92683fe94,
+2267selected+8653duplicate proposal events. Generated JSONL ignored.
+
+Abacus deferred batchA20260910T134902-2b6515ecf539 done/exit0,
+wall50.5005464553833s. Parentd84 control exactNEG; seven smallest
+coordinate-distinct d71/73/74/75 genetic deferred cases exactNONNEG and full
+local matches. InputSHA671ab63e7c48755c173984de73c54e71dad3d33a6c42679e68cc65e8f400eb7a,
+outputSHAd53bcad47eb738f5c6714bf0eedaf97b396988c9cc02b5825ab16bf69e3905ee.
+Ledger4659ce95d8b6562765a46706f3dc8a3f79cd92de3426ca8cbecd302d8ba1a00a,
+prepared237583,receipt237584,validated237591..237598.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T134902-2b6515ecf539-edhjdpe7
+
+Fresh strict-two-hole genetic runseed202609101355,effective-bias0.10,
+mutation-strength4,20elite/48local,24frontier+24random-shape immigrants,
+500000states,5s/case,55s internal. Initial120s outer guard stopped during
+generation2 with durable state; exact same identity resumed with justified
+180s outer bound after observed finite proposal overhead. Complete generation2:
+2136exact attempt rows,211bad-edge prunes,0deferred; final two completed
+resumptions reported24+20 new exact, no improvednegative.
+Run f7f8cc1e2cda1bc810bb4f1be0a835923672ccc43033144e9d42e6993b38dd26,
+2893selected+10954duplicate proposal events. Generated JSONL ignored.
+Outer timeout is orchestration overhead,not candidate sign; interrupted pending
+case was resumed. No untracked timeout treated as nonnegative.
+
+Abacus deferred batchB20260910T140058-9b2d29e1551b done/exit0,
+wall46.54526114463806s. Parentd84 control exactNEG; seven coordinate-distinct
+d75 genetic deferred cases exactNONNEG and full local matches.
+InputSHA1370f056787e4661f1b5c58bee43d26ea688686617c39cd00c816038d9668448,
+outputSHAf8b1b50fa6c8a33f480f8a4362a8b1c1b9163a211d069001a462ed20f9d2ff11.
+Ledger46e7a25d38fb01917c292b0cddf45e1ea0723a2854e33128d99f04ce087c5ae7,
+prepared237604,receipt237605,validated237609..237616.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T140058-9b2d29e1551b-o43xph4n
+
+For all successful remote jobs: transferred filenames/receipt hashes,input and
+source geometry/predecessors,independent h*->power rational transforms and full
+remote/local polynomials verified before DB ingestion. Python3.10.12,x86_64,
+CPU[0,1],8GiBmemory,swap0,pids128 verified; limits unchanged. No secrets,
+database/shared checkouts uploaded. Host supervisor can collect byjobID.
+Next: fresh strict-two-hole genetic seeds with different flag/shape mutation
+settings, use Abacus exact-DP batches on disjoint deferred/new candidates, and
+explore coordinated shape/weight mutations. Do not call d84 a flagged Kostka
+counterexample: it still has two genuine nonflag holes.
+
+
 ## Two-hole parent freshly reproduced; one-hole flag shrinks tested — 2026-09-10
 
 User clarified: combine few bad edges AND low degree. Retain two-hole family
