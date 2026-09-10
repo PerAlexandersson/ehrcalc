@@ -1,5 +1,38 @@
 # Ehrcalc Handoff
 
+## New negative lineage interior-shrink neighborhood completed — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no222055
+interior-shrink queue. Source unchanged. Mutated RAW222055,not certificate.
+All131 row/column cuts excluding four corners,cap7 extra opposite/d33,
+verified beam32,5s/case,45s batches,60s outer,nice10,serialized.
+Actual offsets0->29->51->116->131,no repeats:
+0 batch39.07786673400551s,17 exact nonnegative/5 timeouts/4 dim/1 objective/
+2 duplicates,rundd789cf3cfc037e4cd9f95920c6c1fb023885df696fac9d74bc8158dfa3fa134;
+29 batch39.35564699897077s,13 exact nonnegative/4 timeouts/4 dim/1 objective/
+0 duplicates,run79c73fd05550a989d5835f87578c0f39cdb6e00b623ab34c099331b4337305c1;
+51 batch39.3342923700111s,36 exact nonnegative/5 timeouts/8 dim/4 objective/
+12 duplicates,rune75686a63665a2bd6b1bbf1ac5812db4ce7f9d8b11f040a222d177fe6b6cbe75;
+116 batch8.614275423926301s,9 exact nonnegative/1 timeout/3 dim/2 objective/
+0 duplicates,run4fbcc8bf3b00d9caceadf9de9bb5766caff518b183cd4fc183589f30666ef1c4.
+Total75 exact nonnegative,15 unknown,19 dimension prunes,8 objective prunes,
+14 duplicates not revalidated;0 negative/empty/errors.
+Fresh DB aggregation confirms131 terminal outcomes plus131 started records.
+Next smallest unknown226220d30[2,9];d31 sources226218[2,8],226248[3,8],
+226288[4,13],226318[5,13]. Fresh query before retries.
+Samples(not peaks),NI19:PID3008080 under1s CPU100%,RSS80032KiB;
+PID3010381 at1s100%,RSS60756KiB;PID3011439 at3s100%,RSS75928KiB.
+All handles terminal exit0,no engine remains.
+Reports runs/fan222055-interiorshrink-seven-d33-offset{0,29,51,116}-20260910.jsonl
+ignored/untracked. No remote submission this turn.
+Prior paired queue36 exact nonnegative,no attempted gaps;prunes uncounted.
+Lower-remove-two still unknown223762d35 after120s;do not repeat unchanged.
+Retain negative222055/cert222064 and174551/cert174566,d33 seven/five,
+presentation counts not minimum distance. No smaller negative or flagged
+Kostka counterexample. Goal active,no global blocker;no push/publication,
+extra AI workers or admin changes.
+
 ## All attempted paired counts resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
