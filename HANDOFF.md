@@ -1,5 +1,25 @@
 # Ehrcalc Handoff
 
+## Abacus batch preparation and recovered local result — 2026-09-10
+
+Codex retains KTT/private companion ownership and sole local DB-writer role.
+Previous status-only turn made no search progress; revalidated current state.
+Both repositories clean, no live local engine. Recovered terminal226216 retry:
+beam128/30s, exact nonnegative,10.324849889962934s,
+runbf82ba811052fde68b4e861bb1ccfbc369d3676b15e31f8c0d601f6940756871.
+Fresh DB readback agrees with report; original5s timeout retained.
+222055 interior-shrink now87 exact nonnegative,3 unknown,19 dimension prunes,
+8 objective prunes,14 duplicates. No improved negative or flagged witness.
+Abacus freshly available, all six previous KTT jobs terminal, queue idle.
+Preparing previously uncounted226422d34,8x14,five extra opposite/four internal
+presentation bans,cut[9,6] from RAW222055. Fresh DB mask lookup finds only
+started/dimension_pruned source rows, no retry. Remote control196437 plus
+this disjoint first count,20s/case,60s whole; no new source changes.
+No MariaDB MCP available; protected existing Python DB adapter used.
+Remote README/INSTALL read, compatibility and bundle hashes to be verified;
+no credentials/database/checkout upload, administration change or extra agents.
+Generated inputs/reports remain untracked. Goal active; no global blocker.
+
 ## Remaining degree32 shrinking cases resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
