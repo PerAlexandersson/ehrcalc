@@ -1,5 +1,60 @@
 # Ehrcalc Handoff
 
+## Six-opposite attempted gaps closed; corner shrinks checked — 2026-09-10
+
+Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
+Previous turn progress; freshclean Git/DB/no-engine/remote-idle checks.
+No code edits,testclaims,extraAIworkers,admin/toolchain changes,push/publication.
+
+Abacus job20260910T115210-a2a07c6f80a8 done/exit0,wall28.2857635s.
+3serialcases,20s/case/60swhole,monitoredsamejob,no resubmission.
+Selectedsources231043d34/230999d35 no prior retries/remote identities.
+ActualGT-coordinate tuples distinct from eachother and222055/230106
+lower-remove neighborhoods; comparison scope inpreparedledger.
+Control196437 freshlocal0.22799777099862695/remote0.4179625229735393s,
+full exact match.
+231043 exactNONNEG remote14.355611114006024/local8.620243781013414s,
+ebd94f7092b037fe5d80f6fb2f615db30f95868f23e596a5660ceb86ae773164;
+230999 exactNONNEG remote11.927561752992915/local6.3179653770057485s,
+32574bd52e2a7557608e6c65691b6244707c3088530f64496b7b54e78aa24c54.
+Localbeam128/30s each60souter/nice10/CARGO_TARGET_DIR,
+strictly serialized after corner-scan terminal.
+All3remote exact polynomials/h*/signlists match freshlocal and independently
+reconstructed overQ. Alloriginalquotients/permutedcovers and
+receipt/file/header hashes verified beforelocalingestion.
+CPU[0,1],8GiB memory,swap0,pids128,x86_64,Python3.10.12/glibc2.35/libraries
+verified,installedlimits unchanged. Onlytrustedwrapper/input/engineuploaded,
+noDB/checkouts/secrets.
+Input SHA3d536f83f3c330340b33106c942cc42aec35d5f37f7d30ccdfba4ce75694d80c
+Wrapper SHAa4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHA273c5e5bb08170d440c288a1b389f3334569056180a3479a015dd1da9cdbaea7
+Completedledgerfaa0f589608a4157a08cc55fe234d2d98ac93f36c33dd0705990a7e7bb2c0e5b,
+readback prepared231249,receipt231250,validated231263..231265.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T115210-a2a07c6f80a8-1oz8ek4v
+Hostsupervisor cancollect durable remote originals byjobID.
+
+CURRENT230740 lower-remove39exact NONNEGATIVE,zeroattemptedholes,
+32dimprunes87objectiveprunes12duplicates (170total). FreshDBanti-join
+confirms zero originaltimeouts lacking an exact retry. This does NOT certify
+pruned or merely duplicated cases, nor a larger parameter range.
+
+230740 corner-shrink ALL4 completed,cap7extra/d33,beam32/5s,
+45sbatch/60souter,nice10,CARGO_TARGET_DIR,1.0952317379415035s:
+54b588ea2224645dc51c5c80fefa5c10c41b1086ee5bff7a97ff46d19f9990fc.
+3exact NONNEGATIVE independently reconstructed overQ,1maskduplicate,
+no prunes/timeouts. Allproposals/outcomes DBstored.
+Ignored runs/abacus-230740-finaltwo-lowerremove-20260910.json,
+runs/fan230740-corners-d33-20260910.jsonl and2localretryJSONL untracked.
+Allhandles terminal. Next: coordinate-checked four-internal-ban children
+fromprevioussection onAbacus, or genuinely new interior-shrink/paired/joint/
+content neighborhoods of230740. No improvednegative; goalactive,noglobalblocker.
+RetainRAW230740/cert230749 d33 sevenextra/fiveinternal alongsidepriorleaders;
+presentation counts not provenminimum nonflagdistance. No flaggedwitness.
+
+
+
 ## Abacus seven-case follow-up; lower-flag and internal neighborhoods — 2026-09-10
 
 Codex retains KTT/companion ownership,private profile/model,sole local DB writer.
