@@ -1,5 +1,36 @@
 # Ehrcalc Handoff
 
+## Monitored degree34 five-opposite gap resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Fresh Git clean/no-engine
+checks;DB confirmed221855 only prior beam128/30s timeout,not120s.
+Selected d34 five-opposite shrink child cut[9,6],fixed finite poset and tested
+helper justify new120s count under150s outer/nice10,serialized.
+Same live session monitored throughout,no duplicate restart on observation wait.
+EXACT NONNEGATIVE116.05111328093335s,
+run4ee05eda923add16ff128cd3f760922ca2fe02ddb197db29496ff3b24408212d.
+Fresh DB readback confirms exact sign evidence and preserves original30s
+time_limited30.099427095032297s. No negative witness.
+Resource samples PID2891039,NI19 (not measured peaks):
+9s CPU100%,RSS853148KiB;30s CPU100%,RSS1688724KiB;
+58s CPU100%,RSS1939460KiB;77s CPU99.9%,RSS3208120KiB;
+105s CPU99.9%,RSS67220KiB.
+Local cgroup check during run:memory.max25769803776 bytes,
+memory.current19189448704 bytes. No resource-limit/admin changes.
+Engine terminal exit0/no remaining process confirmed.
+Report runs/fan-retry221855-beam128-120-20260910.jsonl ignored/untracked;
+all started/outcome evidence in local DB,full-coordinate-verified beam128 layout.
+All seven d34 five-opposite children now exact nonnegative.
+Entire198861 interior-shrink neighborhood now85 exact nonnegative,
+2 unresolved counting cases221647/221677d37,18 original dimension prunes
+still uncounted,26 duplicates not revalidated. No claims for prunes/skips.
+Next distinct mutation/layout or selected finite retries of d37 gaps;do not
+repeat terminal221855120s identity. Best negative remains174566d33 seven/five,
+not flagged Kostka witness. Source unchanged.
+No push/publication,extra workers,admin changes or remote submission this turn.
+Goal active,no global blocker.
+
 ## Degree37 five-opposite counts and monitored longer retry — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
