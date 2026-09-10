@@ -1,5 +1,40 @@
 # Ehrcalc Handoff
 
+## Remaining degree35 five-opposite children resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous goal turn made exact progress;no global blocker. Fresh clean Git/no
+live engine checks and DB checks found no prior retries for selected children.
+Source unchanged. Raw182773 interior-shrink children219602 cut[4,5],
+219632 cut[5,5],219692 cut[7,5] all7x14,d35,5 extra opposite constraints.
+These were original dimension prunes,not previously counted.
+Serialized beam128 full-coordinate-verified counts,5s initial bounds,
+new30s bounds only for timeouts;each60s outer guard,nice10.
+219602 first time_limited5.019781149923801s,
+runc54f303e67ae11b836c82e9878d999d93ef0d91675a2abecca20e1355f34969e;
+then EXACT NONNEGATIVE8.424408695078455s,
+run6623bb153615f60f6d443a622db4c76c028cdae325a3b65f6940df58ad81d470.
+219632 first time_limited5.020413286983967s,
+runbf6c049d7cbf248b441ec9e253c43648a1ff690b0bdebe54cb2ba7e7259a66dd;
+then EXACT NONNEGATIVE8.536955339019187s,
+runcc054d99f0d985a2e4b3f4a1c0082c90ba53fb152cd5fe11a88d8f0de953f9e6.
+219692 EXACT NONNEGATIVE3.0481031199451536s on first5s attempt,
+runa746aa31342b8a3a7c08cb5dee73fada28f34818d2d1f45dea9a707c62ee49f2.
+Fresh DB readback confirms all5 statuses/times/exact sign lists. Preserve
+original prunes and timeout observations;no polynomial assigned to timeout.
+Reports runs/fan-retry{219602,219632,219692}-beam128-{5,30}-20260910.jsonl
+(actual five attempted combinations only) ignored/untracked.
+Live handles observed through terminal exit0;engines had already finished at
+resource checks,no retained in-flight RSS sample. No engine at final check.
+Raw182773 original16 dimension prunes now5 resolved exact nonnegative,11
+uncounted;fresh exclusion query confirms next d36 IDs219514/219662/219720.
+Raw182122 still14 uncounted original dimension prunes. No sign claims for them.
+Next distinct selected pruned cases or new shape/weight/flag mutation;
+do not repeat terminal retry identities unchanged.
+No improved negative;primary174566d33 seven/five remains,not flagged witness.
+No push/publication,extra workers,admin changes or remote job this turn.
+Goal active,no global blocker.
+
 ## Four degree-pruned five-opposite shrink children resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
