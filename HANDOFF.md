@@ -1,5 +1,48 @@
 # Ehrcalc Handoff
 
+## Row-parent weights and all band-parent weight timeouts resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Fresh Git clean/no-engine
+checks;DB found no198861 zero-weight queue or selected retry identities.
+Source unchanged. All scan counts beam32/5s,45s batches,60s outer,nice10;
+dimension cap34,no flag-only objective cap for weight-forced equalities.
+Raw198861 all24 labels,offset0->23 capped39.06860043306369s:
+22 exact nonnegative(degrees26..33),1 duplicate not revalidated(d29),
+run395ba7c3d98e4702df3083ae6874fb23bf97dc57a53cd5153f4013be19a5e0b4.
+Resume23->24 completed0.035504037979990244s:
+1 duplicate not revalidated(d34),
+run033c6256d88f2599cdf9f394f3d089ea9a8df49b688077452c7ece1bf2050467.
+No timeouts,prunes,empty faces,negative or errors. All starts/results stored;
+fresh DB aggregation matches both batches. Resource sample:
+PID2860673 at3s CPU99.6%,RSS99448KiB,NI19,not peak.
+Reports runs/fan198861-zeroweight-d34-offset{0,23}-20260910.jsonl untracked.
+
+All remaining209610 zero-weight d33 timeouts got fresh verified beam128/30s
+retries,serial60s guards/nice10. All EXACT NONNEGATIVE:
+220459 label16,5.372656755964272s,
+run78a4ea7de9569aaacce7e25cbe3c2c549932139df1e067fb2ff43bb747ea229c;
+220461 label17,5.566493866965175s,
+run2ff0f9a2da480a2a27638c37c73c1ed5ba3a0cd75b4e7dfa555924533eed7196;
+220463 label18,5.497388293966651s,
+run901dcaae3fcbeb702bcc12ffba30143befc3001b2ea22022a98c44640cef06a6;
+220465 label19,5.485145371989347s,
+run89c69aad16cff11f2de3f5505fad20caf36c34d7d30d274167d7dd0f4d5d42b0;
+220471 label22,5.377710090950131s,
+runec7d394cdf2a3f98a4417b8544043aeeefdf174cc89588f5a91da9d5aa80fd4a;
+220473 label23,5.36563292494975s,
+run54f8050376eff87e614790cf00c78924507cfa41194c52a433c11e45fa51b69f.
+Fresh DB readback confirms all6 statuses/times/empty negative lists.
+Original5s timeouts retained.209610 zero-weight neighborhood now23 exact
+nonnegative,0 unresolved counts,1 skipped duplicate not revalidated.
+Reports runs/fan-retry{220459,220461,220463,220465,220471,220473}-beam128-30-20260910.jsonl
+ignored/untracked. No sign claim for skipped duplicate;no negative to compress.
+Do not repeat completed zero-weight neighborhoods unchanged.
+Next distinct mutation family or unresolved fewer-nonflag candidates;best
+negative remains174566d33 seven/five,not flagged Kostka witness.
+No engine live at final check;no push/publication,extra workers,admin changes
+or remote submission this turn. Goal active,no global blocker.
+
 ## Column-parent zero-weight neighborhood exactly resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
