@@ -1,5 +1,39 @@
 # Ehrcalc Handoff
 
+## Five more five-opposite counts resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress. Fresh clean Git/no-engine/DB checks; no prior
+retry identities for selected sources. Source unchanged.
+Five serial beam128/30s retries with verified coordinate permutations,
+60s outer,nice10,ALL EXACT NONNEGATIVE:
+223268d34,7.833549699978903s,
+runf042af6b9e31d81f7d9685b3182b2c5d395c0fda0a99d5b457360ae3b5bfad08;
+223536d34,10.347564200055785s,
+run0335938c2c7cc63cb2de86ab82b7b0e5181c8f496c85f3a20b058066da9d9cb5;
+224062d34,0.8892337959259748s,
+runca9c9dddd70bc7da94c24e0f6b3be9493510d6e46b6476b48ac238dc804e3ab3;
+224068d34,1.0149184799520299s,
+run1aff4d4a516b054d075ff5dc185bb83d9e8f90f8d0763393bd58299ea5b6df50;
+224388d34,2.253091130987741s,
+run46bbf93795004ee1c5b85273870d4a7976703e2bceba8dff9d088a76975fce99.
+Fresh DB readback confirms all statuses/empty negative lists.
+Original5s attempts retained. Wider layout improved several runtimes;
+no general runtime guarantee inferred. SamplePID2941493 at9s CPU99.8%,
+RSS59808KiB,NI19,not peak. All handles terminal,no engine remaining.
+222055 lower-remove-two now12 exact nonnegative,22 unknown,
+153 dimension prunes,1376 objective prunes,9 duplicates not revalidated.
+Fresh full DB query corrects preliminary shortlist:three further d34 unknown
+225208[8,14,82,98],225214[8,14,82,132],225648[9,15,98,132].
+Thus degree34 is NOT exhausted. Next d35 unknown222874/222878/223254/
+223258/223530. Do not repeat terminal budget/layout identities.
+Reports runs/fan-retry{223268,223536,224062,224068,224388}-beam128-30-20260910.jsonl
+ignored/untracked. No remote submission this turn.
+Best negative222055/cert222064 and174551/cert174566 remain d33 seven/five;
+no improved negative or flagged Kostka counterexample. Metrics remain
+presentation counts,not certified minimum bad-edge distance.
+Goal active,no global blocker;no push/publication,extra AI workers or admin changes.
+
 ## Three five-opposite gaps resolved exactly — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
