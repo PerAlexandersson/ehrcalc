@@ -1,5 +1,36 @@
 # Ehrcalc Handoff
 
+## Six degree32 content-mutation gaps resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress. Fresh clean Git/no-engine/DB checks found no
+selected retries. Source unchanged. Serial coordinate-verified beam128/30s,
+60s outer,nice10,all EXACT NONNEGATIVE:
+227048,5.325017297058366s,
+run3d00c1385c04715f56bc195a870e930dbbd1c7e82d67eff1f480421f35c3db4f;
+227054,5.180230859899893s,
+run4ab8b07b603ba9d6666c3b7b292643f6fc96f0f901e4fb6ad758e3db338dff30;
+227060,23.954229507013224s,
+runf97f0ed9e6c3d331039050955d8af36f257eb4c3b7f07768acf3783d4575e5b0;
+227094,5.378203721949831s,
+runa9cb99472b768bebe134d887b6ff3c7e64ddf4847371f55496770b80b67f93be;
+227108,23.503679501009174s,
+runf7b3e2587578dd3fb5a3f185f62704dd4a828b73a16b1dc22b1f0f8cf7875867;
+227142,5.599803762044758s,
+run734145da6388f7f6c9ffee59be9aaba7632b710581f43eb62163a2986774bf30.
+Fresh DB readback and independent rational hstar reconstruction pass all6.
+Original5s attempts retained. No peak measurements claimed.
+All handles terminal exit0,no local engine remains.
+222055 full-content-remove CURRENT387 exact NONNEGATIVE,7unknown,
+165dimensionprunes,18duplicates unvalidated,26empty;all603 proposals visited.
+Fresh DB anti-join remainingd32:227150/227156/227194/227208;
+d33:226662/227146/227198. Do not repeat unchanged terminal identities.
+Reports runs/fan-retry{227048,227054,227060,227094,227108,227142}-beam128-30-20260910.jsonl
+ignored/untracked. No remote submission this turn.
+Best negative222055 and174551 remain d33 seven/five presentation counts,
+not minimum distance. No flagged Kostka witness. Goal active,no global blocker,
+no source edits/test claims,extra AI workers,admin changes,push/publication.
+
 ## Full603 weight-plus-equality proposals processed — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
