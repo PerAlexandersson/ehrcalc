@@ -1,5 +1,43 @@
 # Ehrcalc Handoff
 
+## Simpler negative description recovered by crossover — 2026-09-10
+
+Codex retains sole local DB writer and KTT/private companion ownership.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+222055+196437 crossover queues. Both retained audited exactnegative9x15
+parents:d33 andd30. Source unchanged.
+Row-band all56 cap7extra/d33,beam32/5s/45s batch/60s outer,nice10:
+2exact NONNEGATIVE(d27 observation229664,d29 observation229708),
+18duplicates,26objectiveprunes,10dimprunes,0timeouts;1.6318285780726s,
+runf26b6a9b98e8221a828c834ff513bf011a249008e8bb3623034f7cfb608590ae.
+Column-band all182 same bounds:1exact NEGATIVE230106d33[12,13,1],
+75duplicates54objectiveprunes52dimprunes,0timeouts;7.316363068995997s,
+run4befeecc29a5ce8fbbc16a379cb1aa95717ab64bdf5adc39e8765ad497cdc580.
+Exact negative count2.8312233670149s,linear-60428124102809/24067258815600.
+Fresh DB rational reconstruction checks all3 exact outcomes.
+
+230106 has SAME FULL GT-COORDINATE FACE,polynomial,hstar as222055:
+actual tuple comparison auditfff13b7ebf34e08330e8f05a80634d4102dfd37caa000395d7ff4e125b5a91a1,
+0.14821933396160603s,coordinateSHA
+a167d82d1eccaf9fb585e9cf7eea597e3dbfecc910c6c97fcf1b24045eab3421.
+NOT a new negative lineage or improved bad-edge/degree record.
+Simpler RAW230106 removes two redundant horizontal equations(21->19):
+v0x3ff01fe01fc01f801f001e001c00181f1
+h0x1000800084008401840104030406040c00.
+Fresh beam32/15s both-endpoint lowerflag certificate230116:
+rune5042a1cce93e1af25ddcdc9759500b1f86657613060b8c5a5798dbc53d5e574,
+5.0610950839472935s,full exact match and coordinate permutations verified.
+Stilld33 sevenextraopposite/fiveinternal presentation counts.
+Retain RAW230106 as equivalent simpler mutation parent,not expanded cert.
+Reports runs/fan222055-donor196437-{rowband,columnband}-seven-d33-offset0-20260910.jsonl
+and runs/fan-certify230106-beam32-15-20260910.jsonl ignored/untracked.
+
+User reiterated maximize Abacus use. Fresh status enabled/idle,all7 previousKTT
+jobs terminal. Next remote batch prepared conceptually:control196437 plus
+222106/222180d33,sixextraopposite,original5s unknown;DB finds no retries.
+Checkpoint before remote submission. No source edits/tests claimed,no admin
+changes,extra AI workers,push/publication. Goal active,no flagged witness.
+
 ## Harder joint cases remain unknown under bounded retries — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
