@@ -1,7 +1,8 @@
 use crate::gt_dim::gt_polytope_dim_full;
 use crate::kostka_dp::{
     flagged_skew_kostka_legacy, skew_kostka_legacy, strict_skew_kostka, strict_skew_kostka_legacy,
-    try_flagged_skew_kostka, try_skew_kostka, try_strict_skew_kostka,
+    try_flagged_skew_kostka, try_skew_kostka, try_strict_flagged_skew_kostka,
+    try_strict_skew_kostka,
 };
 use crate::Partition;
 /// Ehrhart polynomial computation for GT(lambda/mu, w).
@@ -10,7 +11,7 @@ use crate::Partition;
 /// We:
 ///   1. Compute the degree d via gt_dim::gt_polytope_dim_full, including flags.
 ///   2. Collect d+1 sample points using Ehrhart-Macdonald reciprocity with an
-///      adaptive strategy (or plain positive-dilation when flags are active).
+///      adaptive strategy, including for flagged fixed-content polytopes.
 ///   3. Solve the resulting system over Q by Gaussian elimination.
 ///
 /// The polynomial is stored as a Vec<BigRational> of length d+1,
@@ -361,12 +362,12 @@ fn compute_ehrhart_impl(
     }
 
     // Only reorder w when no flag bounds are active (flags are tied to w's row ordering).
-    // Reciprocity and Gorenstein mode also require no flags (strict DP has no flagged variant).
+    // Weight reordering and Gorenstein mode require no flags.  The exact
+    // strict DP now supports flags, so adaptive reciprocity does not require
+    // their absence.
     let sort_weight = upper_flags.is_none() && lower_flags.is_none();
     let mode = match mode {
-        EhrhartInterpolation::AdaptiveReciprocity if sort_weight => {
-            EhrhartInterpolation::AdaptiveReciprocity
-        }
+        EhrhartInterpolation::AdaptiveReciprocity => EhrhartInterpolation::AdaptiveReciprocity,
         EhrhartInterpolation::Gorenstein if sort_weight => EhrhartInterpolation::Gorenstein,
         EhrhartInterpolation::Gorenstein => {
             if verbose {
@@ -376,7 +377,6 @@ fn compute_ehrhart_impl(
             }
             EhrhartInterpolation::PositiveOnly
         }
-        EhrhartInterpolation::AdaptiveReciprocity => EhrhartInterpolation::PositiveOnly,
         EhrhartInterpolation::PositiveOnly => EhrhartInterpolation::PositiveOnly,
     };
 
@@ -411,7 +411,9 @@ fn compute_ehrhart_impl(
         let tl = scale_partition(lambda, t);
         let tm_p = scale_partition(mu, t);
         let tw: Vec<u32> = w.iter().map(|&x| x * t as u32).collect();
-        if use_legacy_dp {
+        if upper_flags.is_some() || lower_flags.is_some() {
+            try_strict_flagged_skew_kostka(&tl, &tm_p, &tw, upper_flags, lower_flags, max_states)
+        } else if use_legacy_dp {
             Ok(strict_skew_kostka_legacy(
                 &tl, &tm_p, &tw, max_states, false,
             ))
@@ -861,6 +863,43 @@ mod tests {
         assert_eq!(poly.degree, 0);
         assert_eq!(poly.coeffs, vec![BigRational::one()]);
         assert_eq!(poly.eval(1), BigRational::one());
+    }
+
+    #[test]
+    fn flagged_reciprocity_matches_positive_interpolation() {
+        let lambda = p(&[3, 2, 1]);
+        let mu = Partition::empty();
+        let weight = [1, 1, 1, 1, 1, 1];
+        let upper = [1, 2, 2, 3, 3, 3];
+        let lower = [1, 1, 1, 1, 1, 2];
+
+        let positive = try_compute_ehrhart(
+            &lambda,
+            &mu,
+            &weight,
+            Some(&upper),
+            Some(&lower),
+            false,
+            None,
+            false,
+        )
+        .expect("positive flagged interpolation");
+        let reciprocal = try_compute_ehrhart(
+            &lambda,
+            &mu,
+            &weight,
+            Some(&upper),
+            Some(&lower),
+            false,
+            None,
+            true,
+        )
+        .expect("reciprocal flagged interpolation");
+        let unflagged = try_compute_ehrhart(&lambda, &mu, &weight, None, None, false, None, false)
+            .expect("unflagged interpolation");
+        assert_eq!(reciprocal.degree, positive.degree);
+        assert_eq!(reciprocal.coeffs, positive.coeffs);
+        assert_ne!(positive.coeffs, unflagged.coeffs);
     }
 
     #[test]

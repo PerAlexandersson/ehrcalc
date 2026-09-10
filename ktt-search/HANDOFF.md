@@ -1,6 +1,26 @@
 # KTT Search Handoff
 
-## Active fixed-content zero-hole search — 2026-09-10
+## Corrected structural-hull checkpoint — 2026-09-10 (active)
+
+- Owner remains Codex, sole KTT/private-companion worker and local MariaDB
+  writer.  Generated reports/logs remain ignored; no push or publication.
+- An apparent degree-25 negative was false: its scale-one lattice-point span
+  was 24 while the structural polytope dimension is 25.  All 121 affected
+  candidates were audited; 862 strict samples, 120 derived ordinary samples,
+  13 polynomials, and their attempts were quarantined or invalidated.
+- The maintained engine now counts flagged relative interiors from propagated
+  structural bounds.  The crate has 38 passing tests and strict Clippy passes.
+  Correct `a2be13af...` strict counts through dilation 7 are
+  `0,0,0,56655893,136866338728,48574493345190,5544119621688912`; its
+  partial signed tail is strongly positive.
+- Best certified negative remains `612334d7...`, degree 84 and two bad edges.
+  Best proper zero-edge near-miss remains positive `42d92b82...`, degree 23,
+  normalized smallest coefficient about `8.64986e-5`.
+- Abacus direct validation job `20260910T171434-ce38e10af4fa` is running.
+  Structural control `20260910T192616-487d1344de57` is queued with ledger
+  `f5b86942...`; wait for its exact local-count match before useful submission.
+
+## Active fixed-content zero-hole search — 2026-09-10 (superseded checkpoint)
 
 - Owner remains Codex, sole local MariaDB writer; generated reports/logs are
   ignored and no push/publication is authorized.

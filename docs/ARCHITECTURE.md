@@ -30,6 +30,10 @@ When available, they also provide relative-interior counts for
 Ehrhart-Macdonald reciprocity.  The generic service owns the decision to use
 positive samples, reciprocal samples, or both.
 
+For flagged fixed-content GT polytopes, relative-interior counting uses the
+propagated structural bounds of the rational polytope.  It must not infer the
+affine hull from the dilation-one lattice points, which need not span it.
+
 The public workspace owns two focused internal engines:
 
 - `ehrcalc-kostka-engine` for GT, Kostka, flagged Kostka, LR, flow, Ehrhart,

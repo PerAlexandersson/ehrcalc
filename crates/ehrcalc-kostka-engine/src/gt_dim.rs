@@ -369,6 +369,22 @@ pub fn gt_polytope_bounds(
     gt_polytope_dim_impl(lambda, mu, w, None, None)
 }
 
+/// Dimension and propagated bounds with optional row flags.
+///
+/// This is the flagged counterpart of [`gt_polytope_bounds`].  The bounds
+/// identify constraints that are globally tight and are therefore required
+/// for exact relative-interior counting.
+#[allow(clippy::type_complexity)]
+pub fn gt_polytope_bounds_full(
+    lambda: &[u32],
+    mu: &[u32],
+    w: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+) -> Option<(usize, Vec<Vec<u32>>, Vec<Vec<u32>>)> {
+    gt_polytope_dim_impl(lambda, mu, w, upper_flags, lower_flags)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -500,6 +516,22 @@ mod tests {
         assert_eq!(
             gt_polytope_dim(&[3, 2, 1], &[], &[1, 1, 1, 1, 1, 1]),
             Some(7)
+        );
+    }
+
+    #[test]
+    fn flagged_fixed_content_dimension_can_exceed_scale_one_lattice_span() {
+        // This fixed-content flagged polytope has only a 24-dimensional span
+        // among its scale-one lattice points, but its affine dimension is 25.
+        // Inferring dimension from the n=1 tableaux would therefore break
+        // Ehrhart--Macdonald reciprocity by shifting the terminal h* entries.
+        let lambda = [6, 5, 5, 5, 5, 5, 5, 4, 4, 3, 2, 1];
+        let weight = [6, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1];
+        let upper = [8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 12];
+        let lower = [1, 1, 1, 1, 1, 1, 1, 3, 3, 3, 3, 8, 8, 8, 9, 11, 11];
+        assert_eq!(
+            gt_polytope_dim_full(&lambda, &[], &weight, Some(&upper), Some(&lower)),
+            Some(25)
         );
     }
 

@@ -1,6 +1,39 @@
 # Ehrcalc Handoff
 
-## Large zero-hole fixed-content genetic pivot — 2026-09-10 (active)
+## Structural flagged-reciprocity repair — 2026-09-10 (active)
+
+Codex remains the sole KTT/private-companion worker and sole local MariaDB
+writer.  Exact recounting exposed a correctness defect in the private tail
+heuristic: scale-one lattice points need not affinely span a rational
+fixed-content flagged GT polytope.  One apparent degree-25 negative
+(`a2be13af...`) had structural dimension 25 but scale-one span 24; direct
+ordinary counts disproved both reconstructed polynomials.  It is not a
+counterexample.  A transactional quarantine archived 862 affected strict
+samples, 120 zero-time derived ordinary samples, and marked 13 polynomial rows
+plus affected attempts `invalid_span_deficit`; no affected row remains active.
+
+The maintained engine now exposes propagated flagged bounds and an exact
+flag-aware strict DP, and adaptive reciprocity uses it for flagged inputs.
+The regression instance reports dimension 25, a genuinely restrictive flagged
+example agrees between positive and reciprocal interpolation, all 38 crate
+tests pass, and strict Clippy passes with `-D warnings`.  The private generic
+adapter reproduces corrected `a2be13af...` strict counts at dilations 1--7:
+`0,0,0,56655893,136866338728,48574493345190,5544119621688912` (last
+16.106 s).  Its partial tail is strongly positive, so it does not replace the
+global proper near-miss.
+
+BEST CERTIFIED NEGATIVE remains `612334d7...`, degree 84 with exactly two
+nonflag holes.  BEST PROPER ZERO-HOLE NEAR-MISS is `42d92b82...`, straight,
+degree 23, certified positive, normalized smallest coefficient
+`2158459137/24953681152400` (~`8.64986e-5`).  Abacus direct `42d9 L(17)` job
+`20260910T171434-ce38e10af4fa` remains running; inspect rather than resubmit.
+New structural control job `20260910T192616-487d1344de57` is queued behind it,
+with local expected dilation-6 count `48574493345190`; runner/input/binary
+SHA-256 are `4987fc9f...` / `2a1bbe2f...` / `6078110c...`, and MariaDB ledger
+run is `f5b86942...`.  Submit useful structural work only after this control
+matches remotely.
+
+## Large zero-hole fixed-content genetic pivot — 2026-09-10 (superseded checkpoint)
 
 Codex remains sole KTT/companion and local MariaDB writer.  Generated reports,
 inputs, and logs remain ignored; no extra workers, account/admin changes,

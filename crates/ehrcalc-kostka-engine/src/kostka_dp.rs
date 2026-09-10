@@ -937,12 +937,15 @@ fn enumerate_strips_strict_new(
     increments[row] = 0;
 }
 
-fn for_each_strict_horizontal_strip_extension<F>(
+#[allow(clippy::too_many_arguments)]
+fn for_each_strict_horizontal_strip_extension_restricted<F>(
     alpha: &Partition,
     lambda: &Partition,
     strip_size: u32,
     strict_lower: &[bool],
     strict_diag: &[bool],
+    row_lo: usize,
+    row_hi: usize,
     mut visit: F,
 ) where
     F: FnMut(Partition),
@@ -955,7 +958,7 @@ fn for_each_strict_horizontal_strip_extension<F>(
     let mut min_needed_suffix = vec![0u32; n_rows + 1];
     for r in (0..n_rows).rev() {
         min_needed_suffix[r] = min_needed_suffix[r + 1]
-            + if r < strict_lower.len() && strict_lower[r] {
+            + if (row_lo..row_hi).contains(&r) && r < strict_lower.len() && strict_lower[r] {
                 1
             } else {
                 0
@@ -976,6 +979,8 @@ fn for_each_strict_horizontal_strip_extension<F>(
         n_rows,
         strict_lower,
         strict_diag,
+        row_lo,
+        row_hi,
         &min_needed_suffix,
         &mut parts,
         &mut visit,
@@ -991,6 +996,8 @@ fn enumerate_strips_strict_streaming<F>(
     n_rows: usize,
     strict_lower: &[bool],
     strict_diag: &[bool],
+    row_lo: usize,
+    row_hi: usize,
     min_needed_suffix: &[u32],
     parts: &mut Vec<u32>,
     visit: &mut F,
@@ -1005,6 +1012,25 @@ fn enumerate_strips_strict_streaming<F>(
     }
 
     if remaining < min_needed_suffix[row] {
+        return;
+    }
+
+    if row < row_lo || row >= row_hi {
+        parts[row] = alpha.part(row);
+        enumerate_strips_strict_streaming(
+            alpha,
+            lambda,
+            remaining,
+            row + 1,
+            n_rows,
+            strict_lower,
+            strict_diag,
+            row_lo,
+            row_hi,
+            min_needed_suffix,
+            parts,
+            visit,
+        );
         return;
     }
 
@@ -1044,6 +1070,8 @@ fn enumerate_strips_strict_streaming<F>(
             n_rows,
             strict_lower,
             strict_diag,
+            row_lo,
+            row_hi,
             min_needed_suffix,
             parts,
             visit,
@@ -1206,6 +1234,22 @@ pub fn try_strict_skew_kostka(
     max_states: Option<usize>,
     _sort_weight: bool,
 ) -> Result<BigUint, String> {
+    try_strict_flagged_skew_kostka(lambda, mu, w, None, None, max_states)
+}
+
+/// Count relative-interior lattice points with optional row flags.
+///
+/// The structural flagged bounds determine which interlacing constraints lie
+/// in the affine hull.  This remains valid when the scale-one lattice points
+/// do not affinely span the fixed-content polytope.
+pub fn try_strict_flagged_skew_kostka(
+    lambda: &Partition,
+    mu: &Partition,
+    w: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    max_states: Option<usize>,
+) -> Result<BigUint, String> {
     let skew_size: u32 = lambda.size().saturating_sub(mu.size());
     let w_size: u32 = w.iter().sum();
     if skew_size != w_size {
@@ -1214,11 +1258,22 @@ pub fn try_strict_skew_kostka(
     if !mu.partition_less_equal(lambda) {
         return Ok(BigUint::zero());
     }
+    if upper_flags.is_some_and(|flags| flags.len() != w.len())
+        || lower_flags.is_some_and(|flags| flags.len() != w.len())
+    {
+        return Err("flag lengths must match the weight length".to_string());
+    }
 
     let n = lambda.num_parts();
     let k = w.len();
 
-    let (_, lb, ub) = match crate::gt_dim::gt_polytope_bounds(lambda.parts(), mu.parts(), w) {
+    let (_, lb, ub) = match crate::gt_dim::gt_polytope_bounds_full(
+        lambda.parts(),
+        mu.parts(),
+        w,
+        upper_flags,
+        lower_flags,
+    ) {
         None => return Ok(BigUint::zero()),
         Some(data) => data,
     };
@@ -1279,14 +1334,25 @@ pub fn try_strict_skew_kostka(
             continue;
         }
 
+        let row_lo = lower_flags
+            .and_then(|flags| flags.get(i))
+            .map(|&flag| (flag as usize).saturating_sub(1).min(n))
+            .unwrap_or(0);
+        let row_hi = upper_flags
+            .and_then(|flags| flags.get(i))
+            .map(|&flag| (flag as usize).min(n))
+            .unwrap_or(n);
+
         let mut new_dp = partition_count_map();
         for (alpha, count) in &dp {
-            for_each_strict_horizontal_strip_extension(
+            for_each_strict_horizontal_strip_extension_restricted(
                 alpha,
                 lambda,
                 strip_size,
                 &strict_lower[i],
                 &strict_diag[i],
+                row_lo,
+                row_hi,
                 |beta| {
                     *new_dp.entry(beta).or_insert_with(BigUint::zero) += count;
                 },
