@@ -1,5 +1,34 @@
 # Ehrcalc Handoff
 
+## Extended finite retry bound tested and monitored — 2026-09-10
+
+Codex owns private retry helper/tests/README and both handoffs;sole local DB
+writer unchanged. Clean worktrees/no live scan verified at adoption. Previous
+turn made progress;no global blocker. Extended optional --seconds range1..120,
+default5 unchanged. Existing version1 identities unchanged;budget already part
+of identity. Tests verify120s forwarding and recorded config using beam128,
+and reject0/-1/121/noninteger before DB access. All68 tests pass0.468s.
+README documents serialization,monitoring and150s outer guard for120s count.
+Maintained engine and primary scanner unchanged;Abacus wrapper still caps30s.
+
+Selected215123d35 five-opposite child previously timed out beam32/30 and
+beam128/30;fixed finite poset and prior controlled runs justify one120s retry.
+Launched with beam128,timeout150s outer,nice10 wrapper (engine effectiveNI19).
+Observed engine PID2801596 CPU99.9%,RSS1091496KiB at31s,907128KiB at64s,
+2088224KiB at102s. These are samples,not measured peak memory.
+Monitored same live handle throughout;no duplicate restart or unbounded scan.
+Engine exited at internal timeout;helper stored time_limited120.051361s,
+rune4f54461ed0b08c81a51270d0cbda73d4716867fa12e31d3f7be5bc29db01052.
+No remaining engine process on terminal check. Original shorter attempts
+retained;215123 signs remain unknown. Do not repeat this terminal identity.
+Report runs/fan-retry215123-beam128-120-20260910.jsonl ignored/untracked.
+Eight two-removal counting gaps remain;no positivity exclusion from timeout.
+Next other selected finite longer retry or new mutation/layout;not a global
+blocker and not permission for unbounded/resource-unmonitored computation.
+No improved negative;primary174566d33 seven/five retained,not a flagged witness.
+Source increment verified,all results in DB,no live local scan,push/publication
+or extra workers. Goal remains active.
+
 ## Five-opposite retries leave eight unresolved counts — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
