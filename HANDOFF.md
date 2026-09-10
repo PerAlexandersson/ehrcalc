@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## Three five-opposite gaps resolved exactly — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+prior retries for these candidates. Source unchanged.
+Three serial verified beam128/30s retries,60s outer,nice10:
+224794d33[7,13,82,132],EXACT NONNEGATIVE12.26539908000268s,
+run39f9d433e74440ac8f5091ce08d7fa86ff7dfe27ed82a61b97fe0f2f30e7e7d7;
+225228d33[8,14,98,132],EXACT NONNEGATIVE24.31065720692277s,
+run66662ace3436e6b8f016f0ef3378f94f35010a13dce9e0cec2ddba292d3c5a5f;
+222888d34[1,2,98,132],EXACT NONNEGATIVE8.43492414499633s,
+run5407797de980c35aa8d40515c08fbcb2366e41eec5e704db9bc033b5f2a69a15.
+Fresh DB readback confirms all three statuses and empty negative lists.
+Original5s timeouts retained;no duplicate attempt identity repeated.
+Samples(not peaks):PID2938854 at9s CPU100%,RSS335040KiB;
+PID2939305 at9s CPU100%,RSS572644KiB;bothNI19.
+All handles terminal exit0,no engine remains.
+222055 lower-remove-two neighborhood now7 exact nonnegative,27 unknown,
+153 dimension prunes,1376 objective prunes,9 duplicates not revalidated.
+Next d34 unknown223268/223536/224062/224068/224388;consider Abacus
+disjoint retry batch after fresh baseline/compatibility validation.
+Reports runs/fan-retry{224794,225228,222888}-beam128-30-20260910.jsonl
+ignored/untracked. No remote submission this turn.
+Retain222055/cert222064 and174551/cert174566,d33 seven extra opposite/five
+internal bans;no improved negative and no flagged Kostka counterexample.
+Metrics are presentation counts,not certified minimum bad-edge distance.
+Goal active,no global blocker;no push/publication,extra AI workers or admin changes.
+
 ## Complete new-lineage five-opposite neighborhood — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
