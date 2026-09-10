@@ -1,5 +1,45 @@
 # Ehrcalc Handoff
 
+## Weight-plus-equality mutations started; degree33 shrink gaps closed — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress. Fresh clean Git/no-engine/DB checks; no selected
+retries or RAW222055 full-content-remove queue existed. Source unchanged.
+Serial beam128/30s retries under60s outer,nice10,all EXACT NONNEGATIVE:
+226246d33[3,7],9.969472554977983s,
+run99183e187872f5eb3750a2825769461b5ade1a42ddb20782e82ca9241f516481;
+226334d33[6,6],4.558099362067878s,
+run3a7f2b9d15d6d7fcd06b3008b7cc44bf04e4eb049e12f46a5942734f32792963;
+226364d33[7,6],6.9388118230272084s,
+runcdb9be2a8675eb065363887aad91c8c03d66c410939405cef45278e2c8a3e393.
+Fresh DB readback and independent rational hstar reconstruction passed all3.
+Original5s attempts preserved; no measured peak claim; all handles exit0.
+222055 interior-shrink now90 exact nonnegative,1 unknown226422d34
+(remote20/local30 limits),18 untouched dimension prunes,8 objective prunes,
+14 duplicates unvalidated. All original attempted degree<=33 gaps resolved.
+
+Started NEW RAW222055 full-content-remove neighborhood,not expanded certificate:
+603 total proposals; label then horizontal/internal equation order.
+Changes original content and removes one original equation; retained mixed-face
+models are NOT automatically flagged Kostka coefficients. No flag-only
+objective filter applied to content-modified faces. Capdimension33,beam32,
+5s/candidate,45s batch safety/60s outer,nice10,offset0->93,
+40.185282062971964s. Run
+e5c5446261e0d5d137d60540ce581fa1343334fc3ec0e4ef9d1430fda9c52074:
+68 exact NONNEGATIVE,1 unknown226660d32[4,horizontal,82],
+24 dimension prunes,0duplicates/empty/negative. Status capped,510 proposals
+remain. Every proposal/outcome stored;fresh DB93 terminal rows agree.
+Independently reconstructed all68 exact polynomials from hstar over Q;
+all sign lists agree. Prunes/timeouts remain uncertified.
+Resume actualoffset93,do not replay original timeout at same budget/layout.
+Ignored reports runs/fan-retry{226246,226334,226364}-beam128-30-20260910.jsonl
+and runs/fan222055-fullcontentremove-d33-offset0-20260910.jsonl untracked.
+No source changes/tests claimed. No local engine remains.
+No remote submission this turn; previous Abacus job remains terminal.
+Best negative222055 and174551 stilld33 seven/five presentation counts;
+no smaller negative or flagged witness. Goal active,no global blocker,
+no extra AI workers,admin changes,push or publication.
+
 ## Abacus first-count batch validated — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
