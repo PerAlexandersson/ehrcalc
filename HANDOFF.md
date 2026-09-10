@@ -1,5 +1,69 @@
 # Ehrcalc Handoff
 
+## Seven paired gaps resolved; joint search at591 — 2026-09-10
+
+Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
+Previous turn progress; freshclean Git/DB/remote-idle checks.
+No source edits,testclaims,extraAIworkers,admin/toolchain changes,push/publication.
+
+Abacus job20260910T123016-7e195e419eb2 done/exit0,wall111.0504465s.
+8serialcases includingfreshcontrol,20s/case/180swhole,establishedfinitebound,
+monitoredsamejob,no resubmission. Selected7degree33pairedsources had no prior
+retry/remote identities; actual GT-coordinate tuples pairwisedistinct and
+absent from222055/203068/198861/209610/174551 paired and230740 lower-remove
+neighborhoods. Scope inpreparedledger,notglobal non-isomorphism.
+Control196437 freshlocal0.2284415200119838/remote0.399415247986326s fullmatch.
+All7local search exactNONNEG,remote/local seconds/localrun:
+231902 remoteTIME LIMITED20.103281552001135/local22.93084185605403,
+de985072770217d8dd96d26595931657f1ed2d3826709573836762e25cb54736;
+231938 remoteexact9.88276573800249/local5.595812654006295,
+5cb629e8307156e1d6332186a5257e33d9a7016b4a91df7a350bd61ca2811a1b;
+231944 remoteTIME LIMITED20.11795977401198/local22.751084271003492,
+f9739008e993da0fbba6009f32f4ae28c162bbcd62a9e496dbe09d54420a37ec;
+231980 remoteexact9.838470154005336/local5.6384517619153485,
+d3362555d407b29bfa246f1fa43dd6d26c2de5b8e049a01dea65bafc0f59172b;
+231986 remoteTIME LIMITED20.114900468994165/local22.868224987993017,
+868564d85390e37f207b3d06c938511568e123b730c26a5d5377345c57b070bc;
+232022 remoteexact9.91034348300309/local5.5607383869355544,
+14a1c1004e2e912b77e4de61a41c6b9e3cfe77d73a1a5a021782eca31d7bd0a7;
+232028 remoteTIME LIMITED20.111134812992532/local22.927193508017808,
+2fd675630a04a6f89a920b96f0174d7344284452c31d8000ff17fd2733ee984c.
+Allremote timeouts retained distinctly from localexact.
+Localbeam128/30s each60souter/nice10/CARGO_TARGET_DIR,strictlyserialized
+after jointscan terminal. All7localexact independently reconstructed overQ;
+3remote search exact fullpoly/h*/signlists matchfreshlocal,controltoo.
+All8quotients/permutedcovers andreceipt/file/header hashes verified before
+localingestion. CPU[0,1],8GiBmemory,swap0,pids128,x86_64,
+Python3.10.12/glibc2.35/libraries verified; installedlimits unchanged.
+Onlytrustedwrapper/input/engine uploaded,no credentials/DB/checkouts.
+Input SHA4808cbddcb10984c76739b06797286d5ad59912ea28a83176581a24900ba6f84
+Wrapper SHAa4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHA878aa7642e5e2d277990a6baa8d8fdb340ea1ac793ef0c3fffb8260893cf1124
+Completedledger9ae0ea65158e2aa834a230b3febff5dacb48e73c01762e298425c37b10e26b0d,
+readback prepared232451,receipt232452,validated233267..233274.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T123016-7e195e419eb2-y4eoldsq
+Hostsupervisor cancollect durable originals byjobID.
+CURRENT230740 paired19exactNONNEGATIVE,17unknown,
+27dimprunes125objectiveprunes1duplicate. No wholequeue positivity claim.
+
+230740 joint resumed191->391->591 (945total),samecap6extra/d40,
+beam32/5s,45sbatch/60souter,nice10/CARGO_TARGET_DIR,
+40.55927118496038/40.53240014205221s,runs
+46d66332520d6de2edf04a66c87a4bd2af9d73754c4a52e3460f60bf084dc686
+7619469a96a644bb81bd1f4afaf1b6941aa18f71bb734b5f686e07e2e9baa0b5.
+Eachnewbatch7timeouts,58dimprunes135objectiveprunes,0exact/duplicates.
+CURRENTfirst591:21timeouts UNKNOWN,170dimprunes400objectiveprunes.
+Allproposals/outcomes DBstored. Capped,notcomplete.
+NEXT resume --offset591 --count1000 withsamebounds;354proposals remain.
+Ignored runs/abacus-230740-seven-paired-c-20260910.json,7retryJSONL and
+2jointreports stayuntracked. Allhandles terminal. No improvednegative;
+goalactive,noglobalblocker. RetainRAW230740/cert230749 d33 sevenextra/
+fiveinternal alongsidepriorleaders; counts not provenminimum nonflagdistance.
+
+
+
 ## Six paired gaps resolved; joint mutations started — 2026-09-10
 
 Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
