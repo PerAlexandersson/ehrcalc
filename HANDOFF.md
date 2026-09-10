@@ -1,5 +1,90 @@
 # Ehrcalc Handoff
 
+## Two-hole parent freshly reproduced; one-hole flag shrinks tested — 2026-09-10
+
+User clarified: combine few bad edges AND low degree. Retain two-hole family
+as primary; compact mixed-face branch paused. Previous reply was planning only;
+this turn made concrete progress. Codex remains sole local DB writer and KTT/
+companion owner, private profile/model unchanged. Clean Git/process checks.
+No source edits, new tests, extra AI workers, admin/toolchain changes or pushes.
+All local/remote handles terminal. Goal active, no global blocker.
+
+Supplementary exact companion descent-DP freshly recomputed parent
+612334d74e3ba8f384a8647c90a4a7fcd46f129dde61c9f2999d9a1e77fab474,
+mask0x200000000010000001000,9x10,d84,two holes[(4,6),(6,10)]:
+285360 DPstates,6.362598060979508s, negative linear/quadratic coefficients;
+full cached power/h*/sign list matches after independent rational transform.
+Fresh d80 single-addition neighbor
+a2edfe26e15fdc1abec8383c31b8dc3a7d8582fe62c0e1afd4fdd5c87c524508,
+mask0x200200000010000001000:280542states,5.802992757060565s,exact NONNEG;
+full cached match. Both bounded500000states/60s outer,nice10, serialized.
+DB c668ffa018c15dc6a283d801f0793a6f09f4d6d28a02b9abef02da3a29da4812.
+Important provenance: these are fresh companion Python exact-descent counts,
+NOT completion of the maintained-engine d84 timeout. They supplement it.
+Maintained engine natural-layout d84/30s remains unresolved from prior turn.
+Audited beam32/128 layouts both improve frontier cost(10,686)->(8,516);
+these layouts not yet counted for d84. No claim width optimal.
+
+Single free-equality additions retaining <=2holes and reducing d84 gave only
+the above d80 face, already stored NONNEG. Broadened to full upper-flag suffix
+in one original row: rows1..9,cut=row..row+9,90 proposals, all DB recorded.
+Require unchanged original mask subset, reduced Kogan word, <=2holes,d<84.
+45 nonreduced-pruned,1 unchanged,44 eligible proposal rows:
+42 missing from genetic-candidate table,2 already stored (d80exactNONNEG and
+d72bad_edge_pruned). Missing keys are NOT proof of globally new coordinate
+faces. One pair row5/cuts9,10 gives identical mask/key; do not recount it.
+Audit d4d0d9679901d34a8ebde2ef9337c5c3dc64d5b5341a722ee3409c760ad6fa07,
+0.6852314228890464s. Includes masks/row/cut/holes/dimensions/candidate keys.
+Do not extrapolate nonreduced pruning to positivity or impossibility.
+
+Selected four distinct one-hole proposals (augmented hole[(4,6)]):
+237413d40 originalrow5/cut5,
+237414d45 row5/cut6,
+237416d52 row5/cut8,
+237417d59 row5/cut9 (237418 same mask,skip).
+Abacus20260910T132148-9cf5d64b2696 done/exit0,wall80.79559898376465s.
+Five serial cases incl freshcontrol,20s/case/120s whole, finite monitored bound;
+samejob,no resubmission. Only selected trusted wrapper/input/engine uploaded.
+Control196437 local0.22942929703276604/remote0.40569646601215936s fullmatch.
+237413 remoteexact18.64310441800626/localexact10.393474254058674s NONNEG.
+237414 remoteTIME LIMITED20.116597183980048/localTIME LIMITED30.005091078928672s.
+237416 remoteTIME LIMITED20.104416573012713/localTIME LIMITED30.071432707016356s.
+237417 remoteTIME LIMITED20.12719160100096/localTIME LIMITED30.057141047087498s.
+Local maintained batch1d6163f419067aa406ac39db1062710649e1fb0573ff4276f067d5fad0498d11,
+beam128,4x30s serial/150s outer,nice10,CARGO_TARGET_DIR; explicitly justified
+whole bound includes tested finite per-case caps and overhead.
+
+Supplementary exact descent-DP then resolved ALL FOUR as NONNEG:
+2374130.1626300059724599s,2374140.3091991259716451s,
+2374161.0754453720292076s,2374171.7844119489891455s.
+Run2badf2bf8d7ace85a7318c7af32da98f79d3ef5b4df93ccffc51a051c5e7dfa1,
+500000states/case,60s outer. All power/h* reconstructed over Q.
+Degree40 full polynomial agrees across BOTH independent counting algorithms
+and Abacus. Higher3 signs are exact companion results; maintained local/remote
+timeouts remain separately recorded, not relabeled as completed computations.
+This large speed difference motivates a bounded maintained exact ideal-DP
+adapter or a carefully audited remote companion runner, not more identical
+frontier-counting timeouts. No such source implementation exists yet.
+
+All remote original quotient/permuted covers (triangular masks for4sources;
+mixed-face control), receipt/file/header hashes, x86_64/Python3.10.12/glibc2.35/
+libraries,CPU[0,1],8GiB,swap0,pids128 verified before ingestion.
+Input runs/abacus-four-onehole-suffix-20260910.json SHA
+48c9e85fef03f7b4a04c682caf92d069a877ebbac3bbf2042a5f4641e0766e24.
+Wrapper SHA a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a.
+Engine SHA 8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367.
+Output SHA b8a65919a535d87bb802df0c9de452be8b3da461371be2fc21fc87377d3beefa.
+Completedledger4bf1b7f99cc5c277861fb5779bde815fbf8014adee8be07938c2a2bbc03d9a6e,
+prepared237463,receipt237464,validated237481..237485.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T132148-9cf5d64b2696-d2uqtsaq
+Host supervisor can collect byjobID. Input stays ignored/untracked.
+No improved negative. Next inspect/test remaining distinct <=2hole suffix
+faces with bounded exact counting, including lower degrees, then coordinated
+flag/shape/weight mutations. Use DB/coordinate dedup, not missing genome keys
+alone. Keep Abacus involved, preferably with the tractable exact method.
+
+
 ## Restore two-hole frontier; Abacus verification complete — 2026-09-10
 
 IMPORTANT USER CORRECTION: earlier status called the compact mixed-face lineage
