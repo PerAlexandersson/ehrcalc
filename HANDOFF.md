@@ -1,5 +1,79 @@
 # Ehrcalc Handoff
 
+## Abacus finds a distinct negative branch, degree33 — 2026-09-10
+
+Codex retains KTT/companion ownership,private profile/model,sole local DB-writer
+role. Previous turn made progress; fresh Git/DB/remote checks preceded work.
+No code edits,extra AIworkers,admin/toolchain changes,push or publication.
+
+NEW retained negative RAW230740 (exact retry of222063), certificate230749:
+9x15,degree33,7extra opposite equalities/5internal bans, linear coefficient
+-62418826945997/36100888223400. Parent209610 with added lower flag[9,15].
+Vertical0x3ff01fe01fc01f801f001e001c00181f1
+Raw horizontal0x100080008400840104010407040e040e00
+Certified horizontal0x1000800184038407040f041f043e047e00
+Fresh beam32/15s-each endpoint certification7.8853830200387165s,run
+5cf1879324480709d3a1efdc2a5b23309a2235858a2d3485c04a0ee8d9bf5c67.
+Both exact polynomials/h* agree, raw/expanded full-coordinate face unchanged.
+Inherited exit_code124 is stale source metadata; fresh status exact and
+full polynomial evidence authoritative. Not a flagged Kostka counterexample.
+Counts are presentation counts, not proven minimum distance.
+Actual coordinate tuple audit distinguishes230740 from174551,222055,203068,
+198861,209610;230736 (retry222057) is the SAME face as174551, not a new parent.
+Audit84c0349514db162be98452915ca7e2da4844eda05eaf5867011c536c22972b61,
+0.04931100702378899s,stored comparisons and coordinate hashes.
+230740 coordinate SHA97142bd4e79d98e5a2fb853e853490bd75668d021b3830380186639be7898091.
+Use RAW230740 for new mutations, not expanded certificate230749.
+Best bad-count/degree unchanged, but a distinct negative branch is available.
+
+Abacus job20260910T113237-3a3c007a8448 done/exit0,wall38.3548287s.
+Established serial5case bundle20s/case/120swhole; finite bound justified by
+five explicit cases, monitored samejob. Fresh negative control196437
+local0.2325494639808312s / remote0.40268018198548816s exactfullmatch.
+Four disjoint previously un-retried lower-flag source IDs, all remote exact:
+222044d33 NONNEG remote9.36627795000095/local5.334707473986782s,
+90f1066b15c93ccc1d1a3e7eef664eb17c967cc6b63fd47c8343880b1dcf1f26;
+222057d33 NEG(existing174551) remote9.412345958990045/local5.325248681008816s,
+23075e75b5ec213fb19cb1b9ca90650fef90561b82bdcb2240cb8d53fc1f28e1;
+222061d32 NONNEG remote9.118045446026372/local5.213911714963615s,
+7547476e9e214c7542f67f41e66467d547fed5f45400d158ca7fdab101baf15a;
+222063d33 NEG(new230740) remote9.76193462399533/local5.511011519934982s,
+db9fa615c740348526d8a1b482843aa26ef913ffb48573e6f8adacb9abc6adb9.
+Local retries beam128/30s,60souter/nice10/CARGO_TARGET_DIR, strictly serial
+after local mutation handle terminal. Original timeout rows retained.
+All5 full remote exact polynomials/h*/sign lists matched freshlocal results,
+independent Q reconstruction checked, all reconstructed quotient/permuted
+covers verified. Trusted file/receipt/header hashes checked before ingestion.
+CPU[0,1],8GiB memory,swap0,pids128,x86_64,Python3.10.12/glibc2.35/libraries
+verified; no limits changed or DB/credentials/checkouts transferred.
+Input SHAab4730784b4697823f41113cdb8f543c930a8999fbe8790137ec5deeadd6eaa1
+Wrapper SHAa4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHA5d78c632588d363030bede93c7cf7c86f972c49d6f82ff305624130e3ecf28c4
+Ledger9e9adbf787723a8477e3ea4c838876be4251cca7b422db0e3ebadce65f64661e
+completed,readback prepared230686/receipt230687/validated230742..230746.
+Exact local rows230734/230736/230738/230740.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T113237-3a3c007a8448-79bkj6fd
+Host supervisor can collect durable remote originals by jobID.
+
+222055 zero-weight: all24labels attempted,dimensioncap33,no flag-only
+objective filter,beam32/5s,45sbatch/60souter. Offset0->23->24;
+41.46734027995262/0.035580222960561514s,runs
+3128a55fa15058b2fa08ecc7f3c35037ee7fc78608bdee1b39b8ceb4299f757b
+8f243512e79774a00fc247295067e6bc7d79e5f5860e0093c4004fb5f2c61aa3.
+Initial22exact NONNEGATIVE,1timeout230719d32(label16),1maskduplicate.
+Retry230719beam128/30s exactNONNEG4.707924253074452s,
+cdcd659f942c12da7c1cd47454efdb52fe73daf447631ac25d47097be56657a0.
+All23 exact results independently reconstructed overQ; no attempted holes.
+Allproposals/outcomes stored. Generated runs/abacus-four-lowerflags-20260910.json,
+localretry/zero-weight/certification JSONL remain ignored/untracked.
+Allhandles terminal. Goalactive; no global blocker. Next: bounded mutations
+from newRAW230740, prioritizing fewer nonflag constraints, with coordinate
+deduplication before expensive repeat attempts; keep routine Abacus batches.
+
+
+
 ## Abacus lower-internal batch; equivalent mutation queue closed — 2026-09-10
 
 Codex retains KTT/companion ownership, private profile/model and sole local
