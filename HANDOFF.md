@@ -1,5 +1,39 @@
 # Ehrcalc Handoff
 
+## Five-opposite retries leave eight unresolved counts — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Source unchanged. All counts30s internal/60s outer,
+reduced priority;original5s attempts retained.
+Changed-order beam128:
+215993d36 EXACT NONNEGATIVE19.554080s,
+run5d5f4d186f33bc557b525b2691c559f98312c2f6835c29aac6673874a422d242;
+216775d36 time_limited30.038127s,
+runde0d785c4620b9562af9afb458dcc09c7fe3e32d4ed9ed9d7b896979c58234c4.
+Unchanged-order beam32,new30s bound (not redundant beam128):
+215363d36 time_limited30.035267s,
+run363b8da7947834a8cd01a4a64d00488d23c56ac073d9e3b1392d0ece7bb9ab4a;
+215983d36 EXACT NONNEGATIVE9.071180s,
+rund90bf0fdd817b0641cfdeab89d1d81c3792dd59c69b334c822a4116cd7bd7bc5;
+215987d36 EXACT NONNEGATIVE29.128969s,
+run9b0eb15cc0f29ecea0e051509305c1f7d598f963146e5e58dfdebe9103ddcf4c.
+
+Raw209610 two-removal neighborhood now22 exact nonnegative,8 unresolved
+counting cases,plus159 dimension prunes,1218 objective prunes,1 duplicate.
+Fresh DB query excluding exact retries confirms unresolved IDs:
+215123d35 [4,8,82,132];215377d35 [5,9,98,132];
+216789d35 [9,15,98,132];214309d36 [1,2,82,132];
+214651d36 [2,4,82,132];214891d36 [3,6,82,132];
+215363d36 [5,9,82,132];216775d36 [9,15,82,132].
+All have now had at least one30s exact attempt;signs unknown.
+Do not repeat terminal layout/budget identities. Next a justified longer
+finite retry would require extending/testing the helper's current30s limit,
+or try a distinct verified layout/shape/weight mutation. Not a global blocker.
+No improved negative;primary174566d33 seven/five retained,not a flagged witness.
+All results stored,reports ignored,no live scan,push/publication or extra workers.
+Goal remains active.
+
 ## Four dimension36 five-opposite gaps resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
