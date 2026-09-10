@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## All attempted paired counts resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+selected retries. Source unchanged. Serial coordinate-verified beam128/30s,
+60s outer,nice10,both EXACT NONNEGATIVE:
+226052d36[197,66],23.139749318012036s,
+run9485d75b44de4b9c9e84f62e29dfd33edcede8182043ac629f45a0f67ca6a778;
+226094d36[239,66],22.639588807011023s,
+run6a659a0e25749ec7e51bd6dd21d0ab73a022ecb9fae34b4eb7af51ba05430468.
+Fresh DB readback confirms statuses/empty negative lists;original5s attempts
+retained. Full DB anti-join confirms zero original paired timeouts without
+an exact retry. Samples(not peaks):PID3005028 at11s CPU100%,RSS254464KiB;
+PID3005442 at8s CPU99.8%,RSS286552KiB;bothNI19.
+All handles terminal exit0,no engine remains.
+222055 paired neighborhood now36 exact nonnegative,0 attempted unknown,
+27 dimension prunes,125 objective prunes,1 duplicate not revalidated.
+Not a positivity certificate for all189 proposals:prunes/skips are uncounted.
+Next new mutation neighborhood (joint/internal/shape/weight from222055),
+or selected pruned case with fresh bounds;query DB before starting.
+Do not repeat completed queue/terminal retry identities unchanged.
+Reports runs/fan-retry{226052,226094}-beam128-30-20260910.jsonl untracked.
+No remote submission this turn. Retain negative222055/cert222064 and
+174551/cert174566,d33 seven/five,presentation counts not minimum distance.
+Other neighborhood lower-remove-two still unknown223762d35 after120s.
+No improved negative or flagged Kostka counterexample.
+Goal active,no global blocker;no push/publication,extra AI workers or admin changes.
+
 ## Two more degree36 paired gaps resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
