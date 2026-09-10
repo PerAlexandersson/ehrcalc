@@ -1,5 +1,44 @@
 # Ehrcalc Handoff
 
+## Degree40 removal bounds and corner shrink scans — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Fresh Git clean/no-engine
+checks and DB checks showed no prior retries of182128/220627 and no dedicated
+corner-shrink queues for182122/182773. Source unchanged.
+Selected d40 edge98 internal-ban removals(5 internal bans),verified beam128,
+30s internal/60s outer,nice10,serialized:
+182128 time_limited30.09010555408895s,
+run405867b3065c1914e3ea6206637a4453ad5eef0a7544e1dfeefab721c8c949ff;
+220627 time_limited30.089447073987685s,
+runc07504009e417b48f78b5390e11d4f2bbe0f248100660c4e0a21e94d8c28f17e.
+Both signs remain UNKNOWN;original shorter attempts retained,no exact cache.
+Observed samples(not peaks):
+PID2866369 at9s CPU99.7%,RSS737104KiB,at27s CPU99.9%,RSS1497212KiB;
+PID2866720 at17s CPU99.8%,RSS867740KiB;bothNI19.
+Same handles monitored to terminal exit0;no retry beyond30s this turn.
+Fresh DB readback confirms unknown status and missing polynomial evidence.
+
+Corner shrink complements prior116 interior cuts:all4 combinations of first/
+last row and first/last column per8x15 parent,children7x14,offset0->4.
+Cap7 extra opposite,dimension cap32,beam32/5s cases/45s batch/60s outer,nice10.
+182122:3 exact nonnegative(degrees10..25),1 duplicate not revalidated(d10),
+0.20651885296683758s,
+runbf08fcc75e99b84164dd998de8f14468c95b62574b17032c58dfca26ded182be.
+182773:3 exact nonnegative,1 duplicate not revalidated,
+0.20270695898216218s,
+run1b3d4a81fdebe98de1835ddd0d73627604668a84cdac8dd424e34ba69f8a89e7.
+No timeouts,prunes,empty faces,negative or errors in corner scans.
+Fresh DB aggregation verifies both summaries. Six exact outcomes added;
+skipped duplicates are not sign certificates. All proposals/results persisted.
+Reports runs/fan-retry{182128,220627}-beam128-30-20260910.jsonl and
+runs/fan{182122,182773}-cornershrink-seven-d32-offset0-20260910.jsonl untracked.
+No improved negative:primary174566d33 seven/five remains,not flagged witness.
+Next distinct mutation or verified counting layout for expensive removal gaps;
+do not repeat completed corner scans or terminal budget/layout identities.
+No live engine at final check;no push/publication,extra workers,admin changes
+or remote submission this turn. Goal active,no global blocker.
+
 ## Smaller-parent internal-ban moves and removal — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
