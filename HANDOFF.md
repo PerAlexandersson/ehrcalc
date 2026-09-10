@@ -1,5 +1,43 @@
 # Ehrcalc Handoff
 
+## Degree37 five-opposite counts and monitored longer retry — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Fresh clean Git/no-engine
+checks;DB verified original dimension-pruned d37 children and no prior retries.
+All have5 extra opposite constraints. Serial full-coordinate-verified beam128,
+30s cases/60s outer/nice10. All first attempts time_limited,unknown signs:
+221647 cut[2,6],30.06255820696242s,
+run69e3104a020ebef7e8666a08caf9b1db22471e58ac80a0837e33e82b05a5f816;
+221677 cut[3,6],30.06485442398116s,
+runff32be8a8f22f83716c4a95e7b00d67a83c32b060bf3c8ff8647b9bf8c83b0de;
+221735 cut[5,5],30.023728611995466s,
+run8151b830dc922e306770f9ba2e93db4cf2c97c006dd8728c4c0ec29fd46f1ed6.
+Stored layout peak/total respectively(6,125),(6,126),(5,115),heuristics only.
+Observed samples(not peaks),allNI19:
+PID2886794 at12s CPU99.8%,RSS562196KiB;
+PID2887746 at12s CPU99.9%,RSS562152KiB;
+PID2888384 at26s CPU99.9%,RSS462332KiB.
+
+Selected lower-frontier221735 for new120s attempt using tested helper,
+150s outer/nice10;finite fixed poset,prior controlled memory and lower frontier
+justify extended bound. Monitored SAME session through exit0,not restarted.
+SamplesPID2889201 at16s CPU99.9%,RSS273500KiB;at35s RSS527356KiB,NI19.
+EXACT NONNEGATIVE57.38682211807463s,
+runc47a4543fb7ea2bcadabe760c3bc2006a2e174c4432d08fb0e037d7948f1eb2d.
+Fresh DB readback confirms all4 statuses/times/sign evidence. Original30s
+timeouts retained;221647/221677 unknown,no polynomial assigned to timeouts.
+198861 interior-shrink neighborhood now84 exact nonnegative,3 unresolved
+counting cases(221855d34,221647/221677d37),18 original dimension prunes
+still uncounted,26 duplicates not revalidated. No sign claims for skips.
+Reports runs/fan-retry{221647,221677,221735}-beam128-30-20260910.jsonl
+and runs/fan-retry221735-beam128-120-20260910.jsonl ignored/untracked.
+Next distinct mutation/layout or selected finite longer gap attempt;do not
+repeat terminal identities. Best negative remains174566d33 seven/five,
+not flagged Kostka witness. Source unchanged,no live engine at final check.
+No push/publication,extra workers,admin changes or remote submission this turn.
+Goal active,no global blocker.
+
 ## Four remaining degree34 five-opposite attempts — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
