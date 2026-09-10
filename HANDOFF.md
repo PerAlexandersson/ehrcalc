@@ -1,5 +1,46 @@
 # Ehrcalc Handoff
 
+## Degree36 shrink retries and zero-weight neighborhoods — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Clean Git/no live engine
+checked before launch. DB confirmed no prior retry of selected children and no
+zero-weight queue for smaller parents182122/182773. Source unchanged.
+Raw182773 five-opposite7x14 d36 children,beam128/30s,60s outer,nice10:
+219514 cut[1,5] EXACT NONNEGATIVE12.397391972015612s,
+rune97e49b9b77055a31468a7f593eaf293c7d18d9c0f542ec514ec7e920c927677;
+219662 cut[6,5] EXACT NONNEGATIVE1.702865373925306s,
+run67c58e17f5557ccc424237d74ac4233bf4e7eb7c130868146927339fc9b6c1d0;
+219720 cut[8,5] time_limited30.005849412991665s,sign unknown,
+run5be5524b64c7fff8071ae29a8e8694cddbf48fa29c34b6207144a24ae4e9a43f.
+Full-coordinate-verified permutations and all outcomes persisted.
+Observed samples (not peaks):PID2839994 at8s CPU100%,RSS233404KiB,NI19;
+PID2840869 at22s CPU99.9%,RSS443760KiB,NI19.
+Same handles monitored to terminal exit0;no engine left at final check.
+Raw182773 original16 dimension prunes now7 exact nonnegative,1 timeout,
+8 still uncounted;retain original prune rows and timeout unknown.
+Reports runs/fan-retry{219514,219662,219720}-beam128-30-20260910.jsonl untracked.
+
+Zero-weight mutation queues:all23 label choices for each8x15 parent,
+offset0->23,dimension cap32,beam32/5s cases/45s batch/60s outer,nice10.
+No flag-only objective cap applied to weight-forced equalities.
+182122:22 exact nonnegative,degrees22..29;1 duplicate not revalidated;
+no dimension prunes,empty faces,timeouts or negative;2.8320253029232845s,
+run75bd86aea1cbd566f2fec846876d695d3fcfd35e13f5a159f983993c6b7cbfe5.
+182773:22 exact nonnegative;1 duplicate not revalidated;
+no dimension prunes,empty faces,timeouts or negative;2.7985916800098494s,
+run9c8b0df44201dd11605fd9e10b0e7b518bfacf96c5494563a045111f8297adde.
+Fresh DB aggregation/readback checks both scan summaries and three retries.
+Reports runs/fan{182122,182773}-zeroweight-d32-offset0-20260910.jsonl untracked.
+Every proposal/result including skipped duplicate is stored. No negative
+weight mutant to compress/certify;duplicates do not certify polynomial signs.
+No improved negative:primary174566d33 seven/five remains,not flagged witness.
+Next distinct paired flag/removal mutations on smaller parents (DB inventory
+showed no paired queues),or selected unresolved counts. Do not repeat finished
+zero-weight queues or terminal retry identities unchanged.
+No push/publication,extra workers,admin changes or remote submission this turn.
+Goal remains active,no global blocker.
+
 ## Remaining degree35 five-opposite children resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
