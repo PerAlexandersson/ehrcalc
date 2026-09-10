@@ -1,5 +1,47 @@
 # Ehrcalc Handoff
 
+## Primary and band-parent zero-weight neighborhoods — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Fresh Git clean/no-engine
+checks. DB found no zero-weight queues for174551/209610/203068/198861;
+selected first two this turn. Source unchanged.
+All24 zero-label choices per9x15 parent,dimension cap34,beam32 verified
+coordinate layouts,5s/case,45s batches,60s outer,nice10,serialized.
+No flag-only objective filter applied to weight-forced equalities.
+174551 offset0->24 complete,33.91702242102474s:
+23 exact nonnegative(degrees25..32),1 duplicate not revalidated,
+no timeouts,dimension prunes,empty faces or negatives,
+run3749f502805575e85c8ac15686c17dd37fe141158e7234e5ad0051e9e4dffd5b.
+209610 offset0->21 capped,39.27003852289636s:
+15 exact nonnegative(degrees26..33),6 timeouts,
+run265612f56ae432c888453862560b905b1a2a86a59ea3de5d6e430853a0656c94.
+Resumed at21->24 completed,10.11105577996932s:
+2 timeouts,1 duplicate not revalidated,
+run42863c5f6cad8ac931474b6542cffe9dd81ddbf40cac7b48378f896c880c6ae0.
+No repeated first batch;total15 initial exact,8 unknown,1 duplicate;
+no prunes,empty faces,negative or engine errors.
+Timeout IDs/labels:220459/16,220461/17,220463/18,220465/19(d33);
+220467/20,220469/21(d32);220471/22,220473/23(d33).
+Sample during209610:PID2852828 at1s CPU99.4%,RSS64956KiB,NI19,not peak.
+Fresh DB aggregation confirms all three batch outcomes.
+
+Selected220467d32 label20,beam128/30s retry EXACT NONNEGATIVE
+5.082296273089014s,
+run950899c4d3b5861af41caa82e8608ac3f7beff22def31580f1f3032b50544bcf.
+Fresh DB readback confirms exact status/sign list. Original5s timeout retained;
+209610 neighborhood now16 exact nonnegative,7 unknown,1 duplicate.
+Reports runs/fan174551-zeroweight-d34-offset0-20260910.jsonl,
+runs/fan209610-zeroweight-d34-offset{0,21}-20260910.jsonl,
+runs/fan-retry220467-beam128-30-20260910.jsonl ignored/untracked.
+All starts/outcomes/prunes stored;no compression/certificate promotion without
+a fresh negative. Duplicate skips do not establish polynomial signs.
+Next220469d32 or distinct203068/198861 zero-weight queues;do not repeat finished
+identities. No improved negative;primary174566d33 seven/five remains,
+not flagged Kostka witness. No live engine at terminal check.
+No push/publication,extra workers,admin changes or remote submission this turn.
+Goal active,no global blocker.
+
 ## Six degree37 paired candidates exactly resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
