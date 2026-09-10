@@ -1,5 +1,37 @@
 # Ehrcalc Handoff
 
+## Degree37 five-opposite longer bound and layout audit — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Fresh Git clean/no-engine
+checks;DB confirmed221647 had only beam128/30 timeout before new attempt.
+Fixed finite d37 poset and tested helper,prior bounded memory justify one
+120s count with150s outer/nice10,serialized. Same session monitored throughout.
+221647 time_limited120.20272205001675s,
+runf6b7d162ed215a21b68cd70477b56fee602d647d77286269a976ef287cfaf17e.
+Sign UNKNOWN;fresh DB readback confirms no polynomial evidence. Original30s
+attempt retained. No exact cache or positivity inference from timeout.
+Observed samples PID2899435,NI19 (not peaks):
+12s CPU98.6%,RSS595044KiB;42s CPU98.7%,RSS1649740KiB;
+54s CPU99.0%,RSS1230088KiB;95s CPU99.4%,RSS1117876KiB;
+115s CPU99.5%,RSS3447856KiB. Engine exited under internal timeout,
+helper terminal exit0,no remaining engine. No resource-limit changes.
+Report runs/fan-retry221647-beam128-120-20260910.jsonl ignored/untracked.
+
+Fresh exact coordinate-permutation layout comparison before further counting:
+221647 beam32/128 identical order,peak/total(6,125),0.08588308899197727s;
+221677 beam32/128 identical order,peak/total(6,126),0.08224989997688681s.
+Both full orders and metadata persisted,layout-only(no polynomial count),
+run0d64cd7b595cf1b540fd908c6aef736bf3a61503f6fd1a046e3beff8bf4c27b5.
+No redundant beam32 recount warranted. Scores are heuristic,not optimality.
+Next distinct mutation/counting layout,or selected new bounded attempt for
+another unresolved candidate;do not repeat221647120s terminal identity.
+198861 interior-shrink counts unchanged:87 exact nonnegative,3 unresolved,
+15 original dimension prunes uncounted,26 duplicate skips not revalidated.
+Best negative remains174566d33 seven/five,not flagged Kostka witness.
+Source unchanged,no push/publication,extra workers,admin changes or remote job.
+Goal active,no global blocker;this finite failure is not a global impasse.
+
 ## Degree35 seven-opposite smaller-shape candidates — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
