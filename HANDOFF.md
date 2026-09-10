@@ -1,5 +1,50 @@
 # Ehrcalc Handoff
 
+## Second routine Abacus pair validated — 2026-09-10
+
+Codex retains private profile/model,sole local DB writer,KTT/companion ownership.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no selected
+retries/bundles. Abacus enabled/idle,limits unchanged. Submitted disjointjob
+20260910T105625-e946de028630,terminaldone/exit0,wall16.161567s.
+20s/case,60s whole,serialremoteCPUs[0,1],memory.max8589934592,swap0,pids128.
+Runtime verifiedx86_64/Python3.10.12/glibc2.35/resolvedlibraries.
+Trusted unchanged wrapper,selectedJSON,maintained executable only.
+Control196437 freshlocal0.23496904701460153s,remote0.4019185670040315s,
+full exact polynomial/hstar/negative list match.
+Six-extra-opposite lower-remove children from222055:
+222212d33 remote13.284482023009332s,EXACT NONNEGATIVE;
+222238d33 remote1.5070375490031438s,EXACT NONNEGATIVE.
+Fresh seriallocalbeam128/30s,60s outer,nice10 validation:
+222212local7.81630170007702s,
+run753497c6604427eb0268569b5a89662a813afaf3a79eb6ba9736d2f5408708ad;
+222238local0.9388152329484001s,
+runfbbf982adcb67738e71519d99d0dde43278c99fa496bcdf618b1f88082b558d2.
+Fullpoly/hstar/sign matches,independent rational reconstruction,
+rebuilt original quotient and verified uploaded beamcovers/permutations.
+Source5s timeouts retained. Lower-remove222055 now16exact NONNEGATIVE,
+21unknown,24dimprunes105objectiveprunes6duplicates.
+Next remote-priority disjointd33 sources222278/222358,freshDB first.
+Routine larger bounded bundles(up to7search cases pluscontrol,wrappermax8)
+may reduce orchestration overhead;justify/monitor wholejob bounds if over60s.
+
+Input SHA 71376fcb1090e53b591e2acd91c4aeb87b5eec5328acd19cfd6e53a257ca2911
+Wrapper SHA a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA 8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHA b9c82a17a2edd6c99049c9f2c73a20d5c79529f545d58fdec6577f853861a019
+Receipt/file/header hashes checked before ingestion. Ledger
+492d335e93cec81bcf5a1c8bb6a2550d28d627b2a8489115ed61e65fd89fcca9
+completed;DBreadback prepared230127,receipt230128,
+validatedresults230133/230134/230135. No remoteDB access.
+Dockerfetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T105625-e946de028630-z4d0ucsl
+Remoteoriginals retained;hostsupervisor cancollectjobID above.
+Ignoredinput runs/abacus-lowerremove222212-222238-20260910.json,
+runs/fan-retry{222212,222238}-beam128-30-20260910.jsonl untracked.
+Allhandles terminal,no localengine/remotejob remains,nopeakclaim.
+No source edits/test claims,credentials/DB/checkouts transferred,toolchain/admin
+changes,extra AIworkers,push/publication. Goalactive,no flagged witness.
+Bestnegative remainsd33 seven/five;equivalent simplerRAW230106/cert230116 retained.
+
 ## Abacus supplied two validated degree33 results — 2026-09-10
 
 User reiterated use Abacus as much as possible. Treat disjoint remote batches
