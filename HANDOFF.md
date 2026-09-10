@@ -1,5 +1,35 @@
 # Ehrcalc Handoff
 
+## Degree35 seven-opposite smaller-shape candidates — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Fresh Git clean/no-engine
+checks;DB verified three original dimension-pruned d35 children,no retries.
+Selected as possible smaller-shape negative intermediates,not an improvement
+in opposite count:all7 extra opposite,198861 children8x14.
+Serial beam128 full-coordinate-verified30s counts,60s outer,nice10:
+221661 cut[2,13] EXACT NONNEGATIVE14.02740180096589s,
+run77d5414f2448f8e399fadece8484a8995cbaacf4add8726f424ec9fdc4fd108e;
+221691 cut[3,13] time_limited30.006701662088744s,sign UNKNOWN,
+run82d0eba7395e9d4434d9dd3cb042fdb5ed7ef2ddb199fda8c8183e27c82bd2ee;
+221721 cut[4,13] EXACT NONNEGATIVE25.320868573035114s,
+runfff5f7a859c02b647ca9f8e9debf0386305ec1fe3f5c8dab8ac486f266cb8405.
+Fresh DB readback confirms statuses/timings/exact sign lists. No polynomial
+assigned to timeout;original dimension-prune observations retained.
+Resource samples(not peaks):PID2895540 at11s CPU95.0%,RSS167608KiB;
+PID2896930 at16s CPU96.4%,RSS232016KiB;NI19.
+All handles monitored through terminal exit0,no engine remaining.
+198861 interior-shrink neighborhood now87 exact nonnegative,
+3 unresolved counted cases221691d35,221647/221677d37;
+15 original dimension prunes still uncounted,26 duplicate skips unrevalidated.
+No sign claims for skipped/pruned/time-limited cases. No new negative lineage.
+Reports runs/fan-retry{221661,221691,221721}-beam128-30-20260910.jsonl ignored.
+Do not repeat terminal identities;next distinct mutation/layout or selected
+new finite bounds on unresolved fewer-nonflag candidates.
+Best negative remains174566d33 seven/five,not flagged Kostka witness.
+Source unchanged,no push/publication,extra workers,admin changes or remote
+submission this turn. Goal active,no global blocker.
+
 ## Monitored degree34 five-opposite gap resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
