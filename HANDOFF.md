@@ -1,5 +1,45 @@
 # Ehrcalc Handoff
 
+## Full603 weight-plus-equality proposals processed — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks confirmed
+resumeoffset336. Source unchanged. RAW222055 full-content-remove,
+dimensioncap33,beam32,5s/candidate,45s batch safety/60s outer,nice10.
+No flag-only objective filter on content-modified faces.
+336->357,39.837311128969304s,11exact NONNEGATIVE,2unknown,8dimensionprunes,
+run99ca57c3cfe8d2b5a7ae668401dca92eecb24ede5e1d94d6ab886a1aba8d5643;
+357->603,38.50387688702904s,179exact NONNEGATIVE,3unknown,38dimensionprunes,
+26empty,runc43d8fdf073e50a0450a40e68c77e27e339e35db067754b7767255bbe1c27581.
+All proposals/outcomes stored;fresh DB counts agree;independently reconstructed
+all190 new exact polynomials from hstar over Q and verified sign lists.
+Initial full603 aggregate:379exact NONNEGATIVE,15unknown,165dimensionprunes,
+18duplicates not revalidated,26empty. No negative/error;all queue slots visited,
+NOT a positivity certificate for skipped or timed-out cases.
+New timeout sources227150d32[14,horizontal,98],227156d32[14,horizontal,132],
+227194d32[15,horizontal,71],227198d33[15,horizontal,82],
+227208d32[15,horizontal,132]. Original limits retained.
+
+Fresh DB found no selected retries. Serial coordinate-verified beam128/30s
+under60s outer,nice10 resolved two original5s timeouts EXACT NONNEGATIVE:
+227144d31[14,horizontal,72],3.492546508088708s,
+run6e6cc1ddf39b248b8799d010aad74dc1cf062296e13d35bf07b7f359517263f5;
+226660d32[4,horizontal,82],5.436032091034576s,
+run4e369e095f1e297f4c4b2401b8f3e9d025f0f8dbd84b14ce9234b18a4341b77c.
+DB readback/independent rational reconstruction pass both.
+CURRENT381exact NONNEGATIVE,13unknown,165dimensionprunes,18duplicates,26empty.
+Remaining initiald32 gaps227048/227054/227060/227094/227108/227142/
+227150/227156/227194/227208;d33 gaps226662/227146/227198.
+No degree31 original gap remains. Do not repeat unchanged terminal identities.
+
+Ignored reports runs/fan222055-fullcontentremove-d33-offset{336,357}-20260910.jsonl
+and runs/fan-retry{227144,226660}-beam128-30-20260910.jsonl untracked.
+Sample engineNI19 RSS65816/247172KiB(PIDs3050083/3051217 at0/2s),not peaks.
+All handles terminal exit0,no local engine remains. No remote submission.
+Best negative222055 and174551 remain d33 seven/five presentation counts,
+not certified minimum distance;no flagged Kostka witness. Goal active,no global
+blocker. No source edits/test claims,extra AI workers,admin changes,push/publication.
+
 ## Weight-plus-equality search advanced to336/603 — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
