@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## Band-parent five-opposite two-removal queue completed — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Raw209610 lower-remove-two adds a lower flag and removes
+two opposite equations,cap five extra opposite/dimension36,beam32/5s cases/
+45s batches/60s guards. Completed0->453->692->1007->1395->1408.
+Times43.783882/39.590382/41.240230/42.702724/10.270729s.
+Runs8b226431d8bbe6de7cf9107c1a4adde08033f504dbfca9e00587ca89ba6c6ca0,
+f62f06a9eea8735825ee193344ad868d467d7b645ff6cb94410d5e144a5cc638,
+41b502358f8a2ca54f73643b03a07e0eddff761822cde1549f2b06e3474339fe,
+0974321a0fb3cfab42b0cd67879102336b5e7b3a9357aa41b072df24394926be,
+7f93a2582814e67a5442da3ca2f78c24248999a8fb6e9e5fa80585c25a25456b.
+DB confirms all1408:2 initial exact nonnegative,28 time limits,159 dimension
+prunes,1218 objective prunes,1 duplicate not revalidated,no empty/errors.
+Started observations are separate from these outcomes;prunes are not sign proofs.
+Smallest five-opposite gap216029d33 [7,13,98,132] resolves exact nonnegative
+beam30 in7.437028s,
+runf6d273cd2c39316a25564fba3b176f58c686d5affb5632b012426410ae9e9567.
+Thus3 exact,27 unresolved counting cases. Original timeout retained.
+Nearby215137/216009/216015/216409d34 and214319d35 remain unknown.
+Do not repeat this completed1408 queue unchanged. Next selected five-opposite
+larger-budget gaps (possibly Abacus),internal slides,or disjoint band crossovers.
+No improved negative;primary174566d33 seven extra opposite/five internal retained,
+not a certified minimum distance or flagged-Kostka witness.
+All outcomes in DB,reports ignored,source unchanged,no live local scan.
+No push/publication/extra workers;goal active,no global blocker.
+
 ## Band-parent weight-removal neighborhood completed — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
