@@ -1,5 +1,35 @@
 # Ehrcalc Handoff
 
+## Remaining degree33 paired children resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks and full
+next-gap query found never-retried selected sources. Source unchanged.
+Serial coordinate-verified beam128/30s,60s outer,nice10,ALL EXACT NONNEGATIVE:
+226062d33[197,98],5.26006815303117s,
+run9f63419af447190ceaa2adc6de5dabe37e4aa87ffdffa4eb5597e55dd56603e7;
+226068d33[197,132],22.797635232913308s,
+run991a28446874710a713910b7bee2b0603b1f94a1bdd4f0a495b42c8fdba288a2;
+226104d33[239,98],5.334174069925211s,
+run86efc3d85e1309d16c492abc78980d79a2a89531a0b201869e624530f98a5a64;
+226110d33[239,132],23.195089519023895s,
+runb6a716d425bbd503fac37b8b41df8440b2bf652334bd3433e7ad4395f186f034.
+Fresh DB readback confirms statuses/empty negative lists;original5s attempts
+retained. Samples(not peaks):PID2984578 at8s CPU99.8%,RSS443692KiB;
+PID2986735 at10s CPU99.9%,RSS572704KiB;bothNI19.
+All handles terminal exit0,no engine remains.
+222055 paired neighborhood now18 exact nonnegative,18 unknown,
+27 dimension prunes,125 objective prunes,1 duplicate not revalidated.
+All initial d33 timeouts resolved. Next never-retried d34 sources
+225764[10,82],225806[29,82],225848[47,82];fresh full query before more.
+Do not repeat terminal budget/layout identities unchanged.
+Reports runs/fan-retry{226062,226068,226104,226110}-beam128-30-20260910.jsonl
+ignored/untracked. No remote submission this turn.
+Retain negative222055/cert222064 and174551/cert174566,d33 seven/five,
+presentation counts not minimum distance. No improved negative or flagged
+Kostka counterexample. Goal active,no global blocker;no push/publication,
+extra AI workers or admin changes.
+
 ## Two more degree33 six-opposite results — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
