@@ -34,28 +34,37 @@ nonflag holes; there is still no flagged-Kostka counterexample.
 
 One negative-known-ends class remains unresolved: key `42d92b82...`, straight
 size-50 shape `(6,5^7,3,3,2,1)`, degree 23, zero holes.  Exact direct samples
-are stored through `L(14)`; `L(13)`/`L(14)` took 252.536/536.630 s locally.
-Local `L(15)` is active under a justified 1,750-second per-count cap.  Abacus
-job `20260910T161006-faf491f3c6fc` computes `L(17)` under a finite one-hour
-job cap; `20260910T163128-bbbbe2d697ec` queues `L(16)` serially.  Do not
-resubmit either ID after a connection failure; inspect the recorded job.
+are stored through `L(16)`; `L(13)` through `L(16)` took 252.536, 536.630,
+1076.248, and 2270.763 s locally.  The new exact value is
+`L(16)=105750769630621524527579594` with peak 23,759,702 packed states.  Local
+`L(17)` is active under a justified 7,200-second outer bound.  Initial Abacus
+`L(17)` job `20260910T161006-faf491f3c6fc` returned `time_limited` after its
+3,300-second case cap and produced no count; `L(16)` cross-check job
+`20260910T163128-bbbbe2d697ec` remains active.  Diagnosed wider `L(17)` retry
+`20260910T171434-ce38e10af4fa` is queued serially with 6,900/7,200-second
+case/job bounds.  Inspect these recorded IDs; do not blindly resubmit them.
 
 Abacus packed-counter compatibility and exact local matches are complete for
 jobs `20260910T152301-53ee0a7009a1` (known `L(10)` control),
 `20260910T152405-1877ba4bce6d` (`a7a5 L(15)`),
 `20260910T154654-c47937d30808` (`0ad0 L(15)`),
 `20260910T154654-ab6cd09457fc` (`035c L(15)`), and
-`20260910T160516-105cdc5453d1` (`62ce L(15)`).  Runner/engine SHA-256 are
-`2e94a6dc3fb17e572dff7fab1f6e104441992c596646a482ade394847c4f2e13` /
+`20260910T160516-105cdc5453d1` (`62ce L(15)`).  The widened runner/engine
+SHA-256 are
+`233aeb7bb8a5f1169240c92aa6de9c942b8082e69fff6c361b6d8bcaa114ea98` /
 `9852ecd5569dc7ad1e108d740d6e49c2f3a08cb7d4df392755c5e966b0f3bbba`;
 remote Python 3.10/glibc 2.35, CPU `[0,1]`, 8 GiB/no swap/128 tasks were
 verified.  Local ledger run is `22ea3e23e6caffe6e6420abe074c05cf0c7540d257dfd6d3b7e41e23a4642594`.
+The wider retry is independently recorded under ledger `f1059741...` with
+input SHA-256 `911dc4b4...`.  Two concurrent zero-label-compression probes at
+`L(12)` exhausted 55/175-second bounds, so active raw jobs were retained;
+ledger `d8bea200...` records this non-result and prevents repetition.
 
 Private companion source now has a self-contained packed flagged Abacus
 runner plus database attempt identities for paired screenings.  Resource-bound
 retries reuse exact dilation samples and skip every prior terminal candidate.
-All 75 companion tests pass in 0.567 s; source is not yet checkpoint-committed
-while the active degree-23 computation is being recorded.
+All 75 companion tests pass in 0.566 s.  Companion commits `ddd5999` and
+`8254139` checkpoint database-backed screening and the finite remote retry cap.
 
 ## Flag-biased and strict one-hole genetic runs completed — 2026-09-10
 

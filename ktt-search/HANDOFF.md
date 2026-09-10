@@ -15,9 +15,13 @@
   degree 21, normalized margin about `1.26228e-4` (`2af751a0...`).  New
   size-50/degree-21 `62ce9739...` is positive at about `1.3136e-4`.
 - One zero-hole degree-23 class `42d92b82...` remains unresolved after exact
-  local samples through `L(14)`.  Local `L(15)` and recorded Abacus `L(16)` /
-  `L(17)` jobs are bounded and resumable.  Abacus/local packed-counter matches
-  have passed on a known control and four useful degree-21 counts.
+  local samples through `L(16)`; the last value is
+  `105750769630621524527579594` and took 2270.763 s.  Local `L(17)` is running
+  under 7,200 seconds.  The first Abacus `L(17)` attempt hit its recorded
+  3,300-second cap; Abacus `L(16)` is active and wider `L(17)` job
+  `20260910T171434-ce38e10af4fa` is queued with 6,900/7,200-second bounds.
+  Abacus/local packed-counter matches have passed on a known control and four
+  useful degree-21 counts; no partial result is being interpreted as a sign.
 
 ## Active ownership — 2026-09-08
 
