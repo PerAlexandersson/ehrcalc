@@ -1,5 +1,72 @@
 # Ehrcalc Handoff
 
+## Paired proposal pass completed; first Abacus batch validated — 2026-09-10
+
+Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
+Previous turn progress; freshclean Git/DB/remote-idle checks.
+No source edits,testclaims,extraAIworkers,admin/toolchain changes,push/publication.
+
+230740 paired ALL189proposals processed,cap6extra/d38,beam32/5s,
+45sbatch/60souter,nice10/CARGO_TARGET_DIR. Resumed previousoffset56.
+Newoffsets56->98->140->182->189,times41.15133439190686/
+41.13813547999598/41.158707084017806/15.236805035965517s,runs:
+fe4b40b2afbead016c53d33de12cd4447d9d4699bdfa23002c619b0bc1ded1e2
+f73028a06575ff16fbaf0c62e04ed153203d82d153a219433cc93decd43a87ec
+45bb68c4611a747dc886a2963b1b02c6db7ac83daac34c59258968f4a33bebee
+e17026940ca0807b0f45961e71be9692e80c9597f1cc3f887d73e43a1c0d341b.
+Initialwholequeue2exactNONNEG,34timeouts,27dimprunes125objectiveprunes,
+1maskduplicate. No new exact/negative in these resumed slots; alloutcomes DB.
+CURRENT after4verifiedretries:6exactNONNEGATIVE,30unknown,
+27dimprunes125objectiveprunes1duplicate. No-range positivity conclusion.
+Freshfirst10unknowns sorted dimension:
+231770/231776/231812/231818/231854/231860/231896/231902/231938/231944 d33.
+Otherunknowns inDB; lowerdimensions suitable nextremote batch.
+
+Coordinateauditc11f17ee1aa5d9a57c7e807c9fe7e0395ab572eaca240e942b3a6db4520c6536:
+first7pairedtimeout faces pairwisedistinct; noactualGT-coordinate matches in
+222055/203068/198861/209610/174551 paired or230740 lower-remove neighborhoods.
+Comparison mappings stored; notglobal non-isomorphism claim.
+Abacus job20260910T121519-5db6e7bb6a52 done/exit0,wall109.0132837s.
+8serialcases includingfreshcontrol,20s/case/180swhole,establishedfinitebound,
+monitoredsamejob,no resubmission. Control196437 freshlocal0.22983030590694398/
+remote0.40949617998558097s full exact match.
+4search exactNONNEG remote/local seconds/localrun:
+231672d33 9.776972846011631/5.4103824709309265,
+1dde151aad5b17e1061f9de7ea2683a15d55cc4125209621173a853592bbafa1;
+231714d33 9.857143128989264/5.6085836609127,
+6d018f34addb2df8d74e88c32e7f62ed9f75dffe90e622537df6e5e40c96c2ba;
+231668d34 13.772663254989311/7.955253310035914,
+5cdcbff0021e364aa602f76c5679f7a4f874f4ce1fadd0103a92c566d4b59956;
+231710d34 14.233264759997837/8.374426964088343,
+3a1db1b733e18df5c5631be1643d41bf3c5a6d7263e57ab54f6948caecf01d99.
+Remote3degree36 TIME LIMITED,signUNKNOWN:
+23166420.123130988009507s,23170620.105654946994036s,
+23174820.099715323012788s. No localwiderretry for these3 thisturn.
+Do not repeat unchangedremote20 identities.
+Local4retriesbeam128/30s each60souter,strictlyserial after proposalpass terminal.
+All5remote exactfullpolynomial/h*/signlists match freshlocal and independently
+reconstructed overQ. All8quotients/permutedcovers andreceipt/file/header
+hashes verified beforeingestion. CPU[0,1],8GiBmemory,swap0,pids128,x86_64,
+Python3.10.12/glibc2.35/libraries verified; installedlimits unchanged.
+Onlytrustedwrapper/input/engine uploaded,no credentials/DB/checkouts.
+Input SHAf19a6a27cb95ac4a617e4ce93d80582f2436234055f66d74eeb5bd6f15c7de36
+Wrapper SHAa4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHA31aecc49d3cad633db7aa269a2a2b43ce8a1db3692eac1161f911f1bb5490829
+Completedledger49ae08b86ccd488ad38f757b177dbf876a82470f87b75bbf3b7773c9bdf2ed4a,
+readback prepared231761,receipt231762,validated232037..232044.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T121519-5db6e7bb6a52-euuymecq
+Hostsupervisor cancollect durable originals byjobID.
+Ignored runs/abacus-230740-seven-paired-20260910.json,4resumedproposal
+reports and4retryJSONL stayuntracked. Allhandles terminal.
+Next: coordinate-check disjoint paired gaps forAbacus ornewjoint/content
+mutations. No improvednegative;goalactive,noglobalblocker.
+RetainRAW230740/cert230749 d33 sevenextra/fiveinternal alongsidepriorleaders;
+presentation counts not provenminimum nonflagdistance.
+
+
+
 ## Weight gaps closed; paired mutations started — 2026-09-10
 
 Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
