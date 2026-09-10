@@ -1,5 +1,69 @@
 # Ehrcalc Handoff
 
+## Six paired gaps resolved; joint mutations started — 2026-09-10
+
+Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
+Previous turn progress; freshclean Git/DB/remote-idle checks.
+No source edits,testclaims,extraAIworkers,admin/toolchain changes,push/publication.
+
+Abacus job20260910T122330-28c784053ad0 done/exit0,wall101.001177s.
+8serialcases includingfreshcontrol,20s/case/180swhole,establishedfinitebound,
+monitoredsamejob,no resubmission. Selected7degree33pairedsources had no prior
+retry/remote identities; actual GT-coordinate tuples pairwisedistinct and
+absent from222055/203068/198861/209610/174551 paired and230740 lower-remove
+neighborhoods. Scope recorded inpreparedledger,notglobal isomorphismclaim.
+Control196437 freshlocal0.22887185600120574/remote0.4071688689873554s fullmatch.
+Remote/local seconds and localrun:
+231770 exactNONNEG9.842088875011541/5.756254021078348,
+e189acbe7f73fe10ceecfc210be7e697379427e89ac1b2f9002fdb4f2731813c;
+231776 remoteTIME LIMITED20.08599460098776/localexactNONNEG23.102830627001822,
+dc7b79d12335aa6f2b5e2e8c4da63a16b7f1bfb80081d86469943a6ecb3c7795;
+231812 exactNONNEG9.817727840010775/5.591686210012995,
+17cd02830814b819e6f8bb502b2e9d479ec67bedbeffa364b5c77edbbd54ad7e;
+231818 remoteTIME LIMITED20.143342800001847/localTIME LIMITED30.028323589940555,
+b8a173c55d3303d3d56e99911198572acafbd2c793ace6233d431dfce0fef48b;
+231854 exactNONNEG9.791092183993896/5.608916108030826,
+c53f9307435cb42f961b985132fbba109038a7559bab938bb677c5fb271b2d4e;
+231860 remoteTIME LIMITED20.11842007600353/localexactNONNEG22.770925616961904,
+1d21ca53d54275dbd5ff1121cfa0d07b44f8e9bfaac70723b839c128fa058e26;
+231896 exactNONNEG9.84016048599733/5.581804370973259,
+41a185efd83d9ae70e9a76dc175057ea36bd092be8adffa3e092c5afc2f4e2db.
+231818signUNKNOWN,no inherited polynomial/sign evidence; do not repeat
+unchangedremote20/local30 identities. Otherremote timeouts remain distinct.
+Localbeam128/30s each60souter/nice10/CARGO_TARGET_DIR,strictlyserialized
+after localjoint handle terminal. All6localexact independently reconstructed
+overQ; 4remote search exact fullpoly/h*/signlists matchfreshlocal,controltoo.
+All8quotients/permutedcovers andreceipt/file/header hashes verified before
+localingestion. CPU[0,1],8GiBmemory,swap0,pids128,x86_64,
+Python3.10.12/glibc2.35/libraries verified; installedlimits unchanged.
+Onlytrustedwrapper/input/engine uploaded,no credentials/DB/checkouts.
+Input SHA6fe24044480bb3a69a43bd4ff9af27c74a335b5b2ff305c8c35785646ba340e4
+Wrapper SHAa4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHA4b8c2ac57fbdeb1546990d373beba965e5d328ceccd8cf51e7378f2c308e3533
+Completedledgerd6c26d9077554e68ce3eef465f87d705f4d59b5ba8bd59c7f2040cdaa5c7f64f,
+readback prepared232045,receipt232046,validated232443..232450.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T122330-28c784053ad0-bxuhy6dz
+Hostsupervisor cancollect durable originals byjobID.
+CURRENT230740 paired12exactNONNEGATIVE,24unknown,
+27dimprunes125objectiveprunes1duplicate. No positivity claim forwholequeue.
+
+New230740 joint(boundaryflag+removeopposite+removeinternal) first191of945:
+cap6extra/d40,beam32/5s,45sbatch/60souter,nice10/CARGO_TARGET_DIR,
+40.32499490806367s,run
+20b714e7402dafc6fe84c61d4f23d5b589cc77457f9217893d058005609ba0a9.
+7timeouts UNKNOWN,54dimprunes130objectiveprunes,0exact/duplicates/negative.
+Allproposals/outcomes DBstored. Statuscapped,notcomplete.
+NEXT resume --offset191 --count1000 withsamebounds;754proposals remain.
+Ignored runs/abacus-230740-seven-paired-b-20260910.json,7retryJSONL and
+runs/fan230740-joint-d40-offset0-20260910.jsonl stayuntracked.
+Allhandles terminal. No improvednegative;goalactive,noglobalblocker.
+RetainRAW230740/cert230749 d33 sevenextra/fiveinternal alongsidepriorleaders;
+presentation counts not provenminimum nonflagdistance.
+
+
+
 ## Paired proposal pass completed; first Abacus batch validated — 2026-09-10
 
 Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
