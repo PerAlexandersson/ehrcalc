@@ -1,5 +1,34 @@
 # Ehrcalc Handoff
 
+## Band-parent weight-removal neighborhood completed — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Raw209610 full-content-remove completed311->325->339->
+351->580,40.412459/40.550347/40.458893/32.907991s. Capdimension35,
+beam32/5s cases/45s batches/60s guards;no flag-only objective filter.
+New runsf06b6e859894f8dcc4925434fd73810ef096fc32a4416ab620d4d36803eacc5d,
+78c81b30db0f8e19554bbf202396fedd507bce5a34db92e177ad1cec2630cb40,
+78093672a99f66484aa9cc92fb8234544e3b5e72f66ab71e15261cacb9acb1e0,
+226b448645631ec969f2df07ea71d5cd33a64d82fcbd6e516a8a3b88d1aa0e54.
+DB join on seed/mode/dimension cap confirms all580 outcomes:
+332 initial exact nonnegative,62 time limits,161 dimension prunes,25 empty,
+no duplicates/errors.555 started records are separate (empty has no start).
+All original-content constraints retain multiplicity t and forced-mask metadata.
+
+Small gap213470d32,label14/removehorizontal26,resolves exact NONNEGATIVE
+beam30 in4.952140s,
+run6b0b55e8106417858b8675482c9aa7317982bfed67cbb90d602b075c43df73fa.
+Together with213010 and213282 retries:335 exact,59 unresolved counting cases.
+Original timeout rows retained;no sign conclusion for unresolved or pruned cases.
+Nearby213290/213308/213320/213326/213332/213354/213374/213380d32 unknown.
+No improved negative;primary174566d33 seven extra opposite/five internal retained.
+This is a completed finite neighborhood,NOT an exhaustive no-counterexample result.
+Do not repeat this580 queue unchanged. Next raw209610 lower-remove-two toward
+five opposite constraints,disjoint band crossover,or selected unresolved retries.
+All observations in DB,reports ignored,source unchanged,no live local scan.
+No push/publication/extra workers;goal active,no global blocker.
+
 ## Abacus resumed; five-opposite result validated — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
