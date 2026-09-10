@@ -1,5 +1,31 @@
 # Ehrcalc Handoff
 
+## Three degree34 paired exact results — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+selected retries. Source unchanged. Serial coordinate-verified beam128/30s,
+60s outer,nice10,ALL EXACT NONNEGATIVE:
+225764d34[10,82],7.663365467102267s,
+rundc84f86e71d13fc8cf420f0ad446c177cc37b4efcde817679894dbaadf3b9d1a;
+225806d34[29,82],7.787344016018324s,
+run348070493db6348358902c36427a3acb26650d02bcf63f139c7d8fb01d39bb8a;
+225848d34[47,82],4.190836225985549s,
+run1afe190bf79511c74f354efbcf9641c64bce622c1da6ed90df5288ab00a40172.
+Fresh DB readback confirms statuses/empty negative lists;original5s attempts
+retained. All three finished before resource samples;no peak claim.
+All handles terminal exit0,no engine remains.
+222055 paired neighborhood now21 exact nonnegative,15 unknown,
+27 dimension prunes,125 objective prunes,1 duplicate not revalidated.
+Fresh full query next never-retried d34 sources225890[69,82],225932[95,82],
+225974[125,82],226016[159,82],226058[197,82].
+Do not repeat terminal budget/layout identities unchanged.
+Reports runs/fan-retry{225764,225806,225848}-beam128-30-20260910.jsonl untracked.
+No remote submission this turn. Retain negative222055/cert222064 and
+174551/cert174566,d33 seven/five,presentation counts not minimum distance.
+No improved negative or flagged Kostka counterexample.
+Goal active,no global blocker;no push/publication,extra AI workers or admin changes.
+
 ## Remaining degree33 paired children resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
