@@ -1,5 +1,74 @@
 # Ehrcalc Handoff
 
+## Four-ban Abacus attempts and interior shrink pass — 2026-09-10
+
+Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
+Previous turn progress; freshclean Git/DB/remote-idle checks.
+No code edits,testclaims,extraAIworkers,admin/toolchain changes,push/publication.
+
+Coordinate dedup BEFORE submission caught two repeated four-internal-ban faces:
+231176 has actual full GT-coordinate signature equal to222496;
+231206 equals210379. Neither counted/remotely resubmitted this turn.
+All8source comparison mappings against222055/203068/198861/209610
+lower-internal neighborhoods stored under
+918c0f26637166789c162c40e80ae0cfc8304658f1d9c6ae206026840a6c057a.
+Other6 distinct within batch and absent from that comparison scope; not a
+global isomorphism claim. Initial7case preparation assertion stopped before
+input creation/submission on231176; only known control had run, no searchcase.
+Corrected selected6case input prepared with another fresh timed control.
+
+Abacus job20260910T115716-c3682858f096 done/exit0,wall123.1215182s.
+7serialcases includingcontrol,20s/case/180swhole,established finite wrapper,
+monitoredsamejob,no resubmission. Control196437 freshlocal0.2280073369620368/
+remote0.41584665299160406s exactfullmatch.
+All6search TIME LIMITED (sign UNKNOWN,no polynomial evidence):
+231166d37 20.114596889994573s;
+231136d38 20.139758328994503s;
+231146d38 20.14057400499587s;
+231156d38 20.106051091017434s;
+231186d38 20.131762432982214s;
+231216d38 20.132144361996325s.
+No local wider retries thisturn; no exactremote searchhit requiring comparison.
+Original5s rows retained. Do not repeat unchanged remote20 identities.
+Current230740 lower-internal remains8unknown,36dimprunes,1maskduplicate;
+2of8unknowns have coordinate matches documented above,not newly certified.
+
+All7originalquotients/permutedcovers,receipt/file/header hashes checked before
+localingestion; control fullpoly/h*/signlist matched and independently
+reconstructed overQ. CPU[0,1],8GiBmemory,swap0,pids128,x86_64,
+Python3.10.12/glibc2.35/resolvedlibraries verified; installedlimits unchanged.
+Onlytrustedwrapper/input/engine uploaded,no credentials/DB/checkouts.
+Input SHA94d92b44ea2c673b995ac9750d260e5b3e9eeebf0fd9e7233cf71ba074519543
+Wrapper SHAa4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHAfc76d616efa37d8c7530bb3d06c7ad08051c82d9e9d65d94e8c1af570529d791
+Completedledger85a95430e75345386a19131b1e749b7096e07b5847b1d527a9584a2e16ac493e,
+readback prepared231274,receipt231275,validated231538..231544.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T115716-c3682858f096-e16qofoe
+Hostsupervisor cancollect durable originals byjobID.
+
+230740 interior-shrink ALL131 completed,cap7extra/d33,beam32/5s,
+45sbatch/60souter,nice10/CARGO_TARGET_DIR. Strictlyserial localhandles.
+Offsets0->33->74->131,times40.750477862893604/39.304696495993994/
+37.00338295393158s,runs:
+728800ac7fa974b3aa740a7bdeb4a1bdde652d085d615c7f0b1678f1491d8108
+4c5b505309aa9030d02f65f9854bdc07682b01d1ed7bc2aa7d742c1b6ad9afac
+37ba3d9e05179bb6b522a539187d0090bb1a43e1e4176bdb142a1dd8004b9a92.
+75exact NONNEGATIVE,7timeouts UNKNOWN,21dimprunes,8objectiveprunes,
+20maskduplicates not revalidated. All75 fresh exact independently
+reconstructed overQ. Allproposals/outcomes DBstored.
+Unretried5s gaps:231523d31[9,7];231493d32[8,6];
+231285d33[1,6],231315d33[2,7],231345d33[3,7],
+231387d33[4,13],231463d33[7,6].
+These smaller gaps are useful nextAbacus candidates after coordinate checks.
+Ignored runs/abacus-230740-six-lowerinternal-20260910.json and3localshrink
+JSONL remain untracked. Allhandles terminal. No improvednegative;
+goalactive,no globalblocker. RetainRAW230740/cert230749 d33 sevenextra/
+fiveinternal alongsidepriorleaders; counts not provenminimum nonflagdistance.
+
+
+
 ## Six-opposite attempted gaps closed; corner shrinks checked — 2026-09-10
 
 Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
