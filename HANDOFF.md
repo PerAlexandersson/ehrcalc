@@ -1,5 +1,36 @@
 # Ehrcalc Handoff
 
+## Four-internal-ban gaps:30s attempts and layout comparison — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn recorded new mutation bounds(progress);no global blocker.
+Fresh Git clean/no-engine checks;DB found no prior retries221921/221941.
+Two serial full-coordinate-verified beam128/30s attempts,60s outer,nice10:
+221921d40 time_limited30.0308859430952s,
+rune4ecac6d76d7a1b8c985259d7db92ebaf51759c61d81bdca7f649be4b3e2926b;
+221941d40 time_limited30.09130217100028s,
+run6d583d349e2c6eda339c6c0a7a9bcbae76fbf1e1d70449c541fc314d42814828.
+Original5s attempts retained. With prior22193130s timeout,all three
+four-internal-ban candidates remain sign UNKNOWN. No exact cache/polynomial
+assigned to these failures. Fresh DB readback confirms all three statuses.
+Observed samples(not peaks):PID2904974 at14s CPU99.9%,RSS664284KiB;
+PID2905684 at25s CPU99.9%,RSS986104KiB;NI19.
+Same handles monitored to terminal exit0,no engine remaining.
+Reports runs/fan-retry{221921,221941}-beam128-30-20260910.jsonl untracked.
+
+Fresh beam32/128 layout audit,full coordinate-permutation verification:
+221921 identical orders,peak/total(6,121),0.1025418060598895s;
+221931 identical orders,(6,118),0.107245501014404s;
+221941 identical orders,(6,123),0.1017903620377183s.
+Full orders/metadata persisted,layout-only,no polynomial count,
+run8134cc60f45c7f3e20ee7f29b94019ff88320b41224a9e76b6a0db639eba5f00.
+No redundant beam32 count warranted;frontier scores are not optimality proof.
+Next distinct mutation or layout,or selected justified finite longer bound;
+do not repeat terminal budget/layout identities unchanged.
+Best negative remains174566d33 seven/five,not flagged Kostka witness.
+Source unchanged,no push/publication,extra workers,admin changes or remote job.
+Goal active,no global blocker;these local counting gaps are not a global impasse.
+
 ## Direct internal-ban removal from seven-opposite parents — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
