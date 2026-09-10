@@ -1,5 +1,38 @@
 # Ehrcalc Handoff
 
+## Weight-plus-equality search advanced to336/603 — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks confirmed
+resumeoffset283. Source unchanged. RAW222055 full-content-remove,
+dimensioncap33,beam32,5s/candidate,45s batch safety/60s outer,nice10.
+No flag-only objective filter on content-modified faces.
+Serial bounded batches:
+283->304,41.12765917403158s,7exact NONNEGATIVE,3unknown,11dimensionprunes,
+run5c1f7d4120bba51ffda3501b343893295b483c7ec30ab78e312a5235dedb5b15;
+304->317,39.35819168295711s,8exact NONNEGATIVE,2unknown,3dimensionprunes,
+run17a4a76ca9c808ace391d019596106c34f239a31b1c3ceaf308f953f5ccef469;
+317->336,43.03047643508762s,7exact NONNEGATIVE,3unknown,9dimensionprunes,
+run48a07ab5743d50bb8873c301e4982a3af1e2ea6b3bd20cf41bf0bd8f3a911230.
+No negative/duplicates/empty/errors this turn. All proposals/outcomes saved.
+Fresh DB counts agree;independently reconstructed all22 new exact polynomials
+from hstar over Q;sign lists agree. New5s unknowns:
+227048d32[12,horizontal,71],227054d32[12,horizontal,98],
+227060d32[12,horizontal,132],227094d32[13,horizontal,71],
+227108d32[13,horizontal,132],227142d32[14,horizontal,71],
+227144d31[14,horizontal,72],227146d33[14,horizontal,82].
+Earlier226660/226662 unknown retained. All timeout signs UNKNOWN.
+Aggregate DB full query:189exact NONNEGATIVE,10unknown,119dimensionprunes,
+18duplicates not revalidated,0negative/empty. Resumeactualoffset336/603;
+267 unprocessed proposals remain;do not replay terminal budget/layout identities.
+Reports runs/fan222055-fullcontentremove-d33-offset{283,304,317}-20260910.jsonl
+ignored/untracked. Sample NI19 engineRSS59592/149428/206616KiB
+(PIDs3044586/3045536/3047291 at0/2/2s),not peaks.
+All handles terminal exit0,no local engine remains. No remote submission.
+Best negative222055 and174551 stilld33 seven/five presentation counts,
+not minimum distance;no flagged Kostka witness. Goal active,no global blocker.
+No source edits/test claims,extra AI workers,admin changes,push or publication.
+
 ## Weight-plus-equality search advanced to283/603 — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
