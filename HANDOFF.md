@@ -1,5 +1,38 @@
 # Ehrcalc Handoff
 
+## Row-parent shrink timeouts resolved and corners completed — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Clean Git/no-engine checked,
+DB found no prior retries for221857/221811/221827 or198861 corner-shrink queue.
+Source unchanged. Three serial full-coordinate-verified beam128/30s retries,
+60s outer/nice10,all EXACT NONNEGATIVE:
+221857d31 cut[9,7],3.759768240037374s,
+rund1ef312d1c9d29fcacbf6fda53b5f586e847c39a91f43085c1615ddeaf781784;
+221811d32 cut[7,13],8.083508216892369s,
+rund322518aa4f7c6d501c85c8ac5911da936a113ab3060729ba48ea41c531e50f6;
+221827d33 cut[8,6],13.286143208970316s,
+run23c51dd54f124b351a151d80ee158826079ba8bd98cacda3abcaee6b3a513c55.
+Fresh DB readback confirms exact statuses,timings,empty negative lists.
+Original5s timeouts retained. Raw198861 interior-shrink neighborhood now
+77 exact nonnegative,0 unresolved counting cases,28 original dimension prunes,
+26 skipped duplicates not revalidated. No sign conclusion for pruned/skipped cases.
+
+Complementary corner shrink all4 first/last row-column choices,children8x14,
+cap7 extra opposite/d33,beam32/5s cases/45s batch/60s outer,nice10:
+offset0->4 completed0.9629950610687956s,3 exact nonnegative,1 duplicate
+not revalidated,no prunes,timeouts,empty,negative or errors,
+run787387cf9dac0fd25efe5f4d195e04373c1e4e9e565db163074c15710b59a677.
+DB aggregation matches. All proposals/results stored. No in-flight resource
+sample retained;same live handles observed terminal,engine absent at final check.
+Reports runs/fan-retry{221857,221811,221827}-beam128-30-20260910.jsonl and
+runs/fan198861-cornershrink-seven-d33-offset0-20260910.jsonl ignored/untracked.
+Do not repeat completed shrink queues or terminal retries unchanged.
+Next uncounted dimension-pruned fewer-nonflag children or distinct mutations.
+No improved negative;primary174566d33 seven/five remains,not flagged witness.
+No push/publication,extra workers,admin changes or remote submission this turn.
+Goal remains active,no global blocker.
+
 ## New band crossovers and row-parent shrink neighborhood — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
