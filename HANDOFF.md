@@ -1,5 +1,38 @@
 # Ehrcalc Handoff
 
+## Three five-opposite gaps resolved; dimension36 layout audit — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Source unchanged. Original5s attempts preserved.
+Distinct beam32/30s retries for unchanged-order cases:
+216389d35 EXACT NONNEGATIVE10.889843s,
+rundaa5ec4c49ff04698008095d0f1fd98b43873eceb623230f92ebb9419474f971;
+214305d36 EXACT NONNEGATIVE13.927481s,
+run27820dc1bffdc73774e9468009f170074110c00e69d1ba13794b77a03d9e0aff.
+These were new time bounds,not redundant beam128 attempts on identical orders.
+
+Fresh full-coordinate-verified beam32/128 comparison for214647/214651/214891,
+layout ledgerd2f964ed251369350816bfe075f2f399db5d70409a1dda6e6a8d8091cc02921f:
+214647d36 peak/total(6,119)->(5,104),0.082206s;
+214651d36(5,101)->(5,101),0.087505s,identical order,not retried this turn;
+214891d36(6,114)->(5,101),0.079557s.
+Full permutations stored;layout scores do not certify optimality or signs.
+Changed-order beam128/30s retries:
+214647 EXACT NONNEGATIVE19.472256s,
+run99a4e5d148927cbed3dd4a2288c416ddb9fc5de6e51d64b966b7d8fdd1193aaf;
+214891 time_limited30.036768s,
+runae833afbe7159aebf2f9cec20c39146352703bd098b1248fb59733f1a0b28077.
+Every count under60s guard/reduced priority. Timeouts remain unknown.
+Raw209610 two-removal neighborhood now15 exact nonnegative,15 unresolved
+counting cases,plus159 dimension prunes,1218 objective prunes,1 duplicate.
+Next unchanged-order214651 may receive new30s bound;remaining d36 gaps
+215357/215363/215629/215635/215983/215987/215993/216769/216775 need layout
+audit or selected retries. Avoid repeating terminal layout/budget identities.
+No improved negative;primary174566d33 seven/five retained,not a flagged witness.
+All outcomes in DB,reports ignored,no live scan,push/publication or extra workers.
+Goal remains active,no global blocker.
+
 ## Deferred five-opposite retry and new donor crossover — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
