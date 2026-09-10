@@ -1,5 +1,42 @@
 # Ehrcalc Handoff
 
+## Harder joint cases remain unknown under bounded retries — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+228306/228486 retries. Source unchanged. Bothdegree39 six-extra-opposite/
+four-internal presentation candidates,not certified negative.
+Serial coordinate-verified beam128/30s,60s outer,nice10:
+228306[47,132,113] TIME LIMITED30.03718271793332s,
+run9fbdead0db33aad62caeea8bad544352435464b06db76ef393fe115b4af9a68e;
+228486[69,98,113] TIME LIMITED30.10152875096537s,
+runc444d83dea9cd22955cc16c23172a82c205cc09673cd2e6ada5af66d250478a0.
+228486 PID3092518 NI19 sample28s RSS1522948KiB,not peak.
+Justified distinct120s retry228486:tested finite maintained engine,
+similar auditedfrontier(6,121) to nearby108-110s exact counts;runtime heuristic
+not sign/completion guarantee. Higher observed memory explicitly monitored.
+120s percase/150s outer,nice10,TIME LIMITED120.21222357801162s,
+run072a29d04acf22003fcef7fd9c2598fef029bb540657f8dcc8a1897c770f816f.
+PID3094589 NI19 samples27s/44s/82s/102s
+RSS1515772/1763340/2122056/3259212KiB,not peaks.
+No further extension. Fresh DB readback confirms all3 statuses and budgets;
+all timeout rows have no inherited polynomial/negative evidence.
+Original5s/30s retained. No repeated terminal identity.
+All handles terminal exit0,no local engine remains.
+
+RAW222055 joint945 unchanged4exact NONNEGATIVE,32unknown,279dimprunes,
+630objectiveprunes. Both228306/228486 remain UNKNOWN,not positivity evidence.
+Do not repeat228486 beam128/120 or228306 beam128/30 unchanged.
+Prefer another layout/structural approach or new lower-degree mutations from
+negative222055;untried joint degree39 cases228466/228516 remain possible.
+Reports runs/fan-retry228306-beam128-30-20260910.jsonl and
+runs/fan-retry228486-beam128-{30,120}-20260910.jsonl ignored/untracked.
+No remote submission. Best negative222055/174551 stilld33 seven/five,
+presentation not minimum counts. Content-removal394exact nonnegative,
+0attempted holes,165dimprunes18unvalidatedduplicates26empty.
+No flagged witness;goal active,no global blocker,no source edits/test claims,
+extra AI workers,admin changes,push/publication.
+
 ## Third monitored degree39 joint retry resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
