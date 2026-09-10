@@ -1,5 +1,68 @@
 # Ehrcalc Handoff
 
+## Third strict genetic seed completed; Abacus batches C/D validated — 2026-09-10
+
+Codex retains KTT/companion ownership, private profile/model, and the sole
+local MariaDB-writer role.  No extra AI workers, administrative changes,
+pushes, or publication.  Generated JSON/JSONL and remote logs remain ignored
+and untracked.  The active conjecture search is not complete and has no global
+blocker.  BEST NEGATIVE remains candidate
+`612334d74e3ba8f384a8647c90a4a7fcd46f129dde61c9f2999d9a1e77fab474`:
+9x10, degree/dimension 84, three selected equalities, exactly two genuine
+nonflag holes `(4,6),(6,10)`.  No zero/one-hole negative and no two-hole
+negative below degree 84 was found in this checkpoint.
+
+Completed strict genetic run seed `202609101410`, run
+`4f3708dce43d0c080e79d1e9be1e8fbdc2d4dd5a8e89e37a460ec43df006ef0e`:
+2 generations, 24 elite/48 local, max 2 holes, min side 1, 500000 DP states,
+5 s/case, 55 s internal per invocation, effective bias .20, mutation strength
+5, 32 frontier plus 48 random-shape immigrants.  Resumable passes used the
+same identity and a tested finite 180 s outer cap.  Final MariaDB state is
+complete with 2227 unique exact attempt rows, 496 bad-edge prunes, zero
+pending/deferred, and 3250 selected plus 12615 duplicate proposal events.
+Across the five invocations 83 new exact computations were added.  No improved
+negative was found.  Reports
+`runs/bad-edge-genetic-twohole-degree-s202609101410*.jsonl` are ignored.
+
+Abacus batch C job `20260910T141041-882d0e27ced9` finished exit 0 in
+48.5284991264 s.  The degree-84 parent control reproduced its two negative
+coefficients.  Three one-hole cases of degrees 68,74,74 and four two-hole
+cases of degrees 71,71,72,73 were exact NONNEG; every complete polynomial
+matched the later local exact result.  Input SHA
+`994925dab0ac03286104aa038cb9375fed0823686052fa38a84e786243ff0c1d`,
+output SHA
+`40f593774d5b04e58bb82cbe54d6dceb0a17b2abd64b7b0d5b018ca5e002b16c`,
+ledger `d6c9600d2b108a1429357ff881849c938e5bdf92722221d3d8b68470be9f632f`,
+prepared/receipt/validated observation IDs 237620/237621/237628..237635.
+Fetched outside Dropbox at
+`/home/dev/.local/share/supervisor-compute-results/abacus/20260910T141041-882d0e27ced9-fm4izwux`.
+
+Abacus batch D job `20260910T142725-ceb26774160e` finished exit 0 in
+46.499686718 s.  Parent degree 84 again reproduced exactly; seven remaining
+coordinate-distinct degree-75 two-hole deferred cases were exact NONNEG and
+full local matches (remote DP states 123155..173533, 4.1148..5.7919 s/case;
+parent 285360 states/10.0375 s).  Input SHA
+`bbbe17061bc331df37a8949a06dbedd7d183cbbc0ccbbcd17ce6db5b2ea25fa5`,
+output SHA
+`dd0050d6b84fb7d42c2df05ffa30d3e4d4929afd2e613da8557a4a5591bcfa96`,
+ledger `f4df1cd5291ef2442f2983a1a20137bd38e75ecccf7fbdd64a45808f1f1da2e7`,
+prepared/receipt/validated IDs 237639/237640/237644..237651.  Fetched outside
+Dropbox at
+`/home/dev/.local/share/supervisor-compute-results/abacus/20260910T142725-ceb26774160e-45c5axuw`.
+
+For C/D, selected runner/helper/archive hashes remained respectively
+`cacc046442f494dadaefb7389d1e5e479a4eeddae0d797711bb33095d09cd4a4`,
+`a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a`,
+and `048cb293da34c49e51d5d617f294a62e7f08f6bb455e41309f09652add521bb7`.
+Bundle files, selected source hashes, natural transitive predecessors, exact
+h* transforms, and complete remote/local polynomials were independently
+checked before ledger completion.  Remote Python 3.10.12/x86_64, CPU `[0,1]`,
+8 GiB/no-swap/128-task caps were verified unchanged.  Only trusted selected
+code and nonsecret inputs were uploaded; no database or checkout.  Next:
+start a fresh more flag-biased genetic seed, continue disjoint Abacus batches,
+and add coordinated fixed-content/shape mutation only with attempt-complete DB
+persistence.
+
 ## Strict two-hole genetic search and exact Abacus DP — 2026-09-10
 
 Codex retains KTT/companion ownership, private profile/model and sole local DB
