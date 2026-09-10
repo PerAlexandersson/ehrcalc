@@ -1,5 +1,35 @@
 # Ehrcalc Handoff
 
+## Weight-plus-equality search advanced to283/603 — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks confirmed
+resumeoffset93. No source edits. Continued RAW222055 full-content-remove,
+not expanded certificate. Dimensioncap33,beam32,5s/candidate,45s batch
+safety/60s outer,nice10; no flag-only objective filter on content-modified faces.
+Three serial terminal batches:
+93->191,39.9817511200672s,59exact NONNEGATIVE,1timeout,38dimensionprunes,
+rundc3e2ec053c2c03c74f1f0a14dc9c44b09d0e252f04061da11d68e99493d4b31;
+191->255,41.070868288050406s,23exact NONNEGATIVE,24dimensionprunes,17duplicates,
+run11dda56901b25df47eebd3dec11fe137c2de51e49c2468d5ad4db941544550d7;
+255->283,42.01128427393269s,17exact NONNEGATIVE,10dimensionprunes,1duplicate,
+run37717eaf171df2f2fe323cddb99059382d75e8060a78a93bd13a3b0b823879de.
+No negative/empty/errors in these batches. All proposals/outcomes saved.
+Fresh DB result-row counts agree; independently reconstructed all99 new
+exact polynomials from hstar over Q and checked every sign list.
+New unknown226662d33[4,horizontal,87];earlier226660d32[4,horizontal,82]
+remains unknown. Timeouts are not nonnegative conclusions.
+Aggregate0->283:167exact NONNEGATIVE,2unknown,96dimensionprunes,
+18duplicates not revalidated,0negative/empty. 320 proposals remain.
+Resume actualoffset283,never replay prior timeouts at same layout/budget.
+Reports runs/fan222055-fullcontentremove-d33-offset{93,191,255}-20260910.jsonl
+ignored/untracked. Sample enginePID3039058 NI19 RSS55288KiB at0s and
+PID3042423 NI19 RSS113428KiB at1s;these are NOT peak measurements.
+All handles terminal exit0,no local engine remains. No remote submission.
+Best negative222055 and174551 stilld33 seven/five presentation counts;
+no flagged Kostka witness. Goal active,no global blocker,no admin changes,
+extra AI workers,push or publication. Source unchanged;no test claims.
+
 ## Weight-plus-equality mutations started; degree33 shrink gaps closed — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
