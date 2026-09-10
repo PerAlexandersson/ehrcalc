@@ -1,5 +1,42 @@
 # Ehrcalc Handoff
 
+## Seven layout comparisons and four five-opposite retries — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Source unchanged. Selected unresolved two-removal children
+by DB query excluding completed exact retries,then freshly compared beam32/128
+orders with full coordinate-permutation checks. Layout ledger
+3a465fc9d23329bb571cc740137c8c122a2057e2d6e102e8e4c0e2bb920bfda6.
+Peak/total scores and layout times:
+215377d35:(6,132)->(6,94),0.078333s;
+215649d35:(6,133)->(5,110),0.081175s;
+216389d35:(5,106)->(5,106),0.084540s,identical order,not recounted;
+216395d35:(6,135)->(6,135),0.086416s,different order,deferred;
+216789d35:(6,136)->(6,98),0.085690s;
+214305d36:(5,104)->(5,104),0.082889s,identical order,not recounted;
+214309d36:(6,118)->(5,102),0.078908s.
+Full orders stored in DB,layout-only results do not assert coefficient signs.
+
+Four distinct beam128/30s retries,60s guards/reduced priority:
+215649 EXACT NONNEGATIVE7.787433s,
+run574955832c65d1def6add52955c4f8eaa400c789ed6c87835a1ebe6016f28f41;
+214309 time_limited30.040278s,
+run084f6754afcf58218e47b59e3826d23b095e569236611c5de42d104bc2af8199;
+215377 time_limited30.068244s,
+run5b4d78b7f616102f124bfbd8f60033eca56576fb38824aa3a1b9f5aa47377a87;
+216789 time_limited30.043183s,
+run0170458ffed93973d0301770cbc0f43d03bfe446b3d3491c110a8f41d97a1fb5.
+Originalbeam32 attempts retained;timeouts unknown,do not repeat terminal
+layout/budget identities. Raw209610 two-removal neighborhood now11 exact
+nonnegative,19 unresolved counting cases,plus159 dimension prunes,
+1218 objective prunes,1 unrevalidated duplicate.
+Next deferred changed-order216395 or audit remaining d36 gaps;shape/weight
+mutation remains in scope. Smaller frontier did not guarantee completion.
+No improved negative;primary174566d33 seven/five retained,not a flagged witness.
+All outcomes stored,reports ignored,no live local scan,push/publication or
+extra workers. Goal remains active,no global blocker.
+
 ## Verified beam128 retries implemented; two gaps resolved — 2026-09-10
 
 Codex owns private retry helper/tests/README and both handoffs;sole local DB
