@@ -1,5 +1,49 @@
 # Ehrcalc Handoff
 
+## Abacus first-count batch validated — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Checkpointed previous local result before pilot (main e26da24/private d59ac98).
+Job20260910T095405-6e6d8ec8c9a1 completed exit0,wall22.190928s.
+Selected previously uncounted dimension-pruned226422,cut[9,6] from RAW222055:
+8x14,d34,five extra opposite/four internal bans (presentation,not minimal distance).
+Fresh mask query found only original started/pruned rows,no prior retry.
+Known negative196437 was freshly locally recounted before submission (timing
+not separately measured); remote0.4043310659908457s matched full exact
+polynomial/hstar/negative list. Trial226422 remote20.13912266799889s TIME LIMITED.
+Serial local coordinate-verified beam128/30s retry also TIME LIMITED,
+30.102538823033683s,runc7b475cbb60d7bd2a3f028f3b2eba6c994a1a5955f440445b8f462893c1a0f49.
+Sample localPID3031243 at10s NI19 RSS853156KiB;not peak. All handles terminal,
+no local engine remains. Sign226422 UNKNOWN,no exact cache/promotion.
+222055 interior-shrink now87 exact nonnegative,4 unknown (three originald33
+plus226422d34),18 untouched dimension prunes,8 objective prunes,14 duplicates.
+No negative improvement or flagged Kostka counterexample.
+
+Remote limits freshly verified:CPUs[0,1],memory.max8589934592,swap0,pids128;
+x86_64,Python3.10.12,glibc2.35,all executable libraries resolved.
+20s/case,60s whole;two selected cases,zero additional proposals skipped.
+Trusted wrapper/engine unchanged,only wrapper/input/executable uploaded.
+Input SHA256 fc7560723e0c1924be7900ed89144c7616318270d14ae7cf8feb9ad9a3c3367d
+Wrapper SHA256 a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA256 8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHA256 2b11100cb4f5b4bcd55151234096370e7702ea83852973de78e979c633140960
+Validated receipt/file/header hashes,independent rational hstar reconstruction,
+baseline exact match,and rebuilt original quotient/beam covers for both cases.
+Ledger2752c87417cd2e278966c6712a157a76302c11b428ea6a178058d760008eed8b
+completed,DB readback confirms prepared226463,receipt226464,validated control
+226467 and timeout226468. Local retry226465 retained separately.
+Fetch initially refused while job running; inspected SAME job,then fetched
+terminal result,never resubmitted. Durable Docker copy outside Dropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T095405-6e6d8ec8c9a1-neh35qqu
+Remote originals retained;host supervisor can collect job ID above.
+Ignored runs/abacus-shrink226422-20260910.json and
+runs/fan-retry226422-beam128-30-20260910.jsonl remain untracked.
+No source edits/tests claimed,no credentials/DB/checkouts transferred,no admin
+changes,extra workers,push or publication. Best negative222055 and174551 remain
+d33 seven/five. Next disjoint lower-degree nonflag mutations or remaining
+226246/226334/226364d33 gaps;do not repeat terminal budget/layout identities.
+Goal active,no global blocker.
+
 ## Abacus batch preparation and recovered local result — 2026-09-10
 
 Codex retains KTT/private companion ownership and sole local DB-writer role.
