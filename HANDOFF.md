@@ -1,5 +1,37 @@
 # Ehrcalc Handoff
 
+## Four remaining degree34 five-opposite attempts — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Fresh Git clean/no-engine
+checks;DB found no prior retries for four selected198861 shrink children.
+All d34,5 extra opposite,serial beam128 full-coordinate-verified30s counts,
+60s outer,nice10. Source unchanged.
+221737 cut[5,6] EXACT NONNEGATIVE14.735108566004783s,
+run9fea4539866b788b153670103d21ac50b93f90326307aa0a10ac77984ee1d833;
+221767 cut[6,6] EXACT NONNEGATIVE15.08138761704322s,
+run1eddb688ae995c133f07f87810f6f917e5862fab247853693969d8cfee4dcd50;
+221797 cut[7,6] EXACT NONNEGATIVE20.6611030040076s,
+run5b5215f3c1cf5e3c8c1eed7ba1d64cb6d2477ad4b2327755980aea50b1116a58;
+221855 cut[9,6] time_limited30.099427095032297s,sign UNKNOWN,
+run4bb9f4361692ed3da2e0843a7f87a85ef17188235f2b8ce2082041a0c7581c77.
+Fresh DB readback confirms statuses/timings/sign evidence. No polynomial/cache
+assigned to timeout. Original dimension-prune observations retained.
+Samples(not peaks):PID2883388 at9s CPU100%,RSS279348KiB;
+PID2883737 at16s CPU100%,RSS206668KiB;NI19.
+All handles monitored to terminal exit0,no engine at final check.
+The seven d34 five-opposite children now6 exact nonnegative,1 unknown.
+Entire198861 interior-shrink neighborhood:83 exact nonnegative,
+1 newly counted timeout,21 original dimension-pruned cases still uncounted,
+26 duplicate skips not revalidated. No sign claims for skips/prunes/timeouts.
+Next uncounted d35 seven-opposite221661/221691/221721;d37 five-opposite
+221647/221677/221735,or changed verified layout/new finite bound for221855.
+Reports runs/fan-retry{221737,221767,221797,221855}-beam128-30-20260910.jsonl
+ignored/untracked. Do not repeat terminal layout/budget identities unchanged.
+Best negative remains174566d33 seven/five,not flagged Kostka witness.
+No push/publication,extra workers,admin changes or remote submission this turn.
+Goal active,no global blocker.
+
 ## Three degree34 five-opposite shrink children resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
