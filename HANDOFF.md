@@ -1,5 +1,63 @@
 # Ehrcalc Handoff
 
+## Larger routine Abacus batch: seven cases resolved locally — 2026-09-10
+
+Codex retains private profile/model,sole local DB writer,KTT/companion ownership.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no selected
+retries or prior remote bundles. Abacus enabled/idle,limits unchanged.
+Job20260910T110020-ea50cd722274 terminaldone/exit0,wall68.591494s.
+Explicit180s whole bound justified before launch:tested self-contained wrapper,
+max8 serial cases,20s/case,seven disjoint searches+knowncontrol. Monitored SAME
+job while doing local validation;no ambiguous restart or resubmission.
+RuntimeverifiedCPUs[0,1],memory.max8589934592,swap0,pids128,x86_64,
+Python3.10.12/glibc2.35/resolvedlibraries;no installedlimit changes.
+Control196437 freshlocal0.23564760095905513s,remote0.39980373601429164s,
+full exact match. Only trusted unchanged wrapper,input,maintained executable sent.
+
+Six-extra-opposite lower-remove children from222055,remote seconds / local seconds:
+222278d33 EXACT NONNEGATIVE2.717654745996697 /1.5773384630447254,
+localrundb38ab1c5c8a6039d912d223ceb6d3da441ff93fb1c99b543cf9732adcf31cf3;
+222358d33 EXACT NONNEGATIVE9.932197702000849 /5.592892393004149,
+localrun54fb3019bbed3a95b732ca33a1653011d624e7220ea7ce03996c2c7f0510495a;
+222404d33 EXACT NONNEGATIVE9.626696196995908 /5.435043317032978,
+localrun832b953f9b9eabbacf2ec9ca8ac455b779bcf2809a039a52e4c06dc901ce8af2;
+222410d33 REMOTE TIME LIMITED20.02252765800222,localEXACT NONNEGATIVE23.213637845939957,
+localrun249fd5c58a18f677856cfc0a1413d0f15fa835ddb7c5123438d22e6ad37ad418;
+222098d34 EXACT NONNEGATIVE7.485064860986313 /4.668044006917626,
+localruna8ec431a42d646994e7734bc81331804603a3b1979e565a28f07858f90c2581e;
+222138d34 EXACT NONNEGATIVE14.196453308992204 /9.007792739081196,
+localrune010cf67e183a9e4648b0a5d7af9758a3a5287b3b012761d23913381893ae58c;
+222202d34 EXACT NONNEGATIVE2.134078617003979 /1.422654858091846,
+localrun530f05e69481a90a9779f6024f8941f0481c8368eec49e5c459dce89c9dfbebb.
+Localbeam128/30s counts each60souter/nice10,original5s records preserved.
+Sequencing mistake:222098 launched before222410 handle became terminal,
+causing brief overlap of these two owned,bounded counts. Both completed;
+other local counts serialized. Do not repeat this;check terminalhandle before
+starting next local count. No peak measurement claim,all engines now stopped.
+All local polynomials independently reconstructed over Q from hstar.
+Six remote fullpoly/hstar/sign lists agree with fresh local results;remote
+222410 timeout preserved separately,not falsely called remoteexact.
+Original quotient rebuilt and uploaded beamcovers/permutations verified all8.
+Lower-remove222055 CURRENT23exact NONNEGATIVE,14unknown,24dimprunes,
+105objectiveprunes6duplicates. Nextremote candidates afterfreshDB:
+222274/222310/222400d34,222232/222352d35,222092/222132d36.
+
+Input SHA eaceeebc866ac0ab559411f8fe8e612432a3b9f2627aaf0150ec840adbf1f0de
+Wrapper SHA a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA 8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHA 7981e9d2b664a0447290bb5dde48c1f0f68fcc0ff07758d6c9ad71a8f0042990
+Receipt/file/header hashes validated before ingestion. Ledger
+72ac9e0faf4e9ef5401cd7fcbb19b4a5e5fac9139ce09a70e73a7e7bf63c7c46
+completed;DBreadback prepared230136,receipt230137,validated230152..230159
+(230156 remote timeout). No remoteDB access. Dockerfetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T110020-ea50cd722274-y5uy2mdg
+Remote originals retained;hostsupervisor cancollectjobID above.
+Ignored runs/abacus-lowerremove-seven-20260910.json and seven localretryreports
+remain untracked. All handles terminal,no localengine/remotejob remains.
+No source edits/test claims,credentials/DB/checkouts transferred,toolchain/admin
+changes,extra AIworkers,push/publication. Goalactive,no flagged witness.
+Bestnegative same d33 seven/five;equivalent simplerRAW230106/cert230116 retained.
+
 ## Second routine Abacus pair validated — 2026-09-10
 
 Codex retains private profile/model,sole local DB writer,KTT/companion ownership.
