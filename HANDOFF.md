@@ -1,5 +1,78 @@
 # Ehrcalc Handoff
 
+## Abacus lower-internal batch; equivalent mutation queue closed — 2026-09-10
+
+Codex retains KTT/companion ownership, private profile/model and sole local
+MariaDB-writer role. Previous turn was a status-only no-progress turn; this
+turn executed new bounded tests and a coordinate audit. Both repos initially
+clean. No extra AI workers or concurrent local counting/DB writers.
+
+RAW230106 lower-remove: completed all156 proposals, targeting <=6 extra
+opposite equalities, dimension<=35, beam32, 5s/case, 45s batch/60s outer,
+nice10/CARGO_TARGET_DIR=/cargo-target/ai-projects.
+Offsets0->67->129->156, times39.73422852600925/43.30629290500656/
+27.80065587500576s. Runs:
+effa9b4c2ea9ce8000c9cc2662e2167e0e621b425c55876ba7aeb6313263881f
+acf86faed05f7f57be653849f53e33ec80155abde935e83f0019f12f3847f095
+8d36622e5f4b348570c3122fa00735bee24983a9413c8bb088217d1273a5e2e7
+10exact NONNEGATIVE,17 timeouts UNKNOWN,32 dimension prunes,
+91 objective prunes,6 mask duplicates not revalidated. All proposals/results
+persisted; all10 exact polynomials independently reconstructed over Q from h*.
+Each local handle terminal before next launch.
+
+IMPORTANT: actual full GT-coordinate signatures (equality blocks, marked
+coordinates, all relations), not merely poset hashes/polynomials, show ALL156
+faces match members of RAW222055 lower-remove neighborhood. No new coordinate
+faces here. Do not retry this queue as novel work. Audit156 mappings stored:
+9efb35dd2fd4b81d6dd27da32cb6095a323c441bc9ee1897d455af554a1652ad
+completed,1.627294822013937s, fresh_count=false. Earlier insertion with a
+33-character search_kind was rejected before any audit rows; corrected to
+fan_neighborhood_coord_audit, no schema change. This audit establishes
+equivalence only, not fresh positivity of historical/pruned/timeout rows.
+Next structural neighborhoods should undergo coordinate deduplication before
+expensive retries. Prefer genuinely different shape/weight or joint mutations.
+
+Abacus job20260910T112538-2213d88be698 done/exit0,
+wall143.2157594s. Seven disjoint never-remotely-attempted lower-internal children
+of222055, targeting four internal bans (<=7 extra opposite), plus control196437.
+Established8-serial-case wrapper,20s/case/180s whole finite bound, monitored
+same job; no resubmission. Limits verified CPUs[0,1],memory.max8589934592,
+swap0,pids128,Python3.10.12,x86_64,glibc2.35,ldd resolved.
+Only selected trusted wrapper/input/maintained engine transferred.
+Control fresh local0.23078786802943796s, remote0.410306865000166s,
+full exact polynomial/h*/negative list match.
+All7 remote results TIME LIMITED, no polynomial/sign evidence:
+222416d38 20.121747130004223s;222426d38 20.137573893996887s;
+222436d38 20.11572446100763s;222446d38 20.114479479991132s;
+222466d38 20.126461156003643s;222496d38 20.12170610501198s;
+222478d40 20.087925138999708s.
+Do not repeat these unchanged remote20 identities. No automatic local retries
+this turn; no remote exact search hit to validate. All seven signs UNKNOWN.
+Parent222055 lower-internal remains2exact NONNEGATIVE,8unknown,35dimprunes.
+
+Input SHA2ca6635ae6f3b56983617284c49f7dbf7673b9f407aa00f900f5bb4a161af1ce
+Wrapper SHAa4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHAa23755efe121c2faba4ad3d2e845e1077920645a276f2be04076b98fb12de1b7
+File/receipt/header hashes, all8 reconstructed quotients/permuted covers,
+runtime constraints and independent rational control polynomial verified
+before local ingestion. Ledger
+a144de473e887c96353aad3548a832051f0ace0ea2a7695b321d33f85cae0aa6
+completed; readback prepared230208,receipt230209,validated230522..230529.
+Fetch outside Dropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T112538-2213d88be698-lxuc928m
+Host supervisor can collect durable remote originals using jobID.
+Ignored runs/abacus-lowerinternal-seven-20260910.json and
+runs/fan230106-lowerremove-d35-offset{0,67,129}-20260910.jsonl stay untracked.
+No code edits/test claims, DB/credentials/checkouts uploaded, admin/toolchain
+changes, pushes or publication. All handles terminal.
+Best negative unchanged RAW230106/cert230116 (same face222055): d33,
+7extra opposite/5internal bans; presentation counts, not proven minimum
+nonflag distance. Smaller d30 seven/six lineages retained. No flagged Kostka
+counterexample; goal active, no genuine global blocker.
+
+
+
 ## Abacus degree36-38 batch validated; three lower-remove holes — 2026-09-10
 
 Codex retains private profile/model,sole local DB writer,KTT/companion ownership.
