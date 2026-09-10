@@ -1,5 +1,35 @@
 # Ehrcalc Handoff
 
+## Remaining degree34 five-opposite retries — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+selected retries. Source unchanged. Three serial coordinate-verified
+beam128/30s counts,60s outer,nice10:
+225208d34[8,14,82,98],EXACT NONNEGATIVE9.273635040037334s,
+run9fa1ba1db0d2a795d28d157fd83a57168afb1a8cc17897f78e4fa66bb5d921fd;
+225214d34[8,14,82,132],time_limited30.02190796099603s,
+run1c0288aa5f2da543ced2d511a87b029f5593c1986681bea21e79593affa406dd;
+225648d34[9,15,98,132],time_limited30.0752152960049s,
+run8ad1401f6cd9af79465905495d8b60f0ee23c5112d57d1515d2d89b1cb132ff0.
+Both timeouts sign UNKNOWN,no polynomial/negative list assigned.
+Fresh DB readback confirms all statuses. Original5s attempts retained.
+Samples(not peaks):PID2944610 at7s CPU99.8%,RSS254636KiB;
+PID2945259 at8s CPU99.8%,RSS572684KiB;bothNI19.
+Same handles monitored to terminal exit0,no engine remains.
+222055 lower-remove-two now13 exact nonnegative,21 unknown,
+153 dimension prunes,1376 objective prunes,9 duplicates not revalidated.
+All original degree34 timeouts have now received a30s beam128 retry;
+225214 and225648 still unresolved. Degree35 sources222874/222878/223254/
+223258/223530 remain eligible;or justified longer bound/layout audit for
+the two d34 gaps. Do not repeat terminal budget/layout identities unchanged.
+Reports runs/fan-retry{225208,225214,225648}-beam128-30-20260910.jsonl
+ignored/untracked. No remote submission this turn.
+Best negative222055/cert222064 and174551/cert174566 remain d33 seven/five,
+presentation counts rather than certified minimum bad-edge distance.
+No improved negative or flagged Kostka counterexample.
+Goal active,no global blocker;no push/publication,extra AI workers or admin changes.
+
 ## Five more five-opposite counts resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
