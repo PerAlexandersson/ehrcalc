@@ -1,5 +1,65 @@
 # Ehrcalc Handoff
 
+## Weight gaps closed; paired mutations started — 2026-09-10
+
+Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
+Previous turn progress; freshclean Git/DB/remote-idle checks.
+No code edits,testclaims,extraAIworkers,admin/toolchain changes,push/publication.
+
+Coordinate audit2fbc588752ed6c9630a651e60c0f58831d3f5c001e9e96fe0237acb5de6e1f85:
+fourdegree32weight gaps231585/231587/231589/231591 pairwisedistinct,
+noactualGT-coordinate matches in222055/203068/198861/209610/174551
+zero-weight neighborhoods. Allmappings stored; notglobal non-isomorphism.
+FreshDBchecks found no previous widerretry/remotebundle identities.
+
+Abacus job20260910T121019-999fedc1b9fc done/exit0,wall36.3522456s.
+5serialcases includingcontrol,20s/case/120swhole,establishedfinitebound,
+monitoredsamejob,no resubmission. Control196437 freshlocal0.22794421890284866/
+remote0.4015636319818441s full exact match.
+All4 searchcases exactNONNEG remotely/locally,seconds/localrun:
+231585 8.859161574015161/5.1592495259828866,
+97fa2394cefbda1a90cc34d55a2c5655492d25c7b43b5300dc03e04411faf328;
+231587 8.926782903989078/5.146019064006396,
+48f83d9c160bda81cd7cbcc43fcb4b80f40402110f0e4a4a85e691b4d8e9b096;
+231589 8.923096353013534/5.120095483958721,
+7c85e3f8d8da73ee87d58b90525dcfa963f3aad4a132c8231949db9f82a3db60;
+231591 8.957433506002417/5.236183295957744,
+38a95eaa230d0b371c3f541d61100e3927d66e870ae52e47edbaacd17a660e56.
+Localbeam128/30s each60souter/nice10/CARGO_TARGET_DIR,strictlyserialized.
+All5remote fullpolynomials/h*/signlists match freshlocal; independent Q
+reconstruction and alloriginalquotients/permutedcovers verified beforeingestion.
+CPU[0,1],8GiBmemory,swap0,pids128,x86_64,Python3.10.12/glibc2.35/libraries
+verified; installedlimits unchanged. Onlytrustedwrapper/input/engine
+transferred,noDB/checkouts/secrets.
+Input SHA7e1517db740a43b7e4051666a617d63d77fe584f9ee435c4de914a8d0ff2969d
+Wrapper SHAa4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHAc6972d14611d729c18af2b96b7b9c755395cb57640aedf1191f020133c93b5ec
+Receipt/file/header hashes checked. Completedledger
+8ded363094130e7dd98c942d09bbc6a72197a85c4124d074d310935fb001cbe1,
+readback prepared231627,receipt231628,validated231749..231753.
+Fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T121019-999fedc1b9fc-c86uis6s
+Hostsupervisor cancollect durable originals byjobID.
+CURRENT230740 zero-weight22exact NONNEGATIVE,zeroattemptedholes,2maskduplicates.
+No newnegative weightchild. Originaltimeout rows retained.
+
+New230740 paired(addboundaryflag+removeopposite) first56of189 proposals:
+cap6extra/d38,beam32/5s,45sbatch/60souter,nice10/CARGO_TARGET_DIR,
+39.43396829604171s,run
+e8c97218e436eea41fa5a2ca3ed3ec1e318ce0be6ba5d14e08514595d7dd7dab.
+2exact NONNEGATIVE independently reconstructed overQ,7timeouts UNKNOWN,
+9dimprunes38objectiveprunes,0duplicates/empty/errors. Alloutcomes DBstored.
+Status capped,not complete. NEXT resume --offset56 --count200 withsamebounds.
+133proposals remain; do not restartoffset0 or callrange certified.
+Ignored runs/abacus-230740-four-weights-20260910.json,4retryJSONL and
+runs/fan230740-paired-d38-offset0-20260910.jsonl stayuntracked.
+Allhandles terminal. No improvednegative;goalactive,noglobalblocker.
+RetainRAW230740/cert230749 d33 sevenextra/fiveinternal alongsidepriorleaders;
+presentation counts not provenminimum nonflagdistance.
+
+
+
 ## Shrink attempted gaps closed with Abacus; weight mutations — 2026-09-10
 
 Codex retains KTT/companion ownership,private profile/model,solelocal DB writer.
