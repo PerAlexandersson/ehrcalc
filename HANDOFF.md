@@ -1,5 +1,44 @@
 # Ehrcalc Handoff
 
+## New negative lineage:complete six-opposite removal neighborhood — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn certified a new negative lineage(progress);no global blocker.
+Fresh Git clean/no-engine checks;DB showed only222055's certificate,no scans.
+Mutated RAW222055 (not expanded certificate222064):lower flag plus one
+opposite removal,cap6 extra opposite after all implied flags,dimension cap38,
+beam32 full-coordinate-verified layout,5s/case,45s batch,60s outer,nice10.
+All172 proposals completed with actual resumed offsets0->57->104->146->172:
+0 batch43.791144440067s,5 exact/7 timeouts/9 dim/33 objective/3 duplicates,
+rund47451ea98cc548693fa6afc2cc5645f394586a4516ccf1152a60625bcff4a47;
+57 batch42.79074245202355s,2 exact/8 timeouts/8 dim/28 objective/1 duplicate,
+rund388629856aeb4f2988c9db60817974f1ee147251979999a7c595dccb72d6f24;
+104 batch39.64060102205258s,2 exact/7 timeouts/4 dim/27 objective/2 duplicates,
+run2ed0a9ebba4af59f1688e3ad16f5a87dc185bb087236e150197906751bdc129e;
+146 batch27.820302470005117s,1 exact/5 timeouts/3 dim/17 objective/0 duplicates,
+runee3e21d8b0423eaf30e34c1a51c419d4c2689640037f44f6b2d71762d86455c6.
+Total10 initial exact nonnegative(degrees31..34),27 unknown(degrees31..38),
+24 dimension prunes(d39..48),105 objective prunes,6 duplicates not revalidated.
+No negative,empty or engine errors. Fresh DB aggregation confirms totals.
+Every proposal/start/outcome persisted;timeouts not revisited during resume.
+SamplePID2914202 under1s CPU98.4%,RSS121040KiB,NI19,not peak.
+
+Smallest gap222326d31 edge[7,13,132] got verified beam128/30s retry,
+EXACT NONNEGATIVE14.153200346045196s,
+runf3dda1d2cc70405defb63ebb4ea039866aaa5ea3c4925a769e515b07ef41d090.
+DB readback confirms exact status/signs;original5s timeout retained.
+Neighborhood now11 exact nonnegative,26 unknown,prunes/skips unchanged.
+Next smallest unknown222368d32[8,14,132];d33 gaps222106/222180/222212/
+222238/222278/222358,or new222055 lower-remove-two/lower-internal queue.
+Do not repeat completed172-proposal identity or terminal retries unchanged.
+Reports runs/fan222055-lowerremove-six-d38-offset{0,57,104,146}-20260910.jsonl
+and runs/fan-retry222326-beam128-30-20260910.jsonl ignored/untracked.
+Retain negative222055/cert222064 as active lineage:degree33,seven/five,
+linear-60428124102809/24067258815600. No six-opposite negative certified yet.
+Primary174551/cert174566 also retained;neither is flagged Kostka witness.
+Source unchanged,no live engine at terminal check,no push/publication,
+extra workers,admin changes or remote submission. Goal active,no global blocker.
+
 ## New certified degree33 negative lineage from lower flags — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
