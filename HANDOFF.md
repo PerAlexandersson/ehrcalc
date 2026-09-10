@@ -1,5 +1,61 @@
 # Ehrcalc Handoff
 
+## Flag-biased and strict one-hole genetic runs completed — 2026-09-10
+
+Codex remains sole KTT/companion and local MariaDB writer.  Two further
+resumable genetic runs and two independently validated Abacus batches are
+complete.  No source algorithm, worker/account, administration, push, or
+publication changes.  Generated inputs/reports/logs remain ignored.  BEST
+NEGATIVE is still the 9x10 degree-84 candidate
+`612334d74e3ba8f384a8647c90a4a7fcd46f129dde61c9f2999d9a1e77fab474`
+with exactly two nonflag holes `(4,6),(6,10)`.  No zero/one-hole negative or
+two-hole negative of lower degree was found.
+
+Fresh flag-biased run seed `202609101435`, run
+`3d30d2e6dd5e6f46378b8abe75e6f30dd37a57245a7011c0ed4ef897c535f080`:
+maxholes2, elite32/local64, minside1, .05 effective bias, strength6,
+40 frontier+64 random-shape immigrants, 500000 states, 5 s/case, 55 s
+internal, tested 180 s outer resumptions.  Complete generation2: 3888 unique
+exact attempts, 307 bad-edge prunes, zero pending/deferred, 4987 selected and
+17124 duplicate proposal events; 53 new exact rows across four invocations.
+No improved negative.  It exposed cheap positive frontier cases including a
+one-hole degree11 and two-hole degrees5/9.
+
+Abacus E `20260910T144045-54c6de5bc8d8`, exit0/wall32.3409616947 s,
+validated parent d84 NEG control plus one-hole d11 and two-hole d5,d9,d67,
+d71,d74,d75, all search cases exact NONNEG/full local matches.  Input/output
+SHA `234e03798313fa10796a9e39fe210bc85cff66b03f99eb681c21b4141925a337` /
+`d939fab82644e79457eb89d44b5a144980e77c57c77e7ce7e1b9b4d8ef7b3eb4`;
+ledger `0ed69705631d2c2440efef87204a13a5d05f640f56c2386d907939d1e7682861`,
+IDs 237654/237655/237662..237669; fetch
+`/home/dev/.local/share/supervisor-compute-results/abacus/20260910T144045-54c6de5bc8d8-287w5xyb`.
+
+Fresh strict boundary run seed `202609101450`, run
+`019d86e3b6569bd6ed1faae75c1765b4efe93681ba6090c52630af6c85c560cf`:
+same broad pools but maxholes1, .10 effective bias, strength5, 32 frontier+64
+random immigrants.  Known two-hole negatives were mutation parents; every
+new proposal above one hole was pruned before counting.  Complete generation2:
+2751 unique exact attempts, 1326 bad-edge prunes, zero pending/deferred, 4370
+selected and 16931 duplicate events; 16 new exact rows across two invocations.
+No improved negative.
+
+Abacus F `20260910T145339-ee8f03e04735`, exit0/wall14.1732995510 s,
+validated parent d84 NEG control plus a genuine zero-hole d9 case and one-hole
+d5,d7,d12,d13,d13,d14; all seven search cases exact NONNEG/full local matches.
+Their tiny state counts were 9..44 (0.000827..0.012849 s remotely).  Input/
+output SHA `194ccf6e7b77ed01cf975db48cb354120c888312dfd635b10b132982f4c842ca` /
+`8b0e714284490e5b24c8776c8a5b2b5b3014063db35bbe64d6657def5970387f`;
+ledger `1de32022d31680dbaff53a78f5ca3e3321ddab6c010d30c9cedcf167f924a124`,
+IDs 237675/237676/237680..237687; fetch
+`/home/dev/.local/share/supervisor-compute-results/abacus/20260910T145339-ee8f03e04735-rco5zj_a`.
+
+For E/F the transferred runner/helper/archive hashes and verified remote
+Python3.10/x86_64 CPU `[0,1]`, 8 GiB/no-swap/128-task limits were unchanged.
+Bundle/source/input hashes, natural predecessor masks, independent exact h*
+transforms and complete remote/local polynomials were checked before ledger
+completion.  Search remains active; next deepen one-hole positive lineages and
+add shape/content mutation only with terminal-status DB persistence.
+
 ## Third strict genetic seed completed; Abacus batches C/D validated — 2026-09-10
 
 Codex retains KTT/companion ownership, private profile/model, and the sole
