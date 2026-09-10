@@ -1,5 +1,62 @@
 # Ehrcalc Handoff
 
+## Large zero-hole fixed-content genetic pivot — 2026-09-10 (active)
+
+Codex remains sole KTT/companion and local MariaDB writer.  Generated reports,
+inputs, and logs remain ignored; no extra workers, account/admin changes,
+pushes, or publication.  The Jochemko--Menon positivity result applies to the
+ambient unsliced interval-flag face, so this lane now uses large reduced-Kogan
+geometry only as scaffolding and evaluates exact fixed-content flagged Kostka
+fibers.  Every evaluated paired mutation and every completed dilation is now
+durably deduplicated in MariaDB.
+
+From exact zero-hole center
+`0a2c22ef64f6b6831e3644dd0e9a84ffc33d37b6f182f3c61a1413bbf4335410`,
+the finite paired shape/flag plus unit-weight generation has 8,159 distinct
+compressed proposals.  All are classified: 4,125 nonempty exact three-count
+signatures, 2,544 exact-empty fibers, and 1,490 dimension-above-26 prunes.
+Two initial 2-second timeouts completed under a 10-second retry; no pending
+attempt remains.  The 4,125 nonempty rows give 395
+`(dimension,L(1),L(2),L(3))` classes.  Reciprocal tails through six strict
+dilations are certified for all 381 classes with `L(1)<=200000`; fourteen
+larger-count classes were explicitly skipped.
+
+The two first negative-known-ends leaders were proved exact-positive and
+Ehrhart-equivalent to earlier positive near-misses.  Three further leaders of
+degrees 17,17,19 are exact-positive.  New key
+`62ce9739a35b5ca03aa7a57c614b8f3e555b2ec18134ed15ff263128c344c3ec`,
+straight shape `(5^9,3,1,1)`, size 50, degree 21, zero nonflag inequalities,
+is exact-positive with normalized low-degree margin
+`189426163/1442060373600` (~1.3136e-4).  This improves the new generation but
+not the global zero-hole record `2af751a0...` (~1.26228e-4).  BEST CERTIFIED
+NEGATIVE remains the degree-84 9x10 reduced Kogan face `612334d7...` with two
+nonflag holes; there is still no flagged-Kostka counterexample.
+
+One negative-known-ends class remains unresolved: key `42d92b82...`, straight
+size-50 shape `(6,5^7,3,3,2,1)`, degree 23, zero holes.  Exact direct samples
+are stored through `L(14)`; `L(13)`/`L(14)` took 252.536/536.630 s locally.
+Local `L(15)` is active under a justified 1,750-second per-count cap.  Abacus
+job `20260910T161006-faf491f3c6fc` computes `L(17)` under a finite one-hour
+job cap; `20260910T163128-bbbbe2d697ec` queues `L(16)` serially.  Do not
+resubmit either ID after a connection failure; inspect the recorded job.
+
+Abacus packed-counter compatibility and exact local matches are complete for
+jobs `20260910T152301-53ee0a7009a1` (known `L(10)` control),
+`20260910T152405-1877ba4bce6d` (`a7a5 L(15)`),
+`20260910T154654-c47937d30808` (`0ad0 L(15)`),
+`20260910T154654-ab6cd09457fc` (`035c L(15)`), and
+`20260910T160516-105cdc5453d1` (`62ce L(15)`).  Runner/engine SHA-256 are
+`2e94a6dc3fb17e572dff7fab1f6e104441992c596646a482ade394847c4f2e13` /
+`9852ecd5569dc7ad1e108d740d6e49c2f3a08cb7d4df392755c5e966b0f3bbba`;
+remote Python 3.10/glibc 2.35, CPU `[0,1]`, 8 GiB/no swap/128 tasks were
+verified.  Local ledger run is `22ea3e23e6caffe6e6420abe074c05cf0c7540d257dfd6d3b7e41e23a4642594`.
+
+Private companion source now has a self-contained packed flagged Abacus
+runner plus database attempt identities for paired screenings.  Resource-bound
+retries reuse exact dilation samples and skip every prior terminal candidate.
+All 75 companion tests pass in 0.567 s; source is not yet checkpoint-committed
+while the active degree-23 computation is being recorded.
+
 ## Flag-biased and strict one-hole genetic runs completed — 2026-09-10
 
 Codex remains sole KTT/companion and local MariaDB writer.  Two further

@@ -1,5 +1,24 @@
 # KTT Search Handoff
 
+## Active fixed-content zero-hole search — 2026-09-10
+
+- Owner remains Codex, sole local MariaDB writer; generated reports/logs are
+  ignored and no push/publication is authorized.
+- The search is correctly distinguishing ambient flagged-Schur positivity
+  from fixed-content flagged Kostka fibers.  A complete 8,159-proposal paired
+  size-50 generation is stored in MariaDB: 4,125 nonempty exact short
+  signatures, 2,544 exact-empty fibers, 1,490 dimension prunes, and no pending
+  attempt.  Its eligible 381 signature classes have certified reciprocal
+  tails; no completed candidate is negative.
+- Best certified negative remains the degree-84 reduced Kogan face with two
+  nonflag holes.  Best certified proper zero-hole near-miss remains positive,
+  degree 21, normalized margin about `1.26228e-4` (`2af751a0...`).  New
+  size-50/degree-21 `62ce9739...` is positive at about `1.3136e-4`.
+- One zero-hole degree-23 class `42d92b82...` remains unresolved after exact
+  local samples through `L(14)`.  Local `L(15)` and recorded Abacus `L(16)` /
+  `L(17)` jobs are bounded and resumable.  Abacus/local packed-counter matches
+  have passed on a known control and four useful degree-21 counts.
+
 ## Active ownership — 2026-09-08
 
 - Owner: Codex, exact KTT counterexample-search session.
