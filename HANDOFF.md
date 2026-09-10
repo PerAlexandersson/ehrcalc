@@ -1,5 +1,40 @@
 # Ehrcalc Handoff
 
+## New lineage paired boundary-flag/removal neighborhood completed — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no222055
+paired queue. Source unchanged. Mutated RAW222055,not expanded certificate.
+All189 paired boundary-flag plus opposite-removal proposals,cap6 extra opposite,
+dimension38,verified beam32,5s/case,45s batches,60s outer,nice10.
+Actual resume offsets0->55->97->139->181->189;no timeout repeats:
+0 batch40.06692993408069s,2 exact nonnegative/7 timeouts/9 dim/37 objective,
+runedb889d46b646cbcd3a206e01577889dfabe6b8eaa62c470992742bfc3b277bb;
+55 batch39.06709304894321s,1 exact nonnegative/7 timeouts/6 dim/28 objective,
+runf57f26f53ba513558e9bee0690f2e62154bdb35abd74d5548c912e646d5072d0;
+97 batch41.12517149199266s,0 exact/8 timeouts/6 dim/28 objective,
+runbf733be6b4ab17b4e944cb7df5c5ab0d40256b6c39267d6592b3da979c47cc14;
+139 batch41.12330464599654s,0 exact/8 timeouts/6 dim/28 objective,
+run4b91f9b1140dc42bed60095e67907c67543601d5372d30c7d9b5c55622f473c1;
+181 batch15.233621210092679s,0 exact/3 timeouts/0 dim/4 objective/1 duplicate,
+run03bf43a5ae95fd215766ad8c53bc92dec8fb8ae208f83a444a8659b564cd3a67.
+Total3 exact nonnegative,33 unknown,27 dimension prunes,125 objective prunes,
+1 duplicate not revalidated;0 negative/empty/errors. Fresh DB aggregation
+confirms189 terminal outcomes plus189 started records.
+Next smallest d33 timeouts225768[10,98],225810[29,98],225852[47,98],
+225858[47,132],225900[69,132];fresh query before retry.
+Samples(not peaks),NI19:PID2973860 at1s99.3%,RSS195140KiB;
+PID2975083 at4s99.7%,RSS23612KiB;PID2976140 at1s99.3%,RSS175384KiB.
+All handles terminal exit0,no engine remains.
+Reports runs/fan222055-paired-six-d38-offset{0,55,97,139,181}-20260910.jsonl
+ignored/untracked. No remote submission this turn.
+Previous lower-remove-two remains33 exact nonnegative,1 unknown223762d35
+after120s;do not repeat it unchanged. Pruned cases are not sign conclusions.
+Retain negative222055/cert222064 and174551/cert174566,d33 seven/five,
+presentation counts not minimum distance. No improved negative or flagged
+Kostka counterexample. Goal active,no global blocker;no push/publication,
+extra AI workers or admin changes.
+
 ## Both remaining degree36 gaps resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
