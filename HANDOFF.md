@@ -1,5 +1,59 @@
 # Ehrcalc Handoff
 
+## New certified degree33 negative lineage from lower flags — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn recorded bounds/layout evidence(progress);no global blocker.
+Fresh clean Git/no-engine checks;DB found no selected standalone lower-flag
+queues. Source unchanged. New raw negative222055,certificate222064,9x15,d33:
+linear coefficient -60428124102809/24067258815600.
+Seven extra opposite constraints/five internal bans (not minimum distance),
+ties174566 on degree/count metrics,NOT flagged Kostka counterexample.
+Derived from negative209610 by adding lower flag at edge[5,9].
+Raw masks:v0x3ff01fe01fc01f801f001e001c00181f1,
+h0x100080008400840184010407040e040c00.
+Initial exact2.848657105001621s. Independent source and explicit-all-implied-
+flag endpoint recounts beam32/15s agree fully with source polynomial/hstar,
+full coordinate signatures agree;certificate4.977142857038416s,
+run8b4522efd72d835730f6f7d74ffe0151da4d82c42adf3e2ab87b927d927058dd.
+Certificate expanded h0x1000800184038407840f041f043e047c00.
+Use RAW222055 for mutations,not expanded certificate mask.
+Fresh full-coordinate comparison proves different face from primary174551,
+0.011812653043307364s,
+runde243ddefaa12793b411cd9c7ba7eeab0a41fab187f101dff453bc25a8eeb2a6;
+new signatureSHA a167d82d1eccaf9fb585e9cf7eea597e3dbfecc910c6c97fcf1b24045eab3421.
+DB search of matching negative linear coefficient finds only new222055/222064.
+Keep BOTH primary and this lineage;next prioritize removing nonflag equalities
+from222055 (lower-remove/lower-remove-two/lower-internal) under finite caps.
+
+Six standalone lower-flag queues completed,52 proposals total,cap7 opposite,
+beam32/5s cases/45s batches/60s outer,nice10,serialized,all outcomes in DB:
+182122 all8,d30cap,7 exact nonnegative/1 duplicate,1.2056674460181966s,
+rundae0038ec9dc87dbdb5863e9ccd5d1177f8f5eb99197f81c78ddc98fa6fc8ab1;
+182773 all8,d30cap,7 exact nonnegative/1 duplicate,1.1984715909929946s,
+run736e0af701d66a55ecd226b6cf98c0db81dce292a88f9c1758709e738fd7827d;
+174551 all9,d34cap,8 exact nonnegative/1 duplicate,10.049030096968636s,
+run8b5e5671220a96b3923dfb33188d036c2ef094a5a4ce2c6b8e23dfc9b93f88db;
+198861 all9,d34cap,8 exact nonnegative/1 duplicate,11.322404764010571s,
+run09a298869d0299cf496d3df82cf4e3d36ef97f04bc87a52a998832ab1ab7bf1f;
+203068 all9,d34cap,6 exact(1 negative)/1 timeout/2 duplicates,12.664114860002883s,
+run39692782ad8e6abbafb9fc4288dd9203391a41f96fd44c5df6f33dee9d699878;
+209610 all9,d34cap,4 exact(1 negative)/3 timeouts/2 duplicates,23.98279121692758s,
+run5b8de500a4115048a5ba80b525dc6280ebeceadb000af11c263984797ca31849.
+Total40 exact(38 nonnegative,2 negative),4 unknown,8 duplicates not revalidated;
+no prunes,empty or errors. DB aggregation confirms totals.
+203068 negative222030d33 edge[2,3],2.278300748905167s,linear matchesprimary.
+Fresh full-coordinate audit proves SAME FACE as174551,not new lineage,
+0.011902331025339663s,
+runa1908684dfa2b82bd548ce3354da5636a877cc90485182a724cca49701e7b7dc.
+Unresolved222044d33 edge[9,15];222057d33[6,11],222061d32[8,14],222063d33[9,15].
+All timeouts unknown,all duplicate skips uncertified;do not repeat queues.
+Reports runs/fan{182122,182773}-lowerflag-seven-d30-offset0-20260910.jsonl,
+runs/fan{174551,198861,203068,209610}-lowerflag-seven-d34-offset0-20260910.jsonl,
+runs/fan-certify222055-beam32-15-20260910.jsonl ignored/untracked.
+No live engine at final check;no push/publication,extra workers,admin changes
+or remote submission this turn. Goal active,no global blocker.
+
 ## Four-internal-ban gaps:30s attempts and layout comparison — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
