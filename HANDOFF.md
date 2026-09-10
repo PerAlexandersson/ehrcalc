@@ -1,5 +1,36 @@
 # Ehrcalc Handoff
 
+## Smaller-parent band queues and three five-opposite retries — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Clean checkouts/no live scan verified at adoption. Previous turn made progress;
+no global blocker. Checked earlier smaller-parent work:only prefix crosses
+were completed before this turn;these interior-band queues are disjoint.
+Pair182122+182773 (8x15,d30 negative parents),cap six extra opposite/d36,
+beam32/5s cases/45s batches/60s guards:
+row-band all42,30 duplicate-not-revalidated,12 objective prunes,0.653153s,
+rundf5a3f297cff6bc04b4adc45d0881495ab42c93ba312f906d2652d5dbf7b548d;
+column-band all182,169 duplicates,13 objective prunes,3.049563s,
+run748a5d1c170e419bab09a66e2b7a528294b1a44c377f9f0e85a308a375a2fb7e.
+DB confirms all224 outcomes,no counts/other outcomes. Started rows separate;
+duplicate status is not fresh verification. Do not repeat queues unchanged.
+
+Raw209610 lower-remove-two five-opposite gaps resolve exact NONNEGATIVE
+under distinct beam30 retries,original5s timeout records retained:
+216015d34 [7,13,82,132],21.005840s,
+rundda56d812810e630e64a6fa33221bc79e5bf7b1fb62be9e626eb9ab8e0b110b0;
+216409d34 [8,14,98,132],11.855464s,
+run730372268ab6e0f9fef4d7c1f36dff3a139d65d4a8623987f01f26824d313471;
+214319d35 [1,2,98,132],10.778449s,
+rund6d5f2a0b28edd6151904499275a6ae6fef841121d4836a57563a628df8a34c0.
+That1408 neighborhood now8 exact nonnegative,22 unresolved counting cases,
+plus159 dimension prunes,1218 objective prunes,1 unrevalidated duplicate.
+No improved negative;primary174566d33 seven/five retained,not a flagged witness.
+Next target remaining five-opposite d35 gaps214661/214897/215123 or
+broaden shape/weight mutations beyond these redundant negative-parent bands.
+All observations stored,reports ignored,source unchanged,no live local scan.
+No push/publication/extra workers;goal active,no global blocker.
+
 ## Six-opposite band queues and two five-opposite exact retries — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
