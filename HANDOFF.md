@@ -1,5 +1,44 @@
 # Ehrcalc Handoff
 
+## Smaller-parent internal-ban moves and removal — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Fresh clean Git/no-engine
+checks;DB found no slide-internal queues for182122/182773. Source unchanged.
+Both slide-internal queues complete8 moves,offset0->8,cap7 extra opposite,
+dimension cap38,beam32 verified coordinates,5s/case,45s batch,60s outer,nice10.
+182122:2 exact nonnegative(d35,d36),6 dimension prunes(d40..49),
+8.619659341988154s,
+run68f6fc0554c6321aeff3380e55fb14693b43bf0a67e4431f2122f880a117c63c.
+182773:2 exact nonnegative(d35,d36),6 dimension prunes(d40..48),
+8.643010539002717s,
+run82ddf1dbf2eedec8a241acd4fc458e2d6f880ffa057b64e5b617913c609a45d6.
+No negative,timeouts,duplicate,objective prunes,empty or errors.
+Tested moves[85,73]/[85,84] retain6 internal bans;not a distance improvement.
+Exact result IDs220593/220595 and220609/220611. All outcomes stored.
+
+Earlier182122 direct removal182126d36 already had exact beam32/30 retry
+11.186896767001599s;not recounted.182128d40 had no retry.
+DB showed no182773 direct-internal queue;ran all6 removals with cap7/d40,
+same count/time bounds.10.30475068895612s,
+rune55ab7a4809f53bd95d7ce31c00d2486f3e80a51797cdb29126fe070faf0fcd7:
+220625d36 edge85 and220627d40 edge98 timed out5s;
+220629d43,220631d46,220633d48,220635d49 dimension-pruned.
+All direct removals reduce internal bans to5 in this presentation.
+Selected220625 beam128/30s fresh exact retry NONNEGATIVE11.64237505197525s,
+runb91aa61608006af7b9f40529bfb46e45b0a0511f3dc1e26e122da592d4fd5f3a.
+SamplePID2865210 at11s CPU99.9%,RSS36784KiB,NI19,not peak.
+Original5s timeout retained;220627 remains unknown,not positive.
+Fresh DB aggregation/readback confirms three queues and selected retry.
+Reports runs/fan{182122,182773}-slideinternal-seven-d38-offset0-20260910.jsonl,
+runs/fan182773-internal-seven-d40-offset0-20260910.jsonl,
+runs/fan-retry220625-beam128-30-20260910.jsonl ignored/untracked.
+No sign claims for pruned/skipped cases. Next selected5-internal d40 gaps
+182128/220627 or distinct mutation;do not repeat finished identities.
+Best negative remains174566d33 seven/five,not flagged witness.
+No live engine at terminal check;no push/publication,extra workers,admin
+changes or remote submission this turn. Goal active,no global blocker.
+
 ## Row-parent weights and all band-parent weight timeouts resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
