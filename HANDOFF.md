@@ -1,5 +1,44 @@
 # Ehrcalc Handoff
 
+## Verified beam128 retries implemented; two gaps resolved — 2026-09-10
+
+Codex owns private retry helper/tests/README and both handoffs;sole local DB
+writer unchanged. Clean worktrees/no live scan verified at adoption. Previous
+turn made progress;no global blocker. Added --relabel-beam-wide (128 ideals/
+level) to exact retry helper only,mutually exclusive with existing layouts.
+Distinct beam128-peak-total-frontier-v1 identity;default/beam32 identities
+unchanged. Same maintained engine and complete coordinate-permutation check.
+Tests cover128 forwarding,distinct identity,original-poset cache,cleared
+inherited evidence and stored frontier/permutation/timing. All67 tests pass0.466s.
+README updated;public Rust CLI and primary scanner unchanged.
+
+Fresh layout-only audit of214897/215123/212604/212634 stored in DB,
+runea624212a400919e798a6c8676a56ed817ea85a51e388503e725ce7686272e44.
+Beam32->128 peak/total frontier scores:
+214897:(6,120)->(5,91),layout0.074967s;
+215123:(6,113)->(6,107),0.071774s;
+212604:(6,119)->(5,110),0.064759s;
+212634:(5,110)->(5,110),0.063343s,IDENTICAL order so not recounted.
+Both full permutations persisted;layout scores are heuristics,not optimality proofs.
+
+Distinct beam128/30s retries,each60s outer/reduced priority:
+214897d35 five-opposite two-removal EXACT NONNEGATIVE10.965115s,
+run70a482531a61bc5ac011d4b9c56f579cdf9432819a6c2146afda32f34cd816d1;
+212604d34 five-opposite smaller-shape child EXACT NONNEGATIVE21.643083s,
+run11412c7c11db08239bd62c58e7e214df93f3b37b60e3a5dc549683f901f9bd0b;
+215123d35 five-opposite two-removal time_limited30.068188s,
+run9adaad303fc183f1064e2b11342b854fd6b3313d3e74e92432f614989644697d.
+All original beam32 timeouts retained. Wider order resolved two prior30s
+timeouts;215123 remains unknown,not evidence against coefficient negativity.
+Raw209610 two-removal neighborhood now10 exact nonnegative,20 unresolved
+counting cases,plus159 dimension prunes,1218 objective prunes,1 duplicate.
+212604 was a dimension-pruned shrink child,not part of that1408 neighborhood.
+Next audit wider layouts for other selected five-opposite gaps before counting;
+Abacus may receive explicit verified changed-order covers under its same limits.
+No improved negative;primary174566d33 seven/five retained,not a flagged witness.
+All outcomes in DB,reports ignored,no live local scan,push/publication or
+extra workers. Source increment verified;goal remains active,no global blocker.
+
 ## Three dimension35 five-opposite retries — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
