@@ -1,5 +1,41 @@
 # Ehrcalc Handoff
 
+## Second monitored degree39 joint retry resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+228046/228066 retries. Source unchanged. Bothdegree39 six-extra-opposite/
+four-internal presentation candidates,not certified negative.
+Serial coordinate-verified beam128/30s,60s outer,nice10:
+228046[29,82,113] TIME LIMITED30.047225284972228s,
+runc687fed4929e212eedc8d742a7547debebb40d3be8804e3771825eca7329f1a2;
+228066[29,98,113] TIME LIMITED30.06528851890471s,
+run368acd2d98071d6670af5b5e989f26871f2c3d9bd13690261bf38dc39267662d.
+Justified distinct120s retry228066:tested finite maintained engine,
+audited same beam frontier score(6,118) as nearby227856 that finished109.8s;
+this is runtime heuristic,not sign/completion guarantee.
+120s percase/150s outer,nice10,actively monitored;EXACT NONNEGATIVE
+108.25999167899136s,
+run2b92a1f30f8abc830bf1551c8418f40ce989fdf02e912f3eab96f1c25e45a9bc.
+PID3082440 NI19 samples38s/55s/83s RSS909384/720724/1396008KiB,not peaks.
+Fresh DB readback confirms all3 statuses and preserved budgets.
+Independent rational hstar reconstruction/sign check passes exact polynomial;
+timeout rows have no inherited polynomial/negative evidence.
+Original5s/30s retained,no repeated terminal identity.
+All handles terminal exit0,no local engine remains.
+
+RAW222055 joint945 CURRENT3exact NONNEGATIVE (228096,227856,228066),
+33unknown,279dimensionprunes,630objectiveprunes.
+227836/227886/228046 remain beam128/30 unknown;do not replay unchanged.
+Next distinct degree39 cases228256/228276/228306;fresh DB before action.
+Reports runs/fan-retry228046-beam128-30-20260910.jsonl and
+runs/fan-retry228066-beam128-{30,120}-20260910.jsonl ignored/untracked.
+No remote submission. Best negative222055/174551 stilld33 seven/five,
+presentation not minimum counts. Content-removal394exact nonnegative,
+0attempted holes,165dimprunes18unvalidatedduplicates26empty.
+No flagged witness;goal active,no global blocker,no source edits/test claims,
+extra AI workers,admin changes,push/publication.
+
 ## Monitored degree39 joint retry resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
