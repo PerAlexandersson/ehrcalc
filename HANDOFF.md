@@ -1,5 +1,50 @@
 # Ehrcalc Handoff
 
+## Abacus supplied two validated degree33 results — 2026-09-10
+
+User reiterated use Abacus as much as possible. Treat disjoint remote batches
+as a routine search lane,not only occasional hardest-case retries.
+Codex retains private profile/model,sole local DB writer and KTT/companion
+ownership. Crossover checkpoint main165ea78/private374f6a2 completed first.
+Fresh status enabled/idle,limits unchanged. Submitted job
+20260910T105212-975de33e7be1,terminal done/exit0,wall16.178751s.
+20s/case,60s whole,serialremoteCPUs[0,1],memory.max8589934592,swap0,pids128.
+Runtime verifiedx86_64/Python3.10.12/glibc2.35/resolvedlibraries.
+Only trusted unchanged wrapper,selectedJSON,and maintained executable uploaded.
+Known control196437 freshlocal0.22892962803598493s,remote0.4138919540127972s,
+full exact polynomial/hstar/negative list match.
+Disjoint six-extra-opposite lower-remove children from222055:
+222106d33 remote10.512783036989276s,EXACT NONNEGATIVE;
+222180d33 remote4.203778251001495s,EXACT NONNEGATIVE.
+Before remote ingestion,fresh serial local beam128/30s counts under60s/nice10:
+222106local5.627315499004908s,
+run987436a48e99c2e61b3e83f7b8aea34b613f3d3c53fb63462d656dfb8e6a0361;
+222180local2.2383162659825757s,
+run7ed2494acd5bf137b235967cf815865da7b1b6602029e9b95d89652867962df7.
+Fullpolynomial/hstar/sign comparisons agree,independent rational reconstruction
+passes,original quotient rebuilt and uploaded beamcovers/permutations verified.
+Source5s timeouts retained. No new negative. Lower-remove222055 now14exact
+NONNEGATIVE,23unknown,24dimensionprunes105objectiveprunes6duplicates.
+Next remote-priority disjoint d33 sources222212/222238 (fresh DB before prepare).
+
+Input SHA a82ab96efc630dbff460d0809fad80371a8ee7ee82bc1e50f7a24ef13d79c0c0
+Wrapper SHA a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA 8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHA 627bb9c3b01a3f46ac0c67679b5d28fbc5178c31a95b6a04087ddad7c99604cf
+Receipt/file/header hashes independently checked. Ledger
+cc24f2c407322bdc87b16b13f7f0d4bd3fae49713601953608245e2e4d759b70
+completed;fresh DBreadback prepared230118,receipt230119,
+validatedresults230124/230125/230126. No remote DB access.
+DurableDocker fetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T105212-975de33e7be1-qr3mtx0n
+Remote originals retained;host supervisor can collect jobID above.
+Ignored input runs/abacus-lowerremove222106-222180-20260910.json and
+runs/fan-retry{222106,222180}-beam128-30-20260910.jsonl remain untracked.
+All handles terminal,no local engine or remote job remains;no peak claim.
+No source edits/test claims,credentials/DB/checkouts transferred,toolchain or
+admin changes,extra AIworkers,push/publication. Goal active,no flagged witness.
+Bestnegative same d33 seven/five;equivalent simplerRAW230106/cert230116 retained.
+
 ## Simpler negative description recovered by crossover — 2026-09-10
 
 Codex retains sole local DB writer and KTT/private companion ownership.
