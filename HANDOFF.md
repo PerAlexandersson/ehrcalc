@@ -1,5 +1,64 @@
 # Ehrcalc Handoff
 
+## Abacus degree36-38 batch validated; three lower-remove holes — 2026-09-10
+
+Codex retains private profile/model,sole local DB writer,KTT/companion ownership.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no selected
+retries/priorremote bundles. Abacus enabled/idle,limits unchanged.
+Job20260910T111221-ee4a64f8b74d done/exit0,wall141.213577s.
+Tested wrapper8serialcases,20s each,180s whole;larger finite bound retained
+from prior successful batches and monitored samejob. No resubmission.
+RuntimeverifiedCPUs[0,1],memory.max8589934592,swap0,pids128,x86_64,
+Python3.10.12/glibc2.35/resolvedlibraries. Only trustedwrapper/input/engine sent.
+Control196437 freshlocal0.23185715707950294s,remote0.40072691498789936s,
+full exact match.
+
+Six-extra-opposite lower-remove children from222055;remote / local seconds:
+222168d36 remoteTIME LIMITED20.111862635007128,localexactNONNEG15.965768123976886,
+localrunb723413aa9b88a77d73290df937fcb1d31d45f194c302921b6d1632def7fa72a;
+222198d36 exactNONNEG18.884157010994386 /10.261116486042738,
+localrun28076d3aa975987ac25986013a368595b1359395a863e9a6072d87fd41717908;
+222268d36 remoteTIME LIMITED20.105610096012242,localexactNONNEG12.60938212799374,
+localrun2782f4473e4f470d9d020cc83b9bc7a14cf65cfc2d13e738106f5b32835da7f7;
+222394d36 remoteTIME LIMITED20.106618478981545,localexactNONNEG12.990230366005562,
+localrune42df1d544541a240494bc46cc60f28b47012e622a08aa239ad58e5e8c26c234;
+222306d37 exactNONNEG19.924571993004065 /10.62312030105386,
+localrun6e5d69e3f2449a87e0fe8af7efe67b63359fec5d0ff8f71a7052bb200ab419bd;
+222228d38 remoteTIME LIMITED20.111757835024036,localTIME LIMITED30.023189889034256,
+localrundeb9b5e1e733f1fa426a5e0e3516c8f899a66b958502adb7a6a4daa5b7177cf4;
+222348d38 remoteTIME LIMITED20.129688841989264,localTIME LIMITED30.0773331039818,
+localrun9eb79c5d24570eff8f70d8b4a56c29900f3810afd11c5be351a1d84ecacc8b68.
+Localbeam128/30s each60souter/nice10,strictly serial fixed7-item shell loop
+which waits/checks exit before next case;monitored loophandle99133 terminal0.
+Original5s/remote20s retained. 222228/222348 signsUNKNOWN.
+All5 localexact polynomials independently reconstructed overQ fromhstar;
+2remote search exact fullpoly/hstar/sign lists match freshlocal results.
+Originalquotient/uploaded beamcovers/permutations verified all8.
+No inherited exact evidence on timeouts.
+Lower-remove222055 CURRENT34exact NONNEGATIVE,3unknown,24dimprunes,
+105objectiveprunes6duplicates. FreshDBanti-join:222132d36,222228/222348d38.
+All original attempted lower-remove cases now have widerlayout/budget attempts.
+Do not repeat theirremote20/local30 identities unchanged;new mutations from
+simplernegative230106 or disjoint lower-internal batch remain available.
+
+Input SHA 561b9c0c0246da1410c56aa1423d31b1cd24732d449894b92da25e13bd32b31a
+Wrapper SHA a4aae249eec359b0b04255b554f7df1a61cd975060fd0bdae1d9ef5b677d885a
+Engine SHA 8b09017a36c7274b38c82e585fb41015ed1dbebb36f230cbba7af8cdce08b367
+Output SHA 9037ec1bac757ca44431f106ebcda8984f51f23c7e2c1b4d1b4985cab0cce06e
+Receipt/file/header hashes checked beforeingestion. Ledger
+a090d9d8649a0aeac44b70d4d00ff285d3a276f1eae871a2d2e716a34d963ce9
+completed;DBreadback prepared230184,receipt230185,validated230200..230207.
+Remoteunknowns222168/222268/222394/222228/222348 keptdistinct fromlocalunknowns.
+No remoteDBaccess. Dockerfetch outsideDropbox:
+ /home/dev/.local/share/supervisor-compute-results/abacus/20260910T111221-ee4a64f8b74d-scpwcsgb
+Remoteoriginals retained;hostsupervisor cancollectjobID above.
+Ignored runs/abacus-lowerremove-seven-c-20260910.json and7localretryreports
+untracked. Sample localNI19 RSS116372/198728/562240KiB,notpeaks.
+Allhandles terminal,no localengine/remotejob remains.
+No source edits/test claims,credentials/DB/checkouts transferred,toolchain/admin
+changes,extra AIworkers,push/publication. Goalactive,no flagged witness.
+Bestnegative same d33 seven/five;equivalent simplerRAW230106/cert230116 retained.
+
 ## Abacus degree34-36 batch validated — 2026-09-10
 
 Codex retains private profile/model,sole local DB writer,KTT/companion ownership.
