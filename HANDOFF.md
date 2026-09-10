@@ -1,5 +1,42 @@
 # Ehrcalc Handoff
 
+## Monitored degree39 joint retry resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+227856/227886 retries. Source unchanged. Both are degree39 six-extra-opposite/
+four-internal presentation candidates,not certified negative.
+Serial coordinate-verified beam128/30s,60s outer,nice10:
+227856[10,98,113] TIME LIMITED30.029845986049622s,
+runc904eecfa6268228789803408b7cdbd491ee8aec80b796ffc9ca52943a38a69b;
+227886[10,132,113] TIME LIMITED30.04706227593124s,
+run74a5266f747b6d7413120a0fa93d5c0584e4906120d4738ca0902a64efa59f26.
+Sample227856 PID3076321 NI19 at28s RSS318844KiB,not peak.
+
+Justified distinct120s retry for227856:tested finite maintained counter,
+prior30s controlled memory,directly improves both nonflag counts.
+120s percase/150s outer,nice10,actively monitored;EXACT NONNEGATIVE
+109.7884763389593s,
+runa1a5a3853b461ef23eca60deb79b377baf062bca0e87270f8c5f8fecc1b9173e.
+PID3077739 NI19 samples28s/53s/83s RSS893848/1187740/1279336KiB;
+not peak. Fresh DB readback confirms all3 statuses and preserved budgets.
+Independent rational hstar reconstruction/sign check passes exact polynomial;
+timeout rows have no inherited polynomial/negative evidence.
+Original5s/30s records retained,no repeat of terminal identity.
+All handles terminal exit0,no local engine remains.
+
+RAW222055 joint945 CURRENT2exact NONNEGATIVE (228096,227856),34unknown,
+279dimensionprunes,630objectiveprunes. 227836 and227886 remain beam128/30
+unknown;227856 no longer unknown. Next distinct degree39 candidate228046
+or justified retry227886;fresh DB before acting. Layoutaudit7942f442... retained.
+Reports runs/fan-retry227856-beam128-{30,120}-20260910.jsonl and
+runs/fan-retry227886-beam128-30-20260910.jsonl ignored/untracked.
+No remote submission. Best negative222055/174551 stilld33 seven/five,
+presentation not minimum counts. Content-removal394exact nonnegative,
+0attempted holes,165dimprunes18unvalidatedduplicates26empty.
+No flagged witness;goal active,no global blocker,no source edits/test claims,
+extra AI workers,admin changes,push/publication.
+
 ## Joint-candidate coordinate/layout audit and one exact count — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
