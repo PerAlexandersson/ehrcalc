@@ -1,5 +1,46 @@
 # Ehrcalc Handoff
 
+## Paired and single mutations of smaller negative parents — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made exact progress;no global blocker. Fresh clean Git/no-engine
+checks and DB inventory found no paired queues for182122/182773;earlier inventory
+also showed no single queues. Source unchanged. All serial counts beam32 with
+full coordinate permutation verification,5s/case,45s batch,60s outer,nice10.
+Every proposal/result/prune persisted;all four queues completed,no timeouts,
+engine errors,empty faces or negative results.
+
+Paired add_flag_boundary + remove_opposite,all104 proposals per parent,
+offset0->104,cap6 extra opposite after all implied flags,dimension cap36:
+182122:31 exact nonnegative(degrees30..34),24 dimension prunes,
+48 objective prunes,1 duplicate not revalidated;26.108534681028686s,
+rund4addd0a1c97c18e69f514b47a9ff0c0fb8e770e13a5bb1aa8609d4b3d778695.
+182773:32 exact nonnegative(degrees30..33),24 dimension prunes,
+48 objective prunes,0 duplicates;25.178286058013327s,
+run8c323985592656d805b97b9b879ff2d0c17305cabed8c57236b7cc8486f2f958.
+Minimum uncounted dimension38 for182122;37 for182773.
+182773 d37 gaps220086/220112/220138/220164/220190/220216,
+edges[15,50]/[29,50]/[47,50]/[81,50]/[109,50]/[141,50].
+Sample during first batch:PID2844014 under1s CPU88.8%,RSS11076KiB,NI19;
+not a peak measurement.
+
+Single remove_opposite or add_flag_boundary,all21 proposals per parent,
+offset0->21,cap7 extra opposite,dimension cap32,allowing smaller intermediates:
+182122:11 exact nonnegative(degrees29..32),4 dimension prunes,
+5 objective prunes,1 duplicate not revalidated;4.315979539998807s,
+runb744d92f5f96c59dd4ba53e10445a6086587947f15290e56af838ece24afe15b.
+182773:11 exact nonnegative(degrees29..32),3 dimension prunes,
+5 objective prunes,2 duplicates not revalidated;4.3009465779177845s,
+runea9a555b9cbc4c7984c4337758ce6be4ec79870cd3cda08514d9c38eda9e29fe.
+Fresh DB aggregation matches all four reports. Total85 fresh exact nonnegative
+counts;duplicates and prunes do not certify signs or geometric equivalence.
+Reports runs/fan{182122,182773}-{paired-six-d36,single-seven-d32}-offset0-20260910.jsonl
+remain ignored/untracked. Do not repeat these completed identities unchanged.
+No improved negative:primary174566d33 seven/five remains,not flagged witness.
+Next selected d37 paired gaps or distinct shape/weight/flag mutation.
+No engine live at final check;no push/publication,extra workers,admin changes
+or remote submission this turn. Goal active,no global blocker.
+
 ## Degree36 shrink retries and zero-weight neighborhoods — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
