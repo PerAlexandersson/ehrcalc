@@ -1,5 +1,43 @@
 # Ehrcalc Handoff
 
+## Column-parent zero-weight neighborhood exactly resolved — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous goal turn made exact progress;no global blocker. Fresh clean Git/
+no-engine checks and DB checks found no220469 retry or203068 zero-weight queue.
+Source unchanged. First209610 child220469d32,label21,beam128/30s
+EXACT NONNEGATIVE5.165876041981392s,
+run1250e2dc7f16e0bb379591b99c008bfe1f1fbc67db647979c6d93af9f8a147c4.
+Original5s timeout retained.209610 zero-weight neighborhood now17 exact
+nonnegative,6 unresolved,1 duplicate not revalidated.
+
+Raw203068 zero-weight all24 label choices,offset0->24,dimension cap34,
+beam32 verified coordinates,5s/case,45s batch,60s outer,nice10.
+No flag-only objective filter on weight-forced equalities.
+Completed34.85214651399292s:21 initial exact nonnegative(degrees26..33),
+2 timeouts(d33,label18/19),1 duplicate not revalidated(d34),
+no prunes,empty faces,negative or engine errors,
+run266a53a3c2bc4873e5e031c11650dd6857d75def544449ac27305ef83abb2b64.
+Resource sample during scan:PID2857259 at2s CPU100%,RSS31672KiB,NI19,
+not peak. All starts/results recorded and batch summary checked against DB.
+
+Both timeout children resolved with serial beam128/30s retries:
+220515d33 label18 EXACT NONNEGATIVE5.350675379973836s,
+run29fd1b2155ffde894687699ca6dc48646608e70827b243954bf605744cfe2392;
+220517d33 label19 EXACT NONNEGATIVE5.329993774998002s,
+run85ab283686d8ad5c904e715a8d2a181d7527d915e988d2baed2f3e33cee1b37c.
+All counts60s outer/nice10;fresh DB readback confirms three retries.
+203068 neighborhood now23 exact nonnegative,0 unresolved counting cases,
+1 skipped duplicate not revalidated. Original timeout observations retained.
+Reports runs/fan203068-zeroweight-d34-offset0-20260910.jsonl and
+runs/fan-retry{220469,220515,220517}-beam128-30-20260910.jsonl ignored/untracked.
+No negative to compress/certify. Do not infer sign from duplicate skip.
+Next distinct198861 zero-weight queue or remaining209610 d33 gaps
+220459/220461/220463/220465/220471/220473;do not repeat terminal attempts.
+No improved negative;primary174566d33 seven/five remains,not flagged witness.
+No live engine at final check;no push/publication,extra workers,admin changes
+or remote submission this turn. Goal active,no global blocker.
+
 ## Primary and band-parent zero-weight neighborhoods — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
