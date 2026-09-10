@@ -1,5 +1,46 @@
 # Ehrcalc Handoff
 
+## Joint flag and two-nonflag-removal queue processed — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous turn made progress;fresh clean Git/no-engine/DB checks found no
+RAW222055 joint/internal/slide-internal queue. Source unchanged.
+NEW joint mode adds one boundary flag and removes one opposite equality plus
+one internal ban. Used RAW222055,not expanded certificate.
+All945 proposals visited,cap6extra opposite after all implied lower flags,
+dimensioncap40,beam32,5s/candidate,45s safety/60s outer,nice10.
+Six serial batches,all handles exit0:
+0->191,40.4005817869911s,7unknown/54dimprunes/130objectiveprunes,
+run09b996cae5a5e54156d52667a1c31af058baa50e68bce04050719a028f84c3e1;
+191->391,40.573395731044s,7unknown/58dim/135objective,
+run32296f3c4eec1ed5e4ab1292b1515eb12ca4fd1e7199692631c2a3fe9a590a01;
+391->586,40.50865961704403s,7unknown/58dim/130objective,
+runa2e552b74a4fdee97b5127754e613a4285e828dffab1950090d118c4fb900670;
+586->731,39.13051388191525s,7unknown/43dim/95objective,
+runfe4b0fa4206cf552e6a7dfe9acf330cf77fdda8a015e9b1fcb51914ffd545800;
+731->926,40.43327695305925s,7unknown/58dim/130objective,
+runad2e6ae5e9e230ee67202c5b319fa08bd37529c5ec0b19a5a0077949d5a439d6;
+926->945,5.612100980943069s,1unknown/8dim/10objective,
+runce3f7602350c2ffc14a149f7c5eb49e03474844f1992ba69c65d1ce6ab27701f.
+Fresh DB945 terminal results:36 TIME LIMITED,279dimensionprunes,
+630objectiveprunes,0exact/negative/empty/duplicates/errors.
+No sign conclusions. All36 attempted candidates have6extra opposite/4internal
+presentation bans,27degree39 and9degree40;not certified minimum distance.
+Degree39 retry priorities227836[10,82,113],227856[10,98,113],
+227886[10,132,113];then boundaryindices29/47/69/95/125/159/197/239,
+same removedhorizontal82/98/132,internal113.
+Degree40 horizontal66/internal113,first227806.
+Fresh DB before each retry;consider coordinate/layout comparison before
+recounting all boundary variants. No terminal identity should be repeated.
+Reports runs/fan222055-joint-six-d40-offset{0,191,391,586,731,926}-20260910.jsonl
+ignored/untracked. Sample NI19 enginesRSS123532/121248/91956/204652/404756KiB,
+not peaks;processes terminal,no engine remains. No remote submission.
+No source edits/test claims. Best negative222055/174551 remain d33 seven/five;
+none of these new six/four candidates is certified negative.
+Content-remove family remains394exact nonnegative,0attempted holes,
+165dimprunes18duplicates26empty. Goal active,no global blocker,no extra
+AI workers,admin changes,push or publication.
+
 ## All attempted content-mutation counts resolved — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
