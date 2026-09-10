@@ -1,5 +1,41 @@
 # Ehrcalc Handoff
 
+## Four-internal retries and new five-opposite queue — 2026-09-10
+
+Codex retains KTT/private companion/handoff ownership and sole local DB writer.
+Previous status-only turn was no progress; fresh clean Git and DB checks allowed
+continued computation. No global blocker. No source changes.
+Recovered completed222456d37 retry without resubmitting: beam128/30s exact
+NONNEGATIVE23.684528828016482s,
+run89bf3c39d29fd50d1abc45949bb842c227139c7c37d18b1894ab8597144d64fe.
+Next four-internal-ban child222486d37, same verified layout method/30s:
+time_limited30.066539549967274s, sign UNKNOWN,
+runf66e2d85f497922dc5d3df9eb71b78e3e8267048258417f1f1b81ea630218e6b.
+Both original5s attempts retained; DB readback confirms statuses.
+222055 lower-internal neighborhood now2 exact nonnegative,8 unknown,
+35 dimension prunes. SamplePID2927921 at7s CPU99.8%,RSS624920KiB,NI19,
+not peak. Reports runs/fan-retry{222456,222486}-beam128-30-20260910.jsonl
+remain ignored/untracked.
+
+Started previously absent RAW222055 lower-remove-two neighborhood:
+1572 total proposals,cap5 extra opposite/d36,beam32 verified layouts,
+5s/case,45s batch,60s outer,nice10. Requested count1500,actual offset0->465
+in39.00811602897011s:6 timeouts,47 dimension prunes,409 objective prunes,
+3 duplicates not revalidated;0 exact/negative/empty/errors.
+runa5ab36b4f56a1b02d0c021b4b9bc38e82e2291956635f9f7998a8ceb8b77cf2c.
+DB aggregation confirms465 terminal outcomes plus465 started records.
+Resume at465,not0; six attempted polynomials remain unknown.
+Report runs/fan222055-lowerremovetwo-five-d36-offset0-20260910.jsonl untracked.
+SamplePID2929217 at1s CPU99.4%,RSS103988KiB,NI19,not peak.
+No engine remains after monitored terminal exit.
+Abacus status freshly confirmed enabled,queue active but all six KTT jobs
+terminal;no remote job submitted this increment. Existing job IDs/results
+remain in prior ledger sections. CPU0,1/8GiB limits unchanged.
+Best negative lineages222055/cert222064 and174551/cert174566 retained:
+d33,seven extra opposite/five internal bans,not minimum-distance certificates
+and not flagged Kostka counterexamples. Goal active;no push/publication,
+extra workers,administration changes or unrelated edits.
+
 ## New lineage internal-removal neighborhood and two exact retries — 2026-09-10
 
 Codex retains KTT/private companion/handoff ownership and sole local DB writer.
