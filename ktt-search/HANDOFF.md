@@ -1,15 +1,25 @@
 # KTT Search Handoff
 
-## Provisional improved proper near-miss — 2026-09-11 (active)
+## Genetic search and exact remote tails — 2026-09-11 (active)
 
 - `a2be13af...` has a complete locally exact degree-25 reconstruction from
   ordinary `L(0)..L(14)` and structural strict counts 1--11.  It is positive;
   normalized minimum ~`5.79997e-5` improves the proper near-miss but is not a
   counterexample.
-- Strict dilation 11 is `2721676964378370070744` (1984.865 s locally).
-  Abacus job `20260910T202152-886c80571298` is still active after a machine
-  suspend/resume; direct out-of-sample `L(15)` job
-  `20260910T205734-3fbdace166c2` is queued.  Do not duplicate either job.
+- Strict dilation 11 is `2721676964378370070744` and matched independently on
+  Abacus (1984.865/2820.208 s local/remote). Direct out-of-sample `L(15)` job
+  `20260910T205734-3fbdace166c2` also matched the prediction exactly at
+  `729349049394323624299655020`; `a2be13af...` is certified positive.
+- Exact genetic runs found no improved negative: the one-hole run covered
+  8,467 proposal slots, while the two-hole/lower-degree run covered 13,064.
+  The remote one-hole batch reproduced the negative parent then proved seven
+  degree-71--78 one-hole descendants nonnegative.
+- A fresh paired generation around `a2be13af...` classified 10,254 proposals
+  into 4,668 nonempty exact short signatures, 3,085 dimension prunes, and
+  2,328 empty outcomes. Proper degree-19 leaders `286549f5...` and
+  `02909c47...` are exact locally through dilation 13; Abacus jobs
+  `20260911T061817-5cdaaf727fef` and `20260911T062008-54ea5ea7f1dd` are
+  finishing their exact tails serially. Do not duplicate these jobs.
 - Closest proven negative remains degree-84 `612334d7...`, skew hook
   `(11,1^9)/(1)`, weight `1^19`, with exactly two internal nonflag holes
   `(4,6)` and `(6,10)`; `(5,14)` is the third equality and is flag-absorbed.

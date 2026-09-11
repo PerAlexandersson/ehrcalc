@@ -1,6 +1,6 @@
 # Ehrcalc Handoff
 
-## Degree-25 zero-hole reconstruction — 2026-09-11 (active)
+## KTT genetic continuation — 2026-09-11 (active)
 
 Structural candidate `a2be13af...` is locally complete and exact-positive.
 Ordinary `L(0)..L(14)` plus correct strict dilations 1--11 reconstruct its
@@ -9,12 +9,19 @@ degree-25 polynomial; strict dilation 11 is `2721676964378370070744`
 `43145181473/743885964993600` (~`5.79997e-5`) provisionally improves the
 proper zero-hole near-miss, but is not a counterexample.
 
-Abacus strict job `20260910T202152-886c80571298` remains active after a host
-suspend/resume and has emitted only its verified environment/hash header.
-Do not resubmit it.  Independent unused direct `L(15)` validation job
-`20260910T205734-3fbdace166c2` is queued behind it; prediction
-`729349049394323624299655020`, ledger `44b6d83a...`.  BEST PROVEN NEGATIVE
-remains degree-84/two-hole `612334d7...`.
+Abacus independently matched both strict dilation 11
+(`2721676964378370070744`) and the unused direct ordinary `L(15)` prediction
+(`729349049394323624299655020`). Thus the degree-25 proper candidate is
+certified positive. A remote batch also reproduced the certified negative
+parent and proved seven degree-71--78 one-hole descendants nonnegative.
+
+The private exact genetic search completed bounded one- and two-hole runs
+without an improved negative, and classified a new 10,254-proposal paired
+shape/weight/flag generation. Proper degree-19 leaders `286549f5...` and
+`02909c47...` are locally exact through dilation 13; serial Abacus jobs
+`20260911T061817-5cdaaf727fef` and `20260911T062008-54ea5ea7f1dd` are
+finishing dilations 14--19. BEST PROVEN NEGATIVE remains degree-84/two-hole
+`612334d7...`.
 
 ## Corrected full KTT ranking — 2026-09-10 (superseded checkpoint)
 
