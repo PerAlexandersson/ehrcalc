@@ -87,6 +87,20 @@ Predecessor `20260911T133613-16e1f4f03702` was deliberately cancelled before
 useful work because its degree-19 control's known runtime exceeded the case
 cap. Inspect the corrected ID rather than resubmitting.
 
+Bounded reduced-Kogan growth is now available in the private v10 genetic
+driver. Two complete one-hole runs (`dcc554e0...`, `c930a2d9...`) found no
+negative, but reached positive one-hole degrees 87 and 88 and isolated 13
+distinct unresolved 10x10 one-hole faces of degrees 95--99. A 500,000-state
+Abacus diagnostic proved seven exceed that cap; replacements
+`20260911T141214-1316a5fa098f` and
+`20260911T141215-ccdc62e38a4e` use the tested 2,000,000-state ceiling.
+
+Straight full job `20260911T133811-5532e9663ad9` recorded 900-second limits
+for the first two degree-23 leaders and was cancelled before wasting a third
+slot. Reordered job `20260911T140917-94f0d21b1477` tries the three degree-21
+leaders first (input SHA prefix `664d17d9`). Strongest degree-23
+`7c7ad27a...` also has a monitored local 2,400-second exact run active.
+
 ## KTT explicit-dimension tail audit — 2026-09-11 (superseded checkpoint)
 
 Codex remains the sole KTT/private-companion worker and local MariaDB writer.
