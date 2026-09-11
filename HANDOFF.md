@@ -6,6 +6,30 @@ Codex remains the sole KTT/private-companion worker and local MariaDB writer.
 Generated reports, selected remote inputs, and logs remain ignored; no push or
 publication is authorized.
 
+The search objective now treats affine degree as a secondary cost: first seek
+an exact-negative candidate with zero genuine nonflag holes, then one hole;
+prefer straight shape among comparable candidates, but allow larger degrees
+when growth may turn the remaining inequalities into flags. A bounded v10
+growth-only branch from certified negative `90bb03b7...` is active with newly
+encountered nonzero-hole descendants pruned before Ehrhart evaluation. All
+proposal dispositions are durable in MariaDB.
+
+Straight zero-hole partial leader `56875bde...` is fully reconstructed and is
+exact-positive of degree 23 (h-star degree 21). Its smallest normalized
+internal coefficient is `28256219611/314590394958840` (about `8.98e-5`). The
+shape is straight `(5^7,4,4,3,3,1)` with weight
+`(5,5,5,3,3,3,3,3,3,3,4,2,2,2,2,2,0)`; exact ordinary counts through 11 and
+strict counts through 12 are stored. Candidate `5672ee4c...` is the next
+degree-23 straight zero-hole completion in progress.
+
+Abacus job `20260911T142628-3f5605e60972` returned an exact strict-count prefix
+for `aad5636a...` through dilation 11 and a bounded dilation-12 timeout after
+900.108 seconds. The control and one fresh local dilation-7 count matched.
+Validated ingestion ledger `027f15d7...` stores all five useful exact remote
+counts plus the nonexact attempt; output/result SHA-256 prefixes are
+`3658fedb`/`81868a6e`. The private ingester now safely retains exact prefixes
+from otherwise successful bounded batches, and all 121 private tests pass.
+
 The private exact-negative loader and genetic parent selection now preserve
 quotient-poset diversity. The prior 7,599 negative genome rows represented
 only 15 distinct faces; bounded diversified mutation has raised the reservoir
