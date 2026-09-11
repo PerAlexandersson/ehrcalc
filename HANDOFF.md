@@ -1,6 +1,36 @@
 # Ehrcalc Handoff
 
-## KTT explicit-dimension tail audit — 2026-09-11 (active)
+## KTT diversified exact-negative lineages — 2026-09-11 (active)
+
+Codex remains the sole KTT/private-companion worker and local MariaDB writer.
+Generated reports, selected remote inputs, and logs remain ignored; no push or
+publication is authorized.
+
+The private exact-negative loader and genetic parent selection now preserve
+quotient-poset diversity. The prior 7,599 negative genome rows represented
+only 15 distinct faces; bounded diversified mutation has raised the reservoir
+to 11,894 negative presentations and 17 distinct exact-negative quotient
+posets. New certified faces `b6c56e6f...` and `dfe6b2d4...` have degrees 88
+and 86. Both retain exactly two genuine nonflag holes. The degree-86 face is
+more flag-heavy: ten selected equalities, with two of four forbidden labels
+absorbed by terminal row flags. Its exact negative linear and quadratic
+coefficients were independently reproduced with 295,602 DP states.
+
+A dedicated one-hole continuation from `dfe6b2d4...` is resumable under ledger
+`b38c8b3f...`. Generation one made 6,144 proposals collapsing to 334 unique
+candidates; 259 exact rows and 109 bad-edge prunes are durable, and no
+admissible negative has appeared. Its 240-second continuation expired while
+constructing generation two. BEST PROVEN NEGATIVE therefore remains
+degree-84/two-hole `612334d7...`; no exact zero- or one-hole negative is known.
+
+The proper zero-hole degree-23 candidate `9e249693...` is fully exact-positive
+with h-star degree 21 and normalized linear margin
+`2652480637/36518031327960`. Abacus job
+`20260911T112652-7fc24f1062c5` independently matched local
+`L(11)=53508266105477025334288` in 946.878 seconds. Fetched output SHA-256 is
+`2441bfb3...`, and validated ingestion ledger `eea8ce06...` is complete.
+
+## KTT explicit-dimension tail audit — 2026-09-11 (superseded checkpoint)
 
 Codex remains the sole KTT/private-companion worker and local MariaDB writer.
 Generated reports, selected remote inputs, and logs remain ignored; no push or
