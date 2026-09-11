@@ -2,6 +2,15 @@
 
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
+User-requested suspension checkpoint: Abacus is paused and no KTT process is
+running locally or remotely. Job `20260911T202944-64c51cfc1209` was cancelled
+after starting; inspect its ID before resubmission. The first grow-then-close
+batch ended with seven four-million-state limits; the second was cancelled.
+A paired zero-hole shape/flag-plus-weight screen from certified closure
+`368eace0...` stored all 231 proposals, finding 230 exact-empty fibers and one
+equivalent row. A tested six-million-state/360-second selected retry is ready
+but was not submitted.
+
 Codex remains the sole KTT/private-companion worker and local MariaDB writer.
 Generated reports, selected remote inputs, and logs remain untracked; no push
 or publication is authorized.
