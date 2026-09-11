@@ -1,6 +1,60 @@
 # Ehrcalc Handoff
 
-## KTT current-face reservoir bridge — 2026-09-11 (active)
+## KTT explicit-dimension tail audit — 2026-09-11 (active)
+
+Codex remains the sole KTT/private-companion worker and local MariaDB writer.
+Generated reports, selected remote inputs, and logs remain ignored; no push or
+publication is authorized.
+
+A private ranker audit found that its structural-direct path transformed exact
+strict counts with a stale legacy module-global dimension 19 for candidates of
+other dimensions. The strict counts themselves and every completed full hybrid
+polynomial were correct. The private helper now accepts an explicit dimension,
+the ranker supplies the structural dimension, and a regression test covers a
+stale global. All 103 private tests pass.
+
+All affected reservoirs were reranked without recounting. Correct report
+SHA-256 values are `579feab2...` (569 classes), `3d45d169...` (434 classes),
+and `1e210650...` (256 classes). The 434- and 256-class generations have no
+negative corrected known-ends score. The 569-class reservoir has two partial
+negative proper zero-hole leaders: degree-21 `345d1fa1...` and degree-23
+`bf9b64a4...`. These are prioritization signals, not sign certificates.
+
+Degree-21 `345d1fa1...` has straight shape `(5^8,4,3,2,1)`, fixed weight
+`(5,5,5,3^8,2,2,2,2,1,2)`, row lower bounds
+`(1^8,9,11,13,15)`, row upper bounds
+`(7,7,11,11,11,11,11,14,15,15,17,17)`, and corrected normalized known-ends
+score `-7123881559199/2283171230340`. Local ordinary counts are exact through
+dilation eight; the first 55-second pass recorded dilation nine as bounded.
+Abacus jobs `20260911T094744-b02afc47d040` (strict 7--11) and
+`20260911T094750-042b32d8f8c9` (ordinary 4--10) are active under explicit
+1,800-second case and 7,200-second job bounds. Inspect these IDs rather than
+resubmitting.
+
+The first local ordinary pass completed dilations four through eight in
+0.116, 0.652, 2.978, 10.832, and 35.748 seconds. A measured continuation gave
+exact `L(9)=20565675951366790286` in 110.665 seconds; `L(10)` reached its
+distinct 300-second cap and is retrying once under a controlled 900-second
+bound. No timeout is interpreted as a sign.
+
+The degree-23 second leader `bf9b64a4...` is queued behind the degree-21 jobs
+as Abacus IDs `20260911T095513-201d86fa1d1d` (strict 7--12),
+`20260911T095522-19f6c9949f00` (ordinary 4--10), and
+`20260911T095523-b1387ba1d105` (ordinary 11). Input SHA-256 prefixes are
+`a8af6cdd`, `7d8009db`, and `645647b9`; all chunks include a known exact
+control. The private preparer now splits large ordinary completions below the
+remote runner's eight-case cap, covered by the 104-test passing suite.
+
+The earlier degree-16 completion `16423d9d...` is exact-positive. Abacus jobs
+`20260911T093912-edde20ae1f8a` and
+`20260911T093912-44261ebcc732` matched three strict and six ordinary local
+counts; output hashes are `ce40ac88...` and `99b1c73f...`, and local ledgers
+`2d6e839a...` and `7ebf0fd5...` are complete.
+
+BEST PROVEN NEGATIVE remains degree-84/two-hole `612334d7...`; no exact
+zero- or one-hole negative is known.
+
+## KTT current-face reservoir bridge — 2026-09-11 (superseded pre-dimension-audit checkpoint)
 
 Structural candidate `a2be13af...` is locally complete and exact-positive.
 Ordinary `L(0)..L(14)` plus correct strict dilations 1--11 reconstruct its
