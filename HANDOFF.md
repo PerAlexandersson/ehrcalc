@@ -10,9 +10,9 @@ The search objective now treats affine degree as a secondary cost: first seek
 an exact-negative candidate with zero genuine nonflag holes, then one hole;
 prefer straight shape among comparable candidates, but allow larger degrees
 when growth may turn the remaining inequalities into flags. A bounded v10
-growth-only branch from certified negative `90bb03b7...` is active with newly
+growth-only branch from certified negative `90bb03b7...` completed with newly
 encountered nonzero-hole descendants pruned before Ehrhart evaluation. All
-proposal dispositions are durable in MariaDB.
+proposal dispositions are durable in MariaDB; its exact outcomes are below.
 
 Straight zero-hole partial leader `56875bde...` is fully reconstructed and is
 exact-positive of degree 23 (h-star degree 21). Its smallest normalized
@@ -20,7 +20,11 @@ internal coefficient is `28256219611/314590394958840` (about `8.98e-5`). The
 shape is straight `(5^7,4,4,3,3,1)` with weight
 `(5,5,5,3,3,3,3,3,3,3,4,2,2,2,2,2,0)`; exact ordinary counts through 11 and
 strict counts through 12 are stored. Candidate `5672ee4c...` is the next
-degree-23 straight zero-hole completion in progress.
+degree-23 straight zero-hole completion and is also exact-positive, with the
+improved normalized internal margin `3929951653/52330448330160` (about
+`7.51e-5`). It has straight shape `(5^8,4,3,2,1)`, weight
+`(5,5,5,3,3,3,3,3,3,3,4,3,2,2,2,1,0)`, h-star degree 21, and no negative
+coefficient.
 
 Abacus job `20260911T142628-3f5605e60972` returned an exact strict-count prefix
 for `aad5636a...` through dilation 11 and a bounded dilation-12 timeout after
@@ -46,11 +50,16 @@ adapter now permits dimension at most 128 and 120 seconds per case while
 retaining the two-million-state and Abacus 8-GiB limits; all 122 tests pass.
 
 A further exact paired shape/weight/flag generation from straight zero-hole
-`56875bde...` is active with estimated dimension allowed through 60. Its first
-minute durably classified 869 nonempty exact prefixes and 174 exact-empty
-cases; the same MariaDB-backed ledger is continuing under a monitored finite
-cap. Exact completion of straight degree-23 `5672ee4c...` is also active; its
-ordinary counts through dilation 11 are stored.
+`56875bde...`, allowing estimated dimension through 60, is complete: 7,679
+proposals, comprising 6,404 nonempty exact prefixes and 1,275 exact-empty
+cases, with no limits or dimension prunes. Exact strict tails through dilation
+six certify all 1,050 signature classes with no skips. Four straight zero-hole
+classes have negative partial known-ends scores: `aa15c037...`, `741692c9...`,
+`e664ffd8...` (all degree 23), and `b97653d5...` (degree 21). These remain
+ranking signals, not counterexamples. Four serial Abacus tail-12 jobs
+`20260911T161409-3a21d272a1ad`, `20260911T161409-2a0e8ef4f76b`,
+`20260911T161409-961fc42654e4`, and `20260911T161410-579ba949e868` are queued;
+input SHA prefixes are `0c0e57cd,d72e124b,903d3dc6,2176a171`.
 
 The private exact-negative loader and genetic parent selection now preserve
 quotient-poset diversity. The prior 7,599 negative genome rows represented
