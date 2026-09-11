@@ -53,7 +53,17 @@
   `7f22a02f...`, is remotely exact-negative in degrees one through three,
   degree 114, with 2,946,757 states (job `20260911T194804-b0ec8cf41536`, output
   `caf34a9c...`). Its flags are `(2,9)..(2,13)`, with sole bad pair `(6,11)`.
-  These await quiet local full-polynomial replay before ingestion/breeding.
+  The fifth-flag child has now matched a quiet local replay exactly in 75.169
+  seconds and 2,946,757 states; local output hash is `39b987dc...`, and ledger
+  `c52f1e8a...` ingested it. It is the certified structural leader with five
+  genuine flags and one bad edge. Its unique sixth-flag child `468b1c0e...`
+  is now also certified negative: degree 113, six genuine flags, sole bad pair
+  `(6,11)`, and negative coefficients one through three. Local replay matched
+  Abacus job `20260911T200614-f1f539996139` at 2,938,320 states; ledger
+  `10bb3dce...` ingested it. Direct zero-hole descendants are remotely positive
+  pending quiet local matches. All 518 one-step shape transports from this
+  leader are stored; the two new zero-hole cases are queued as Abacus job
+  `20260911T202641-7863232114c7`. Eliminating the final bad edge is primary.
 - Private genetic v16 is exact-negative-parent-only and adds cross-run exact
   reuse plus audited flag-swap/flag-augmentation operators; all 124 tests pass.
 
