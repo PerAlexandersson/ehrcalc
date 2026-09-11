@@ -101,6 +101,32 @@ slot. Reordered job `20260911T140917-94f0d21b1477` tries the three degree-21
 leaders first (input SHA prefix `664d17d9`). Strongest degree-23
 `7c7ad27a...` also has a monitored local 2,400-second exact run active.
 
+That local maintained-engine run completed in 1,724.952 seconds:
+`7c7ad27a...` is exact-positive and has the same full degree-23 Ehrhart and
+h-star vectors as `9e249693...`. The distinct candidate is stored in MariaDB.
+The reordered degree-21 remote interpolation was cancelled after roughly
+eleven minutes without output in favor of the faster exact reciprocity route.
+
+The two-million-state Abacus retries `20260911T141214-1316a5fa098f` and
+`20260911T141215-ccdc62e38a4e` resolved all thirteen degree-95--99 one-hole
+growth faces exactly positive. Fresh local recomputation matched every full
+polynomial and DP-state count before ingestion. Validated ledger prefixes are
+`7e79bc29` and `7f85dc0a`; remote/local output SHA pairs are
+`a6a32594`/`06b15619` and `c79c889d`/`18a1f9e3`.
+
+A new paired mutation generation from `7c7ad27a...` keeps straight shape and
+zero nonflag holes. It stored 7,073 exact nonempty and 1,344 exact-empty
+candidate attempts; its 7,072 compressed representatives span degrees 18--35
+and 1,367 `(dimension,L1,L2,L3)` classes. Seventeen queued Abacus batches
+`20260911T143917-fa0c2a1f25d2` through
+`20260911T143923-eab2e94441b8` request all 8,202 strict counts through
+dilation six. Seven earlier jobs `20260911T142628-cf36813883da` through
+`20260911T142630-326261fedc78` extend the seven prior partial leaders through
+dilation twelve. Every batch has a local exact control and requires a fresh
+local validation before ingestion. Private companion commit `0867763` adds
+candidate-filtered remote batching and locally validated genetic-result
+ingestion; all 120 private tests pass.
+
 ## KTT explicit-dimension tail audit — 2026-09-11 (superseded checkpoint)
 
 Codex remains the sole KTT/private-companion worker and local MariaDB writer.
