@@ -1,6 +1,6 @@
 # KTT Search Handoff
 
-## Genetic search and exact remote tails — 2026-09-11 (active)
+## Current negative-face reservoir bridge — 2026-09-11 (active)
 
 - `a2be13af...` has a complete locally exact degree-25 reconstruction from
   ordinary `L(0)..L(14)` and structural strict counts 1--11.  It is positive;
@@ -28,6 +28,22 @@
 - Closest proven negative remains degree-84 `612334d7...`, skew hook
   `(11,1^9)/(1)`, weight `1^19`, with exactly two internal nonflag holes
   `(4,6)` and `(6,10)`; `(5,14)` is the third equality and is flag-absorbed.
+- A complete zero-hole reservoir bridge directly from `612334d7...` now
+  covers 30,913 first-transfer weight/flag candidates: 5,641 nonempty and
+  25,272 exact-empty. Exact representatives at degrees
+  28,26,22,16,8,6,4,0 are all positive; ledger `3e0e3259...` is complete.
+- Two further paired shape/weight/flag generations around the small degree-8
+  and degree-6 descendants classified 367 and 522 proposals. All 40 distinct
+  short-signature representatives were fully reconstructed and matched two
+  unused dilations; all are positive.
+- Abacus job `20260911T072345-ab8e97109e4e` matched a known degree-8 flagged
+  control and completed four alternate-transfer candidates of degrees
+  16,22,26,28. All were positive and each matched an unused local `L(4)`
+  before ingestion. Output SHA-256 is `13815cdc...`; ledger `6d14a991...` is
+  complete.
+- Degree-19 jobs `20260911T061817-5cdaaf727fef` and
+  `20260911T062008-54ea5ea7f1dd` completed and both candidates are positive;
+  their exact output hashes are `f420ab5f...` and `37d48e22...`.
 
 ## Full corrected tail audit — 2026-09-10 (superseded checkpoint)
 

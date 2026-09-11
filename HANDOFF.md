@@ -1,6 +1,6 @@
 # Ehrcalc Handoff
 
-## KTT genetic continuation — 2026-09-11 (active)
+## KTT current-face reservoir bridge — 2026-09-11 (active)
 
 Structural candidate `a2be13af...` is locally complete and exact-positive.
 Ordinary `L(0)..L(14)` plus correct strict dilations 1--11 reconstruct its
@@ -27,6 +27,21 @@ Two additional flag-heavy reduced-mask ledgers stored 18,278 and 19,238
 proposal slots. They reached zero-hole positive descendants of degrees 79 and
 77, but no new admissible negative. These lineages keep unit content; the
 paired fixed-content search is the branch that also mutates weight.
+
+A new exact bridge starts directly from certified negative `612334d7...`,
+absorbs both remaining internal bans as genuine row flags, and mutates content
+by deleting reservoir-excluded labels. Its complete first-transfer family has
+30,913 proper flagged candidates: 5,641 nonempty and 25,272 exact-empty. Exact
+representatives at degrees 28,26,22,16,8,6,4,0 are all positive. Subsequent
+paired shape/weight/flag generations classified another 889 proposals and all
+40 completed signature representatives are positive.
+
+Abacus degree-19 jobs `20260911T061817-5cdaaf727fef` and
+`20260911T062008-54ea5ea7f1dd` both completed exact-positive. New flagged-GT
+job `20260911T072345-ab8e97109e4e` matched its known local control, then
+computed four alternate-transfer candidates exactly positive; every result
+matched a local unused dilation before ingestion. BEST PROVEN NEGATIVE remains
+degree-84/two-hole `612334d7...`.
 
 ## Corrected full KTT ranking — 2026-09-10 (superseded checkpoint)
 
