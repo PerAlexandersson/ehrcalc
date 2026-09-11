@@ -1,6 +1,20 @@
 # KTT Search Handoff
 
-## Full corrected tail audit — 2026-09-10 (active)
+## Provisional improved proper near-miss — 2026-09-11 (active)
+
+- `a2be13af...` has a complete locally exact degree-25 reconstruction from
+  ordinary `L(0)..L(14)` and structural strict counts 1--11.  It is positive;
+  normalized minimum ~`5.79997e-5` improves the proper near-miss but is not a
+  counterexample.
+- Strict dilation 11 is `2721676964378370070744` (1984.865 s locally).
+  Abacus job `20260910T202152-886c80571298` is still active after a machine
+  suspend/resume; direct out-of-sample `L(15)` job
+  `20260910T205734-3fbdace166c2` is queued.  Do not duplicate either job.
+- Closest proven negative remains degree-84 `612334d7...`, skew hook
+  `(11,1^9)/(1)`, weight `1^19`, with exactly two internal nonflag holes
+  `(4,6)` and `(6,10)`; `(5,14)` is the third equality and is flag-absorbed.
+
+## Full corrected tail audit — 2026-09-10 (superseded checkpoint)
 
 - Size-50 audit complete: 395 classes = 260 structurally valid ranked + 121
   durable deficient-span exclusions + 14 size prunes; zero timeouts.

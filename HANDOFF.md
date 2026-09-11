@@ -1,6 +1,22 @@
 # Ehrcalc Handoff
 
-## Corrected full KTT ranking — 2026-09-10 (active)
+## Degree-25 zero-hole reconstruction — 2026-09-11 (active)
+
+Structural candidate `a2be13af...` is locally complete and exact-positive.
+Ordinary `L(0)..L(14)` plus correct strict dilations 1--11 reconstruct its
+degree-25 polynomial; strict dilation 11 is `2721676964378370070744`
+(1984.865 s).  Its normalized minimum
+`43145181473/743885964993600` (~`5.79997e-5`) provisionally improves the
+proper zero-hole near-miss, but is not a counterexample.
+
+Abacus strict job `20260910T202152-886c80571298` remains active after a host
+suspend/resume and has emitted only its verified environment/hash header.
+Do not resubmit it.  Independent unused direct `L(15)` validation job
+`20260910T205734-3fbdace166c2` is queued behind it; prediction
+`729349049394323624299655020`, ledger `44b6d83a...`.  BEST PROVEN NEGATIVE
+remains degree-84/two-hole `612334d7...`.
+
+## Corrected full KTT ranking — 2026-09-10 (superseded checkpoint)
 
 The private size-50 audit now terminates with 260 structurally valid ranked
 classes, 121 durable deficient-span exclusions, 14 size prunes, and zero
