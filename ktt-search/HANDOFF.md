@@ -48,6 +48,12 @@
   `(2,10)..(2,13)`, sole bad pair `(6,11)`, mask `0x40082201000000000`, and
   2,949,452 states. Job `20260911T193133-fa1ca34023e1` matched local exactly;
   ledger `b1a401e4...` ingested it. Its direct zero-hole closures are next.
+- Both direct zero-hole closures are remotely exact-positive in job
+  `20260911T194704-0276f54e649b`. The fifth-flag child retaining the bad edge,
+  `7f22a02f...`, is remotely exact-negative in degrees one through three,
+  degree 114, with 2,946,757 states (job `20260911T194804-b0ec8cf41536`, output
+  `caf34a9c...`). Its flags are `(2,9)..(2,13)`, with sole bad pair `(6,11)`.
+  These await quiet local full-polynomial replay before ingestion/breeding.
 - Private genetic v16 is exact-negative-parent-only and adds cross-run exact
   reuse plus audited flag-swap/flag-augmentation operators; all 124 tests pass.
 

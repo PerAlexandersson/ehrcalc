@@ -81,6 +81,15 @@ full polynomial and 2,949,452 states; ledger `b1a401e4...` ingested it.
 Degree-116 sibling `41e774d6...` is positive remotely at 3,289,220 states but
 awaits a quiet local replay before ingestion.
 
+Remote follow-up from `97d5a35d...` is complete but awaits quiet local replay.
+Both zero-hole closures are positive on job `20260911T194704-0276f54e649b`:
+five-flag degree-115 `368eace0...` at 3,523,585 states and four-flag degree-116
+`b0918a9e...` at 3,526,280 states. More promisingly, the fifth-flag one-hole
+child `7f22a02f...` is negative in degrees one through three, degree 114, and
+used 2,946,757 states on job `20260911T194804-b0ec8cf41536` (output
+`caf34a9c...`). It has flags `(2,9)..(2,13)` and sole bad pair `(6,11)`. Do not
+ingest or breed these remote results until full local polynomials match.
+
 ## KTT diversified exact-negative lineages — 2026-09-11 (active)
 
 Codex remains the sole KTT/private-companion worker and local MariaDB writer.
