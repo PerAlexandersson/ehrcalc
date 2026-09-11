@@ -28,8 +28,18 @@ flag-heavy: nine selected equalities give four forbidden row labels, of which
 two are flag-absorbed, leaving genuine holes `(6,10),(7,12)`. A fresh exact
 verifier reproduced its negative linear and quadratic coefficients with
 295,386 DP states. Genetic ranking version 8 now prefers more flag-absorbed
-labels after holes, size, and degree; all 108 private tests pass. No exact
-zero- or one-hole negative is known.
+labels after holes, size, and degree. Dedicated one-hole ledger `e60d4fed...`
+completed generation two with 6,408 exact evaluations and 3,817 bad-edge
+prunes. Its only distinct timeout, one-hole degree-76 `8450b48a...`, was
+subsequently computed exactly positive both locally and on Abacus, leaving no
+unresolved candidate and no exact zero- or one-hole negative.
+
+The genetic restart now projects only ranking fields for its 44,727 reusable
+exact rows and loads full coefficient vectors lazily, reducing observed worker
+memory from about 2.1 GiB to 0.6 GiB. Proposal events are persisted in bounded
+500-row batches before evaluation/checkpoint. The earlier exit 137 was a
+shared-cgroup OOM during an unrelated Lean build; KTT writes were durable. All
+110 private tests pass.
 
 Abacus job `20260911T121632-cd4b899ec22e` recomputed the full degree-86
 negative control and seven new one-hole positive faces. All eight full
@@ -37,12 +47,24 @@ polynomials and DP-state counts matched MariaDB exactly in 48.854 seconds.
 Input/output SHA-256 prefixes are `981f770e`/`2f06d15c`; validation ledger
 `e35f047b...` is complete.
 
+Abacus job `20260911T125810-2c182b15345f` resolved `8450b48a...` in 20.380
+seconds after matching the degree-84 negative control. Its exact positive
+degree-76 polynomial and 174,481 DP states matched a separate local run before
+MariaDB ingestion. Input/output SHA-256 prefixes are `5f7f49e0`/`70e1bc56`;
+validation ledger `2b74c201...` is complete.
+
 The proper zero-hole degree-23 candidate `9e249693...` is fully exact-positive
 with h-star degree 21 and normalized linear margin
 `2652480637/36518031327960`. Abacus job
 `20260911T112652-7fc24f1062c5` independently matched local
 `L(11)=53508266105477025334288` in 946.878 seconds. Fetched output SHA-256 is
 `2441bfb3...`, and validated ingestion ledger `eea8ce06...` is complete.
+
+Current optimization priority is an exact-negative zero-hole candidate at any
+practical degree, then one hole, then smaller degree/size; straight shape is
+preferred among comparable candidates. Future bounded branches may therefore
+grow rectangles and explore higher-degree paired shape/weight/flag mutations
+instead of staying on the low-degree frontier.
 
 ## KTT explicit-dimension tail audit — 2026-09-11 (superseded checkpoint)
 
