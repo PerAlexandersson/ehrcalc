@@ -24,18 +24,14 @@ Degree-21 `345d1fa1...` has straight shape `(5^8,4,3,2,1)`, fixed weight
 `(5,5,5,3^8,2,2,2,2,1,2)`, row lower bounds
 `(1^8,9,11,13,15)`, row upper bounds
 `(7,7,11,11,11,11,11,14,15,15,17,17)`, and corrected normalized known-ends
-score `-7123881559199/2283171230340`. Local ordinary counts are exact through
-dilation eight; the first 55-second pass recorded dilation nine as bounded.
-Abacus jobs `20260911T094744-b02afc47d040` (strict 7--11) and
-`20260911T094750-042b32d8f8c9` (ordinary 4--10) are active under explicit
-1,800-second case and 7,200-second job bounds. Inspect these IDs rather than
-resubmitting.
-
-The first local ordinary pass completed dilations four through eight in
-0.116, 0.652, 2.978, 10.832, and 35.748 seconds. A measured continuation gave
-exact `L(9)=20565675951366790286` in 110.665 seconds; `L(10)` reached its
-distinct 300-second cap and is retrying once under a controlled 900-second
-bound. No timeout is interpreted as a sign.
+score `-7123881559199/2283171230340`. Full exact reconstruction proves it
+positive, with normalized smallest internal coefficient
+`112719599/830244083760` (~`1.3577e-4`) and h-star degree 19. Local ordinary
+counts through `L(10)` are exact; `L(9)`/`L(10)` took 110.665/303.547 seconds.
+Abacus strict job `20260911T094744-b02afc47d040` completed all six cases in
+688.427 seconds, and local dilation 11 matched in 268.693 seconds. Output
+SHA-256 is `b43f8b13...`; ledger `7f12a358...` is complete. Ordinary job
+`20260911T094750-042b32d8f8c9` remains active as a cross-check only.
 
 The degree-23 second leader `bf9b64a4...` is queued behind the degree-21 jobs
 as Abacus IDs `20260911T095513-201d86fa1d1d` (strict 7--12),
@@ -43,7 +39,9 @@ as Abacus IDs `20260911T095513-201d86fa1d1d` (strict 7--12),
 `20260911T095523-b1387ba1d105` (ordinary 11). Input SHA-256 prefixes are
 `a8af6cdd`, `7d8009db`, and `645647b9`; all chunks include a known exact
 control. The private preparer now splits large ordinary completions below the
-remote runner's eight-case cap, covered by the 104-test passing suite.
+remote runner's eight-case cap, covered by the 104-test passing suite. Local
+ordinary counts for `bf9b64a4...` are exact through dilation eight under the
+initial 55-second pass; its measured continuation through eleven is active.
 
 The earlier degree-16 completion `16423d9d...` is exact-positive. Abacus jobs
 `20260911T093912-edde20ae1f8a` and
