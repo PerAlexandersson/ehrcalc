@@ -39,6 +39,15 @@
   Its three-flag predecessor `013148dd...` is negative in degrees one and two.
   All direct zero-hole closures are positive, and adding a fifth consecutive
   flag is positive. Redundant Kogan mask bits are not counted as flag edges.
+- A bounded size-growth generation stored 13 one-hole descendants of
+  dimensions 112--120. The two-million-state/120-second remote/local frontier
+  left all 13 unresolved; bounded audit ledgers `62ac2e3a...`,`c6648387...`
+  preserve every outcome. A selected four-million-state/240-second retry found
+  degree-112 `560247ab...` positive and new degree-115 `97d5a35d...` negative
+  in coefficients one, two, and three. The latter has four valid flags
+  `(2,10)..(2,13)`, sole bad pair `(6,11)`, mask `0x40082201000000000`, and
+  2,949,452 states. Job `20260911T193133-fa1ca34023e1` matched local exactly;
+  ledger `b1a401e4...` ingested it. Its direct zero-hole closures are next.
 - Private genetic v16 is exact-negative-parent-only and adds cross-run exact
   reuse plus audited flag-swap/flag-augmentation operators; all 124 tests pass.
 

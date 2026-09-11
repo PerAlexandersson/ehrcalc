@@ -63,6 +63,24 @@ zero-hole closure of both is positive. A fifth consecutive flag is also
 positive, sharply locating the negative boundary. Redundant Kogan mask bits
 are excluded from the flag count.
 
+A bounded growth generation stored 13 larger one-hole descendants of
+dimensions 112--120. At two million states/120 seconds none completed; all
+remote/local unresolved outcomes are recorded in MariaDB ledgers
+`62ac2e3a...`,`c6648387...`. The adapter now allows selected retries through
+four million states/240 seconds while preserving dimension 128, serial two-CPU
+and 8-GiB ceilings; the preparer has an explicit candidate filter and all 124
+private tests pass.
+
+Selected degree-112 `560247ab...` is exact-positive at 3,171,146 states, matched
+by local replay and Abacus job `20260911T192834-116da418ca91` (ledger
+`d56fe15b...`). Selected degree-115 `97d5a35d...` is a new exact-negative:
+`(a,b)=(10,12)`, mask `0x40082201000000000`, four valid flags
+`(2,10)..(2,13)`, sole bad pair `(6,11)`, and negative coefficients in degrees
+one, two, and three. Local and job `20260911T193133-fa1ca34023e1` matched the
+full polynomial and 2,949,452 states; ledger `b1a401e4...` ingested it.
+Degree-116 sibling `41e774d6...` is positive remotely at 3,289,220 states but
+awaits a quiet local replay before ingestion.
+
 ## KTT diversified exact-negative lineages — 2026-09-11 (active)
 
 Codex remains the sole KTT/private-companion worker and local MariaDB writer.
