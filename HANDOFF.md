@@ -105,9 +105,11 @@ pending. A grow-then-close scan stores 12 larger zero-hole candidates of
 dimensions 118--128 in run `b5978237...`, with Abacus jobs
 `20260911T202944-adebc62a5d43` and `20260911T202944-64c51cfc1209`. A separate
 1,024-event seed-only multi-bit generation stored 786 distinct same-shape
-genomes, pruned 784 nonzero-hole cases, and left two new degree-114 zero-hole
-candidates queued as job `20260911T204207-212af3f7b4a7`. No local sign claim
-is made for pending remote-only results.
+genomes and pruned 784 nonzero-hole cases. Its two zero-hole presentations have
+the same quotient-poset hash as closure `e4b2d921...`; job
+`20260911T204207-212af3f7b4a7` was therefore cancelled while queued, and the
+equivalence is recorded rather than recomputed. No local sign claim is made
+for pending remote-only results.
 
 ## KTT diversified exact-negative lineages — 2026-09-11 (active)
 
