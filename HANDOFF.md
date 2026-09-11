@@ -30,6 +30,28 @@ counts plus the nonexact attempt; output/result SHA-256 prefixes are
 `3658fedb`/`81868a6e`. The private ingester now safely retains exact prefixes
 from otherwise successful bounded batches, and all 121 private tests pass.
 
+Large-degree zero-hole growth ledger `b8072b28...` completed two generations:
+1,633 exact cached evaluations, 15,499 nonzero-hole prunes, and one distinct
+five-second timeout. The timeout `c8156f41...` is now locally exact-positive
+of degree 100 with 923,780 DP states in 19.353 seconds; local audit ledger
+`544343a7...` stores its full polynomial pending Abacus job
+`20260911T154317-da1c51370b1d`. A continuation from it, ledger `71095eff...`,
+isolated the two uncontracted 10x11/11x10 rectangles. Both are zero-hole,
+degree 110, and locally exact-positive with 1,847,560 states in 44.431/43.940
+seconds; ledger `c8066656...` stores them pending Abacus validation job
+`20260911T155312-790e34080d0f`. The initially submitted job
+`20260911T154729-bc01c2604373` was cancelled before execution after the local
+adapter correctly rejected dimension 110 under its former cap. The audited
+adapter now permits dimension at most 128 and 120 seconds per case while
+retaining the two-million-state and Abacus 8-GiB limits; all 122 tests pass.
+
+A further exact paired shape/weight/flag generation from straight zero-hole
+`56875bde...` is active with estimated dimension allowed through 60. Its first
+minute durably classified 869 nonempty exact prefixes and 174 exact-empty
+cases; the same MariaDB-backed ledger is continuing under a monitored finite
+cap. Exact completion of straight degree-23 `5672ee4c...` is also active; its
+ordinary counts through dilation 11 are stored.
+
 The private exact-negative loader and genetic parent selection now preserve
 quotient-poset diversity. The prior 7,599 negative genome rows represented
 only 15 distinct faces; bounded diversified mutation has raised the reservoir
