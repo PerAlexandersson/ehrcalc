@@ -16,12 +16,26 @@ more flag-heavy: ten selected equalities, with two of four forbidden labels
 absorbed by terminal row flags. Its exact negative linear and quadratic
 coefficients were independently reproduced with 295,602 DP states.
 
-A dedicated one-hole continuation from `dfe6b2d4...` is resumable under ledger
-`b38c8b3f...`. Generation one made 6,144 proposals collapsing to 334 unique
-candidates; 259 exact rows and 109 bad-edge prunes are durable, and no
-admissible negative has appeared. Its 240-second continuation expired while
-constructing generation two. BEST PROVEN NEGATIVE therefore remains
-degree-84/two-hole `612334d7...`; no exact zero- or one-hole negative is known.
+A dedicated one-hole continuation from `dfe6b2d4...`, ledger `b38c8b3f...`,
+completed generation two with 3,760 exact evaluations, 2,366 bad-edge prunes,
+16 newly computed faces, and no admissible negative. A stronger two-hole
+forced-edge-pressure branch, ledger `0998502c...`, completed 8,759 exact
+evaluations and 395 prunes, including 53 new exact faces. It found two new
+negative quotient posets, raising the reservoir from 17 to 19.
+
+New exact-negative `90bb03b7...` ties the degree-84/two-hole record but is more
+flag-heavy: nine selected equalities give four forbidden row labels, of which
+two are flag-absorbed, leaving genuine holes `(6,10),(7,12)`. A fresh exact
+verifier reproduced its negative linear and quadratic coefficients with
+295,386 DP states. Genetic ranking version 8 now prefers more flag-absorbed
+labels after holes, size, and degree; all 108 private tests pass. No exact
+zero- or one-hole negative is known.
+
+Abacus job `20260911T121632-cd4b899ec22e` recomputed the full degree-86
+negative control and seven new one-hole positive faces. All eight full
+polynomials and DP-state counts matched MariaDB exactly in 48.854 seconds.
+Input/output SHA-256 prefixes are `981f770e`/`2f06d15c`; validation ledger
+`e35f047b...` is complete.
 
 The proper zero-hole degree-23 candidate `9e249693...` is fully exact-positive
 with h-star degree 21 and normalized linear margin
