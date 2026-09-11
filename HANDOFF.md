@@ -100,6 +100,14 @@ zero-hole closures are remotely positive and await quiet local matches. A
 complete zero-hole shape-transport neighborhood is stored (518 events, 46
 unique genomes, two new zero-hole cases) and queued as Abacus job
 `20260911T202641-7863232114c7`; eliminating the final bad edge is now primary.
+Both new one-step cases are remotely exact-positive; local validation is
+pending. A grow-then-close scan stores 12 larger zero-hole candidates of
+dimensions 118--128 in run `b5978237...`, with Abacus jobs
+`20260911T202944-adebc62a5d43` and `20260911T202944-64c51cfc1209`. A separate
+1,024-event seed-only multi-bit generation stored 786 distinct same-shape
+genomes, pruned 784 nonzero-hole cases, and left two new degree-114 zero-hole
+candidates queued as job `20260911T204207-212af3f7b4a7`. No local sign claim
+is made for pending remote-only results.
 
 ## KTT diversified exact-negative lineages — 2026-09-11 (active)
 

@@ -64,6 +64,12 @@
   pending quiet local matches. All 518 one-step shape transports from this
   leader are stored; the two new zero-hole cases are queued as Abacus job
   `20260911T202641-7863232114c7`. Eliminating the final bad edge is primary.
+  Those two one-step shape cases are remotely positive. Twelve larger
+  grow-then-close zero-hole candidates (dimensions 118--128) are stored in run
+  `b5978237...` and owned by jobs `20260911T202944-adebc62a5d43` and
+  `20260911T202944-64c51cfc1209`. Seed-only genetic v17 also stored all 1,024
+  multi-bit proposal events (786 unique, 784 nonzero-hole prunes, two degree-114
+  zero-hole survivors); job `20260911T204207-212af3f7b4a7` is queued.
 - Private genetic v16 is exact-negative-parent-only and adds cross-run exact
   reuse plus audited flag-swap/flag-augmentation operators; all 124 tests pass.
 
