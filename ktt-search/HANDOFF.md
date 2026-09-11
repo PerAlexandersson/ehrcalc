@@ -1,5 +1,47 @@
 # KTT Search Handoff
 
+## One-hole exact-negative breakthrough — 2026-09-11 (active)
+
+- Codex remains the sole KTT/private-companion worker and local MariaDB writer;
+  reports/logs stay untracked, with no push or publication.
+- Best certified negative `86b98937ad8a...` has one bad edge, `(a,b)=(10,11)`,
+  mask `0x10000000000`, degree 109, and one negative Ehrhart coefficient
+  (degree one). Its lift is `(12,1^10)/(1)`, weight `1^21`, with sole bad pair
+  `(6,10)`. Abacus job `20260911T171935-1848e90938e3` and the local replay
+  matched the full exact polynomial and 1,512,988 states.
+- Every direct zero-hole flag swap from this bare one-equality parent is
+  positive (complete degree ladder 100--110). Jobs
+  `20260911T173913-a0e37431c8c2` and `20260911T173913-edff1ae44197` validate
+  the locally exact hard cases.
+- The next negative lineage adds flag-absorbed equalities while retaining the
+  one hole. Local exact augmentation found negatives of degrees 104, 105, 107,
+  and 108. Best `fd2cb24e0106...` has forbidden pairs `(6,10),(6,16)`, only
+  `(6,10)` bad, and a negative linear coefficient. Abacus job
+  `20260911T175147-ea1a52166b1f` matched all seven hard augmentations exactly;
+  ledger `219c3781...` ingested them.
+- Both direct zero-hole closures of `fd2cb24e...` are positive. The new
+  degree-100 closure `237c4477...` matched locally and on Abacus job
+  `20260911T180458-e3259fec5668` at 1,816,100 states; ledger `daa6118e...`
+  ingested it.
+- Four second flag-augmentation descendants matched locally and in Abacus job
+  `20260911T181047-845c7ed0600a` (input `ea075054...`, output `86b52f0b...`);
+  ledger `4f52b434...` ingested them. Degree-105 `498534b7d86a...` and
+  degree-107 `47114e5e73f7...` remain negative with two flag-absorbed edges and
+  sole bad pair `(6,10)`; the other two are positive.
+- Complete zero-hole closures of both negatives are stored. Five hard cases
+  matched locally and on serial Abacus jobs
+  `20260911T181912-842f34239bad` and `20260911T182024-c44fe945633b`; all are
+  positive (ledgers `7387623b...`, `885584ab...`).
+- Strongest flag-heavier negative `38a1cb1c...` has degree 105, mask
+  `0x80211010000000`, four valid consecutive row-2 flags `(2,9)..(2,12)`, and
+  sole bad pair `(6,10)`. Job `20260911T183757-4fc05c65bfed` matched the full
+  local polynomial and 1,512,108 states; ledger `f77199f5...` ingested it.
+  Its three-flag predecessor `013148dd...` is negative in degrees one and two.
+  All direct zero-hole closures are positive, and adding a fifth consecutive
+  flag is positive. Redundant Kogan mask bits are not counted as flag edges.
+- Private genetic v16 is exact-negative-parent-only and adds cross-run exact
+  reuse plus audited flag-swap/flag-augmentation operators; all 124 tests pass.
+
 ## Current negative-face reservoir bridge — 2026-09-11 (active)
 
 - `a2be13af...` has a complete locally exact degree-25 reconstruction from

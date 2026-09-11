@@ -1,5 +1,68 @@
 # Ehrcalc Handoff
 
+## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
+
+Codex remains the sole KTT/private-companion worker and local MariaDB writer.
+Generated reports, selected remote inputs, and logs remain untracked; no push
+or publication is authorized.
+
+The best certified negative now has **one genuine nonflag hole**. Candidate
+`86b98937ad8a...` has `(a,b)=(10,11)`, mask `0x10000000000`, one equality,
+degree 109, and negative linear coefficient
+`-180818597702824154772020680269331683512022678929 /
+44058261998812152448078495494850680023812063725`. Its canonical lift is the
+skew hook `(12,1^10)/(1)` with weight `1^21` and sole forbidden/hole pair
+`(6,10)`. Abacus job `20260911T171935-1848e90938e3` (input SHA-256
+`32abb2d9...`, output `35d622c4...`) and the independent local replay agree on
+the full polynomial and 1,512,988 states; ledger `88c928e7...` ingested it.
+
+Exact hole-to-flag swaps from this parent form a zero-hole degree ladder
+100--110. Every member is positive. Jobs `20260911T173913-a0e37431c8c2` and
+`20260911T173913-edff1ae44197` reproduce degrees 101--107 and 108--109;
+degrees 100 and 110 were exact cache hits. Thus the bare one-equality parent
+cannot be closed directly.
+
+The private driver now breeds exact negatives only and supports immediate
+mask mutations, cross-run exact-cache reconciliation, exact flag swaps, and
+flag-absorbed equality augmentation. All 124 tests pass. An eight-case local
+augmentation pilot found new one-hole negatives at degrees 104, 105, 107, and
+108. The degree-104 leader `fd2cb24e0106...` has forbidden pairs
+`(6,10),(6,16)` with only `(6,10)` bad, and negative linear coefficient
+`-645389345357365402966343950245344479066981 /
+1981696894848904098203948673098507906834400`. Abacus job
+`20260911T175147-ea1a52166b1f` independently reproduced the full local
+polynomials and states; ledger `219c3781...` ingested all seven new cases.
+Both direct zero-hole closures of the degree-104 leader are exact-positive:
+degree-105 `c94ee158...` was cached, while degree-100 `237c4477...` used
+1,816,100 states and matched local replay on Abacus job
+`20260911T180458-e3259fec5668` (input `2f88e8e7...`, output `5f454a27...`),
+then entered ledger `daa6118e...`.
+
+The next exact-negative-only generation produced four second flag-augmentation
+cases. Abacus job `20260911T181047-845c7ed0600a` (input `ea075054...`, output
+`86b52f0b...`) matched the full local results and ledger `4f52b434...` ingested
+them. Degrees 99 and 101 are positive. Degree-105 `498534b7d86a...` and
+degree-107 `47114e5e73f7...` remain negative, each with two flag-absorbed
+equalities and sole bad pair `(6,10)`. The former is negative in Ehrhart
+degrees one and two; the latter in degree one.
+
+Complete direct zero-hole closure sets from both new negatives are stored.
+All cases are positive; five hard cases matched local replay on Abacus jobs
+`20260911T181912-842f34239bad` (ledger `7387623b...`) and
+`20260911T182024-c44fe945633b` (ledger `885584ab...`).
+
+The strongest flag-heavier negative is now degree-105 `38a1cb1c...`, mask
+`0x80211010000000`: four valid consecutive row-2 flag pairs `(2,9)..(2,12)`
+and sole bad pair `(6,10)`. Its negative linear coefficient is
+`-86149206464593053834140810151216642263136577 /
+24176702117156629998088173811801796463379680`. Local replay and Abacus job
+`20260911T183757-4fc05c65bfed` matched the full polynomial and 1,512,108
+states; ledger `f77199f5...` ingested it. The preceding three-flag degree-106
+candidate `013148dd...` is negative in degrees one and two. Every direct
+zero-hole closure of both is positive. A fifth consecutive flag is also
+positive, sharply locating the negative boundary. Redundant Kogan mask bits
+are excluded from the flag count.
+
 ## KTT diversified exact-negative lineages — 2026-09-11 (active)
 
 Codex remains the sole KTT/private-companion worker and local MariaDB writer.
