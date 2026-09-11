@@ -47,6 +47,17 @@
   16,22,26,28. All were positive and each matched an unused local `L(4)`
   before ingestion. Output SHA-256 is `13815cdc...`; ledger `6d14a991...` is
   complete.
+- The entire 569-class second-generation proper reservoir now has exact
+  structural strict counts through dilation six. Abacus computed 548 classes
+  in eight jobs and all 548 dilation-six values independently matched locally
+  before ingestion; no class was skipped. Global partial leader `03d0ad46...`
+  is straight-shape degree 19, but its completed ordinary-9/strict-10
+  polynomial is positive (normalized internal margin ~`0.0004194`).
+- A new paired zero-hole generation from exact `03d0ad46...` classified all
+  10,845 proposals: 5,029 new nonempty, 4,290 empty, 1,469 dimension-pruned,
+  and 57 already stored, with no limited remainder. Its 434 new signature
+  classes are queued in six finite Abacus structural-tail jobs beginning
+  `20260911T083434-9b8c6b4b1915`; inspect existing IDs rather than resubmit.
 - Degree-19 jobs `20260911T061817-5cdaaf727fef` and
   `20260911T062008-54ea5ea7f1dd` completed and both candidates are positive;
   their exact output hashes are `f420ab5f...` and `37d48e22...`.

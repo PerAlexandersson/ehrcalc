@@ -40,6 +40,25 @@ representatives at degrees 28,26,22,16,8,6,4,0 are all positive. Subsequent
 paired shape/weight/flag generations classified another 889 proposals and all
 40 completed signature representatives are positive.
 
+The second-generation paired reservoir around `a2be13af...` is now completely
+ranked: all 569 short-signature classes have exact maintained structural
+strict counts through dilation six, with no skipped or uncertified class.
+Abacus handled 548 classes in eight finite jobs (3,296 exact cases, 346.591
+aggregate remote seconds); every candidate's dilation-six value matched a
+fresh local exact count before ingestion. The full-rank leader `03d0ad46...`
+is proper, straight-shape, and degree 19, but its completed ordinary-9/
+strict-10 hybrid polynomial is positive, with normalized internal margin
+`320708611/764723559600` (~`0.0004194`). Its ordinary dilations 7--9 matched
+locally and on Abacus. BEST PROVEN NEGATIVE remains degree-84/two-hole
+`612334d7...`.
+
+A fresh exact paired generation from `03d0ad46...` has classified all 10,845
+zero-hole proposals: 5,029 new nonempty rows, 4,290 exact-empty, 1,469
+dimension prunes, and 57 already-stored overlaps, with no resource-limited
+remainder. The nonempty rows form 434 new short-signature classes; six bounded
+Abacus jobs `20260911T083434-9b8c6b4b1915` through
+`20260911T083436-693210109076` are queued to rank their structural tails.
+
 Abacus degree-19 jobs `20260911T061817-5cdaaf727fef` and
 `20260911T062008-54ea5ea7f1dd` both completed exact-positive. New flagged-GT
 job `20260911T072345-ab8e97109e4e` matched its known local control, then
