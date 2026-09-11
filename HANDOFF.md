@@ -18,10 +18,14 @@ parent and proved seven degree-71--78 one-hole descendants nonnegative.
 The private exact genetic search completed bounded one- and two-hole runs
 without an improved negative, and classified a new 10,254-proposal paired
 shape/weight/flag generation. Proper degree-19 leaders `286549f5...` and
-`02909c47...` are locally exact through dilation 13; serial Abacus jobs
-`20260911T061817-5cdaaf727fef` and `20260911T062008-54ea5ea7f1dd` are
-finishing dilations 14--19. BEST PROVEN NEGATIVE remains degree-84/two-hole
-`612334d7...`.
+`02909c47...` are fully exact-positive; their serial Abacus jobs
+`20260911T061817-5cdaaf727fef` and `20260911T062008-54ea5ea7f1dd`
+independently matched local controls. The 4,668 nonempty rows collapse to 569
+short-signature classes. The structural-tail ranker now bypasses scale-one
+span enumeration when using the maintained exact counter and accepts cached
+counts only with the same engine hash. A fresh degree-19 control matched its
+prior exact strict counts and h-star ends in 9.1 seconds. BEST PROVEN NEGATIVE
+remains degree-84/two-hole `612334d7...`.
 
 Two additional flag-heavy reduced-mask ledgers stored 18,278 and 19,238
 proposal slots. They reached zero-hole positive descendants of degrees 79 and

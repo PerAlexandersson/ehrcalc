@@ -22,9 +22,15 @@
 - A fresh paired generation around `a2be13af...` classified 10,254 proposals
   into 4,668 nonempty exact short signatures, 3,085 dimension prunes, and
   2,328 empty outcomes. Proper degree-19 leaders `286549f5...` and
-  `02909c47...` are exact locally through dilation 13; Abacus jobs
-  `20260911T061817-5cdaaf727fef` and `20260911T062008-54ea5ea7f1dd` are
-  finishing their exact tails serially. Do not duplicate these jobs.
+  `02909c47...` are fully exact-positive; completed Abacus jobs
+  `20260911T061817-5cdaaf727fef` and `20260911T062008-54ea5ea7f1dd`
+  independently matched their local dilation-13 controls and tails.
+- The exact structural-tail ranker now bypasses scale-one lattice-span scans
+  when the maintained strict counter is selected, and it accepts only cached
+  counts backed by the same engine SHA-256. A fresh degree-19 control
+  (`286549f5...`) matched all strict counts 1--6 and its prior exact h-star
+  prefix/tail in 9.1 seconds. The Abacus runner now supports bounded
+  multi-candidate batches for the remaining 569-class reservoir.
 - Closest proven negative remains degree-84 `612334d7...`, skew hook
   `(11,1^9)/(1)`, weight `1^19`, with exactly two internal nonflag holes
   `(4,6)` and `(6,10)`; `(5,14)` is the third equality and is flag-absorbed.
