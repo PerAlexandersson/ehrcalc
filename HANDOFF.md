@@ -66,6 +66,27 @@ preferred among comparable candidates. Future bounded branches may therefore
 grow rectangles and explore higher-degree paired shape/weight/flag mutations
 instead of staying on the low-degree frontier.
 
+A straight zero-hole paired generation around exact-positive `9e249693...`
+has now fully classified 7,904 proposals without the old degree cutoff:
+6,635 exact nonempty prefixes and 1,269 exact-empty, spanning degrees 18--35
+and 1,324 `(dimension,L1,L2,L3)` classes. Sixteen serial Abacus jobs
+`20260911T131502-5386d787c3d6` through
+`20260911T131507-6344cb53dffd` supplied 7,846 exact strict-tail cases for the
+1,305 new class representatives. Every representative's dilation-six value
+matched a fresh local exact computation before ingestion. Aggregate remote
+and local-validation times were 654.484 and 348.903 seconds; screen and ranked
+report SHA-256 prefixes are `aa195040` and `5f89ed9c`.
+
+All 1,324 exact-known-ends ranks are certified and seven are negative partial
+leaders, all straight and zero-hole (degrees 21 or 23). Strongest
+`7c7ad27a...` has normalized score
+`-156684278274929981/803396689215120`; it is not yet a negative polynomial.
+Full exact job `20260911T133811-5532e9663ad9` is active on all seven after its
+degree-zero control matched in 0.0012 seconds; input SHA prefix is `d7e2cd9b`.
+Predecessor `20260911T133613-16e1f4f03702` was deliberately cancelled before
+useful work because its degree-19 control's known runtime exceeded the case
+cap. Inspect the corrected ID rather than resubmitting.
+
 ## KTT explicit-dimension tail audit — 2026-09-11 (superseded checkpoint)
 
 Codex remains the sole KTT/private-companion worker and local MariaDB writer.
