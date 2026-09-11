@@ -14,6 +14,11 @@
   8,467 proposal slots, while the two-hole/lower-degree run covered 13,064.
   The remote one-hole batch reproduced the negative parent then proved seven
   degree-71--78 one-hole descendants nonnegative.
+- Two new flag-heavy ledgers added 18,278 two-hole-bounded and 19,238
+  one-hole-bounded proposal slots. They reached zero-hole positive descendants
+  of degrees 79 and 77 respectively, but no new admissible negative. These
+  reduced-mask runs retain unit content; weight mutation is handled in the
+  separate paired fixed-content lane.
 - A fresh paired generation around `a2be13af...` classified 10,254 proposals
   into 4,668 nonempty exact short signatures, 3,085 dimension prunes, and
   2,328 empty outcomes. Proper degree-19 leaders `286549f5...` and

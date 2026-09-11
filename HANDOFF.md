@@ -23,6 +23,11 @@ shape/weight/flag generation. Proper degree-19 leaders `286549f5...` and
 finishing dilations 14--19. BEST PROVEN NEGATIVE remains degree-84/two-hole
 `612334d7...`.
 
+Two additional flag-heavy reduced-mask ledgers stored 18,278 and 19,238
+proposal slots. They reached zero-hole positive descendants of degrees 79 and
+77, but no new admissible negative. These lineages keep unit content; the
+paired fixed-content search is the branch that also mutates weight.
+
 ## Corrected full KTT ranking — 2026-09-10 (superseded checkpoint)
 
 The private size-50 audit now terminates with 260 structurally valid ranked
