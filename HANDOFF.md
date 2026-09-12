@@ -12,40 +12,34 @@ discovery evidence only. The known remote control is `468b1c0e...`; runner,
 helper, and source archive hash to `e3bd01d...`, `a4aae249...`, and
 `bf1cfa42...`, respectively.
 
-After immediate empty-queue, host, historical-candidate, and pending-attempt
-audits, Abacus v140 `20260912T174357-bb590b7f10d0` is live. It uses six
-explicit-PID children, 30M states/1200 s per child and a 1500-s outer bound,
-on the verified six-CPU/20-GiB/no-swap/256-task profile. Its six distinct d119
-zero-hole closures are `0dec5d...`, `108c6b...`, `15dfec...`, `164ef9...`,
-`2115ab...`, and `215119...`; their inputs hash `2060cf1d...`, `2918a25c...`,
-`0427d045...`, `ced5d860...`, `0ceb3220...`, and `6cbe84fe...`, and its
-pending-attempt run key is `b95d3029...`. All six children were observed at
-97--101% CPU with zero memory-limit/OOM events. Separately, after a renewed
-two-queue/candidate audit, Laplace v5 `20260912T174740-ea6a08a88d40` began
-three disjoint d120 closures (`fbfdc3...`, `fb7f98...`, `f9eebf...`) at the
-same 30M/1200-s/1500-s bounds; input hashes are `65fb2985...`,
-`37f96915...`, `e627bb6b...`, and run key `3b1a5e94...`. Its three explicit
-children were observed at 102% CPU on CPUs 0--2 with zero memory-limit/OOM
-events under its 10-GiB high/12-GiB hard/no-swap/128-task profile. No local
-KTT process is active, avoiding a race with pending remote closures. Keep
-generated runs/logs untracked; do not push or publish. Fetch and verify every
-terminal job; byte-matched local replay and ingestion are required only for an
-exact zero-hole negative.
+Abacus v140 `20260912T174357-bb590b7f10d0` is fetched and primary-ingested
+(`c232ba5e...`): all six d119 targets are exact-positive (5,450,302--
+5,980,253 states, 294.222--381.618 s) under the verified six-CPU profile.
+Their identical quotient-poset identities exposed a gap in genome-key-only
+auditing. Successor v141 was cancelled after 111 s before any JSON case
+completed; Laplace v5 was cancelled after its three controls but before target
+completion, and queued v6 was cancelled before dispatch. Their fetched bundles
+contain no new target result or claimable evidence.
 
-The re-audited Abacus successor v141 `20260912T175005-d8860a38ea79` is queued
-behind v140, preserving the serial six-CPU profile. It contains six distinct,
-parent-disjoint d120 closures (`a4300c...`, `b2e478...`, `cd4ded...`,
-`dfb436...`, `e2c003...`, `f66268...`) at the same 30M/1200-s/1500-s bounds;
-inputs hash `350e09d9...`, `a0dddc2d...`, `0368e376...`, `27ab58d5...`,
-`9460f63a...`, `2ca7afe9...`, and pending run key `465c77ad...`. It has no
-overlap with either live remote batch, the host, or prior candidate results.
+The preparer now rejects a candidate if its quotient poset already has an
+exact result and deduplicates posets within a batch (private commit `eb7d5f2`).
+Following fresh two-queue, host, candidate-key, and poset-hash audits, Abacus
+v142 `20260912T175829-d3d082e7c384` is live: six pairwise distinct, previously
+uncomputed zero-hole posets `48798d...` (d120), `abac16...` (d119),
+`ad7238...`/`9b63ae...` (d118), `d38802...` (d115), `d0a415...` (d114), at
+30M/1200-s/1500-s. Input hashes are `3319b81f...`, `e1437277...`,
+`2015f584...`, `29134a39...`, `b863a5f6...`, `16e8519b...`; run key
+`75729420...`. Six explicit-PID children were observed at full CPU with zero
+memory-limit/OOM events.
 
-After a second immediate two-queue and candidate audit, Laplace successor v6
-`20260912T175248-752c0bdc9999` is queued behind v5 with three further,
-parent-disjoint d120 closures (`9a6f8a...`, `96e893...`, `87cff5...`), same
-30M/1200-s/1500-s limits; inputs hash `bfc26715...`, `6f3f861e...`,
-`285488d8...`, and its run key is `e47dd5b0...`. It is disjoint from active
-and queued Abacus work, v5, host, and recorded candidate results.
+Separately, Laplace v7 `20260912T175947-6e6db89bc419` is live with three
+distinct, previously uncomputed zero-hole posets `b9b2b6...` (d117),
+`f9dc0f...` (d116), and `afd69f...` (d115), at the same bounds; inputs
+`76af71f9...`, `4df2d439...`, `1ecc1317...`; run key `3bb31b3b...`. Its
+three explicit children use CPUs 0--2 under 10-GiB high/12-GiB hard/no-swap/
+128-task limits. No local KTT process is active. Generated runs/logs remain
+untracked; do not push or publish. Fetch/verify every terminal job; byte-match
+local replay and ingest only an exact zero-hole negative.
 
 Latest local v85/v87 expansion found exact one-hole negatives `cc6d...`
 (d114) and `be158...` (d111), but their six fresh zero-hole flag closures are

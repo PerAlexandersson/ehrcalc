@@ -8,38 +8,30 @@
   ledgers are `48393908...` (v139) and `8a2f9707...` (v4). One-hole negatives
   are discovery evidence only. The verified runner/helper/archive hash to
   `e3bd01d...`, `a4aae249...`, and `bf1cfa42...`.
-- Following immediate empty-queue, host, historical-result, and candidate
-  audits, Abacus v140 `20260912T174357-bb590b7f10d0` is live: six distinct
-  d119 zero-hole closures (`0dec5d...`, `108c6b...`, `15dfec...`, `164ef9...`,
-  `2115ab...`, `215119...`), each at 30M states/1200 s with a 1500-s outer
-  bound. Inputs are `2060cf1d...`, `2918a25c...`, `0427d045...`,
-  `ced5d860...`, `0ceb3220...`, `6cbe84fe...`; its pending run key is
-  `b95d3029...`. The six explicit-PID children were observed at 97--101% CPU
-  under the six-CPU/20-GiB/no-swap/256-task profile, with zero memory-limit or
-  OOM events. After a renewed two-queue/candidate audit, disjoint Laplace v5
-  `20260912T174740-ea6a08a88d40` is also live with three d120 closures
-  (`fbfdc3...`, `fb7f98...`, `f9eebf...`), 30M/1200-s/1500-s bounds, inputs
-  `65fb2985...`, `37f96915...`, `e627bb6b...`, and run key `3b1a5e94...`.
-  Its three explicit-PID children were observed at 102% CPU on CPUs 0--2 with
-  zero memory-limit/OOM events under 10-GiB high/12-GiB hard/no-swap/128 tasks.
-  No host KTT process is active, preventing a duplicate calculation. Before a
-  future Laplace submission, inspect both queues and audit against host, every
-  Abacus batch, and history; use at most three children and never mirror
-  Abacus. Generated artifacts remain untracked; do not push or publish.
-  Fetch/verify terminal output; locally replay and ingest only an exact
-  zero-hole negative.
-- Re-audited Abacus successor v141 `20260912T175005-d8860a38ea79` is queued
-  behind v140: six parent-disjoint d120 closures (`a4300c...`, `b2e478...`,
-  `cd4ded...`, `dfb436...`, `e2c003...`, `f66268...`), same
-  30M/1200-s/1500-s bounds, inputs `350e09d9...`, `a0dddc2d...`,
-  `0368e376...`, `27ab58d5...`, `9460f63a...`, `2ca7afe9...`, and run key
-  `465c77ad...`. It is disjoint from both live remote batches, host, and
-  history; generated artifacts remain untracked.
-- After a second immediate two-queue/candidate audit, Laplace v6
-  `20260912T175248-752c0bdc9999` is queued behind v5: parent-disjoint d120
-  closures `9a6f8a...`, `96e893...`, `87cff5...`, same 30M/1200-s/1500-s
-  bounds, inputs `bfc26715...`, `6f3f861e...`, `285488d8...`, and run key
-  `e47dd5b0...`. It is disjoint from Abacus v140/v141, v5, host, and history.
+- Abacus v140 `20260912T174357-bb590b7f10d0` is fetched/primary-ingested
+  (`c232ba5e...`): six exact-positive d119 targets, 5,450,302--5,980,253
+  states and 294.222--381.618 s. Its repeated quotient posets exposed that
+  genome keys were an inadequate duplicate guard. v141 was cancelled after
+  111 s before a JSON case finished; v5 after exact controls but before a
+  target; queued v6 before dispatch. Fetched cancelled bundles have no new
+  target result.
+- Private commit `eb7d5f2` now rejects an already-exact quotient poset and
+  deduplicates posets within a batch. After fresh queue/host/history/key/poset
+  audits, Abacus v142 `20260912T175829-d3d082e7c384` is live with six distinct
+  novel zero-hole posets: `48798d...` (d120), `abac16...` (d119),
+  `ad7238...`/`9b63ae...` (d118), `d38802...` (d115), `d0a415...` (d114);
+  30M/1200-s/1500-s, inputs `3319b81f...`, `e1437277...`, `2015f584...`,
+  `29134a39...`, `b863a5f6...`, `16e8519b...`, run key `75729420...`.
+  Six full-CPU children have zero memory-limit/OOM events.
+- Disjoint Laplace v7 `20260912T175947-6e6db89bc419` is live with novel
+  zero-hole posets `b9b2b6...` (d117), `f9dc0f...` (d116), `afd69f...`
+  (d115), the same bounds, inputs `76af71f9...`, `4df2d439...`,
+  `1ecc1317...`, run key `3bb31b3b...`; its three full-CPU children use
+  CPUs 0--2 within 10-GiB high/12-GiB hard/no-swap/128 tasks. No host KTT
+  process is active. Before every submission, audit both queues, host, prior
+  results, candidate keys, and quotient-poset hashes; never mirror Abacus.
+  Generated artifacts remain untracked; no push/publication. Fetch/verify
+  terminal output and locally replay/ingest only an exact zero-hole negative.
 
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`
   (d114) and `be158...` (d111), whose six fresh zero-hole flag closures are
