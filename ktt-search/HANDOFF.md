@@ -15,24 +15,20 @@
   111 s before a JSON case finished; v5 after exact controls but before a
   target; queued v6 before dispatch. Fetched cancelled bundles have no new
   target result.
-- Private commit `eb7d5f2` now rejects an already-exact quotient poset and
-  deduplicates posets within a batch. After fresh queue/host/history/key/poset
-  audits, Abacus v142 `20260912T175829-d3d082e7c384` is live with six distinct
-  novel zero-hole posets: `48798d...` (d120), `abac16...` (d119),
-  `ad7238...`/`9b63ae...` (d118), `d38802...` (d115), `d0a415...` (d114);
-  30M/1200-s/1500-s, inputs `3319b81f...`, `e1437277...`, `2015f584...`,
-  `29134a39...`, `b863a5f6...`, `16e8519b...`, run key `75729420...`.
-  Six full-CPU children have zero memory-limit/OOM events.
+- Private `eb7d5f2` rejects exact posets and deduplicates a batch; `97a274a`
+  also reserves a poset pending in another candidate. Abacus v142
+  `20260912T175829-d3d082e7c384` is fetched/primary-ingested (`d499b5e6...`):
+  six novel zero-hole targets exact-positive, 3,861,858--5,980,132 states and
+  195.775--339.061 s. v143 remains the six-CPU successor.
 - Disjoint Laplace v7 `20260912T175947-6e6db89bc419` is live with novel
   zero-hole posets `b9b2b6...` (d117), `f9dc0f...` (d116), `afd69f...`
   (d115), the same bounds, inputs `76af71f9...`, `4df2d439...`,
   `1ecc1317...`, run key `3bb31b3b...`; its three full-CPU children use
-  CPUs 0--2 within 10-GiB high/12-GiB hard/no-swap/128 tasks. Host v144 is
-  the sole local KTT process: nice 10, pinned to CPU 15 (1/16 CPUs), d101
-  `ec9b39...`, 30M/1200-s, run key `1961de21...`; a local exact negative
-  remains pending for independent cross-validation. Before every submission,
-  audit both queues, host, prior results, candidate keys, and quotient-poset
-  hashes; never mirror Abacus. Generated artifacts remain untracked; no push/
+  CPUs 0--2 within 10-GiB high/12-GiB hard/no-swap/128 tasks. Host v144's
+  distinct d101 `ec9b39...` completed exact-positive in 40.906 s / 1,828,823
+  states (one nice-10 CPU, run `1961de21...`). Before every submission, audit
+  both queues, host, prior results, candidate keys, and quotient-poset hashes;
+  never mirror Abacus. Generated artifacts remain untracked; no push/
   publication. Fetch/verify terminal output and locally replay/ingest only an
   exact zero-hole negative.
 - Poset-audited successors are queued: Abacus v143

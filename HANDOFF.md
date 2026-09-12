@@ -23,26 +23,22 @@ contain no new target result or claimable evidence.
 
 The preparer now rejects a candidate if its quotient poset already has an
 exact result and deduplicates posets within a batch (private commit `eb7d5f2`).
-Following fresh two-queue, host, candidate-key, and poset-hash audits, Abacus
-v142 `20260912T175829-d3d082e7c384` is live: six pairwise distinct, previously
-uncomputed zero-hole posets `48798d...` (d120), `abac16...` (d119),
-`ad7238...`/`9b63ae...` (d118), `d38802...` (d115), `d0a415...` (d114), at
-30M/1200-s/1500-s. Input hashes are `3319b81f...`, `e1437277...`,
-`2015f584...`, `29134a39...`, `b863a5f6...`, `16e8519b...`; run key
-`75729420...`. Six explicit-PID children were observed at full CPU with zero
-memory-limit/OOM events.
+Abacus v142 `20260912T175829-d3d082e7c384` is fetched and primary-ingested
+under `d499b5e6...`: its six pairwise distinct novel zero-hole posets are all
+exact-positive (3,861,858--5,980,132 states; 195.775--339.061 s). Abacus v143
+remains the six-CPU successor. The preparer now also reserves a poset already
+pending in another candidate, not only an exact poset (private `97a274a`).
 
 Separately, Laplace v7 `20260912T175947-6e6db89bc419` is live with three
 distinct, previously uncomputed zero-hole posets `b9b2b6...` (d117),
 `f9dc0f...` (d116), and `afd69f...` (d115), at the same bounds; inputs
 `76af71f9...`, `4df2d439...`, `1ecc1317...`; run key `3bb31b3b...`. Its
 three explicit children use CPUs 0--2 under 10-GiB high/12-GiB hard/no-swap/
-128-task limits. Host v144 is the sole local KTT process: `nice 10`, pinned
-to CPU 15 (one of 16), auditing distinct d101 zero-hole `ec9b39...` at 30M/
-1200-s; run key `1961de21...`. Its output stays untracked; an exact negative
-is deliberately left pending for independent cross-validation. Generated runs/
-logs remain untracked; do not push or publish. Fetch/verify every terminal job;
-byte-match local replay and ingest only an exact zero-hole negative.
+128-task limits. Host v144 completed its distinct d101 `ec9b39...`
+exact-positive in 40.906 s / 1,828,823 states (run `1961de21...`) on one
+nice-10 pinned CPU. Generated runs/logs remain untracked; do not push or
+publish. Fetch/verify every terminal job; byte-match local replay and ingest
+only an exact zero-hole negative.
 
 The renewed poset audit also queued Abacus v143
 `20260912T180331-410c67f48eb7` after v142: six novel d114--d111 closures,
