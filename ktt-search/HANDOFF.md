@@ -1,5 +1,17 @@
 # KTT Search Handoff
 
+## Continuation — 2026-09-12 (active)
+
+- Codex remains sole KTT/private worker and MariaDB writer; host uses one
+  low-priority CPU and Abacus is idle after v58.
+- Abacus v58 `20260912T101538-f425bb2d86d2` independently exactly validated
+  one-hole negative `ee163...` against the archived local replay (3,181,134
+  states; control `468b1c...` 2,938,320); input `062039f2...`, runner
+  `4f6842b...`, helper `a4aae249...`, archive `bf1cfa42...`, reuse ledger
+  `3cca053d...`. v74/v75 added six distinct one-hole 6M-state limits and four
+  bad-edge prunes; no exact zero-hole negative. Zero-hole closures remain
+  positive. Generated artifacts stay untracked; no push/publication.
+
 ## One-hole exact-negative breakthrough — 2026-09-11 (active)
 
 - Suspension checkpoint: Abacus is paused with no running KTT job, and no

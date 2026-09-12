@@ -1,5 +1,18 @@
 # Ehrcalc Handoff
 
+## KTT continuation — 2026-09-12 (active)
+
+Codex remains sole private-companion worker and MariaDB writer. Host uses one
+low-priority CPU (below the requested 50% cap); Abacus is idle after v58
+`20260912T101538-f425bb2d86d2`. That job exactly matched the archived local
+replay for control `468b1c...` (2,938,320 states) and one-hole negative
+`ee163...` (3,181,134), then reuse-ingested as ledger `3cca053d...`; input
+`062039f2...`, runner `4f6842b...`, helper `a4aae249...`, archive `bf1cfa42...`.
+Host v74/v75 supplied six new one-hole 6M-state limits plus four bad-edge
+prunes; all exact zero-hole closures remain positive and no target exists.
+Continue bounded zero-hole then one-hole growth/closure search; generated
+runs/logs stay untracked and there is no push or publication authorization.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is
