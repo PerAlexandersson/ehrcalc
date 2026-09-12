@@ -18,7 +18,11 @@
   were explicitly deferred as quotient-poset duplicates.
 - Laplace v16 `20260912T203916-6753c1c93869` remains live on one disjoint d116
   second-order zero-hole closure, within its three-CPU/12-GiB hard limit; it
-  does not mirror the Abacus batch.
+  does not mirror the Abacus batch.  Immediately-audited successors are queued:
+  v17 `20260912T204802-c0683b3c49ee` runs d126/d126/d117 with three children
+  (input hashes `5901f195...`/`eeb05d19...`/`11dfa384...`), then v18
+  `20260912T204820-ed13f32b6594` runs disjoint d115/d114 with two children
+  (`b813bcb7...`/`1e605d12...`).
 - Both jobs use the known control, 30M states/1200 seconds per target and a
   2100-second envelope; runner/helper/archive hashes are
   `e3bd01d...`/`a4aae249...`/`bf1cfa42...`. Host v159 added a positive d107

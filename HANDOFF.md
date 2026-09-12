@@ -27,7 +27,13 @@ one-hole-negative reservoir, run in parallel across all six Abacus CPUs
 Laplace reservations were excluded. The equivalent v149 d77 presentation and
 a known v149-positive poset were explicitly deferred, not duplicated.
 Laplace v16 `20260912T203916-6753c1c93869` independently runs its one
-non-overlapping d116 second-order closure on CPUs 0--2.
+non-overlapping d116 second-order closure on CPUs 0--2.  Its audited,
+non-overlapping successors are queued: three-child Laplace v17
+`20260912T204802-c0683b3c49ee` (d126/d126/d117; inputs
+`5901f195...`/`eeb05d19...`/`11dfa384...`) and two-child v18
+`20260912T204820-ed13f32b6594` (d115/d114; `b813bcb7...`/`1e605d12...`).
+Each remains under the three-child, 12-GiB-hard Laplace policy and has the
+same verified runner/helper/archive hashes; none mirrors v168.
 
 Host v159 finished with d107 `ad0be9...` positive and fresh d119 one-hole
 negative `9b0689...` with four negative coefficients; its direct zero-hole
