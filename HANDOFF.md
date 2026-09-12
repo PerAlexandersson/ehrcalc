@@ -4,12 +4,17 @@
 
 Codex remains the sole private-companion KTT worker and MariaDB writer. The
 exact flagged zero-hole-negative count is zero. Abacus v135
-`20260912T160323-d9f3eab75334` is the sole six-CPU primary batch: six
-disjoint d128--d129 direct closures, 30M states/1200 s per case and a 1500-s
-outer bound; inputs `8de48649...`, `36b864f0...`, `4a1519f3...`,
-`9c3d3fbf...`, `533c745a...`, `cd43de58...`, runner `d252ad6...`, helper
-`a4aae249...`, archive `bf1cfa42...`. Live inspection confirms all six
-children are CPU-bound under the six-CPU/20-GiB/no-swap/256-task profile.
+`20260912T160323-d9f3eab75334` is fetched and primary-ingested as six
+exact-positive d128--d129 closures (6,466,459--9,425,140 DP states,
+416.695--676.617 s), ledger `20b27a05...`; no replay was needed. Following a
+two-queue, host-proposal, and historical-candidate audit, Abacus v136
+`20260912T162229-11bfe1f4f8ba` is queued: one distinct zero-hole d114 target
+`a6f5bf...` plus five distinct d132--d133 one-hole screens
+(`061cce...`, `25111b...`, `468172...`, `9ffa7a...`, `ac61fc...`), 30M
+states/1200 s each and 1500-s outer. Inputs `12e26ce8...`, `673a4993...`,
+`68b77713...`, `f99d5cf2...`, `43227315...`, `53679229...`; runner
+`e3bd01d...`, helper `a4aae249...`, archive `bf1cfa42...`. It remains within
+the six-CPU/20-GiB/no-swap/256-task profile.
 
 Laplace v1 `20260912T160745-8694f21074f7` is its first production KTT batch:
 three audited, disjoint d128 zero-hole closures (`49d90c...`, `4d781a...`,
