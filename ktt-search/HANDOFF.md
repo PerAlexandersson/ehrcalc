@@ -26,8 +26,8 @@
   inputs `ed1cfce4...`, `e0f0b387...`, `b0d348d5...`, ledger `39611068...`.
   It uses the same verified code/archive, 30M/1200 s (1500-s outer), CPUs 0--2,
   10-GiB high/12-GiB hard memory, no swap, and 128 tasks. Host v141 was
-  deliberately stopped before evaluation so it could not race fresh remote
-  closure rows. Immediately after the renewed two-queue and candidate audit,
+  deliberately stopped so it could not race fresh remote closure rows.
+  Immediately after the renewed two-queue and candidate audit,
   Abacus v138 `20260912T170802-e3a1e268c69b` began six disjoint zero-hole
   cases: five shared degree-1--5-negative closures `a2cacf...` (d125),
   `aa906f...` (d124), `17f958...` (d123), `6a5b1d...` (d122), `6bb3e5...`

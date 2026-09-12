@@ -45,7 +45,7 @@ are `adf37556...`, `d98f1915...`, `a281eb05...`, `5c7f604a...`,
 match v137r. All six explicit-PID children were observed at full CPU under the
 six-CPU/20-GiB/no-swap/256-task profile. Host v139/v140 completed without a
 zero-hole negative (v140: 368 exact/cache, 41 deferred, 144 pruned); host v141
-was deliberately terminated before evaluation to avoid a remote duplicate.
+was deliberately terminated before it could race the remote closures.
 Generated runs/logs stay untracked; no push or publication is authorized.
 Fetch and verify every terminal remote job;
 perform a byte-matched local replay and then ingest only if an exact zero-hole
