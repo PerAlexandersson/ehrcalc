@@ -21,8 +21,8 @@ v11 submission manifests; runner/helper/archive are `e3bd01d...`,
 Abacus v156 `20260912T195713-d2176737d1e5`, Laplace v12
 `20260912T195713-556cfb66bf67`, and Abacus v158
 `20260912T200344-28249a4c3ac5` are fetched, verified, and primary-ingested:
-their 21 further d81--d97 targets are exact-positive (ledgers `d498d187...`,
-`a49f31b9...`, `4625cd4b...`).  The closure campaign now has 42 new exact
+their 15 further d81--d97 targets are exact-positive (ledgers `d498d187...`,
+`a49f31b9...`, `4625cd4b...`).  The closure campaign now has 33 new exact
 zero-hole positives.  Laplace v13 `20260912T200522-b50961c57b9f` is the sole
 active remote batch (three d81/d84/d95 targets, run `d310b48a...`), selected
 against live v157 work and globally reserved under the same verified

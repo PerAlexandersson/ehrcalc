@@ -16,7 +16,7 @@
 - Fetched/verified Abacus v156 `20260912T195713-d2176737d1e5`
   (`d498d187...`), Laplace v12 `20260912T195713-556cfb66bf67`
   (`a49f31b9...`), and Abacus v158 `20260912T200344-28249a4c3ac5`
-  (`4625cd4b...`) add 21 exact-positive d81--d97 targets, 42 in this closure
+  (`4625cd4b...`) add 15 exact-positive d81--d97 targets, 33 in this closure
   campaign.  Laplace v13 `20260912T200522-b50961c57b9f` is the sole active
   remote batch: three audited and reserved d81/d84/d95 targets (`d310b48a...`).
 - Host v151 added two d112 one-hole positives and d119/d121 state limits; v153
