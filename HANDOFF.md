@@ -145,6 +145,11 @@ CPUs and distinct v126 `20260912T133501-197c3031f1d3` is queued. Host v124
 ended (365 exact/cache, 53 deferred, 139 pruned; no zero-hole negative), and
 host v125 is the sole low-priority one-core pass. Seven zero-hole state limits
 remain; exact zero-hole negatives: 0. Generated files stay untracked; no push.
+Freshly audited v127 `20260912T134726-38e0e9e0e3c4` is queued behind v125/v126:
+four distinct legacy five-second local zero-hole timeouts, input hashes
+`012e4c0d...` and `8414be3b...`, now have 20M-state/900-s exact bounds and a
+1200-s outer bound; runner `329e89f0...`, helper `a4aae249...`, archive
+`bf1cfa42...`.
 
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
