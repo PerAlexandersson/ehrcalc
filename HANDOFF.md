@@ -9,14 +9,17 @@ all exact-positive, using 7,759,554--10,954,460 DP states in 530.882--753.086
 s. Each child first exactly matched control `468b1c...` under the verified
 six-CPU/20-GiB/no-swap/256-task profile; fetched provenance is primary ledger
 `bfd3e0a1...`. No local replay was needed because no zero-hole target was
-negative; count remains zero. v132 `20260912T150610-78f27a6436bd` is the sole
-current Abacus job: six distinct remaining direct zero-hole closures from
-one-hole negative `cb60d9...` (d123--d128), 20M states/900 s per case and
-1200-s outer, direct-closure run `d843b885...`; runner `222a9db...`, helper
-`a4aae249...`, archive `bf1cfa42...`. Host v131 completed (359 exact/cache,
-50 deferred, 143 pruned; best zero-hole intermediate positive); host v132 is
-the one low-priority process below the 50% cap. Generated runs/logs are
-untracked; no push or publication authorization exists.
+negative; count remains zero. v132 `20260912T150610-78f27a6436bd` completed
+all six direct closures from `cb60d9...` exactly positive (d123--d128,
+7,365,930--7,758,608 states, 430.2--568.7 s), fetched primary ledger
+`77470052...`. Following another empty-queue/candidate-state audit, v133
+`20260912T152056-a8e9432a6aae` is the sole Abacus job: six distinct higher
+zero-hole closures (d131--d134), 20M states/900 s each and 1200-s outer,
+direct-closure run `af0d5b9c...`; runner `222a9db...`, helper `a4aae249...`,
+archive `bf1cfa42...`. Host v132 completed (365 exact/cache, 55 deferred, 141
+pruned; best zero-hole intermediate positive); host v133 is the one
+low-priority process below the 50% cap. Generated runs/logs are untracked; no
+push or publication authorization exists.
 
 Latest local v85/v87 expansion found exact one-hole negatives `cc6d...`
 (d114) and `be158...` (d111), but their six fresh zero-hole flag closures are
