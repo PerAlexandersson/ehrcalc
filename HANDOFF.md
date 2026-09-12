@@ -49,6 +49,13 @@ inputs `e80c70ed...`, `7f320b7a...`, `7702041c...`, run key `ae77d0a2...`.
 Both use the established 30M/1200-s/1500-s bounds and passed zero exact-poset
 overlap checks immediately before submission.
 
+The final four currently unassigned direct closures are queued as Abacus v144
+`20260912T181310-09fd3017dc09` behind v143: `db26b1...` (d100), `fa937b...`
+(d99), `cf2e3c...` (d98), `ff6d27...` (d97), inputs `652d8646...`,
+`687bb3ff...`, `1b8c6f43...`, `4c8cc4de...`, run key `ecf33598...`. They
+passed zero exact-or-pending-poset overlap checks; four children are intentional
+because no fifth or sixth novel direct closure remains.
+
 Latest local v85/v87 expansion found exact one-hole negatives `cc6d...`
 (d114) and `be158...` (d111), but their six fresh zero-hole flag closures are
 positive (noncached d112/d109 checks 95.518/95.180 s); distinct d125/d128
