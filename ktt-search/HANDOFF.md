@@ -2,52 +2,34 @@
 
 ## Continuation — 2026-09-12 (active)
 
-- Codex remains the sole private KTT worker and MariaDB writer; the exact
-  flagged zero-hole-negative count is zero. Abacus v135
-  `20260912T160323-d9f3eab75334` is fetched and primary-ingested: all six
-  d128--d129 closures are exact-positive (6,466,459--9,425,140 states,
-  416.695--676.617 s), ledger `20b27a05...`; no replay. After a two-queue,
-  host-proposal, and historical-candidate audit, Abacus v136
-  `20260912T162229-11bfe1f4f8ba` completed: zero-hole d114 `a6f5bf...` is
-  exact-positive (3,515,148 states, 176.730 s); d132--d133 one-hole targets
-  `061cce...`, `25111b...`, `468172...`, `9ffa7a...`, `ac61fc...` are
-  exact-negative (11,683,166--12,720,998 states, 664.858--924.744 s),
-  control-backed unreplayed discovery evidence in ledger `19dff7ea...`.
-- Abacus v137 `20260912T164610-cb71aefa48d9` is queued after a fresh
-  two-queue and host audit: six disjoint d131 one-hole screens selected for
-  untested flag-absorbed zero-hole children (`2adb86...`, `41c37c...`,
-  `56da2f...`, `6942bb...`, `cb60d9...`, `e07f56...`), 30M states/1200 s and
-  1500-s outer; inputs `71380c6b...`, `c7e6d115...`, `27922f63...`,
-  `c89654f1...`, `682b7bd4...`, `117bd511...`, runner `e3bd01d...`, helper
-  `a4aae249...`, archive `bf1cfa42...`, six-CPU/20-GiB/no-swap/256-task.
-- Initial v137 `20260912T164610-cb71aefa48d9` exited before any control or
-  target calculation because noninteractive `jobs -p` returned no PIDs. Its
-  explicit-PID successor v137r `20260912T164926-d91e2f728dd3` is queued with
-  the same audited inputs/hashes. Laplace v2 `20260912T163001-acf0098e3274`
-  completed two exact one-hole negatives and one positive, ledger
-  `8b7f14c4...`; no zero-hole contender.
-- Laplace v1 `20260912T160745-8694f21074f7` completed three audited d128
-  closures (`49d90c...`, `4d781a...`, `84a1ba...`) exact-positive
-  (6,466,440--7,759,400 states, 766.737--878.981 s), primary ledger
-  `fb24f4e1...`; no replay. After a two-queue, Abacus, host-proposal, and
-  historical-candidate audit, Laplace v2 `20260912T163001-acf0098e3274` is
-  queued: three distinct d131 one-hole screens (`033f3d...`, `089e6e...`,
-  `1d4d95...`), 30M states/1200 s and 1500-s outer; inputs `10a18d8d...`,
-  `42c45f8b...`, `7be327f4...`, runner `e3bd01d...`, helper `a4aae249...`,
-  archive `bf1cfa42...`. It is limited to CPUs 0--2, 10-GiB high/12-GiB hard
-  memory, no swap, and 128 tasks. Inspect both queues before every submission;
-  audit disjointness from host, every active/queued Abacus batch, and prior
-  results; run at most three children and never mirror Abacus. Fetch/verify,
-  locally replay only an exact negative, then ingest. Host v136 finished with
-  369 exact/cache results, 46 deferrals, and 135 prunes and no zero-hole
-  negative; its initial detached launch exited before calculation for a
-  missing `PYTHONPATH`, then was correctly relaunched. Host v137 finished
-  with 362 exact/cache results, 46 deferrals, and 140 prunes with no zero-hole
-  negative. Host v138 finished with 369 exact/cache results, 47 deferrals,
-  and 140 prunes, again with no zero-hole negative. Host v139 (seed
-  `20261120`) is the only low-priority local core. Generated artifacts stay
-  untracked; no push or
-  publication.
+- Codex remains the sole private KTT worker and local MariaDB writer; the exact
+  flagged zero-hole-negative count is zero. Abacus v135 primary-ingested six
+  exact-positive d128--d129 closures (`20b27a05...`); v136 primary-ingested
+  zero-hole-positive d114 `a6f5bf...` plus five exact-negative d132--d133
+  one-hole discoveries (`19dff7ea...`). Laplace v1/v2 are terminal and
+  ingested (`fb24f4e1...`, `8b7f14c4...`); no zero-hole contender occurred.
+- Initial v137 `20260912T164610-cb71aefa48d9` performed no calculation because
+  its noninteractive `jobs -p` wrapper saw no children. Its explicit-PID
+  repair v137r `20260912T164926-d91e2f728dd3` is live: six disjoint d131
+  one-hole screens at 30M states/1200 s per child (1500-s outer), inputs
+  `71380c6b...`, `c7e6d115...`, `27922f63...`, `c89654f1...`, `682b7bd4...`,
+  `117bd511...`. `2adb86...`/`6942bb...` are exact-positive; `41c37c...` and
+  `56da2f...` are negative in degrees 1--5, while `cb60d9...`/`e07f56...`
+  are negative in degrees 6--7. All have one nonflagged hole, hence discovery
+  evidence only. Runner `e3bd01d...`, helper `a4aae249...`, and archive
+  `bf1cfa42...` are verified under six pinned CPUs/20-GiB/no-swap/256 tasks.
+- Immediately after a two-queue, host, active-Abacus, and historical audit,
+  Laplace v3 `20260912T170003-c6a8eca31244` began its sole three-child batch:
+  untested zero-hole flag closures `93b5bc...` (d128), `243c7e...` (d127), and
+  `3cc08e...` (d126), shared by five-negative parents `41c37c...`/`56da2f...`;
+  inputs `ed1cfce4...`, `e0f0b387...`, `b0d348d5...`, ledger `39611068...`.
+  It uses the same verified code/archive, 30M/1200 s (1500-s outer), CPUs 0--2,
+  10-GiB high/12-GiB hard memory, no swap, and 128 tasks. Host v139 completed
+  without a zero-hole negative; v140 is the sole nice-priority one-core local
+  pass. Never mirror Abacus, audit both queues/candidate overlap before a
+  Laplace submission, keep generated artifacts untracked, and do not push or
+  publish. Fetch and verify terminal remote output; byte-matched local replay
+  plus ingest is required only for an exact zero-hole negative.
 
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`
   (d114) and `be158...` (d111), whose six fresh zero-hole flag closures are
