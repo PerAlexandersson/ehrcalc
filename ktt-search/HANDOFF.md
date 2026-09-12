@@ -12,14 +12,18 @@
   zero-hole-negative count remains zero.
 - v132 `20260912T150610-78f27a6436bd` completed six distinct closures of
   `cb60d9...` exactly positive (d123--d128, 7,365,930--7,758,608 states,
-  430.2--568.7 s), fetched primary ledger `77470052...`. After another
-  terminal-queue/candidate-state audit, v133 `20260912T152056-a8e9432a6aae`
-  is the sole Abacus job: six distinct higher zero-hole closures (d131--d134),
-  20M states/900 s each and 1200-s outer; direct-closure run `af0d5b9c...`,
-  runner `222a9db...`, helper `a4aae249...`, archive `bf1cfa42...`. Host v132
-  completed (365 exact/cache, 55 deferred, 141 pruned; best zero-hole
-  intermediate positive); host v133 is the one low-priority process below the
-  50% cap. Generated artifacts are untracked; no push or publication.
+  430.2--568.7 s), fetched primary ledger `77470052...`. v133
+  `20260912T152056-a8e9432a6aae` gave four further exact-positive closures
+  (d131--d134; d134 14,479,036 states/888.6 s) and two recorded 900-s limits
+  (d132/d133), partial ledger `cdec09b8...`. After a terminal-queue audit,
+  v134 `20260912T154331-e8478bbd6bef` is the sole Abacus job: those two
+  retries plus four untried d130 closures, 30M states/1200 s and 1500-s outer,
+  unchanged six-CPU/20-GiB/no-swap/256-task profile; direct-closure run
+  `7981ae78...`, runner `d252ad6...`, helper `a4aae249...`, archive
+  `bf1cfa42...`. Host v133 completed (366 exact/cache, 55 deferred, 135
+  pruned; best zero-hole intermediate positive); host v134 is the one
+  low-priority process below the 50% cap. Generated artifacts are untracked;
+  no push or publication.
 
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`
   (d114) and `be158...` (d111), whose six fresh zero-hole flag closures are
