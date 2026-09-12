@@ -46,8 +46,13 @@
 - Host v145 is the sole active local KTT process: one nice-10 CPU 15, bounded
   one-hole-negative reservoir grow/flag-augmentation pass (six 6M/360-s exact
   cases, 850-s outer). Private `be263e2` now rejects every globally pending
-  quotient poset during local discovery. Both remote queues are idle; wait for
-  v145's audited novel candidates before another submission.
+  quotient poset during local discovery. After an immediate two-queue/host/
+  poset audit, Abacus v146 `20260912T182808-3b1fb9e5fbc2` is running three
+  novel one-hole discovery cases `254240...` (d88), `725537...` (d89),
+  `d7e0fe...` (d113), one explicit child each, 30M/1200-s/1500-s; input
+  hashes `dd643e20...`, `69aee5ce...`, `5fc59bc3...`. Laplace is deliberately
+  idle: no fourth disjoint zero-/one-hole case exists, and it must not mirror
+  Abacus.
 - The final direct closures, Abacus v144 `20260912T181310-09fd3017dc09`, are
   fetched/primary-ingested (`7df0a99d...`): `db26b1...` (d100), `fa937b...`
   (d99), `cf2e3c...` (d98), `ff6d27...` (d97) are exact-positive
