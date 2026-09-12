@@ -43,16 +43,23 @@
   121.826--195.347 s), all controls exact-known-match; inputs `e80c70ed...`,
   `7f320b7a...`, `7702041c...`, run key `ae77d0a2...`. Both completed under
   30M/1200-s/1500-s.
-- Host v145 is the sole active local KTT process: one nice-10 CPU 15, bounded
-  one-hole-negative reservoir grow/flag-augmentation pass (six 6M/360-s exact
-  cases, 850-s outer). Private `be263e2` now rejects every globally pending
-  quotient poset during local discovery. After an immediate two-queue/host/
-  poset audit, Abacus v146 `20260912T182808-3b1fb9e5fbc2` is running three
-  novel one-hole discovery cases `254240...` (d88), `725537...` (d89),
-  `d7e0fe...` (d113), one explicit child each, 30M/1200-s/1500-s; input
-  hashes `dd643e20...`, `69aee5ce...`, `5fc59bc3...`. Laplace is deliberately
-  idle: no fourth disjoint zero-/one-hole case exists, and it must not mirror
-  Abacus.
+- Host v145 completed its one-CPU grow/flag-augmentation pass: fresh d120
+  one-hole negative `42bcf8...` has three negative coefficients (3,181,332
+  states), but every zero-hole closure was already exact-positive. Private
+  `be263e2` rejects globally pending quotient posets during future host work.
+  Abacus v146 `20260912T182808-3b1fb9e5fbc2` is fetched/primary-ingested
+  (`d4b43389...`): novel d88/d89/d113 one-hole targets `254240...`,
+  `725537...`, `d7e0fe...` are exact-positive (344,969--3,522,455 states;
+  12.828--140.818 s), all controls exact-known-match.
+- Both remote machines are now live and disjoint: Laplace v9
+  `20260912T183442-531a2e456a15` runs d142 one-hole growth cases `718e8d...`,
+  `151ee8...`, `3c15b9...` from d131 parent `033f3d...`, run key
+  `79a74c3a...`, inputs `e530cd80...`, `0277caf9...`, `f8615867...`; Abacus
+  v147 `20260912T183712-603dd0ff9b63` runs d137/d146/d147 cases `896c09...`,
+  `f475e7...`, `068a45...` from d133 parent `061cce...`, run key
+  `5d5f3175...`, inputs `5f72636e...`, `2d82cc3a...`, `382052c6...`. Each has
+  three explicit 30M/1200-s children, with all keys/posets audited against
+  host, both queues, and exact/pending history.
 - The final direct closures, Abacus v144 `20260912T181310-09fd3017dc09`, are
   fetched/primary-ingested (`7df0a99d...`): `db26b1...` (d100), `fa937b...`
   (d99), `cf2e3c...` (d98), `ff6d27...` (d97) are exact-positive

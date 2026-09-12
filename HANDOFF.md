@@ -36,8 +36,7 @@ Laplace v7 `20260912T175947-6e6db89bc419` is fetched and primary-ingested
 under `37e485fb...`: its three distinct d117/d116/d115 zero-hole targets
 `b9b2b6...`, `f9dc0f...`, and `afd69f...` are exact-positive (5,951,569--
 5,979,155 states; 582.635--630.809 s), with every control exact-known-match.
-Its disjoint successor v8 is now running on CPUs 0--2 within the established
-10-GiB high/12-GiB hard/no-swap/128-task limits. Host v144 completed its
+Its disjoint successor v8 completed as recorded below. Host v144 completed its
 distinct d101 `ec9b39...` exact-positive in 40.906 s / 1,828,823 states (run
 `1961de21...`) on one nice-10 pinned CPU. Generated runs/logs remain
 untracked; do not push or publish. Fetch/verify every terminal job; byte-match
@@ -53,18 +52,24 @@ exact-positive (1,841,770--1,846,504 states; 121.826--195.347 s), all controls
 exact-known-match. Inputs were `e80c70ed...`, `7f320b7a...`, `7702041c...`;
 run key `ae77d0a2...`. Both completed under 30M/1200-s/1500-s bounds.
 
-Host v145 is the sole active local KTT process: one nice-10 CPU 15, bounded
-one-hole-negative reservoir grow/flag-augmentation pass (six 6M/360-s exact
-cases, 850-s outer). Private `be263e2` makes this and future local discovery
-skip every globally pending quotient poset, including Laplace/Abacus work.
-After an immediate two-queue/host/poset audit, Abacus v146
-`20260912T182808-3b1fb9e5fbc2` is running the three previously interrupted,
-novel one-hole discovery cases `254240...` (d88), `725537...` (d89), and
-`d7e0fe...` (d113), one explicit child each, 30M/1200-s/1500-s. Inputs hash
-to `dd643e20...`, `69aee5ce...`, and `5fc59bc3...`; runner/helper/archive
-remain `e3bd01d...`/`a4aae249...`/`bf1cfa42...`. Laplace is deliberately idle:
-there is no fourth disjoint zero-/one-hole case, and it must not mirror this
-Abacus batch.
+Host v145 completed its one-CPU bounded grow/flag-augmentation pass: it found
+fresh d120 one-hole negative `42bcf8...` with three negative coefficients
+(3,181,332 states), but all of its zero-hole closures were already
+exact-positive. Private `be263e2` makes future host discovery skip globally
+pending quotient posets. Abacus v146 `20260912T182808-3b1fb9e5fbc2` is
+fetched/primary-ingested (`d4b43389...`): its novel d88/d89/d113 one-hole
+targets `254240...`, `725537...`, `d7e0fe...` are exact-positive (344,969--
+3,522,455 states; 12.828--140.818 s), every control exact-known-match.
+
+Both remote machines are now live and disjoint: Laplace v9
+`20260912T183442-531a2e456a15` runs d142 one-hole growth cases `718e8d...`,
+`151ee8...`, `3c15b9...` from d131 parent `033f3d...`, run key
+`79a74c3a...`, inputs `e530cd80...`, `0277caf9...`, `f8615867...`; Abacus
+v147 `20260912T183712-603dd0ff9b63` runs d137/d146/d147 one-hole growth cases
+`896c09...`, `f475e7...`, `068a45...` from d133 parent `061cce...`, run key
+`5d5f3175...`, inputs `5f72636e...`, `2d82cc3a...`, `382052c6...`. Each
+uses three explicit 30M/1200-s children under its machine limits; all keys and
+poset hashes were audited against host, both queues, and exact/pending history.
 
 The final four direct closures, Abacus v144 `20260912T181310-09fd3017dc09`,
 are fetched/primary-ingested (`7df0a99d...`): `db26b1...` (d100), `fa937b...`
