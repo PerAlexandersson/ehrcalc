@@ -2,15 +2,23 @@
 
 ## Continuation — 2026-09-12 (active)
 
-- Codex remains sole KTT/private worker and MariaDB writer; host uses one
-  low-priority CPU and Abacus is idle after v58.
-- Abacus v58 `20260912T101538-f425bb2d86d2` independently exactly validated
-  one-hole negative `ee163...` against the archived local replay (3,181,134
-  states; control `468b1c...` 2,938,320); input `062039f2...`, runner
-  `4f6842b...`, helper `a4aae249...`, archive `bf1cfa42...`, reuse ledger
-  `3cca053d...`. v74/v75 added six distinct one-hole 6M-state limits and four
-  bad-edge prunes; no exact zero-hole negative. Zero-hole closures remain
-  positive. Generated artifacts stay untracked; no push/publication.
+- Codex remains sole KTT/private worker and MariaDB writer. v131
+  `20260912T144557-bfa30f9a2821` is terminal after a recorded-ID/live-state
+  audit: all six high-dimensional direct zero-hole closures (d129--d132) are
+  exact-positive, 7,759,554--10,954,460 DP states and 530.882--753.086 s.
+  Every child exactly matched control `468b1c...` under the six-CPU/20-GiB/
+  no-swap/256-task profile; fetched provenance is primary ledger `bfd3e0a1...`.
+  No local replay was used because no target was negative, so the exact
+  zero-hole-negative count remains zero.
+- v132 `20260912T150610-78f27a6436bd` is the sole active Abacus job, submitted
+  only after rechecking the terminal queue and candidate states: six distinct
+  remaining direct zero-hole closures of one-hole negative `cb60d9...`
+  (d123--d128), 20M states/900 s each and 1200-s outer; direct-closure run
+  `d843b885...`, runner `222a9db...`, helper `a4aae249...`, archive
+  `bf1cfa42...`. Host v131 completed (359 exact/cache, 50 deferred, 143
+  pruned; best zero-hole intermediate positive); host v132 is the one
+  low-priority process below the 50% cap. Generated artifacts are untracked;
+  no push or publication.
 
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`
   (d114) and `be158...` (d111), whose six fresh zero-hole flag closures are

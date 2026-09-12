@@ -2,16 +2,21 @@
 
 ## KTT continuation — 2026-09-12 (active)
 
-Codex remains sole private-companion worker and MariaDB writer. Host uses one
-low-priority CPU (below the requested 50% cap); Abacus is idle after v58
-`20260912T101538-f425bb2d86d2`. That job exactly matched the archived local
-replay for control `468b1c...` (2,938,320 states) and one-hole negative
-`ee163...` (3,181,134), then reuse-ingested as ledger `3cca053d...`; input
-`062039f2...`, runner `4f6842b...`, helper `a4aae249...`, archive `bf1cfa42...`.
-Host v74/v75 supplied six new one-hole 6M-state limits plus four bad-edge
-prunes; all exact zero-hole closures remain positive and no target exists.
-Continue bounded zero-hole then one-hole growth/closure search; generated
-runs/logs stay untracked and there is no push or publication authorization.
+Codex remains sole private-companion worker and MariaDB writer.  v131
+`20260912T144557-bfa30f9a2821` completed after recorded-ID/current-state
+inspection: six high-dimensional direct zero-hole closures (d129--d132) are
+all exact-positive, using 7,759,554--10,954,460 DP states in 530.882--753.086
+s. Each child first exactly matched control `468b1c...` under the verified
+six-CPU/20-GiB/no-swap/256-task profile; fetched provenance is primary ledger
+`bfd3e0a1...`. No local replay was needed because no zero-hole target was
+negative; count remains zero. v132 `20260912T150610-78f27a6436bd` is the sole
+current Abacus job: six distinct remaining direct zero-hole closures from
+one-hole negative `cb60d9...` (d123--d128), 20M states/900 s per case and
+1200-s outer, direct-closure run `d843b885...`; runner `222a9db...`, helper
+`a4aae249...`, archive `bf1cfa42...`. Host v131 completed (359 exact/cache,
+50 deferred, 143 pruned; best zero-hole intermediate positive); host v132 is
+the one low-priority process below the 50% cap. Generated runs/logs are
+untracked; no push or publication authorization exists.
 
 Latest local v85/v87 expansion found exact one-hole negatives `cc6d...`
 (d114) and `be158...` (d111), but their six fresh zero-hole flag closures are
