@@ -4,16 +4,16 @@
 
 - Codex remains sole private KTT worker and sole local MariaDB writer; no
   exact flagged zero-hole-negative exists.  Fetched/verified and
--  primary-ingested Laplace v13/14 and Abacus v160/v162 add 18 further
-  positives, bringing this exact two-hole-closure campaign to 51 (latest
-  ledgers `faec232a...` and `3e8c502a...`).
+-  primary-ingested Laplace v13/14 and Abacus v160/v162/v164 add 20 further
+  positives, bringing this exact two-hole-closure campaign to 53 (latest
+  ledgers `3e8c502a...` and `52f1cebe...`).
 - Laplace v15 `20260912T202647-d5590d8a13d6` is live on three audited
-  d87/d85/d78 targets (run `611d2e4d...`).  Abacus v164
-  `20260912T202825-2578d3b6a516` is live on the final two unique d83/d77
-  closure posets (run `d85c6b7...`).  Audits covered both queues, every
-  terminal/pending quotient-poset row, the other remote batch, and host v159.
-  One equivalent d77 reduced mask was deferred, not duplicated; these jobs
-  exhaust the unique two-hole-closure frontier.
+  d87/d85/d78 targets (run `611d2e4d...`).  Abacus v166
+  `20260912T203243-b2e772b0a3ba` is live on two fresh d120/d118 zero-hole
+  closures from the bounded one-hole reservoir (run `e0cb7a85...`). Audits
+  covered both queues, every terminal/pending quotient-poset row, the other
+  remote batch, and host v159. One equivalent d77 reduced mask was deferred,
+  not duplicated; the two-hole frontier is exhausted.
 - Both jobs use the known control, 30M states/1200 seconds per target and a
   2100-second envelope; runner/helper/archive hashes are
   `e3bd01d...`/`a4aae249...`/`bf1cfa42...`.  Host v157 ended with 561 cache

@@ -3,24 +3,29 @@
 ## Current KTT state — 2026-09-12 (active)
 
 Codex is the sole private KTT worker and local MariaDB writer.  No exact
-flagged zero-hole-negative is known.  The two-hole-closure campaign has 51
+flagged zero-hole-negative is known.  The two-hole-closure campaign has 53
 new exact-positive zero-hole targets: the prior 42 plus fetched, hash/control/
 profile-verified and primary-ingested Laplace v14
 `20260912T201824-c3059015011f` (ledger `faec232a...`) and Abacus v162
-`20260912T202159-c452bdc37f66` (ledger `3e8c502a...`).  Every case used the
-known negative control and verified runner/helper/archive hashes
+`20260912T202159-c452bdc37f66` (ledger `3e8c502a...`), then the two unique
+final two-hole closures in Abacus v164 `20260912T202825-2578d3b6a516`
+(`52f1cebe...`).  Every case used the known negative control and verified
+runner/helper/archive hashes
 `e3bd01d...`/`a4aae249...`/`bf1cfa42...` under 30M states, 1200 seconds per
 target, and a 2100-second envelope.
 
 Both queues were re-audited immediately before their current submissions.
 Laplace v15 `20260912T202647-d5590d8a13d6` is running three d87/d85/d78
 target-disjoint closures (run `611d2e4d...`; input hashes `37a5dfd0...`,
-`e067074a...`, `450251ac...`).  Abacus v164
-`20260912T202825-2578d3b6a516` is running the two final unique d83/d77
-closure posets (run `d85c6b7...`; inputs `e791b064...`, `40f590ea...`).  A
-third d77 presentation was identified before submission as the same quotient
-poset as the selected d77 representative and is explicitly deferred as a
-duplicate.  These live jobs exhaust the unique two-hole-closure frontier.
+`e067074a...`, `450251ac...`).  Abacus v166
+`20260912T203243-b2e772b0a3ba` is concurrently running two fresh d120/d118
+zero-hole closures from the bounded exact-negative one-hole reservoir (run
+`e0cb7a85...`; inputs `467f842d...`, `5b806efa...`).  A third d77
+presentation was identified before v164 submission as the same quotient poset
+as the selected d77 representative and is explicitly deferred as a duplicate.
+The unique two-hole-closure frontier is exhausted; v166 is the only remaining
+known fresh direct one-hole closure after omitting a locally recorded v149
+positive poset.
 
 Host v157 finished with no new exact calculation (561 cache hits; four 6M
 state limits).  Host v159 remains the sole local process: one nice-10 CPU-15,
