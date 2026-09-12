@@ -15,6 +15,24 @@ Codex remains the sole KTT/private-companion worker and local MariaDB writer.
 Generated reports, selected remote inputs, and logs remain untracked; no push
 or publication is authorized.
 
+Recovery update (2026-09-12): inspected all suspension-era Abacus IDs before
+resuming anything.  Abacus was paused and idle; v21 first batch
+`20260911T202944-adebc62a5d43` is terminal done, while the paired v21 job
+`20260911T202944-64c51cfc1209` is terminal cancelled after its control only;
+no cancelled work was resubmitted.  The completed batch's seven useful cases
+were all exact 4,000,000-state limits and are now durable MariaDB attempt
+records, with input/output hashes and job provenance.  Fetched v20 job
+`20260911T202641-7863232114c7` was replayed locally using its archived runner:
+both new zero-hole shape transports (`0e002288...`, dimension 102, 1,503,918
+states; `bf191ca8...`, dimension 108, 1,511,640 states) exactly match and are
+positive; validated ledger `78bd9845...` ingested both.  Focused adapter tests
+pass (8/8).  With the user confirming Abacus is otherwise free, it was resumed
+only for fresh selected retry `20260912T062104-f403c712dc54`: certified control
+plus smallest unresolved zero-hole case `00616831...` (dimension 118), capped
+at 6,000,000 states and 360 seconds per case, 900 seconds outer, two CPUs and
+8 GiB/no swap.  The job is running; a byte-identical local replay of completed
+one-hole seventh-flag job `20260911T201701-d347c91cae66` is also in progress.
+
 The best certified negative now has **one genuine nonflag hole**. Candidate
 `86b98937ad8a...` has `(a,b)=(10,11)`, mask `0x10000000000`, one equality,
 degree 109, and negative linear coefficient

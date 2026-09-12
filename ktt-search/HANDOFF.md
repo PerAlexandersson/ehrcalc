@@ -12,6 +12,20 @@
   ready but was not submitted.
 - Codex remains the sole KTT/private-companion worker and local MariaDB writer;
   reports/logs stay untracked, with no push or publication.
+- Recovery update (2026-09-12): inspected all suspension-era Abacus IDs before
+  resuming anything.  v21 first batch `20260911T202944-adebc62a5d43` is done;
+  its seven useful cases were all exact 4,000,000-state limits and now have
+  durable MariaDB attempt records with remote hashes/provenance.  Paired v21
+  `20260911T202944-64c51cfc1209` is cancelled after its control only and was
+  not duplicated.  Fetched v20 `20260911T202641-7863232114c7` matched a local
+  archived-runner replay exactly: zero-hole `0e002288...` (d102, 1,503,918
+  states) and `bf191ca8...` (d108, 1,511,640 states) are positive and are
+  ingested in ledger `78bd9845...`.  Adapter tests pass 8/8.  Abacus was idle
+  and paused, then resumed only for selected retry `20260912T062104-f403c712dc54`:
+  control plus smallest unresolved zero-hole `00616831...` (d118), 6M states/
+  360 s per case, 900 s outer, 2 CPUs and 8 GiB/no swap.  It is running.  A
+  byte-identical local replay of one-hole seventh-flag job
+  `20260911T201701-d347c91cae66` is in progress.
 - Best certified negative `86b98937ad8a...` has one bad edge, `(a,b)=(10,11)`,
   mask `0x10000000000`, degree 109, and one negative Ehrhart coefficient
   (degree one). Its lift is `(12,1^10)/(1)`, weight `1^21`, with sole bad pair
