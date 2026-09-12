@@ -22,13 +22,11 @@
   presentation and a known v149-positive poset remain deferred duplicates.
 - Laplace v16 `20260912T203916-6753c1c93869` is fetched/verified and
   primary-ingested (`3e677e5a...`): its d116 target is exact-positive in
-  6,254,248 states / 465.552 s. Its non-overlapping successors are queued/
-  running within the three-CPU/12-GiB hard limit; none mirrors Abacus. The
-  immediately-audited v17
-  `20260912T204802-c0683b3c49ee` runs d126/d126/d117 with three children
-  (input hashes `5901f195...`/`eeb05d19...`/`11dfa384...`), then v18
-  `20260912T204820-ed13f32b6594` runs disjoint d115/d114 with two children
-  (`b813bcb7...`/`1e605d12...`).
+  6,254,248 states / 465.552 s. v17 `20260912T204802-c0683b3c49ee` is also
+  fetched/verified/primary-ingested (`623f17ec...`): all d126/d126/d117
+  targets are positive. v18 `20260912T204820-ed13f32b6594` now runs the
+  remaining disjoint d115/d114 pair within the three-CPU/12-GiB hard limit;
+  neither batch mirrors Abacus.
 - Both jobs use the known control, 30M states/1200 seconds per target and a
   2100-second envelope; runner/helper/archive hashes are
   `e3bd01d...`/`a4aae249...`/`bf1cfa42...`. Host v159 added a positive d107
