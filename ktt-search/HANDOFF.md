@@ -51,15 +51,15 @@
   (`d4b43389...`): novel d88/d89/d113 one-hole targets `254240...`,
   `725537...`, `d7e0fe...` are exact-positive (344,969--3,522,455 states;
   12.828--140.818 s), all controls exact-known-match.
-- Both remote machines are now live and disjoint: Laplace v9
-  `20260912T183442-531a2e456a15` runs d142 one-hole growth cases `718e8d...`,
-  `151ee8...`, `3c15b9...` from d131 parent `033f3d...`, run key
-  `79a74c3a...`, inputs `e530cd80...`, `0277caf9...`, `f8615867...`; Abacus
-  v147 `20260912T183712-603dd0ff9b63` runs d137/d146/d147 cases `896c09...`,
-  `f475e7...`, `068a45...` from d133 parent `061cce...`, run key
-  `5d5f3175...`, inputs `5f72636e...`, `2d82cc3a...`, `382052c6...`. Each has
-  three explicit 30M/1200-s children, with all keys/posets audited against
-  host, both queues, and exact/pending history.
+- Laplace v9 `20260912T183442-531a2e456a15` remains live on disjoint d142
+  one-hole growth cases `718e8d...`, `151ee8...`, `3c15b9...` from d131
+  parent `033f3d...`, run key `79a74c3a...`, inputs `e530cd80...`,
+  `0277caf9...`, `f8615867...`. Abacus v147
+  `20260912T183712-603dd0ff9b63` completed: controls exact-known-match and
+  hashes verified, but d137/d146/d147 targets `896c09...`, `f475e7...`,
+  `068a45...` each reached the 1200-s bound without an exact result. They are
+  provenance-backed `timed_out` attempts under ledger `e94f24cf...`; no retry
+  is implicit.
 - Host v148 has completed its sole one-CPU (nice-10 CPU 15) refreshed
   64-parent one-hole grow/flag-augmentation pass (eight 6M/360-s cases,
   1000-s outer), with both remote batches in its pending-poset snapshot. Its
