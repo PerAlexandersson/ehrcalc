@@ -78,6 +78,23 @@
   positive; v119 is sole active low-priority host pass and the exact
   zero-hole-negative count remains zero.
 
+- Compute expansion (2026-09-12): Codex remains sole KTT/private worker and
+  local MariaDB writer. Host v120 is the one low-priority local process and is
+  evaluating a fresh d118 zero-hole face. Before remote work, recorded IDs and
+  live state were checked: no nonterminal job existed and v118 was latest.
+  Initial v121 `20260912T130417-3259e07c5ba4` failed before calculation because
+  the command was serialized as one filename (exit 127), hence no duplicate
+  result. Corrected v121r `20260912T130612-6552b61079af` runs deferred d125
+  one-hole `425396...` plus control `468b1c...`, input `04545d52...`. Queued
+  v122 `20260912T130721-5ab36a02c9c2` uses both audited Abacus CPUs with four
+  distinct d125/d119/d117/d119 one-hole cases two at a time; input hashes
+  `588b8838...`, `fc044969...`, `6ace516a...`, `c8d24af6...`, runner
+  `4f6842b...`, helper `a4aae249...`, archive `bf1cfa42...`, 6M/360 s each,
+  900-s outer, serial queue and 8-GiB/no-swap cap unchanged. Remote outputs
+  are discovery evidence; replay is reserved for an exact zero-hole negative.
+  The exact zero-hole-negative count is zero; generated inputs/logs untracked,
+  no push/publication.
+
 ## One-hole exact-negative breakthrough — 2026-09-11 (active)
 
 - Suspension checkpoint: Abacus is paused with no running KTT job, and no
