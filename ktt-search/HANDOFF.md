@@ -20,6 +20,12 @@
   1500-s outer; inputs `71380c6b...`, `c7e6d115...`, `27922f63...`,
   `c89654f1...`, `682b7bd4...`, `117bd511...`, runner `e3bd01d...`, helper
   `a4aae249...`, archive `bf1cfa42...`, six-CPU/20-GiB/no-swap/256-task.
+- Initial v137 `20260912T164610-cb71aefa48d9` exited before any control or
+  target calculation because noninteractive `jobs -p` returned no PIDs. Its
+  explicit-PID successor v137r `20260912T164926-d91e2f728dd3` is queued with
+  the same audited inputs/hashes. Laplace v2 `20260912T163001-acf0098e3274`
+  completed two exact one-hole negatives and one positive, ledger
+  `8b7f14c4...`; no zero-hole contender.
 - Laplace v1 `20260912T160745-8694f21074f7` completed three audited d128
   closures (`49d90c...`, `4d781a...`, `84a1ba...`) exact-positive
   (6,466,440--7,759,400 states, 766.737--878.981 s), primary ledger
