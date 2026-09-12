@@ -25,10 +25,18 @@
   `3cc08e...` (d126), shared by five-negative parents `41c37c...`/`56da2f...`;
   inputs `ed1cfce4...`, `e0f0b387...`, `b0d348d5...`, ledger `39611068...`.
   It uses the same verified code/archive, 30M/1200 s (1500-s outer), CPUs 0--2,
-  10-GiB high/12-GiB hard memory, no swap, and 128 tasks. Host v139/v140
-  completed without a zero-hole negative (v140: 368 exact/cache, 41 deferred,
-  144 pruned); v141 is the sole nice-priority one-core local pass. Never
-  mirror Abacus, audit both queues/candidate overlap before a
+  10-GiB high/12-GiB hard memory, no swap, and 128 tasks. Host v141 was
+  deliberately stopped before evaluation so it could not race fresh remote
+  closure rows. Immediately after the renewed two-queue and candidate audit,
+  Abacus v138 `20260912T170802-e3a1e268c69b` began six disjoint zero-hole
+  cases: five shared degree-1--5-negative closures `a2cacf...` (d125),
+  `aa906f...` (d124), `17f958...` (d123), `6a5b1d...` (d122), `6bb3e5...`
+  (d121), and degree-6--7-family `c646dd...` (d122). Inputs `adf37556...`,
+  `d98f1915...`, `a281eb05...`, `5c7f604a...`, `31208378...`, `297b4c43...`;
+  ledger `9f501f30...`; runner/helper/archive match v137r. Six explicit-PID
+  children were verified at full CPU under the six-CPU/20-GiB/no-swap/256-task
+  profile. Laplace v3 remains the distinct three-child closure batch; no local
+  KTT process is active. Never mirror Abacus, audit both queues/candidate overlap before a
   Laplace submission, keep generated artifacts untracked, and do not push or
   publish. Fetch and verify terminal remote output; byte-matched local replay
   plus ingest is required only for an exact zero-hole negative.

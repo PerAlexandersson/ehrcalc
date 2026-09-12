@@ -34,8 +34,18 @@ are `ed1cfce4...`, `e0f0b387...`, and `b0d348d5...`; the dedicated
 pending-attempt ledger is `39611068...`. It uses the same runner/helper/archive
 and three explicit child PIDs, bounded at 30M/1200 s (1500-s outer) on Laplace
 CPUs 0--2 with 10-GiB high/12-GiB hard memory, no swap, and 128 tasks.
-Host v139/v140 completed without a zero-hole negative (v140: 368 exact/cache,
-41 deferred, 144 pruned); v141 is the sole nice-priority one-core local pass.
+
+After stopping host v141 before it could race the newly prepared closures,
+Abacus v138 `20260912T170802-e3a1e268c69b` started six further disjoint
+zero-hole cases: shared five-negative closures `a2cacf...` (d125),
+`aa906f...` (d124), `17f958...` (d123), `6a5b1d...` (d122), `6bb3e5...`
+(d121), and degree-6--7-family closure `c646dd...` (d122). Its input hashes
+are `adf37556...`, `d98f1915...`, `a281eb05...`, `5c7f604a...`,
+`31208378...`, `297b4c43...`; ledger `9f501f30...`; runner/helper/archive
+match v137r. All six explicit-PID children were observed at full CPU under the
+six-CPU/20-GiB/no-swap/256-task profile. Host v139/v140 completed without a
+zero-hole negative (v140: 368 exact/cache, 41 deferred, 144 pruned); host v141
+was deliberately terminated before evaluation to avoid a remote duplicate.
 Generated runs/logs stay untracked; no push or publication is authorized.
 Fetch and verify every terminal remote job;
 perform a byte-matched local replay and then ingest only if an exact zero-hole
