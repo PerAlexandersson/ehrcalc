@@ -9,13 +9,17 @@
   (latest ledgers `52f1cebe...` and `64b28601...`).
 - Abacus v166 `20260912T203243-b2e772b0a3ba` is fetched/verified and
   primary-ingested (`e381a915...`): its two direct d120/d118 closures of
-  `9b0689...` are exact-positive. Immediately before Abacus v168
-  `20260912T204326-f2b97a0f24c1` was submitted, both queues, all
+  `9b0689...` are exact-positive. v168 `20260912T204326-f2b97a0f24c1` is
+  fetched/verified/primary-ingested (`03c64315...`): all six targets positive.
+  Immediately before Abacus v170 `20260912T210343-e7d1601bd9cc` was
+  submitted, both queues, all
   terminal/pending candidate and quotient-poset records, and the actual host
-  process were re-audited. v168 now uses all six Abacus CPUs for six distinct
-  d124/d124/d111/d109/d109/d109 one-hole-derived zero-hole closures, with a
-  2100-second envelope. A d77 presentation and a known v149-positive poset
-  were explicitly deferred as quotient-poset duplicates.
+  process were re-audited. v170 now uses all six Abacus CPUs for six distinct
+  d122/d122/d120/d120/d118/d118 one-hole-derived zero-hole closures, with a
+  2100-second envelope (run `5f834e56...`; input hashes `82d29e70...`/
+  `ef2c3c0c...`/`61c9f548...`/`af681e15...`/`cebc1c7c...`/`f1fe96b1...`).
+  It arose from a new 190-parent audit yielding 80 fresh posets. A d77
+  presentation and a known v149-positive poset remain deferred duplicates.
 - Laplace v16 `20260912T203916-6753c1c93869` is fetched/verified and
   primary-ingested (`3e677e5a...`): its d116 target is exact-positive in
   6,254,248 states / 465.552 s. Its non-overlapping successors are queued/
@@ -31,7 +35,8 @@
   and fresh four-negative d119 one-hole parent `9b0689...`; its two zero-hole
   closures are v166. Host v161 additionally found fresh d117 one-hole
   negative `9297a8...`; its d118 exit was positive and d116 was v16. Host v163
-  is the sole one-CPU nice-10 CPU-15 broad-growth process, using the global-
+  added fresh d118 one-hole negative `66e283...` (70.418 s). Host v165 is the
+  sole one-CPU nice-10 CPU-15 broad-growth process, using the global-
   pending-poset guard.
 - Verify/fetch every terminal bundle.  An exact zero-hole negative must have
   byte-matched local replay before ingestion or any claim.  Keep generated

@@ -19,12 +19,15 @@ target, and a 2100-second envelope.
 Abacus v166 `20260912T203243-b2e772b0a3ba` is fetched, hash/control/profile
 verified, and primary-ingested under `e381a915...`: both direct d120/d118
 closures of the fresh four-negative one-hole parent `9b0689...` are exact
-positive.  Both queues were again audited immediately before the current
-Abacus v168 submission `20260912T204326-f2b97a0f24c1`: six pairwise distinct
-d124/d124/d111/d109/d109/d109 zero-hole closures, drawn from the bounded
-one-hole-negative reservoir, run in parallel across all six Abacus CPUs
-(2100-second envelope). Candidate, terminal/pending quotient-poset, host, and
-Laplace reservations were excluded. The equivalent v149 d77 presentation and
+positive. Abacus v168 `20260912T204326-f2b97a0f24c1` is likewise fetched,
+verified, and primary-ingested (`03c64315...`): its six d124/d124/d111/
+d109/d109/d109 targets are exact-positive. Both queues were re-audited before
+the current Abacus v170 submission `20260912T210343-e7d1601bd9cc`: six fresh
+d122/d122/d120/d120/d118/d118 zero-hole closures from 190 exact-negative
+one-hole parents are now running on all six CPUs (run `5f834e56...`; inputs
+`82d29e70...`/`ef2c3c0c...`/`61c9f548...`/`af681e15...`/`cebc1c7c...`/
+`f1fe96b1...`). Candidate, terminal/pending quotient-poset, host, and Laplace
+reservations were excluded. The equivalent v149 d77 presentation and
 a known v149-positive poset were explicitly deferred, not duplicated.
 Laplace v16 `20260912T203916-6753c1c93869` is fetched, hash/control/profile
 verified, and primary-ingested under `3e677e5a...`: its d116 second-order
@@ -38,11 +41,12 @@ same verified runner/helper/archive hashes; none mirrors v168.
 
 Host v159 finished with d107 `ad0be9...` positive and fresh d119 one-hole
 negative `9b0689...` with four negative coefficients; its direct zero-hole
-closures are now v166 positive evidence. Host v161 is the sole local process:
-its completed broad grow/flag pass (seed `202609120161`) added one fresh d117
+closures are now v166 positive evidence. Host v161's completed broad grow/flag
+pass (seed `202609120161`) added one fresh d117
 one-hole negative `9297a8...` (146.349 seconds), but its d118 zero-hole exit
-was already positive and its d116 exit is v16. Host v163 is now the sole
-nice-10 CPU-15 broad pass (seed `202609120163`), guarded against every global
+was already positive and its d116 exit is v16. Host v163 added fresh d118
+one-hole negative `66e283...` (70.418 seconds). Host v165 is the sole
+nice-10 CPU-15 broad pass (seed `202609120165`), guarded against every global
 pending quotient poset.
 Fetch/verify every terminal remote bundle.
 Only an exact zero-hole negative warrants a byte-matched local replay before
