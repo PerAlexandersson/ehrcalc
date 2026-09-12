@@ -70,6 +70,9 @@ v147 `20260912T183712-603dd0ff9b63` runs d137/d146/d147 one-hole growth cases
 `5d5f3175...`, inputs `5f72636e...`, `2d82cc3a...`, `382052c6...`. Each
 uses three explicit 30M/1200-s children under its machine limits; all keys and
 poset hashes were audited against host, both queues, and exact/pending history.
+Host v148 is the sole local process, one reparented nice-10 CPU 15: a refreshed
+64-parent one-hole grow/flag-augmentation pass (eight 6M/360-s exact cases,
+1000-s outer) whose pending-poset snapshot includes both live remote batches.
 
 The final four direct closures, Abacus v144 `20260912T181310-09fd3017dc09`,
 are fetched/primary-ingested (`7df0a99d...`): `db26b1...` (d100), `fa937b...`

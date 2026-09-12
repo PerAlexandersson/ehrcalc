@@ -60,6 +60,9 @@
   `5d5f3175...`, inputs `5f72636e...`, `2d82cc3a...`, `382052c6...`. Each has
   three explicit 30M/1200-s children, with all keys/posets audited against
   host, both queues, and exact/pending history.
+- Host v148 is the sole local process, one reparented nice-10 CPU 15: refreshed
+  64-parent one-hole grow/flag-augmentation, eight 6M/360-s exact cases and a
+  1000-s outer bound; its pending-poset snapshot includes both remote batches.
 - The final direct closures, Abacus v144 `20260912T181310-09fd3017dc09`, are
   fetched/primary-ingested (`7df0a99d...`): `db26b1...` (d100), `fa937b...`
   (d99), `cf2e3c...` (d98), `ff6d27...` (d97) are exact-positive
