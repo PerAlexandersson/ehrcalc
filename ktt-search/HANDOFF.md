@@ -41,12 +41,13 @@
   runs d104/d103/d102 cases, inputs `e80c70ed...`, `7f320b7a...`,
   `7702041c...`, run key `ae77d0a2...`. Both use 30M/1200-s/1500-s and had
   zero exact-poset overlap before submit.
-- The final four currently unassigned direct closures are Abacus v144
-  `20260912T181310-09fd3017dc09`, queued after v143: `db26b1...` (d100),
-  `fa937b...` (d99), `cf2e3c...` (d98), `ff6d27...` (d97); inputs
-  `652d8646...`, `687bb3ff...`, `1b8c6f43...`, `4c8cc4de...`, run key
-  `ecf33598...`. They have zero exact-or-pending-poset overlap; four children
-  are intentional because no additional novel direct closure remains.
+- The final direct closures, Abacus v144 `20260912T181310-09fd3017dc09`, are
+  fetched/primary-ingested (`7df0a99d...`): `db26b1...` (d100), `fa937b...`
+  (d99), `cf2e3c...` (d98), `ff6d27...` (d97) are exact-positive
+  (923,615--1,790,876 states; 33.875--68.007 s), all controls exact-known-
+  match. Inputs `652d8646...`, `687bb3ff...`, `1b8c6f43...`, `4c8cc4de...`;
+  run key `ecf33598...`. The novel direct-closure inventory is exhausted;
+  grow/mutate the one-hole negative reservoir before another remote batch.
 
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`
   (d114) and `be158...` (d111), whose six fresh zero-hole flag closures are
