@@ -29,9 +29,10 @@
   locally replay only an exact negative, then ingest. Host v136 finished with
   369 exact/cache results, 46 deferrals, and 135 prunes and no zero-hole
   negative; its initial detached launch exited before calculation for a
-  missing `PYTHONPATH`, then was correctly relaunched. Host v137 (seed
-  `20261118`) is the only low-priority local core. Generated artifacts stay
-  untracked; no push or
+  missing `PYTHONPATH`, then was correctly relaunched. Host v137 finished
+  with 362 exact/cache results, 46 deferrals, and 140 prunes with no zero-hole
+  negative. Host v138 (seed `20261119`) is the only low-priority local core.
+  Generated artifacts stay untracked; no push or
   publication.
 
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`

@@ -32,8 +32,9 @@ six-case Abacus batch. Fetch, verify, locally replay only an exact negative,
 then ingest. Host v136 finished after 369 exact/cache results,
 46 deferrals, and 135 prunes with no zero-hole negative; its initial detached
 launch had exited before calculation for a missing `PYTHONPATH`, then the same
-seed was correctly relaunched. Host v137 (seed `20261118`) is the sole
-low-priority one-core pass.
+seed was correctly relaunched. Host v137 finished with 362 exact/cache
+results, 46 deferrals, and 140 prunes with no zero-hole negative. Host v138
+(seed `20261119`) is the sole low-priority one-core pass.
 Generated runs/logs stay untracked; no push or publication is authorized.
 
 Latest local v85/v87 expansion found exact one-hole negatives `cc6d...`
