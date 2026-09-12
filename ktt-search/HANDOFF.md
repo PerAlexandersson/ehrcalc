@@ -52,6 +52,17 @@
   `37a00827...`, d124 `e8e1c5f1...`, d125 `376f47be...`/`4e987b5c...`, and
   d126 `23014acf...`; five of the 12 host CPU-equivalents remains below the
   user-set 50% cap. All logs are untracked and Codex remains sole writer.
+- Continuation 3 (2026-09-12): every remaining v21 grow-close zero-hole case
+  through d128 now has a selected 6M bound/provenance record; remote d122
+  `909c74f0...` limited in 252.162 s, host d123--d128 in 172.835--194.428 s.
+  Seven-flag closure `9944986a...` is exact-positive (3,435,640 states), and
+  Abacus v36 `20260912T070101-88ae1d8fb578` exactly reproduced it in 139.503 s
+  with local archived replay complete. New one-hole d110 `12c81c1e...` is
+  locally exact-negative in degrees 1--2 with nine genuine flags, sole hole
+  `(6,11)`, and 2,769,132 states; its zero-hole d111 closure `3f8d1ab3...` is
+  exact-positive (3,308,370 states). v39 `20260912T070834-aa54b96e6755`
+  exactly completed d106 `3f89f4ee...` at 1,512,790 states; matching local
+  replay is active before ingestion. No flagged zero-hole negative is certified.
 - Best certified negative `86b98937ad8a...` has one bad edge, `(a,b)=(10,11)`,
   mask `0x10000000000`, degree 109, and one negative Ehrhart coefficient
   (degree one). Its lift is `(12,1^10)/(1)`, weight `1^21`, with sole bad pair

@@ -66,6 +66,20 @@ for distinct zero-hole d123 `37a00827...`, d124 `e8e1c5f1...`, d125
 12 CPU-equivalent host quota (below the user's 50% ceiling), with per-case
 6M/360-s bounds and untracked logs. Codex remains sole KTT/MariaDB writer.
 
+Continuation 3 (2026-09-12): all remaining v21 grow-close zero-hole cases
+through d128 have now reached the selected 6M bound (remote d122 `909c74f0...`
+in 252.162 s; host d123--d128 in 172.835--194.428 s), with durable provenance.
+New seven-flag closure `9944986a...` is exact-positive at 3,435,640 states;
+Abacus v36 `20260912T070101-88ae1d8fb578` exactly reproduced it at 3,435,640
+states (139.503 s), with local archived-runner replay complete. A bounded
+grow-then-close branch from `36abbd66...` found locally exact one-hole d110
+`12c81c1e...`: nine genuine flags, sole `(6,11)` hole, 2,769,132 states, and
+negative Ehrhart coefficients in degrees 1--2. Its zero-hole d111 closure
+`3f8d1ab3...` is exact-positive (3,308,370 states). Abacus v39
+`20260912T070834-aa54b96e6755` exactly completed distinct deferred one-hole
+d106 `3f89f4ee...` at 1,512,790 states; its separate archived local replay is
+active before ingestion. No flagged zero-hole negative is certified yet.
+
 The best certified negative now has **one genuine nonflag hole**. Candidate
 `86b98937ad8a...` has `(a,b)=(10,11)`, mask `0x10000000000`, one equality,
 degree 109, and negative linear coefficient
