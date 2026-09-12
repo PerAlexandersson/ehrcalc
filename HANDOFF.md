@@ -110,6 +110,10 @@ concurrently (6M/360 s each, 900-s outer); inputs `588b8838...`,
 runner `e88d0879...`. Host v121 is the one local process. Zero-hole-negative
 count remains zero; replay is reserved solely for such a result.
 
+Live verification: v123 has six `abacus_ideal_job.py` children at 98.7--99.5%
+CPU each under nice 10 and the six-CPU affinity; host v121 remains the only
+local KTT process. CPUs 6--7 stay outside the compute profile for control.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is

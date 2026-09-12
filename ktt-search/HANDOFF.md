@@ -110,7 +110,11 @@
   outer; inputs `588b8838...`, `fc044969...`, `6ace516a...`, `c8d24af6...`,
   `47a63890...`, `cacfb367...`, runner `e88d0879...`. Host v121 is sole local
   process. Exact zero-hole-negative count is zero; replay remains reserved
-  only for such a result.
+only for such a result.
+
+- Live verification: v123 has six `abacus_ideal_job.py` children at
+  98.7--99.5% CPU each under nice 10 and the six-CPU affinity; host v121 is
+  the sole local KTT process. CPUs 6--7 remain outside compute for control.
 
 ## One-hole exact-negative breakthrough — 2026-09-11 (active)
 
