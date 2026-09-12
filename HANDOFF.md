@@ -41,6 +41,15 @@ three explicit children use CPUs 0--2 under 10-GiB high/12-GiB hard/no-swap/
 untracked; do not push or publish. Fetch/verify every terminal job; byte-match
 local replay and ingest only an exact zero-hole negative.
 
+The renewed poset audit also queued Abacus v143
+`20260912T180331-410c67f48eb7` after v142: six novel d114--d111 closures,
+inputs `f405c172...`, `0f6c76c8...`, `a8169ca6...`, `3974c647...`,
+`08c225aa...`, `e416159a...`, run key `c6b6d500...`; and Laplace v8
+`20260912T180426-761a54597c4e` after v7: novel d104/d103/d102 closures,
+inputs `e80c70ed...`, `7f320b7a...`, `7702041c...`, run key `ae77d0a2...`.
+Both use the established 30M/1200-s/1500-s bounds and passed zero exact-poset
+overlap checks immediately before submission.
+
 Latest local v85/v87 expansion found exact one-hole negatives `cc6d...`
 (d114) and `be158...` (d111), but their six fresh zero-hole flag closures are
 positive (noncached d112/d109 checks 95.518/95.180 s); distinct d125/d128

@@ -32,6 +32,13 @@
   results, candidate keys, and quotient-poset hashes; never mirror Abacus.
   Generated artifacts remain untracked; no push/publication. Fetch/verify
   terminal output and locally replay/ingest only an exact zero-hole negative.
+- Poset-audited successors are queued: Abacus v143
+  `20260912T180331-410c67f48eb7` after v142, six novel d114--d111 cases,
+  inputs `f405c172...`, `0f6c76c8...`, `a8169ca6...`, `3974c647...`,
+  `08c225aa...`, `e416159a...`, run key `c6b6d500...`; Laplace v8
+  `20260912T180426-761a54597c4e` after v7, d104/d103/d102 cases, inputs
+  `e80c70ed...`, `7f320b7a...`, `7702041c...`, run key `ae77d0a2...`.
+  Both use 30M/1200-s/1500-s and had zero exact-poset overlap before submit.
 
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`
   (d114) and `be158...` (d111), whose six fresh zero-hole flag closures are
