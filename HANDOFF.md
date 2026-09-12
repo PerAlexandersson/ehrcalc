@@ -96,6 +96,20 @@ Remote results are discovery evidence and local replay is reserved for an
 exact zero-hole negative. Exact zero-hole-negative count is zero; generated
 artifacts remain untracked and no push/publication.
 
+Six-CPU continuation (2026-09-12): v121r `20260912T130612-6552b61079af`
+exactly completed its control (2,938,320 states, 117.010 s) and state-limited
+d125 `425396...` at 6M states in 265.635 s; output `a2584807...`, job
+`979e2d9d...`, and remote provenance are in its MariaDB attempt. It is
+nonexact, so no local replay. v122 was cancelled before dispatch after an
+over-parallel command was identified and made no result. The user-authorized
+profile is now six pinned CPUs / 20-GiB hard cap / no swap / 256 tasks, smoke
+verified by `20260912T131630-2e3a02592ed5`. After an idle check, v123
+`20260912T131752-b2cbcef91a9c` began six distinct control-first one-hole cases
+concurrently (6M/360 s each, 900-s outer); inputs `588b8838...`,
+`fc044969...`, `6ace516a...`, `c8d24af6...`, `47a63890...`, `cacfb367...`,
+runner `e88d0879...`. Host v121 is the one local process. Zero-hole-negative
+count remains zero; replay is reserved solely for such a result.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is

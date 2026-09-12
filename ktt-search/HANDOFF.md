@@ -97,6 +97,21 @@
   The exact zero-hole-negative count is zero; generated inputs/logs untracked,
   no push/publication.
 
+- Six-CPU continuation (2026-09-12): v121r `20260912T130612-6552b61079af`
+  exactly completed control `468b1c...` (2,938,320 states, 117.010 s) and
+  left d125 `425396...` state-limited at 6M states in 265.635 s; output
+  `a2584807...`, job `979e2d9d...`, and provenance are recorded in MariaDB.
+  It is nonexact, so no replay. v122 was cancelled before dispatch after an
+  over-parallel command was identified and produced no result. The user
+  authorized six pinned CPUs / 20-GiB hard cap / no swap / 256 tasks; smoke
+  job `20260912T131630-2e3a02592ed5` verified every limit and protection.
+  Following an idle check, v123 `20260912T131752-b2cbcef91a9c` began six
+  distinct control-first one-hole cases concurrently, 6M/360 s each and 900-s
+  outer; inputs `588b8838...`, `fc044969...`, `6ace516a...`, `c8d24af6...`,
+  `47a63890...`, `cacfb367...`, runner `e88d0879...`. Host v121 is sole local
+  process. Exact zero-hole-negative count is zero; replay remains reserved
+  only for such a result.
+
 ## One-hole exact-negative breakthrough — 2026-09-11 (active)
 
 - Suspension checkpoint: Abacus is paused with no running KTT job, and no
