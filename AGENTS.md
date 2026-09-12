@@ -48,3 +48,19 @@ timeout 60s nice -n 10 cargo ...
 
 Use a longer bound only when a documented benchmark requires it.  Keep
 long-running scans resumable and do not commit generated checkpoint data.
+
+## KTT Remote Compute
+
+- Abacus is the six-CPU primary KTT machine. Laplace is a distinct serial
+  discovery lane: Ubuntu 22.04, Python 3.10, Rust 1.98, CPU affinity 0--2,
+  10 GiB memory high / 12 GiB hard maximum, no swap, and 128 tasks. Its
+  closed-lid operation is intentional.
+- Codex remains the sole KTT MariaDB writer. Before a Laplace submission,
+  inspect both remote queues and audit each candidate against the host pass,
+  every active or queued Abacus job, and prior results. Submit at most three
+  concurrent Laplace child cases; never mirror a six-case Abacus batch.
+- Record job IDs, input/source hashes, resource profile, and ownership in both
+  KTT handoffs. Laplace output is discovery evidence: fetch it, require the
+  established control/provenance checks, and locally replay an exact negative
+  before ingesting or claiming a contender. Generated inputs, logs, and
+  reports remain untracked.

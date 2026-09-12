@@ -2,7 +2,18 @@
 
 ## KTT continuation — 2026-09-12 (active)
 
-Codex remains sole private-companion worker and MariaDB writer.  v131
+Codex remains sole private-companion worker and MariaDB writer. Laplace is now
+an available, serial discovery lane (Ubuntu 22.04/Python 3.10/Rust 1.98;
+CPUs 0--2, 10-GiB high/12-GiB hard, no swap, 128 tasks, lid closed). Before
+each Laplace submission, audit both queues plus the host, active/queued
+Abacus, and historical candidate sets; use no more than three disjoint child
+cases and never mirror Abacus. Its results require the normal fetch, control,
+local-replay-if-negative, and ingestion protocol. v131
+Laplace v1 `20260912T160745-8694f21074f7` is its first production KTT job:
+three audited, disjoint d128 zero-hole closures (`49d90c...`, `4d781a...`,
+`84a1ba...`), 30M states/1200 s and 1500-s outer; inputs `6bb4e719...`,
+`bdf141d...`, `50dce301...`, runner `e3bd01d...`, helper `a4aae249...`,
+archive `bf1cfa42...`. Abacus v135 remains the distinct six-case batch.
 `20260912T144557-bfa30f9a2821` completed after recorded-ID/current-state
 inspection: six high-dimensional direct zero-hole closures (d129--d132) are
 all exact-positive, using 7,759,554--10,954,460 DP states in 530.882--753.086
