@@ -192,6 +192,16 @@ only for such a result.
   `94d7570d...`, runner `329e89f0...`, helper `a4aae249...`, archive
   `bf1cfa42...`. No candidate is duplicated; generated files are untracked.
 
+- Validated near-miss (2026-09-12): v127rr `20260912T135946-071f0542613f`
+  completed six exact results. Four legacy zero-hole cases and d119 one-hole
+  are positive. d120 one-hole `742482...` (11x13, dimension 120, sole
+  nonflagged hole `(7,13)`) is exact-negative in degrees 2--4 at 8,071,584
+  states. A byte-matched local replay of input `bafc8b0d...` exactly agreed on
+  control and target polynomial data/DP states; validated ledger `a2ffd7d7...`.
+  This is a one-hole near-miss, not the exact zero-hole flagged target;
+  zero-hole exact-negative count remains 0. Host v128 is sole low-priority
+  process; v128 is live on Abacus. Generated files untracked; no push.
+
 ## One-hole exact-negative breakthrough — 2026-09-11 (active)
 
 - Suspension checkpoint: Abacus is paused with no running KTT job, and no
