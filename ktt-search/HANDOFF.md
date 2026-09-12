@@ -17,6 +17,18 @@
   exact-positive (noncached d112/d109 checks 95.518/95.180 s); distinct d125/
   d128 moves reached the 6M cap. Codex remains sole writer.
 
+- Latest verification (2026-09-12): host v89--v99 found fresh exact one-hole
+  negatives `596092...` (d115), `4805...` (d117), `a9e07...` (d114),
+  `1dda...` (d109), and `31f1...` (d113). Their fresh zero-hole closures are
+  all exact-positive: d114/d116 (86.622/87.192 s), d118 (87.896 s),
+  d110/d115 (86.047/87.963 s), d105 (81.115 s), and `31f1...` d112/d114
+  (125.609 s/cached). The exact zero-hole-negative count remains zero. v100
+  is the sole active low-priority host process: a distinct bounded
+  negative-reservoir growth/augmentation/closure pass (4 exact cases, 6M
+  states/360 s each, 850 s outer), no remote job. Inspect recorded IDs and
+  Abacus state before a new remote submission; fetch, local-replay, and ingest
+  every new remote result before any claim. Generated artifacts are untracked.
+
 ## One-hole exact-negative breakthrough — 2026-09-11 (active)
 
 - Suspension checkpoint: Abacus is paused with no running KTT job, and no

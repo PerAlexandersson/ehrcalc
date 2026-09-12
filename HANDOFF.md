@@ -18,6 +18,18 @@ Latest local v85/v87 expansion found exact one-hole negatives `cc6d...`
 positive (noncached d112/d109 checks 95.518/95.180 s); distinct d125/d128
 moves reached the 6M cap. Codex remains the sole writer.
 
+Latest verification (2026-09-12): host v89--v99 found fresh exact one-hole
+negatives `596092...` (d115), `4805...` (d117), `a9e07...` (d114), `1dda...`
+(d109), and `31f1...` (d113); all fresh zero-hole closures are exact-positive
+(including d114/d116 in 86.622/87.192 s, d118 in 87.896 s, d110/d115 in
+86.047/87.963 s, d105 in 81.115 s, and `31f1...` d112/d114 in 125.609 s or
+cache). Exact zero-hole-negative count remains zero. v100 is the sole active
+host process, one `nice -n 10` CPU: a distinct bounded negative-reservoir
+growth/augmentation/closure pass (four exact cases, 6M states/360 s each,
+850 s outer), with no remote submission. Before a future remote submission,
+inspect recorded IDs and Abacus state, then fetch, replay, and ingest results.
+Generated artifacts remain untracked; no push/publication.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is
