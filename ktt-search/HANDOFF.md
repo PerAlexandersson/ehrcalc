@@ -2,39 +2,25 @@
 
 ## Continuation — 2026-09-12 (active)
 
-- Codex remains sole KTT/private worker and MariaDB writer. Laplace is now a
-  serial discovery lane (Ubuntu 22.04/Python 3.10/Rust 1.98; CPUs 0--2,
-  10-GiB high/12-GiB hard, no swap, 128 tasks, closed-lid operation). Audit
-  both queues plus host/Abacus/historical candidate disjointness before each
-  submission; run at most three Laplace children, never mirror a six-case
-  Abacus batch, and retain the normal fetch/control/replay-if-negative/ingest
-  protocol. v131
+- Codex remains the sole private KTT worker and MariaDB writer; the exact
+  flagged zero-hole-negative count is zero. Abacus v135
+  `20260912T160323-d9f3eab75334` is the sole six-CPU primary batch: six
+  disjoint d128--d129 direct closures, 30M states/1200 s each and 1500-s
+  outer; inputs `8de48649...`, `36b864f0...`, `4a1519f3...`, `9c3d3fbf...`,
+  `533c745a...`, `cd43de58...`, runner `d252ad6...`, helper `a4aae249...`,
+  archive `bf1cfa42...`. All six live children are CPU-bound under the
+  verified six-CPU/20-GiB/no-swap/256-task profile.
 - Laplace v1 `20260912T160745-8694f21074f7` is its first production KTT job:
-  three audited, disjoint d128 zero-hole closures (`49d90c...`, `4d781a...`,
+  three audited, disjoint d128 closures (`49d90c...`, `4d781a...`,
   `84a1ba...`), 30M states/1200 s and 1500-s outer; inputs `6bb4e719...`,
   `bdf141d...`, `50dce301...`, runner `e3bd01d...`, helper `a4aae249...`,
-  archive `bf1cfa42...`. Abacus v135 remains the distinct six-case batch.
-  `20260912T144557-bfa30f9a2821` is terminal after a recorded-ID/live-state
-  audit: all six high-dimensional direct zero-hole closures (d129--d132) are
-  exact-positive, 7,759,554--10,954,460 DP states and 530.882--753.086 s.
-  Every child exactly matched control `468b1c...` under the six-CPU/20-GiB/
-  no-swap/256-task profile; fetched provenance is primary ledger `bfd3e0a1...`.
-  No local replay was used because no target was negative, so the exact
-  zero-hole-negative count remains zero.
-- v132 `20260912T150610-78f27a6436bd` completed six distinct closures of
-  `cb60d9...` exactly positive (d123--d128, 7,365,930--7,758,608 states,
-  430.2--568.7 s), fetched primary ledger `77470052...`. v133
-  `20260912T152056-a8e9432a6aae` gave four further exact-positive closures
-  (d131--d134; d134 14,479,036 states/888.6 s) and two recorded 900-s limits
-  (d132/d133), partial ledger `cdec09b8...`. After a terminal-queue audit,
-  v134 `20260912T154331-e8478bbd6bef` is the sole Abacus job: those two
-  retries plus four untried d130 closures, 30M states/1200 s and 1500-s outer,
-  unchanged six-CPU/20-GiB/no-swap/256-task profile; direct-closure run
-  `7981ae78...`, runner `d252ad6...`, helper `a4aae249...`, archive
-  `bf1cfa42...`. Host v133 completed (366 exact/cache, 55 deferred, 135
-  pruned; best zero-hole intermediate positive); host v134 is the one
-  low-priority process below the 50% cap. Generated artifacts are untracked;
-  no push or publication.
+  archive `bf1cfa42...`. It is limited to CPUs 0--2, 10-GiB high/12-GiB hard
+  memory, no swap, and 128 tasks. Inspect both queues before every submission;
+  audit disjointness from host, every active/queued Abacus batch, and prior
+  results; run at most three children and never mirror Abacus. Fetch/verify,
+  locally replay only an exact negative, then ingest. Host v135 is the only
+  low-priority local core. Generated artifacts stay untracked; no push or
+  publication.
 
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`
   (d114) and `be158...` (d111), whose six fresh zero-hole flag closures are
