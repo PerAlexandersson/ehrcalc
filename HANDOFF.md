@@ -51,6 +51,17 @@ Fetch and verify every terminal remote job;
 perform a byte-matched local replay and then ingest only if an exact zero-hole
 negative appears.
 
+Latest: Abacus v138 `20260912T170802-e3a1e268c69b` and Laplace v3
+`20260912T170003-c6a8eca31244` are fetched and primary-ingested, respectively
+under `03c6fdca...` and `6c9ea17d...`; all nine zero-hole cases are exact
+positive. After a fresh two-queue and candidate audit, Abacus v139
+`20260912T172154-951696717bf6` began six d120--d121 zero-hole cases (inputs
+`1281a358...`, `9d350179...`, `f7899e20...`, `a36db056...`, `9ddc247c...`,
+`0c477e21...`; ledger `6cc86e0e...`), while Laplace v4
+`20260912T172329-bc27332b97f2` began disjoint d119 cases (`33018e88...`,
+`2f84b3e6...`, `7321c657...`; ledger `5a2a68ae...`). Both use the verified
+runner/helper/archive and explicit-PID child wrappers.
+
 Latest local v85/v87 expansion found exact one-hole negatives `cc6d...`
 (d114) and `be158...` (d111), but their six fresh zero-hole flag closures are
 positive (noncached d112/d109 checks 95.518/95.180 s); distinct d125/d128

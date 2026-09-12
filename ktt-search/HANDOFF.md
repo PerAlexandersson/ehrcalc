@@ -41,6 +41,15 @@
   publish. Fetch and verify terminal remote output; byte-matched local replay
   plus ingest is required only for an exact zero-hole negative.
 
+- Latest: v138 and Laplace v3 are fetched and primary-ingested (`03c6fdca...`,
+  `6c9ea17d...`); their nine exact zero-hole cases are positive. Freshly
+  audited Abacus v139 `20260912T172154-951696717bf6` is six d120--d121 cases,
+  input hashes `1281a358...`, `9d350179...`, `f7899e20...`, `a36db056...`,
+  `9ddc247c...`, `0c477e21...`, ledger `6cc86e0e...`; disjoint Laplace v4
+  `20260912T172329-bc27332b97f2` is three d119 cases, `33018e88...`,
+  `2f84b3e6...`, `7321c657...`, ledger `5a2a68ae...`. Both are live under
+  their established resource profiles and explicit-PID wrappers.
+
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`
   (d114) and `be158...` (d111), whose six fresh zero-hole flag closures are
   exact-positive (noncached d112/d109 checks 95.518/95.180 s); distinct d125/
