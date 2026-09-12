@@ -18,13 +18,21 @@ target/parent/poset audits, and hashes live in the untracked v152/v154/Laplace-
 v11 submission manifests; runner/helper/archive are `e3bd01d...`,
 `a4aae249...`, and `bf1cfa42...`.
 
+Abacus v156 `20260912T195713-d2176737d1e5` is live on six new d87--d97
+zero-hole targets (run `459e31f4...`); disjoint Laplace v12
+`20260912T195713-556cfb66bf67` is live on d85--d87 (run `2cdf697c...`).  Its
+nine targets were audited against all prior results, both queues, and v155's
+544 recorded attempts before global reservation; each child uses the same
+verified 30M/1200-s/2100-s profile.
+
 Host v151 added two exact-positive d112 one-hole cases and hit the 6M cap at
-d119/d121; v153 was cache/reservation-only.  Host v155 is the sole local
-task: one nice-10 CPU-15 broad grow/flag-augmentation pass, globally skipping
-all remote reservations.  Fetch and verify every terminal remote bundle; only
-an exact zero-hole negative warrants a byte-matched local replay before
-ingesting or claiming it.  Generated reports and logs remain untracked; do not
-push or publish.
+d119/d121; v153 was cache/reservation-only.  Bounded v155 added one
+exact-positive d109 one-hole case and four 6M state limits (d113/d116/d119).
+Host v157 is the sole local task: one nice-10 CPU-15 broad grow/flag pass,
+globally skipping the remote reservations.  Fetch and verify every terminal
+remote bundle; only an exact zero-hole negative warrants a byte-matched local
+replay before ingesting or claiming it.  Generated reports and logs remain
+untracked; do not push or publish.
 
 ## Historical continuity
 

@@ -13,10 +13,16 @@
   closure waves therefore add 18 verified positives.  Each child had the
   known control, 30M-state/1200-s limits, a 2100-s envelope, and a manifest
   retaining input hashes and parent/poset audit.
+- Abacus v156 `20260912T195713-d2176737d1e5` is live on six new d87--d97
+  zero-hole targets (`459e31f4...`); disjoint Laplace v12
+  `20260912T195713-556cfb66bf67` runs three d85--d87 targets (`2cdf697c...`).
+  Both were audited against the live v155 attempt set and then globally
+  reserved before submission.
 - Host v151 added two d112 one-hole positives and d119/d121 state limits; v153
-  had no new exact calculation.  Host v155 is the sole local task, one
-  nice-10 CPU-15 broad growth/flag pass protected by the global pending-poset
-  guard.  Do not duplicate it or either remote batch.
+  had no new exact calculation.  Bounded v155 added a positive d109 one-hole
+  case and four d113/d116/d119 state limits.  Host v157 is the sole local
+  nice-10 CPU-15 broad-growth task under the pending-poset guard.  Do not
+  duplicate it or either remote batch.
 - Verify/fetch every terminal bundle.  An exact zero-hole negative must have
   byte-matched local replay before ingestion or any claim.  Keep generated
   output untracked; do not push or publish.
