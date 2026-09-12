@@ -3,25 +3,26 @@
 ## Current KTT state — 2026-09-12 (active)
 
 Codex is the sole private KTT worker and local MariaDB writer.  No exact
-flagged zero-hole-negative is known.  Abacus v152 job
-`20260912T193451-1c7a56c97b2c` is running six pairwise distinct, new
-zero-hole two-hole-closure targets (d95--d99; ledger run
-`454f40c1...`) on its six CPU allocation.  The disjoint Laplace v10 job
-`20260912T193452-12358ea918fa` is running its three d94--d95 targets (ledger
-run `f21d72c9...`) on CPUs 0--2.  Both use one control per child, 30M states,
-1200 seconds per target, and a 2100-second outer deadline.  Inputs, target
-and parent-poset audits, and hashes are in untracked
-`runs/ktt-v152-twohole-zero-submission-manifest-20260912.json`; the runner,
-helper, and source archive hashes are `e3bd01d...`, `a4aae249...`, and
-`bf1cfa42...`.
+flagged zero-hole-negative is known.  Abacus v152
+`20260912T193451-1c7a56c97b2c` and Laplace v10
+`20260912T193452-12358ea918fa` are fetched, hash/control/profile verified,
+and primary-ingested: their nine new d94--d99 zero-hole targets are all
+exact-positive (ledgers `44ada1ab...` and `b42b423c...`).  Abacus v154
+`20260912T194147-aca2530e399a` is the live six-core d91--d98 batch (run
+`dc33ffd1...`); disjoint Laplace v11 `20260912T194323-f8d1e60f8c73` is its
+three-child d90/d92/d97 serial-queue successor (run `6a4c921b...`).  Every
+child has the verified control, 30M states, 1200 seconds per target, and a
+2100-second envelope.  Inputs, target/parent/poset audits, and hashes live in
+the untracked v152/v154/Laplace-v11 submission manifests; runner/helper/archive
+are `e3bd01d...`, `a4aae249...`, and `bf1cfa42...`.
 
-Host v151 is complete: its two fresh d112 one-hole cases were exact-positive
-and d119/d121 cases reached the 6M state cap.  Host v153 is the only local
-search process, one nice-10 CPU-15 task, performing bounded zero-hole closing
-while globally skipping every pending remote poset.  Fetch and verify each
-terminal remote bundle; only an exact zero-hole negative warrants a
-byte-matched local replay before ingesting or claiming it.  Generated reports
-and logs remain untracked; do not push or publish.
+Host v151 added two exact-positive d112 one-hole cases and hit the 6M cap at
+d119/d121; v153 was cache/reservation-only.  Host v155 is the sole local
+task: one nice-10 CPU-15 broad grow/flag-augmentation pass, globally skipping
+all remote reservations.  Fetch and verify every terminal remote bundle; only
+an exact zero-hole negative warrants a byte-matched local replay before
+ingesting or claiming it.  Generated reports and logs remain untracked; do not
+push or publish.
 
 ## Historical continuity
 

@@ -3,17 +3,20 @@
 ## Current state — 2026-09-12 (active)
 
 - Codex remains sole private KTT worker and sole local MariaDB writer; no
-  exact flagged zero-hole-negative exists.
-- Abacus v152 `20260912T193451-1c7a56c97b2c` is live with six pairwise
-  distinct new zero-hole two-hole closures (d95--d99; reservation run
-  `454f40c1...`).  Laplace v10 `20260912T193452-12358ea918fa` is live with
-  three disjoint d94--d95 closures (`f21d72c9...`).  Each child has the known
-  control, 30M-state/1200-s target limits, and each outer job has a 2100-s
-  deadline; the v152 manifest records every input hash and parent/poset audit.
-- Host v151 completed with two fresh d112 one-hole exact positives and two
-  state-limited d119/d121 cases.  Host v153 is the sole local task: one
-  nice-10 CPU-15 bounded zero-hole-closing pass, protected by the global
-  pending-poset guard.  Do not duplicate its targets or either remote batch.
+  exact flagged zero-hole-negative exists.  Fetched/verified Abacus v152
+  `20260912T193451-1c7a56c97b2c` (ledger `44ada1ab...`) and Laplace v10
+  `20260912T193452-12358ea918fa` (`b42b423c...`) add nine exact-positive
+  d94--d99 zero-hole targets.
+- Abacus v154 `20260912T194147-aca2530e399a` is live on six new d91--d98
+  targets (`dc33ffd1...`).  Disjoint Laplace v11
+  `20260912T194323-f8d1e60f8c73` is queued/running as its three-child
+  d90/d92/d97 successor (`6a4c921b...`).  Each child has the known control,
+  30M-state/1200-s limits, and a 2100-s envelope; every manifest retains input
+  hashes and parent/poset audit.
+- Host v151 added two d112 one-hole positives and d119/d121 state limits; v153
+  had no new exact calculation.  Host v155 is the sole local task, one
+  nice-10 CPU-15 broad growth/flag pass protected by the global pending-poset
+  guard.  Do not duplicate it or either remote batch.
 - Verify/fetch every terminal bundle.  An exact zero-hole negative must have
   byte-matched local replay before ingestion or any claim.  Keep generated
   output untracked; do not push or publish.
