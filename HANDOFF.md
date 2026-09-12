@@ -3,39 +3,29 @@
 ## Current KTT state — 2026-09-12 (active)
 
 Codex is the sole private KTT worker and local MariaDB writer.  No exact
-flagged zero-hole-negative is known.  Abacus v152
-`20260912T193451-1c7a56c97b2c` and Laplace v10
-`20260912T193452-12358ea918fa` are fetched, hash/control/profile verified,
-and primary-ingested: their nine new d94--d99 zero-hole targets are all
-exact-positive (ledgers `44ada1ab...` and `b42b423c...`).  Abacus v154
-`20260912T194147-aca2530e399a` and Laplace v11
-`20260912T194323-f8d1e60f8c73` are also fetched, verified, and ingested: their
-nine d90--d98 targets are exact-positive (ledgers `321fa64a...` and
-`2cbac6f6...`).  Thus the two two-hole-closure waves have 18 new verified
-zero-hole positives.  Every child used the verified control, 30M states,
-1200 seconds per target, and a 2100-second envelope.  Inputs,
-target/parent/poset audits, and hashes live in the untracked v152/v154/Laplace-
-v11 submission manifests; runner/helper/archive are `e3bd01d...`,
-`a4aae249...`, and `bf1cfa42...`.
+flagged zero-hole-negative is known.  The two-hole-closure campaign has 36
+new exact-positive zero-hole targets: the prior 33 plus fetched, hash/control/
+profile-verified and primary-ingested Laplace v13
+`20260912T200522-b50961c57b9f` (d95/d84/d81; ledger `2d88dfa2...`).  Every
+case used the known negative control and verified runner/helper/archive hashes
+`e3bd01d...`/`a4aae249...`/`bf1cfa42...` under 30M states, 1200 seconds per
+target, and a 2100-second envelope.
 
-Abacus v156 `20260912T195713-d2176737d1e5`, Laplace v12
-`20260912T195713-556cfb66bf67`, and Abacus v158
-`20260912T200344-28249a4c3ac5` are fetched, verified, and primary-ingested:
-their 15 further d81--d97 targets are exact-positive (ledgers `d498d187...`,
-`a49f31b9...`, `4625cd4b...`).  The closure campaign now has 33 new exact
-zero-hole positives.  Laplace v13 `20260912T200522-b50961c57b9f` is the sole
-active remote batch (three d81/d84/d95 targets, run `d310b48a...`), selected
-against live v157 work and globally reserved under the same verified
-30M/1200-s/2100-s profile.
+Both remote queues were re-audited immediately before the current submissions.
+Abacus v160 `20260912T201455-8d64f02da66b` is running six disjoint d95--d91
+two-hole-closure targets (reservation run `4edb28a7...`; input hashes are in
+untracked `ktt-v160-...-manifest-20260912.json`).  Laplace v14
+`20260912T201824-c3059015011f` is concurrently running three disjoint
+zero-hole targets d91/d80/d80 from distinct parent faces (run
+`f6f0afb3...`; inputs `70f73932...`, `5c360214...`, `22381d56...`).  v14 was
+audited against every terminal/pending quotient-poset row, the active Abacus
+batch, and no live host process; it uses exactly its permitted three children.
 
-Host v151 added two exact-positive d112 one-hole cases and hit the 6M cap at
-d119/d121; v153 was cache/reservation-only.  Bounded v155 added one
-exact-positive d109 one-hole case and four 6M state limits (d113/d116/d119).
-Host v157 is the sole local task: one nice-10 CPU-15 broad grow/flag pass,
-globally skipping the remote reservations.  Fetch and verify every terminal
-remote bundle; only an exact zero-hole negative warrants a byte-matched local
-replay before ingesting or claiming it.  Generated reports and logs remain
-untracked; do not push or publish.
+Host v157 has finished with no new exact calculation (561 cache hits; four
+6M state limits); no host search is currently live.  Fetch/verify every
+terminal remote bundle.  Only an exact zero-hole negative warrants a
+byte-matched local replay before ingestion or any claim.  Generated reports
+and logs remain untracked; do not push or publish.
 
 ## Historical continuity
 

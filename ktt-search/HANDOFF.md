@@ -3,27 +3,22 @@
 ## Current state — 2026-09-12 (active)
 
 - Codex remains sole private KTT worker and sole local MariaDB writer; no
-  exact flagged zero-hole-negative exists.  Fetched/verified Abacus v152
-  `20260912T193451-1c7a56c97b2c` (ledger `44ada1ab...`) and Laplace v10
-  `20260912T193452-12358ea918fa` (`b42b423c...`) add nine exact-positive
-  d94--d99 zero-hole targets.
-- Fetched/verified Abacus v154 `20260912T194147-aca2530e399a`
-  (`321fa64a...`) and Laplace v11 `20260912T194323-f8d1e60f8c73`
-  (`2cbac6f6...`) add another nine d90--d98 zero-hole positives.  The two
-  closure waves therefore add 18 verified positives.  Each child had the
-  known control, 30M-state/1200-s limits, a 2100-s envelope, and a manifest
-  retaining input hashes and parent/poset audit.
-- Fetched/verified Abacus v156 `20260912T195713-d2176737d1e5`
-  (`d498d187...`), Laplace v12 `20260912T195713-556cfb66bf67`
-  (`a49f31b9...`), and Abacus v158 `20260912T200344-28249a4c3ac5`
-  (`4625cd4b...`) add 15 exact-positive d81--d97 targets, 33 in this closure
-  campaign.  Laplace v13 `20260912T200522-b50961c57b9f` is the sole active
-  remote batch: three audited and reserved d81/d84/d95 targets (`d310b48a...`).
-- Host v151 added two d112 one-hole positives and d119/d121 state limits; v153
-  had no new exact calculation.  Bounded v155 added a positive d109 one-hole
-  case and four d113/d116/d119 state limits.  Host v157 is the sole local
-  nice-10 CPU-15 broad-growth task under the pending-poset guard.  Do not
-  duplicate it or either remote batch.
+  exact flagged zero-hole-negative exists.  Fetched/verified and
+  primary-ingested Laplace v13 `20260912T200522-b50961c57b9f` adds three
+  exact-positive d95/d84/d81 targets (ledger `2d88dfa2...`), bringing this
+  exact two-hole-closure campaign to 36 positives.
+- Abacus v160 `20260912T201455-8d64f02da66b` is live on six disjoint d95--d91
+  targets (run `4edb28a7...`).  Disjoint Laplace v14
+  `20260912T201824-c3059015011f` is live on three d91/d80/d80 targets from
+  distinct parent faces (run `f6f0afb3...`; input SHA-256
+  `70f73932...`, `5c360214...`, `22381d56...`).  Immediately-before-submit
+  audits covered both queues, all terminal/pending quotient-poset rows, the
+  active Abacus batch, and the absent host process; Laplace has exactly three
+  child cases, never a six-case mirror.
+- Both jobs use the known control, 30M states/1200 seconds per target and a
+  2100-second envelope; runner/helper/archive hashes are
+  `e3bd01d...`/`a4aae249...`/`bf1cfa42...`.  Host v157 ended with 561 cache
+  hits and no new exact case; no host process is currently live.
 - Verify/fetch every terminal bundle.  An exact zero-hole negative must have
   byte-matched local replay before ingestion or any claim.  Keep generated
   output untracked; do not push or publish.
