@@ -63,6 +63,8 @@
 - Host v148 is the sole local process, one reparented nice-10 CPU 15: refreshed
   64-parent one-hole grow/flag-augmentation, eight 6M/360-s exact cases and a
   1000-s outer bound; its pending-poset snapshot includes both remote batches.
+  Private `06d2ebd` bulk-loads the selected full exact seed records for the
+  next host pass (12 focused tests pass), preserving exact/reservation checks.
 - The final direct closures, Abacus v144 `20260912T181310-09fd3017dc09`, are
   fetched/primary-ingested (`7df0a99d...`): `db26b1...` (d100), `fa937b...`
   (d99), `cf2e3c...` (d98), `ff6d27...` (d97) are exact-positive
