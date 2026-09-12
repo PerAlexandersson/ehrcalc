@@ -20,8 +20,14 @@ zero-hole closures are `0dec5d...`, `108c6b...`, `15dfec...`, `164ef9...`,
 `2115ab...`, and `215119...`; their inputs hash `2060cf1d...`, `2918a25c...`,
 `0427d045...`, `ced5d860...`, `0ceb3220...`, and `6cbe84fe...`, and its
 pending-attempt run key is `b95d3029...`. All six children were observed at
-97--101% CPU with zero memory-limit/OOM events. Laplace is idle and no local
-KTT process is active, avoiding a race with the new pending closures. Keep
+97--101% CPU with zero memory-limit/OOM events. Separately, after a renewed
+two-queue/candidate audit, Laplace v5 `20260912T174740-ea6a08a88d40` began
+three disjoint d120 closures (`fbfdc3...`, `fb7f98...`, `f9eebf...`) at the
+same 30M/1200-s/1500-s bounds; input hashes are `65fb2985...`,
+`37f96915...`, `e627bb6b...`, and run key `3b1a5e94...`. Its three explicit
+children were observed at 102% CPU on CPUs 0--2 with zero memory-limit/OOM
+events under its 10-GiB high/12-GiB hard/no-swap/128-task profile. No local
+KTT process is active, avoiding a race with pending remote closures. Keep
 generated runs/logs untracked; do not push or publish. Fetch and verify every
 terminal job; byte-matched local replay and ingestion are required only for an
 exact zero-hole negative.

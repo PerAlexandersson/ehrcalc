@@ -16,12 +16,18 @@
   `ced5d860...`, `0ceb3220...`, `6cbe84fe...`; its pending run key is
   `b95d3029...`. The six explicit-PID children were observed at 97--101% CPU
   under the six-CPU/20-GiB/no-swap/256-task profile, with zero memory-limit or
-  OOM events. Laplace is idle and no host KTT process is active, preventing a
-  duplicate calculation. Before a Laplace submission, inspect both queues and
-  audit against host, every Abacus batch, and history; use at most three
-  children and never mirror Abacus. Generated artifacts remain untracked; do
-  not push or publish. Fetch/verify terminal output; locally replay and ingest
-  only an exact zero-hole negative.
+  OOM events. After a renewed two-queue/candidate audit, disjoint Laplace v5
+  `20260912T174740-ea6a08a88d40` is also live with three d120 closures
+  (`fbfdc3...`, `fb7f98...`, `f9eebf...`), 30M/1200-s/1500-s bounds, inputs
+  `65fb2985...`, `37f96915...`, `e627bb6b...`, and run key `3b1a5e94...`.
+  Its three explicit-PID children were observed at 102% CPU on CPUs 0--2 with
+  zero memory-limit/OOM events under 10-GiB high/12-GiB hard/no-swap/128 tasks.
+  No host KTT process is active, preventing a duplicate calculation. Before a
+  future Laplace submission, inspect both queues and audit against host, every
+  Abacus batch, and history; use at most three children and never mirror
+  Abacus. Generated artifacts remain untracked; do not push or publish.
+  Fetch/verify terminal output; locally replay and ingest only an exact
+  zero-hole negative.
 
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`
   (d114) and `be158...` (d111), whose six fresh zero-hole flag closures are
