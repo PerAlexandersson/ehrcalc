@@ -30,6 +30,15 @@ growth/augmentation/closure pass (four exact cases, 6M states/360 s each,
 inspect recorded IDs and Abacus state, then fetch, replay, and ingest results.
 Generated artifacts remain untracked; no push/publication.
 
+Closure audit update (2026-09-12): v100 completed 179 bounded proposals (324
+cache hits), yielding exact one-hole negatives `317502...` (d111), `64559a...`
+(d113), `f16494...` (d116), and three d109 variants. v101--v106 exhausted
+their direct zero-hole closures: fresh d110 `545932...` (86.819 s), d115
+`1a848e...` (98.129 s), and d117 `7b71dd...` (100.018 s) are exact-positive,
+as are cached d112 `326811...`, d114 `edfae...`, and three d105 faces. Exact
+zero-hole-negative count remains zero. Abacus status has no nonterminal job
+and v58 remains latest done; no duplicate remote submission occurred.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is

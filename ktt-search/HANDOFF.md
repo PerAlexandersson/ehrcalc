@@ -29,6 +29,16 @@
   Abacus state before a new remote submission; fetch, local-replay, and ingest
   every new remote result before any claim. Generated artifacts are untracked.
 
+- Closure audit update (2026-09-12): v100 completed 179 bounded proposals
+  (324 cache hits), yielding exact one-hole `317502...` (d111), `64559a...`
+  (d113), `f16494...` (d116), and three d109 variants. v101--v106 exhausted
+  their direct zero-hole closures: fresh d110 `545932...` (86.819 s), d115
+  `1a848e...` (98.129 s), and d117 `7b71dd...` (100.018 s) are
+  exact-positive, as are cached d112 `326811...`, d114 `edfae...`, and three
+  d105 faces. Exact zero-hole-negative count remains zero. Fresh Abacus status
+  has no nonterminal job and v58 remains the latest done KTT ID; no duplicate
+  remote submission occurred.
+
 ## One-hole exact-negative breakthrough — 2026-09-11 (active)
 
 - Suspension checkpoint: Abacus is paused with no running KTT job, and no
