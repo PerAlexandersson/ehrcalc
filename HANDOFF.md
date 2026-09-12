@@ -37,9 +37,12 @@ distinct, previously uncomputed zero-hole posets `b9b2b6...` (d117),
 `f9dc0f...` (d116), and `afd69f...` (d115), at the same bounds; inputs
 `76af71f9...`, `4df2d439...`, `1ecc1317...`; run key `3bb31b3b...`. Its
 three explicit children use CPUs 0--2 under 10-GiB high/12-GiB hard/no-swap/
-128-task limits. No local KTT process is active. Generated runs/logs remain
-untracked; do not push or publish. Fetch/verify every terminal job; byte-match
-local replay and ingest only an exact zero-hole negative.
+128-task limits. Host v144 is the sole local KTT process: `nice 10`, pinned
+to CPU 15 (one of 16), auditing distinct d101 zero-hole `ec9b39...` at 30M/
+1200-s; run key `1961de21...`. Its output stays untracked; an exact negative
+is deliberately left pending for independent cross-validation. Generated runs/
+logs remain untracked; do not push or publish. Fetch/verify every terminal job;
+byte-match local replay and ingest only an exact zero-hole negative.
 
 The renewed poset audit also queued Abacus v143
 `20260912T180331-410c67f48eb7` after v142: six novel d114--d111 closures,
