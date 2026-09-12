@@ -28,6 +28,13 @@
   Abacus. Generated artifacts remain untracked; do not push or publish.
   Fetch/verify terminal output; locally replay and ingest only an exact
   zero-hole negative.
+- Re-audited Abacus successor v141 `20260912T175005-d8860a38ea79` is queued
+  behind v140: six parent-disjoint d120 closures (`a4300c...`, `b2e478...`,
+  `cd4ded...`, `dfb436...`, `e2c003...`, `f66268...`), same
+  30M/1200-s/1500-s bounds, inputs `350e09d9...`, `a0dddc2d...`,
+  `0368e376...`, `27ab58d5...`, `9460f63a...`, `2ca7afe9...`, and run key
+  `465c77ad...`. It is disjoint from both live remote batches, host, and
+  history; generated artifacts remain untracked.
 
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`
   (d114) and `be158...` (d111), whose six fresh zero-hole flag closures are

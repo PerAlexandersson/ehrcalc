@@ -32,6 +32,14 @@ generated runs/logs untracked; do not push or publish. Fetch and verify every
 terminal job; byte-matched local replay and ingestion are required only for an
 exact zero-hole negative.
 
+The re-audited Abacus successor v141 `20260912T175005-d8860a38ea79` is queued
+behind v140, preserving the serial six-CPU profile. It contains six distinct,
+parent-disjoint d120 closures (`a4300c...`, `b2e478...`, `cd4ded...`,
+`dfb436...`, `e2c003...`, `f66268...`) at the same 30M/1200-s/1500-s bounds;
+inputs hash `350e09d9...`, `a0dddc2d...`, `0368e376...`, `27ab58d5...`,
+`9460f63a...`, `2ca7afe9...`, and pending run key `465c77ad...`. It has no
+overlap with either live remote batch, the host, or prior candidate results.
+
 Latest local v85/v87 expansion found exact one-hole negatives `cc6d...`
 (d114) and `be158...` (d111), but their six fresh zero-hole flag closures are
 positive (noncached d112/d109 checks 95.518/95.180 s); distinct d125/d128
