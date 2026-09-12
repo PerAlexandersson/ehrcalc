@@ -124,6 +124,14 @@ outer; inputs `a83abed1...`, `b799bfa7...`, `32f10a59...`, `601551ab...`,
 archive `bf1cfa42...`. Only an exact zero-hole negative is locally replayed
 before a claim. Its count remains zero; generated artifacts untracked, no push.
 
+Remote-batch update (2026-09-12): v123
+`20260912T131752-b2cbcef91a9c` completed six one-hole screens: four 360-second
+limits and two 6M state limits (340.883/327.400 s), all with exact controls;
+per-case resource/hash provenance is in MariaDB and none merits replay. Direct
+zero-hole v124 `20260912T132249-3711ec0e64bf` is active after six exact
+controls; disjoint six-case v125 `20260912T133115-c6fb2da2e610` is queued,
+both 20M/900 s. Host v123 is sole local process. Zero-hole-negative count: 0.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is
