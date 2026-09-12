@@ -33,6 +33,25 @@ at 6,000,000 states and 360 seconds per case, 900 seconds outer, two CPUs and
 8 GiB/no swap.  The job is running; a byte-identical local replay of completed
 one-hole seventh-flag job `20260911T201701-d347c91cae66` is also in progress.
 
+Continuation update (2026-09-12): selected retry v23
+`20260912T062104-f403c712dc54` made its control exact but limited d118
+`00616831...` at 6,000,000 states in 242.812 s; its full artifact provenance
+is stored in MariaDB. Fresh v24 `20260912T063005-3442a1654389` likewise made
+its control exact and limited distinct d120 `8b0bd1e5...` at 6,000,000 states
+in 245.894 s, now stored with input SHA `5a1952e3...` and runner/helper/archive
+hashes. No limit is treated as a polynomial conclusion. The archived runner
+replay of v19 `20260911T201701-d347c91cae66` exactly validated new one-hole
+d112 `36abbd66...`: seven genuine flags, sole hole `(6,11)`, 2,917,271 states,
+and negative coefficients in degrees 1--3; ledger `912ba2b3...` ingested it.
+Its direct zero-hole closure `a305b966...` is exact-positive (3,492,125 states)
+after the matching archived-runner replay of job `20260911T201700-67a7fc603374`,
+ledger `ca8def38...`. After confirming the remote queue empty and unpaused,
+the only active remote work is distinct v25 `20260912T063847-0b0edc29f203`:
+control plus d120 `ffc12142...`, 6M/360 s per case and 900 s outer, input SHA
+`641070b2...`, at the verified two-CPU/8-GiB/no-swap profile. Codex remains
+the sole KTT companion/MariaDB writer; generated inputs and reports stay
+untracked, with no push or publication.
+
 The best certified negative now has **one genuine nonflag hole**. Candidate
 `86b98937ad8a...` has `(a,b)=(10,11)`, mask `0x10000000000`, one equality,
 degree 109, and negative linear coefficient

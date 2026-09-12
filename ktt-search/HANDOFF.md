@@ -26,6 +26,21 @@
   360 s per case, 900 s outer, 2 CPUs and 8 GiB/no swap.  It is running.  A
   byte-identical local replay of one-hole seventh-flag job
   `20260911T201701-d347c91cae66` is in progress.
+- Continuation update (2026-09-12): v23 `20260912T062104-f403c712dc54` made
+  its control exact and d118 `00616831...` state-limited at 6M states in
+  242.812 s; v24 `20260912T063005-3442a1654389` likewise limited distinct
+  d120 `8b0bd1e5...` at 6M in 245.894 s. Both have durable MariaDB status and
+  complete input/runner/helper/archive provenance; neither is a conclusion.
+  Archived-runner local validation of v19 `20260911T201701-d347c91cae66`
+  certifies d112 `36abbd66...` negative in degrees 1--3 with seven genuine
+  flags, sole hole `(6,11)`, and 2,917,271 states (ledger `912ba2b3...`). Its
+  direct zero-hole closure `a305b966...` is exact-positive at 3,492,125 states
+  after matching job `20260911T201700-67a7fc603374` (ledger `ca8def38...`).
+  After a fresh idle/unpaused queue check, only distinct v25
+  `20260912T063847-0b0edc29f203` is active: d120 `ffc12142...`, control plus
+  candidate at 6M/360 s per case and 900 s outer, input SHA `641070b2...`,
+  verified two CPUs and 8 GiB/no swap. Codex remains sole owner/writer; inputs
+  and reports are untracked and no push/publication is authorized.
 - Best certified negative `86b98937ad8a...` has one bad edge, `(a,b)=(10,11)`,
   mask `0x10000000000`, degree 109, and one negative Ehrhart coefficient
   (degree one). Its lift is `(12,1^10)/(1)`, weight `1^21`, with sole bad pair
