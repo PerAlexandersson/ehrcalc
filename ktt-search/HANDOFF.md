@@ -60,11 +60,15 @@
   `5d5f3175...`, inputs `5f72636e...`, `2d82cc3a...`, `382052c6...`. Each has
   three explicit 30M/1200-s children, with all keys/posets audited against
   host, both queues, and exact/pending history.
-- Host v148 is the sole local process, one reparented nice-10 CPU 15: refreshed
-  64-parent one-hole grow/flag-augmentation, eight 6M/360-s exact cases and a
-  1000-s outer bound; its pending-poset snapshot includes both remote batches.
-  Private `06d2ebd` bulk-loads the selected full exact seed records for the
-  next host pass (12 focused tests pass), preserving exact/reservation checks.
+- Host v148 has completed its sole one-CPU (nice-10 CPU 15) refreshed
+  64-parent one-hole grow/flag-augmentation pass (eight 6M/360-s cases,
+  1000-s outer), with both remote batches in its pending-poset snapshot. Its
+  two newly computed one-hole negatives `448e36...` (d107) and `dea637...`
+  (d116) close only to already exact-positive zero-hole posets `49dcb2...`
+  (d108), `d551a9...` (d106), `c8f178...` (d117), and `c85ffb...` (d115);
+  no contender or remote reservation resulted. Private `06d2ebd` bulk-loads
+  selected full exact seed records for the next host pass (12 focused tests
+  pass), preserving exact/reservation checks.
 - The final direct closures, Abacus v144 `20260912T181310-09fd3017dc09`, are
   fetched/primary-ingested (`7df0a99d...`): `db26b1...` (d100), `fa937b...`
   (d99), `cf2e3c...` (d98), `ff6d27...` (d97) are exact-positive
