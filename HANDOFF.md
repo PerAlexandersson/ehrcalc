@@ -9,16 +9,18 @@ exact-positive d128--d129 closures (6,466,459--9,425,140 DP states,
 416.695--676.617 s), ledger `20b27a05...`; no replay was needed. Following a
 two-queue, host-proposal, and historical-candidate audit, Abacus v136
 `20260912T162229-11bfe1f4f8ba` completed: zero-hole d114 `a6f5bf...` is
-exact-positive (3,515,148 states, 176.730 s), and five d132--d133 one-hole
-targets are exact-negative (11,683,166--12,720,998 states, 664.858--924.744
-s). They are recorded as control-backed unreplayed discovery evidence, ledger
-`19dff7ea...`; the two canonical zero-hole closures of `468172...` are
-already positive.
-(`061cce...`, `25111b...`, `468172...`, `9ffa7a...`, `ac61fc...`), 30M
-states/1200 s each and 1500-s outer. Inputs `12e26ce8...`, `673a4993...`,
-`68b77713...`, `f99d5cf2...`, `43227315...`, `53679229...`; runner
-`e3bd01d...`, helper `a4aae249...`, archive `bf1cfa42...`. It remains within
-the six-CPU/20-GiB/no-swap/256-task profile.
+exact-positive (3,515,148 states, 176.730 s), while d132--d133 one-hole
+targets `061cce...`, `25111b...`, `468172...`, `9ffa7a...`, and `ac61fc...`
+are exact-negative (11,683,166--12,720,998 states, 664.858--924.744 s),
+control-backed unreplayed discovery evidence in ledger `19dff7ea...`.
+
+Abacus v137 `20260912T164610-cb71aefa48d9` is queued after a fresh two-queue
+and host audit: six disjoint d131 one-hole screens selected for untested
+flag-absorbed zero-hole children (`2adb86...`, `41c37c...`, `56da2f...`,
+`6942bb...`, `cb60d9...`, `e07f56...`), 30M states/1200 s and 1500-s outer;
+inputs `71380c6b...`, `c7e6d115...`, `27922f63...`, `c89654f1...`,
+`682b7bd4...`, `117bd511...`, runner `e3bd01d...`, helper `a4aae249...`,
+archive `bf1cfa42...`, six-CPU/20-GiB/no-swap/256-task profile.
 
 Laplace v1 `20260912T160745-8694f21074f7` completed its three audited d128
 zero-hole closures (`49d90c...`, `4d781a...`, `84a1ba...`) exact-positive
