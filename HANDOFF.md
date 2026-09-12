@@ -39,6 +39,14 @@ as are cached d112 `326811...`, d114 `edfae...`, and three d105 faces. Exact
 zero-hole-negative count remains zero. Abacus status has no nonterminal job
 and v58 remains latest done; no duplicate remote submission occurred.
 
+Latest closure audit (2026-09-12): v107 broadened the reservoir sample (230
+proposals/330 cache hits), yielding one-hole negatives `d685db...` (d109),
+`0f13b3...` (d111), and `cd65c1...` (d115); d104 was exact-positive.
+v108--v110 exhausted direct zero-hole faces: fresh d108 `fa2370...` is
+exact-positive (83.434 s), and d110 `d8b728...`, d112 `3e369a...`, d114
+`c9c827...` are exact-positive cache hits. Exact zero-hole-negative count
+remains zero; no remote job is pending.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is
