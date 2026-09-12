@@ -37,7 +37,8 @@
   negative `9297a8...`; its d118 exit was positive and d116 was v16. Host v163
   added fresh d118 one-hole negative `66e283...` (70.418 s). Host v165 is the
   sole one-CPU nice-10 CPU-15 broad-growth process, using the global-
-  pending-poset guard.
+  pending-poset guard. Both direct zero-hole exits of `66e283...` (d119/d118)
+  are already exact-positive.
 - Verify/fetch every terminal bundle.  An exact zero-hole negative must have
   byte-matched local replay before ingestion or any claim.  Keep generated
   output untracked; do not push or publish.

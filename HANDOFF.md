@@ -47,7 +47,8 @@ one-hole negative `9297a8...` (146.349 seconds), but its d118 zero-hole exit
 was already positive and its d116 exit is v16. Host v163 added fresh d118
 one-hole negative `66e283...` (70.418 seconds). Host v165 is the sole
 nice-10 CPU-15 broad pass (seed `202609120165`), guarded against every global
-pending quotient poset.
+pending quotient poset. Both direct zero-hole exits of `66e283...` (d119/d118)
+are already exact-positive, so it produces no remote reservation.
 Fetch/verify every terminal remote bundle.
 Only an exact zero-hole negative warrants a byte-matched local replay before
 ingestion or any claim.  Generated reports and logs remain untracked; do not
