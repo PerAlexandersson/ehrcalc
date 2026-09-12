@@ -77,8 +77,9 @@ d114 and v118 d106 zero-hole faces are positive; v119 remains active and the
 exact zero-hole-negative count is zero.
 
 Compute expansion (2026-09-12): Codex remains sole KTT/private companion
-worker and MariaDB writer. Host v120 is the one low-priority local process,
-currently evaluating a fresh d118 zero-hole face. Immediately before remote
+worker and MariaDB writer. Host v120 completed its bounded pass (348 proposals,
+365 exact/cache results, 56 deferred, 142 bad-edge prunes), with no zero-hole
+negative; host v121 is now the one low-priority local process. Immediately before remote
 work, recorded IDs and live state were checked: no nonterminal job existed and
 v118 was latest. Initial v121 `20260912T130417-3259e07c5ba4` failed before any
 calculation because its command was serialized as a single filename (exit 127),
@@ -86,7 +87,8 @@ so it is not a duplicated computation. Corrected v121r
 `20260912T130612-6552b61079af` runs deferred d125 one-hole `425396...` plus
 control `468b1c...`, input `04545d52...`. Queued v122
 `20260912T130721-5ab36a02c9c2` keeps both audited Abacus CPUs busy with four
-distinct d125/d119/d117/d119 one-hole cases two at a time; input hashes
+distinct d125/d119/d117/d119 one-hole cases concurrently within its two-CPU
+affinity; input hashes
 `588b8838...`, `fc044969...`, `6ace516a...`, `c8d24af6...`, runner
 `4f6842b...`, helper `a4aae249...`, archive `bf1cfa42...`, 6M states/360 s
 per case and 900 s outer under the serial 2-CPU/8-GiB/no-swap controls.
