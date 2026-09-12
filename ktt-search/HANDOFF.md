@@ -66,6 +66,18 @@
   outer. It is running; v116 is the sole low-priority host search. Fetch and
   ingest remote output only if it is a contender; generated files untracked.
 
+- Remote-discovery update (2026-09-12): user authorized continuous Abacus
+  discovery and replay only for a zero-hole contender. v115 d114 `613fa3...`
+  is primary remote exact-positive (3,515,148 states, 144.928 s; ledger
+  `be371451...`); v116 d126 `23014a...` state-limited at 6M/253.901 s. v117
+  cleared d13 `cfd001...` (63 states) and d14 `c6c480...` (74; ledger
+  `3d621c3b...`); v118 d106 `8d9c4f...` is exact-positive (3,744,510 states,
+  156.033 s; ledger `cf622f26...`). Each ran `468b1c...` control first under
+  2 CPUs/8 GiB/no swap, with hashes in the ledger. None was negative, so no
+  local replay. Host v117 d111--d114 and v118 d106 zero-hole faces are also
+  positive; v119 is sole active low-priority host pass and the exact
+  zero-hole-negative count remains zero.
+
 ## One-hole exact-negative breakthrough — 2026-09-11 (active)
 
 - Suspension checkpoint: Abacus is paused with no running KTT job, and no

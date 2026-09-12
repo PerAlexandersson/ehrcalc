@@ -65,6 +65,17 @@ same poset and was not duplicated), input SHA `5b692edf...`, control plus
 target, 6M/360 s and 900-second outer bound. It is running; v116 is sole
 low-priority host search. Fetch/ingest remote output only if it is a contender.
 
+Remote-discovery update (2026-09-12): user authorized continuous Abacus work,
+with replay only for a zero-hole contender. v115 d114 `613fa3...` is primary
+remote exact-positive (3,515,148 states, 144.928 s; ledger `be371451...`);
+v116 d126 `23014a...` state-limited at 6M/253.901 s. v117 cleared d13
+`cfd001...` (63 states) and d14 `c6c480...` (74; ledger `3d621c3b...`);
+v118 d106 `8d9c4f...` is exact-positive (3,744,510 states, 156.033 s; ledger
+`cf622f26...`). Every job ran `468b1c...` control first under 2 CPUs/8 GiB
+no-swap and ledger hashes; none was negative, so no replay. Host v117 d111--
+d114 and v118 d106 zero-hole faces are positive; v119 remains active and the
+exact zero-hole-negative count is zero.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is
