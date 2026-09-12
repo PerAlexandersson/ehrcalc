@@ -26,8 +26,11 @@ exact result and deduplicates posets within a batch (private commit `eb7d5f2`).
 Abacus v142 `20260912T175829-d3d082e7c384` is fetched and primary-ingested
 under `d499b5e6...`: its six pairwise distinct novel zero-hole posets are all
 exact-positive (3,861,858--5,980,132 states; 195.775--339.061 s). Abacus v143
-remains the six-CPU successor. The preparer now also reserves a poset already
-pending in another candidate, not only an exact poset (private `97a274a`).
+`20260912T180331-410c67f48eb7` is also fetched/primary-ingested (`0cb1aeaa...`):
+its six novel d114--d111 targets are exact-positive (2,956,096--5,633,641
+states; 134.754--316.087 s), every control exact-known-match. The preparer now
+also reserves a poset already pending in another candidate, not only an exact
+poset (private `97a274a`).
 
 Laplace v7 `20260912T175947-6e6db89bc419` is fetched and primary-ingested
 under `37e485fb...`: its three distinct d117/d116/d115 zero-hole targets
@@ -40,14 +43,14 @@ distinct d101 `ec9b39...` exact-positive in 40.906 s / 1,828,823 states (run
 untracked; do not push or publish. Fetch/verify every terminal job; byte-match
 local replay and ingest only an exact zero-hole negative.
 
-The renewed poset audit also queued Abacus v143
-`20260912T180331-410c67f48eb7` after v142: six novel d114--d111 closures,
-inputs `f405c172...`, `0f6c76c8...`, `a8169ca6...`, `3974c647...`,
-`08c225aa...`, `e416159a...`, run key `c6b6d500...`; and Laplace v8
-`20260912T180426-761a54597c4e` after v7: novel d104/d103/d102 closures,
-inputs `e80c70ed...`, `7f320b7a...`, `7702041c...`, run key `ae77d0a2...`.
-Both use the established 30M/1200-s/1500-s bounds and passed zero exact-poset
-overlap checks immediately before submission.
+The renewed poset audit queued the now-completed Abacus v143 after v142
+(inputs `f405c172...`, `0f6c76c8...`, `a8169ca6...`, `3974c647...`,
+`08c225aa...`, `e416159a...`; run key `c6b6d500...`). Its successor, v144,
+is now running four novel d100--d97 direct closures on Abacus; Laplace v8
+`20260912T180426-761a54597c4e` concurrently runs novel d104/d103/d102
+closures, inputs `e80c70ed...`, `7f320b7a...`, `7702041c...`, run key
+`ae77d0a2...`. Both use the established 30M/1200-s/1500-s bounds and passed
+zero exact-poset overlap checks immediately before submission.
 
 The final four currently unassigned direct closures are queued as Abacus v144
 `20260912T181310-09fd3017dc09` behind v143: `db26b1...` (d100), `fa937b...`

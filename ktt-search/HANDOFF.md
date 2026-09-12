@@ -19,7 +19,10 @@
   also reserves a poset pending in another candidate. Abacus v142
   `20260912T175829-d3d082e7c384` is fetched/primary-ingested (`d499b5e6...`):
   six novel zero-hole targets exact-positive, 3,861,858--5,980,132 states and
-  195.775--339.061 s. v143 remains the six-CPU successor.
+  195.775--339.061 s. Abacus v143 `20260912T180331-410c67f48eb7` is now
+  fetched/primary-ingested (`0cb1aeaa...`): six novel d114--d111 targets are
+  exact-positive (2,956,096--5,633,641 states; 134.754--316.087 s), all
+  controls exact-known-match.
 - Laplace v7 `20260912T175947-6e6db89bc419` is fetched/primary-ingested
   (`37e485fb...`): novel d117/d116/d115 zero-hole posets `b9b2b6...`,
   `f9dc0f...`, `afd69f...` are exact-positive (5,951,569--5,979,155 states;
@@ -31,13 +34,13 @@
   quotient-poset hashes; never mirror Abacus. Generated artifacts remain
   untracked; no push/publication. Fetch/verify terminal output and locally
   replay/ingest only an exact zero-hole negative.
-- Poset-audited successors are queued: Abacus v143
-  `20260912T180331-410c67f48eb7` after v142, six novel d114--d111 cases,
-  inputs `f405c172...`, `0f6c76c8...`, `a8169ca6...`, `3974c647...`,
-  `08c225aa...`, `e416159a...`, run key `c6b6d500...`; Laplace v8
-  `20260912T180426-761a54597c4e` after v7, d104/d103/d102 cases, inputs
-  `e80c70ed...`, `7f320b7a...`, `7702041c...`, run key `ae77d0a2...`.
-  Both use 30M/1200-s/1500-s and had zero exact-poset overlap before submit.
+- Poset-audited v143 is complete (inputs `f405c172...`, `0f6c76c8...`,
+  `a8169ca6...`, `3974c647...`, `08c225aa...`, `e416159a...`, run key
+  `c6b6d500...`). Its Abacus v144 successor now runs four novel d100--d97
+  direct closures; Laplace v8 `20260912T180426-761a54597c4e` concurrently
+  runs d104/d103/d102 cases, inputs `e80c70ed...`, `7f320b7a...`,
+  `7702041c...`, run key `ae77d0a2...`. Both use 30M/1200-s/1500-s and had
+  zero exact-poset overlap before submit.
 - The final four currently unassigned direct closures are Abacus v144
   `20260912T181310-09fd3017dc09`, queued after v143: `db26b1...` (d100),
   `fa937b...` (d99), `cf2e3c...` (d98), `ff6d27...` (d97); inputs
