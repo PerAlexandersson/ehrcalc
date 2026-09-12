@@ -172,6 +172,14 @@ and d120 `742482...` / `bafc8b0d...`. Zero-hole inputs remain `317c8f4e...`,
 1200-s outer, runner `329e89f0...`, helper `a4aae249...`, archive
 `bf1cfa42...`. No dispatched work was replaced.
 
+v126 verification (2026-09-12): single zero-hole d118 `006168...` completed
+exact-positive at 7,453,446 states in 343.901 s with an exact control; fetched
+job/result provenance is primary ledger `32ace0e3...`, no local replay. v127rr
+is live with all six child processes observed at 97--100% CPU; cgroup
+`memory.events` records zero OOMs. Host v125 finished (354 exact/cache, 59
+deferred, 140 pruned; no zero-hole negative); host v126 is the sole one-core
+low-priority process. No exact zero-hole negative exists.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is
