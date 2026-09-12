@@ -180,6 +180,15 @@ is live with all six child processes observed at 97--100% CPU; cgroup
 deferred, 140 pruned; no zero-hole negative); host v126 is the sole one-core
 low-priority process. No exact zero-hole negative exists.
 
+Remote continuation (2026-09-12): after an audited live queue check, v128
+`20260912T140632-4dc5ba953418` was queued behind v127rr with six distinct
+one-hole 6M-state limits (d122 `8d865a...`, d125 `425396...`, d128
+`41207b...`/`508ea3...`, d129 `9bbaee...`, d131 `cb60d9...`). They run in
+parallel at 20M states/900 s with a 1200-s outer limit; inputs `ba3cb175...`,
+`25268d42...`, `5013f04b...`, `0644ff61...`, `eedd11d3...`, `94d7570d...`,
+runner `329e89f0...`, helper `a4aae249...`, archive `bf1cfa42...`. No
+candidate is duplicated; generated files are untracked.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is
