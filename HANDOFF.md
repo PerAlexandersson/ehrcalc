@@ -55,6 +55,16 @@ and d108 `e3e685...`, d110 `8aece1...`, d112 `3e369a...` are exact-positive
 cache hits. Exact zero-hole-negative count remains zero; no remote submission
 is pending.
 
+Active continuation (2026-09-12): v115 had 340 proposals/346 cache hits and
+directly exact-checked four fresh zero-hole faces: d111 `341038...` (94.041
+s), d116 `9e27f4...` (97.211 s) and `be8fc3...` (96.569 s), d117 `eb3c51...`
+(98.549 s), all positive. Exact zero-hole-negative count is zero. Following
+an idle Abacus check, sole remote v115 `20260912T123219-40c93c2ad430` started
+for distinct deferred d114 `613fa3...` (its paired deferred record has the
+same poset and was not duplicated), input SHA `5b692edf...`, control plus
+target, 6M/360 s and 900-second outer bound. It is running; v116 is sole
+low-priority host search. Fetch/ingest remote output only if it is a contender.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is
