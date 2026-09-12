@@ -134,6 +134,21 @@ only for such a result.
   exact controls; disjoint six-case v125 `20260912T133115-c6fb2da2e610` is
   queued, both 20M/900 s. Host v123 is sole local process. Zero-hole count: 0.
 
+- Current exact-frontier update (2026-09-12): Codex remains sole KTT/private
+  worker and MariaDB writer. Following a recorded-ID/live-state audit, v124
+  `20260912T132249-3711ec0e64bf` completed: six formerly 6M-limited zero-hole
+  targets (`23014a...`, `ec4502...`, `69bdbb...`, `795c71...`, `909c74...`,
+  `376f47...`) are exact-positive (6,247,670--7,758,608 states; 375.314--
+  559.849 s). Each child control matched `468b1c...` under the verified
+  six-CPU/20-GiB/no-swap/256-task profile. Fetched job/output provenance is in
+  primary MariaDB ledger `87f78710...`; no local replay was appropriate because
+  no target was negative. v125 `20260912T133115-c6fb2da2e610` is live with six
+  CPUs and distinct v126 `20260912T133501-197c3031f1d3` is queued. Host v124
+  ended (365 exact/cache, 53 deferred, 139 pruned; no zero-hole negative), and
+  host v125 is the sole low-priority one-core pass. Seven zero-hole state
+  limits remain; exact zero-hole negatives: 0. Generated files stay untracked;
+  no push.
+
 ## One-hole exact-negative breakthrough — 2026-09-11 (active)
 
 - Suspension checkpoint: Abacus is paused with no running KTT job, and no
