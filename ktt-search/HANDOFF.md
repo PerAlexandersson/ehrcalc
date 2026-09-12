@@ -37,10 +37,17 @@
 - Poset-audited v143 is complete (inputs `f405c172...`, `0f6c76c8...`,
   `a8169ca6...`, `3974c647...`, `08c225aa...`, `e416159a...`, run key
   `c6b6d500...`). Its Abacus v144 successor now runs four novel d100--d97
-  direct closures; Laplace v8 `20260912T180426-761a54597c4e` concurrently
-  runs d104/d103/d102 cases, inputs `e80c70ed...`, `7f320b7a...`,
-  `7702041c...`, run key `ae77d0a2...`. Both use 30M/1200-s/1500-s and had
-  zero exact-poset overlap before submit.
+  direct closures. Laplace v8 `20260912T180426-761a54597c4e` is fetched/
+  primary-ingested (`12b71b9e...`): d104/d103/d102 targets `fc1294...`,
+  `f41cb5...`, `d32da5...` are exact-positive (1,841,770--1,846,504 states;
+  121.826--195.347 s), all controls exact-known-match; inputs `e80c70ed...`,
+  `7f320b7a...`, `7702041c...`, run key `ae77d0a2...`. Both completed under
+  30M/1200-s/1500-s.
+- Host v145 is the sole active local KTT process: one nice-10 CPU 15, bounded
+  one-hole-negative reservoir grow/flag-augmentation pass (six 6M/360-s exact
+  cases, 850-s outer). Private `be263e2` now rejects every globally pending
+  quotient poset during local discovery. Both remote queues are idle; wait for
+  v145's audited novel candidates before another submission.
 - The final direct closures, Abacus v144 `20260912T181310-09fd3017dc09`, are
   fetched/primary-ingested (`7df0a99d...`): `db26b1...` (d100), `fa937b...`
   (d99), `cf2e3c...` (d98), `ff6d27...` (d97) are exact-positive
