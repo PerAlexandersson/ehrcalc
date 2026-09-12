@@ -8,9 +8,12 @@ exact flagged zero-hole-negative count is zero. Abacus v135
 exact-positive d128--d129 closures (6,466,459--9,425,140 DP states,
 416.695--676.617 s), ledger `20b27a05...`; no replay was needed. Following a
 two-queue, host-proposal, and historical-candidate audit, Abacus v136
-`20260912T162229-11bfe1f4f8ba` is active: its distinct zero-hole d114 target
-`a6f5bf...` is exact-positive (3,515,148 states, 176.730 s); five d132--d133
-one-hole screens continue
+`20260912T162229-11bfe1f4f8ba` completed: zero-hole d114 `a6f5bf...` is
+exact-positive (3,515,148 states, 176.730 s), and five d132--d133 one-hole
+targets are exact-negative (11,683,166--12,720,998 states, 664.858--924.744
+s). They are recorded as control-backed unreplayed discovery evidence, ledger
+`19dff7ea...`; the two canonical zero-hole closures of `468172...` are
+already positive.
 (`061cce...`, `25111b...`, `468172...`, `9ffa7a...`, `ac61fc...`), 30M
 states/1200 s each and 1500-s outer. Inputs `12e26ce8...`, `673a4993...`,
 `68b77713...`, `f99d5cf2...`, `43227315...`, `53679229...`; runner
