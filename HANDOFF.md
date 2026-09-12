@@ -151,6 +151,16 @@ four distinct legacy five-second local zero-hole timeouts, input hashes
 1200-s outer bound; runner `329e89f0...`, helper `a4aae249...`, archive
 `bf1cfa42...`.
 
+Queue correction (2026-09-12): v125 `20260912T133115-c6fb2da2e610` completed
+successfully and all six targets are exact-positive (6,431,425--7,719,140
+states; 432.219--547.650 s), primary ledger `f07bdcff...`; no local replay.
+v126 `20260912T133501-197c3031f1d3` is the current single-case d118 retry.
+Queued v127 `20260912T134726-38e0e9e0e3c4` was cancelled before dispatch
+(zero computation) solely to split its four independent legacy cases.
+Replacement v127r `20260912T135331-6489b66b8d5c` is queued after v126 and
+forks them across four pinned CPUs; inputs `317c8f4e...`, `b646f485...`,
+`7d7c050f...`, `8414be3b...`. No remote result was duplicated.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is
