@@ -49,6 +49,10 @@ one-hole negative `66e283...` (70.418 seconds). Host v165 is the sole
 nice-10 CPU-15 broad pass (seed `202609120165`), guarded against every global
 pending quotient poset. Both direct zero-hole exits of `66e283...` (d119/d118)
 are already exact-positive, so it produces no remote reservation.
+User-directed wind-down is in effect: do not submit, reserve, or start any
+successor batch.  Let only host v165, Abacus v170, and Laplace v18 drain;
+when terminal, fetch and verify their evidence before the requested computer
+suspension.
 Fetch/verify every terminal remote bundle.
 Only an exact zero-hole negative warrants a byte-matched local replay before
 ingestion or any claim.  Generated reports and logs remain untracked; do not
