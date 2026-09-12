@@ -18,8 +18,10 @@
   memory, no swap, and 128 tasks. Inspect both queues before every submission;
   audit disjointness from host, every active/queued Abacus batch, and prior
   results; run at most three children and never mirror Abacus. Fetch/verify,
-  locally replay only an exact negative, then ingest. Host v135 is the only
-  low-priority local core. Generated artifacts stay untracked; no push or
+  locally replay only an exact negative, then ingest. Host v136 is the only
+  low-priority local core (seed `20261117`); its initial detached launch
+  exited before calculation for a missing `PYTHONPATH`, then was correctly
+  relaunched. Generated artifacts stay untracked; no push or
   publication.
 
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`

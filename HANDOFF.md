@@ -20,7 +20,9 @@ three audited, disjoint d128 zero-hole closures (`49d90c...`, `4d781a...`,
 submission, inspect both queues and prove candidates disjoint from the host,
 active/queued Abacus work, and prior results; use at most three children and
 never mirror an Abacus six-case batch. Fetch, verify, locally replay only an
-exact negative, then ingest. Host v135 is the sole low-priority one-core pass.
+exact negative, then ingest. Host v136 is the sole low-priority one-core pass
+(seed `20261117`); its initial launch exited before calculation for a missing
+`PYTHONPATH`, then the same seed was correctly relaunched.
 Generated runs/logs stay untracked; no push or publication is authorized.
 
 Latest local v85/v87 expansion found exact one-hole negatives `cc6d...`
