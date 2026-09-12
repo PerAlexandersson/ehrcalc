@@ -18,12 +18,15 @@ target/parent/poset audits, and hashes live in the untracked v152/v154/Laplace-
 v11 submission manifests; runner/helper/archive are `e3bd01d...`,
 `a4aae249...`, and `bf1cfa42...`.
 
-Abacus v156 `20260912T195713-d2176737d1e5` is live on six new d87--d97
-zero-hole targets (run `459e31f4...`); disjoint Laplace v12
-`20260912T195713-556cfb66bf67` is live on d85--d87 (run `2cdf697c...`).  Its
-nine targets were audited against all prior results, both queues, and v155's
-544 recorded attempts before global reservation; each child uses the same
-verified 30M/1200-s/2100-s profile.
+Abacus v156 `20260912T195713-d2176737d1e5`, Laplace v12
+`20260912T195713-556cfb66bf67`, and Abacus v158
+`20260912T200344-28249a4c3ac5` are fetched, verified, and primary-ingested:
+their 21 further d81--d97 targets are exact-positive (ledgers `d498d187...`,
+`a49f31b9...`, `4625cd4b...`).  The closure campaign now has 42 new exact
+zero-hole positives.  Laplace v13 `20260912T200522-b50961c57b9f` is the sole
+active remote batch (three d81/d84/d95 targets, run `d310b48a...`), selected
+against live v157 work and globally reserved under the same verified
+30M/1200-s/2100-s profile.
 
 Host v151 added two exact-positive d112 one-hole cases and hit the 6M cap at
 d119/d121; v153 was cache/reservation-only.  Bounded v155 added one

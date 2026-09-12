@@ -13,11 +13,12 @@
   closure waves therefore add 18 verified positives.  Each child had the
   known control, 30M-state/1200-s limits, a 2100-s envelope, and a manifest
   retaining input hashes and parent/poset audit.
-- Abacus v156 `20260912T195713-d2176737d1e5` is live on six new d87--d97
-  zero-hole targets (`459e31f4...`); disjoint Laplace v12
-  `20260912T195713-556cfb66bf67` runs three d85--d87 targets (`2cdf697c...`).
-  Both were audited against the live v155 attempt set and then globally
-  reserved before submission.
+- Fetched/verified Abacus v156 `20260912T195713-d2176737d1e5`
+  (`d498d187...`), Laplace v12 `20260912T195713-556cfb66bf67`
+  (`a49f31b9...`), and Abacus v158 `20260912T200344-28249a4c3ac5`
+  (`4625cd4b...`) add 21 exact-positive d81--d97 targets, 42 in this closure
+  campaign.  Laplace v13 `20260912T200522-b50961c57b9f` is the sole active
+  remote batch: three audited and reserved d81/d84/d95 targets (`d310b48a...`).
 - Host v151 added two d112 one-hole positives and d119/d121 state limits; v153
   had no new exact calculation.  Bounded v155 added a positive d109 one-hole
   case and four d113/d116/d119 state limits.  Host v157 is the sole local
