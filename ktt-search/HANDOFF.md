@@ -41,6 +41,17 @@
   candidate at 6M/360 s per case and 900 s outer, input SHA `641070b2...`,
   verified two CPUs and 8 GiB/no swap. Codex remains sole owner/writer; inputs
   and reports are untracked and no push/publication is authorized.
+- Continuation 2 (2026-09-12): v25 `20260912T063847-0b0edc29f203` matched its
+  control and limited d120 `ffc12142...` at 6M states in 251.702 s; durable
+  MariaDB status is `state_limited`, not an exact conclusion. Host-local v26
+  independently matched control and limited d122 `544fc4d7...` at 6M in
+  172.835 s, with local runner/artifact provenance stored. After an idle queue
+  check, sole remote v27 `20260912T064619-d3ac01122282` started for distinct
+  d122 `909c74f0...` (input `dad8891b...`, 6M/360 s per case, 900-s outer).
+  Five distinct low-priority one-core host lanes are active for d123
+  `37a00827...`, d124 `e8e1c5f1...`, d125 `376f47be...`/`4e987b5c...`, and
+  d126 `23014acf...`; five of the 12 host CPU-equivalents remains below the
+  user-set 50% cap. All logs are untracked and Codex remains sole writer.
 - Best certified negative `86b98937ad8a...` has one bad edge, `(a,b)=(10,11)`,
   mask `0x10000000000`, degree 109, and one negative Ehrhart coefficient
   (degree one). Its lift is `(12,1^10)/(1)`, weight `1^21`, with sole bad pair

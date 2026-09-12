@@ -52,6 +52,20 @@ control plus d120 `ffc12142...`, 6M/360 s per case and 900 s outer, input SHA
 the sole KTT companion/MariaDB writer; generated inputs and reports stay
 untracked, with no push or publication.
 
+Continuation 2 (2026-09-12): v25 `20260912T063847-0b0edc29f203` control
+matched exactly and its distinct d120 `ffc12142...` reached the 6M-state cap
+in 251.702 s; it is a durable MariaDB `state_limited` attempt, not an exact
+claim. Host-local v26 independently matched the control then limited d122
+`544fc4d7...` at 6M in 172.835 s and is recorded with local runner/artifact
+provenance. The verified remote queue was idle before fresh v27
+`20260912T064619-d3ac01122282` was submitted for distinct d122 `909c74f0...`
+(input `dad8891b...`, control plus case, 6M/360 s, 900-s outer). While v27 is
+the sole remote job, five low-priority single-core host evaluations are active
+for distinct zero-hole d123 `37a00827...`, d124 `e8e1c5f1...`, d125
+`376f47be...` and `4e987b5c...`, and d126 `23014acf...`; this is five of the
+12 CPU-equivalent host quota (below the user's 50% ceiling), with per-case
+6M/360-s bounds and untracked logs. Codex remains sole KTT/MariaDB writer.
+
 The best certified negative now has **one genuine nonflag hole**. Candidate
 `86b98937ad8a...` has `(a,b)=(10,11)`, mask `0x10000000000`, one equality,
 degree 109, and negative linear coefficient
