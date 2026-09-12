@@ -161,6 +161,17 @@ Replacement v127r `20260912T135331-6489b66b8d5c` is queued after v126 and
 forks them across four pinned CPUs; inputs `317c8f4e...`, `b646f485...`,
 `7d7c050f...`, `8414be3b...`. No remote result was duplicated.
 
+Six-core queue correction (2026-09-12): v127r
+`20260912T135331-6489b66b8d5c` was also cancelled before dispatch (zero
+computation), to fill its unused two pinned CPUs without changing the serial
+queue or resource cap. Replacement v127rr `20260912T135946-071f0542613f` is
+queued behind v126 and forks the same four audited zero-hole legacy timeouts
+plus two distinct 6M-limited one-hole cases: d119 `1e9db4...` / `8808951b...`
+and d120 `742482...` / `bafc8b0d...`. Zero-hole inputs remain `317c8f4e...`,
+`b646f485...`, `7d7c050f...`, `8414be3b...`; every case uses 20M/900 s,
+1200-s outer, runner `329e89f0...`, helper `a4aae249...`, archive
+`bf1cfa42...`. No dispatched work was replaced.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is
