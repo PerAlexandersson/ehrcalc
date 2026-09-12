@@ -47,6 +47,14 @@
   d112 `3e369a...`, and d114 `c9c827...` are exact-positive cache hits.
   Exact zero-hole-negative count remains zero; no remote job is pending.
 
+- Latest closure audit (2026-09-12): v111 (256 proposals/334 cache hits)
+  added exact one-hole negatives `1b6229...` (d107), `b3945f...` (d109), and
+  `cd51f5...` (d111); d109 `7eb148...` and d114 `674690...` were positive.
+  v112--v114 closed every new lineage: fresh d106 `6225de...` is
+  exact-positive (80.226 s), while d108 `e3e685...`, d110 `8aece1...`, and
+  d112 `3e369a...` are exact-positive cache hits. Exact zero-hole-negative
+  count remains zero; no remote submission is pending.
+
 ## One-hole exact-negative breakthrough — 2026-09-11 (active)
 
 - Suspension checkpoint: Abacus is paused with no running KTT job, and no
