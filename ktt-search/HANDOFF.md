@@ -116,6 +116,16 @@ only for such a result.
   98.7--99.5% CPU each under nice 10 and the six-CPU affinity; host v121 is
   the sole local KTT process. CPUs 6--7 remain outside compute for control.
 
+- Expanded zero-hole continuation (2026-09-12): host v121 completed 348
+  bounded proposals (361 exact/cache, 56 deferred, 151 prunes) without a
+  zero-hole negative; v122 is the sole local KTT process. Queued six-CPU v124
+  `20260912T132249-3711ec0e64bf` retries six direct zero-hole cases formerly
+  limited at 6M, each with control `468b1c...`, 20M states/900 s and 1200-s
+  outer; inputs `a83abed1...`, `b799bfa7...`, `32f10a59...`, `601551ab...`,
+  `fb1ed437...`, `79c45dea...`, runner `329e89f0...`, helper `a4aae249...`,
+  archive `bf1cfa42...`. Any exact zero-hole negative gets a local replay
+  before a claim. Count remains zero; generated inputs/logs untracked, no push.
+
 ## One-hole exact-negative breakthrough — 2026-09-11 (active)
 
 - Suspension checkpoint: Abacus is paused with no running KTT job, and no
