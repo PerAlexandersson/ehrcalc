@@ -202,6 +202,15 @@ only for such a result.
   zero-hole exact-negative count remains 0. Host v128 is sole low-priority
   process; v128 is live on Abacus. Generated files untracked; no push.
 
+- Direct-closure continuation (2026-09-12): v128 is terminal; after an audited
+  empty-queue/candidate-state check, v129 `20260912T142101-d14372ee4b1c` was
+  queued for three direct zero-hole closures of validated d120 near-miss
+  `742482...`: d121 drop `01d198...` / `66c8ff94...`, d119 flag swap
+  `2f0e0d...` / `074815c6...`, d121 flag swap `8fd3a5...` / `d77b3f87...`.
+  Each is durable pending, runs 20M/900 s (1200-s outer), runner `329e89f0...`,
+  helper `a4aae249...`, archive `bf1cfa42...`. Any negative gets local replay;
+  no duplicate/push.
+
 ## One-hole exact-negative breakthrough — 2026-09-11 (active)
 
 - Suspension checkpoint: Abacus is paused with no running KTT job, and no
