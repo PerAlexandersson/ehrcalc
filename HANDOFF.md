@@ -16,16 +16,20 @@ states/1200 s each and 1500-s outer. Inputs `12e26ce8...`, `673a4993...`,
 `e3bd01d...`, helper `a4aae249...`, archive `bf1cfa42...`. It remains within
 the six-CPU/20-GiB/no-swap/256-task profile.
 
-Laplace v1 `20260912T160745-8694f21074f7` is its first production KTT batch:
-three audited, disjoint d128 zero-hole closures (`49d90c...`, `4d781a...`,
-`84a1ba...`), 30M states/1200 s and a 1500-s outer bound; inputs
-`6bb4e719...`, `bdf141d...`, `50dce301...`, runner `e3bd01d...`, helper
-`a4aae249...`, archive `bf1cfa42...`. It is confined to CPUs 0--2 with
-10-GiB high/12-GiB hard memory, no swap, and 128 tasks. Before a Laplace
-submission, inspect both queues and prove candidates disjoint from the host,
-active/queued Abacus work, and prior results; use at most three children and
-never mirror an Abacus six-case batch. Fetch, verify, locally replay only an
-exact negative, then ingest. Host v136 finished after 369 exact/cache results,
+Laplace v1 `20260912T160745-8694f21074f7` completed its three audited d128
+zero-hole closures (`49d90c...`, `4d781a...`, `84a1ba...`) exact-positive
+(6,466,440--7,759,400 states, 766.737--878.981 s), primary ledger
+`fb24f4e1...`; no replay. After a two-queue, Abacus, host-proposal, and
+historical-candidate audit, Laplace v2 `20260912T163001-acf0098e3274` is
+queued with three distinct d131 one-hole screens (`033f3d...`, `089e6e...`,
+`1d4d95...`), 30M states/1200 s and 1500-s outer; inputs `10a18d8d...`,
+`42c45f8b...`, `7be327f4...`, runner `e3bd01d...`, helper `a4aae249...`,
+archive `bf1cfa42...`. Laplace is confined to CPUs 0--2 with 10-GiB
+high/12-GiB hard memory, no swap, and 128 tasks. Before a Laplace submission,
+inspect both queues and prove candidates disjoint from host, active/queued
+Abacus work, and prior results; use at most three children and never mirror a
+six-case Abacus batch. Fetch, verify, locally replay only an exact negative,
+then ingest. Host v136 finished after 369 exact/cache results,
 46 deferrals, and 135 prunes with no zero-hole negative; its initial detached
 launch had exited before calculation for a missing `PYTHONPATH`, then the same
 seed was correctly relaunched. Host v137 (seed `20261118`) is the sole

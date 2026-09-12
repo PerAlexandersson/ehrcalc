@@ -14,10 +14,14 @@
   `12e26ce8...`, `673a4993...`, `68b77713...`, `f99d5cf2...`,
   `43227315...`, `53679229...`; runner `e3bd01d...`, helper `a4aae249...`,
   archive `bf1cfa42...`, six-CPU/20-GiB/no-swap/256-task profile.
-- Laplace v1 `20260912T160745-8694f21074f7` is its first production KTT job:
-  three audited, disjoint d128 closures (`49d90c...`, `4d781a...`,
-  `84a1ba...`), 30M states/1200 s and 1500-s outer; inputs `6bb4e719...`,
-  `bdf141d...`, `50dce301...`, runner `e3bd01d...`, helper `a4aae249...`,
+- Laplace v1 `20260912T160745-8694f21074f7` completed three audited d128
+  closures (`49d90c...`, `4d781a...`, `84a1ba...`) exact-positive
+  (6,466,440--7,759,400 states, 766.737--878.981 s), primary ledger
+  `fb24f4e1...`; no replay. After a two-queue, Abacus, host-proposal, and
+  historical-candidate audit, Laplace v2 `20260912T163001-acf0098e3274` is
+  queued: three distinct d131 one-hole screens (`033f3d...`, `089e6e...`,
+  `1d4d95...`), 30M states/1200 s and 1500-s outer; inputs `10a18d8d...`,
+  `42c45f8b...`, `7be327f4...`, runner `e3bd01d...`, helper `a4aae249...`,
   archive `bf1cfa42...`. It is limited to CPUs 0--2, 10-GiB high/12-GiB hard
   memory, no swap, and 128 tasks. Inspect both queues before every submission;
   audit disjointness from host, every active/queued Abacus batch, and prior
