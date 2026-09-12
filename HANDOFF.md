@@ -61,10 +61,12 @@ fetched/primary-ingested (`d4b43389...`): its novel d88/d89/d113 one-hole
 targets `254240...`, `725537...`, `d7e0fe...` are exact-positive (344,969--
 3,522,455 states; 12.828--140.818 s), every control exact-known-match.
 
-Laplace v9 `20260912T183442-531a2e456a15` remains live on disjoint d142
-one-hole growth cases `718e8d...`, `151ee8...`, `3c15b9...` from d131 parent
-`033f3d...`, run key `79a74c3a...`, inputs `e530cd80...`, `0277caf9...`,
-`f8615867...`. Abacus v147 `20260912T183712-603dd0ff9b63` completed: every
+Laplace v9 `20260912T183442-531a2e456a15` reached its outer 1500-s supervisor
+deadline: controls exact-known-match; d142c `3c15b9...` reported its 1200-s
+target limit, while d142a/b `718e8d...`/`151ee8...` were terminated before
+target JSON. All three are provenance-backed `timed_out` attempts under ledger
+`1f4eef8f...`; future Laplace envelopes must leave control-time margin.
+Abacus v147 `20260912T183712-603dd0ff9b63` completed: every
 control exact-known-match and every source hash verified, but its d137/d146/
 d147 targets `896c09...`, `f475e7...`, `068a45...` each reached the 1200-s
 bound without an exact result. They are recorded as provenance-backed
