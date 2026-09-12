@@ -8,13 +8,15 @@ flagged zero-hole-negative is known.  Abacus v152
 `20260912T193452-12358ea918fa` are fetched, hash/control/profile verified,
 and primary-ingested: their nine new d94--d99 zero-hole targets are all
 exact-positive (ledgers `44ada1ab...` and `b42b423c...`).  Abacus v154
-`20260912T194147-aca2530e399a` is the live six-core d91--d98 batch (run
-`dc33ffd1...`); disjoint Laplace v11 `20260912T194323-f8d1e60f8c73` is its
-three-child d90/d92/d97 serial-queue successor (run `6a4c921b...`).  Every
-child has the verified control, 30M states, 1200 seconds per target, and a
-2100-second envelope.  Inputs, target/parent/poset audits, and hashes live in
-the untracked v152/v154/Laplace-v11 submission manifests; runner/helper/archive
-are `e3bd01d...`, `a4aae249...`, and `bf1cfa42...`.
+`20260912T194147-aca2530e399a` and Laplace v11
+`20260912T194323-f8d1e60f8c73` are also fetched, verified, and ingested: their
+nine d90--d98 targets are exact-positive (ledgers `321fa64a...` and
+`2cbac6f6...`).  Thus the two two-hole-closure waves have 18 new verified
+zero-hole positives.  Every child used the verified control, 30M states,
+1200 seconds per target, and a 2100-second envelope.  Inputs,
+target/parent/poset audits, and hashes live in the untracked v152/v154/Laplace-
+v11 submission manifests; runner/helper/archive are `e3bd01d...`,
+`a4aae249...`, and `bf1cfa42...`.
 
 Host v151 added two exact-positive d112 one-hole cases and hit the 6M cap at
 d119/d121; v153 was cache/reservation-only.  Host v155 is the sole local

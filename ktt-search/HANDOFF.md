@@ -7,12 +7,12 @@
   `20260912T193451-1c7a56c97b2c` (ledger `44ada1ab...`) and Laplace v10
   `20260912T193452-12358ea918fa` (`b42b423c...`) add nine exact-positive
   d94--d99 zero-hole targets.
-- Abacus v154 `20260912T194147-aca2530e399a` is live on six new d91--d98
-  targets (`dc33ffd1...`).  Disjoint Laplace v11
-  `20260912T194323-f8d1e60f8c73` is queued/running as its three-child
-  d90/d92/d97 successor (`6a4c921b...`).  Each child has the known control,
-  30M-state/1200-s limits, and a 2100-s envelope; every manifest retains input
-  hashes and parent/poset audit.
+- Fetched/verified Abacus v154 `20260912T194147-aca2530e399a`
+  (`321fa64a...`) and Laplace v11 `20260912T194323-f8d1e60f8c73`
+  (`2cbac6f6...`) add another nine d90--d98 zero-hole positives.  The two
+  closure waves therefore add 18 verified positives.  Each child had the
+  known control, 30M-state/1200-s limits, a 2100-s envelope, and a manifest
+  retaining input hashes and parent/poset audit.
 - Host v151 added two d112 one-hole positives and d119/d121 state limits; v153
   had no new exact calculation.  Host v155 is the sole local task, one
   nice-10 CPU-15 broad growth/flag pass protected by the global pending-poset
