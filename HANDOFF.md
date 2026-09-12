@@ -40,6 +40,13 @@ inputs hash `350e09d9...`, `a0dddc2d...`, `0368e376...`, `27ab58d5...`,
 `9460f63a...`, `2ca7afe9...`, and pending run key `465c77ad...`. It has no
 overlap with either live remote batch, the host, or prior candidate results.
 
+After a second immediate two-queue and candidate audit, Laplace successor v6
+`20260912T175248-752c0bdc9999` is queued behind v5 with three further,
+parent-disjoint d120 closures (`9a6f8a...`, `96e893...`, `87cff5...`), same
+30M/1200-s/1500-s limits; inputs hash `bfc26715...`, `6f3f861e...`,
+`285488d8...`, and its run key is `e47dd5b0...`. It is disjoint from active
+and queued Abacus work, v5, host, and recorded candidate results.
+
 Latest local v85/v87 expansion found exact one-hole negatives `cc6d...`
 (d114) and `be158...` (d111), but their six fresh zero-hole flag closures are
 positive (noncached d112/d109 checks 95.518/95.180 s); distinct d125/d128

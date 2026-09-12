@@ -35,6 +35,11 @@
   `0368e376...`, `27ab58d5...`, `9460f63a...`, `2ca7afe9...`, and run key
   `465c77ad...`. It is disjoint from both live remote batches, host, and
   history; generated artifacts remain untracked.
+- After a second immediate two-queue/candidate audit, Laplace v6
+  `20260912T175248-752c0bdc9999` is queued behind v5: parent-disjoint d120
+  closures `9a6f8a...`, `96e893...`, `87cff5...`, same 30M/1200-s/1500-s
+  bounds, inputs `bfc26715...`, `6f3f861e...`, `285488d8...`, and run key
+  `e47dd5b0...`. It is disjoint from Abacus v140/v141, v5, host, and history.
 
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`
   (d114) and `be158...` (d111), whose six fresh zero-hole flag closures are
