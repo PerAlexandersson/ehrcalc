@@ -26,9 +26,10 @@ one-hole-negative reservoir, run in parallel across all six Abacus CPUs
 (2100-second envelope). Candidate, terminal/pending quotient-poset, host, and
 Laplace reservations were excluded. The equivalent v149 d77 presentation and
 a known v149-positive poset were explicitly deferred, not duplicated.
-Laplace v16 `20260912T203916-6753c1c93869` independently runs its one
-non-overlapping d116 second-order closure on CPUs 0--2.  Its audited,
-non-overlapping successors are queued: three-child Laplace v17
+Laplace v16 `20260912T203916-6753c1c93869` is fetched, hash/control/profile
+verified, and primary-ingested under `3e677e5a...`: its d116 second-order
+closure is exact-positive (6,254,248 states; 465.552 seconds). Its audited,
+non-overlapping successors are queued/running: three-child Laplace v17
 `20260912T204802-c0683b3c49ee` (d126/d126/d117; inputs
 `5901f195...`/`eeb05d19...`/`11dfa384...`) and two-child v18
 `20260912T204820-ed13f32b6594` (d115/d114; `b813bcb7...`/`1e605d12...`).
@@ -38,8 +39,11 @@ same verified runner/helper/archive hashes; none mirrors v168.
 Host v159 finished with d107 `ad0be9...` positive and fresh d119 one-hole
 negative `9b0689...` with four negative coefficients; its direct zero-hole
 closures are now v166 positive evidence. Host v161 is the sole local process:
-one nice-10 CPU-15, 1000-second broad grow/flag pass (seed
-`202609120161`) guarded against every global pending quotient poset.
+its completed broad grow/flag pass (seed `202609120161`) added one fresh d117
+one-hole negative `9297a8...` (146.349 seconds), but its d118 zero-hole exit
+was already positive and its d116 exit is v16. Host v163 is now the sole
+nice-10 CPU-15 broad pass (seed `202609120163`), guarded against every global
+pending quotient poset.
 Fetch/verify every terminal remote bundle.
 Only an exact zero-hole negative warrants a byte-matched local replay before
 ingestion or any claim.  Generated reports and logs remain untracked; do not

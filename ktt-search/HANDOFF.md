@@ -16,10 +16,12 @@
   d124/d124/d111/d109/d109/d109 one-hole-derived zero-hole closures, with a
   2100-second envelope. A d77 presentation and a known v149-positive poset
   were explicitly deferred as quotient-poset duplicates.
-- Laplace v16 `20260912T203916-6753c1c93869` remains live on one disjoint d116
-  second-order zero-hole closure, within its three-CPU/12-GiB hard limit; it
-  does not mirror the Abacus batch.  Immediately-audited successors are queued:
-  v17 `20260912T204802-c0683b3c49ee` runs d126/d126/d117 with three children
+- Laplace v16 `20260912T203916-6753c1c93869` is fetched/verified and
+  primary-ingested (`3e677e5a...`): its d116 target is exact-positive in
+  6,254,248 states / 465.552 s. Its non-overlapping successors are queued/
+  running within the three-CPU/12-GiB hard limit; none mirrors Abacus. The
+  immediately-audited v17
+  `20260912T204802-c0683b3c49ee` runs d126/d126/d117 with three children
   (input hashes `5901f195...`/`eeb05d19...`/`11dfa384...`), then v18
   `20260912T204820-ed13f32b6594` runs disjoint d115/d114 with two children
   (`b813bcb7...`/`1e605d12...`).
@@ -27,8 +29,10 @@
   2100-second envelope; runner/helper/archive hashes are
   `e3bd01d...`/`a4aae249...`/`bf1cfa42...`. Host v159 added a positive d107
   and fresh four-negative d119 one-hole parent `9b0689...`; its two zero-hole
-  closures are v166. Host v161 is the sole one-CPU nice-10 CPU-15
-  broad-growth process, using the global-pending-poset guard.
+  closures are v166. Host v161 additionally found fresh d117 one-hole
+  negative `9297a8...`; its d118 exit was positive and d116 was v16. Host v163
+  is the sole one-CPU nice-10 CPU-15 broad-growth process, using the global-
+  pending-poset guard.
 - Verify/fetch every terminal bundle.  An exact zero-hole negative must have
   byte-matched local replay before ingestion or any claim.  Keep generated
   output untracked; do not push or publish.
