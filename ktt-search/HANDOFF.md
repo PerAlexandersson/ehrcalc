@@ -4,11 +4,10 @@
 
 - Codex remains sole private KTT worker and sole local MariaDB writer; no
   exact flagged zero-hole-negative exists.  Fetched/verified and
--  primary-ingested Laplace v13/14 and Abacus v160/v162/v164 add 20 further
-  positives, bringing this exact two-hole-closure campaign to 53 (latest
-  ledgers `3e8c502a...` and `52f1cebe...`).
-- Laplace v15 `20260912T202647-d5590d8a13d6` is live on three audited
-  d87/d85/d78 targets (run `611d2e4d...`).  Abacus v166
+-  primary-ingested Laplace v13/14/15 and Abacus v160/v162/v164 add 23
+  further positives, completing this exact two-hole-closure campaign at 56
+  (latest ledgers `52f1cebe...` and `64b28601...`).
+- Abacus v166
   `20260912T203243-b2e772b0a3ba` is live on two fresh d120/d118 zero-hole
   closures from the bounded one-hole reservoir (run `e0cb7a85...`). Audits
   covered both queues, every terminal/pending quotient-poset row, the other
@@ -16,8 +15,9 @@
   not duplicated; the two-hole frontier is exhausted.
 - Both jobs use the known control, 30M states/1200 seconds per target and a
   2100-second envelope; runner/helper/archive hashes are
-  `e3bd01d...`/`a4aae249...`/`bf1cfa42...`.  Host v157 ended with 561 cache
-  hits and no new exact case; v159 is the sole one-CPU nice-10 CPU-15
+  `e3bd01d...`/`a4aae249...`/`bf1cfa42...`. Host v159 added a positive d107
+  and fresh four-negative d119 one-hole parent `9b0689...`; its two zero-hole
+  closures are v166. Host v161 is the sole one-CPU nice-10 CPU-15
   broad-growth process, using the global-pending-poset guard.
 - Verify/fetch every terminal bundle.  An exact zero-hole negative must have
   byte-matched local replay before ingestion or any claim.  Keep generated
