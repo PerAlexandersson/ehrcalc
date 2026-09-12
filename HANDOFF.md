@@ -15,8 +15,9 @@ two further one-hole negatives.
 
 Abacus v137's initial job `20260912T164610-cb71aefa48d9` exited before any
 case because its `jobs -p` wrapper found no PIDs. The explicit-PID repair,
-v137r `20260912T164926-d91e2f728dd3`, is live with six disjoint d131 one-hole
-screens, 30M states/1200 s per child and 1500-s outer: inputs `71380c6b...`,
+v137r `20260912T164926-d91e2f728dd3`, completed, was fetched, and was
+primary-ingested under ledger `0a341436...`: six disjoint d131 one-hole
+screens, 30M states/1200 s per child and 1500-s outer, inputs `71380c6b...`,
 `c7e6d115...`, `27922f63...`, `c89654f1...`, `682b7bd4...`, `117bd511...`.
 `2adb86...` and `6942bb...` are exact-positive; `41c37c...` and `56da2f...`
 are exact-negative in degrees 1--5, and `cb60d9...`/`e07f56...` in degrees
@@ -33,9 +34,10 @@ are `ed1cfce4...`, `e0f0b387...`, and `b0d348d5...`; the dedicated
 pending-attempt ledger is `39611068...`. It uses the same runner/helper/archive
 and three explicit child PIDs, bounded at 30M/1200 s (1500-s outer) on Laplace
 CPUs 0--2 with 10-GiB high/12-GiB hard memory, no swap, and 128 tasks.
-Host v139 completed without a zero-hole negative; v140 is the sole
-nice-priority one-core local pass. Generated runs/logs stay untracked; no push
-or publication is authorized. Fetch and verify every terminal remote job;
+Host v139/v140 completed without a zero-hole negative (v140: 368 exact/cache,
+41 deferred, 144 pruned); v141 is the sole nice-priority one-core local pass.
+Generated runs/logs stay untracked; no push or publication is authorized.
+Fetch and verify every terminal remote job;
 perform a byte-matched local replay and then ingest only if an exact zero-hole
 negative appears.
 

@@ -10,8 +10,9 @@
   ingested (`fb24f4e1...`, `8b7f14c4...`); no zero-hole contender occurred.
 - Initial v137 `20260912T164610-cb71aefa48d9` performed no calculation because
   its noninteractive `jobs -p` wrapper saw no children. Its explicit-PID
-  repair v137r `20260912T164926-d91e2f728dd3` is live: six disjoint d131
-  one-hole screens at 30M states/1200 s per child (1500-s outer), inputs
+  repair v137r `20260912T164926-d91e2f728dd3` completed, was fetched, and was
+  primary-ingested under ledger `0a341436...`: six disjoint d131 one-hole
+  screens at 30M states/1200 s per child (1500-s outer), inputs
   `71380c6b...`, `c7e6d115...`, `27922f63...`, `c89654f1...`, `682b7bd4...`,
   `117bd511...`. `2adb86...`/`6942bb...` are exact-positive; `41c37c...` and
   `56da2f...` are negative in degrees 1--5, while `cb60d9...`/`e07f56...`
@@ -24,9 +25,10 @@
   `3cc08e...` (d126), shared by five-negative parents `41c37c...`/`56da2f...`;
   inputs `ed1cfce4...`, `e0f0b387...`, `b0d348d5...`, ledger `39611068...`.
   It uses the same verified code/archive, 30M/1200 s (1500-s outer), CPUs 0--2,
-  10-GiB high/12-GiB hard memory, no swap, and 128 tasks. Host v139 completed
-  without a zero-hole negative; v140 is the sole nice-priority one-core local
-  pass. Never mirror Abacus, audit both queues/candidate overlap before a
+  10-GiB high/12-GiB hard memory, no swap, and 128 tasks. Host v139/v140
+  completed without a zero-hole negative (v140: 368 exact/cache, 41 deferred,
+  144 pruned); v141 is the sole nice-priority one-core local pass. Never
+  mirror Abacus, audit both queues/candidate overlap before a
   Laplace submission, keep generated artifacts untracked, and do not push or
   publish. Fetch and verify terminal remote output; byte-matched local replay
   plus ingest is required only for an exact zero-hole negative.
