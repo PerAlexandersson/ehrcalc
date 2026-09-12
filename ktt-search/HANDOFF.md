@@ -20,17 +20,17 @@
   `20260912T175829-d3d082e7c384` is fetched/primary-ingested (`d499b5e6...`):
   six novel zero-hole targets exact-positive, 3,861,858--5,980,132 states and
   195.775--339.061 s. v143 remains the six-CPU successor.
-- Disjoint Laplace v7 `20260912T175947-6e6db89bc419` is live with novel
-  zero-hole posets `b9b2b6...` (d117), `f9dc0f...` (d116), `afd69f...`
-  (d115), the same bounds, inputs `76af71f9...`, `4df2d439...`,
-  `1ecc1317...`, run key `3bb31b3b...`; its three full-CPU children use
-  CPUs 0--2 within 10-GiB high/12-GiB hard/no-swap/128 tasks. Host v144's
-  distinct d101 `ec9b39...` completed exact-positive in 40.906 s / 1,828,823
-  states (one nice-10 CPU, run `1961de21...`). Before every submission, audit
-  both queues, host, prior results, candidate keys, and quotient-poset hashes;
-  never mirror Abacus. Generated artifacts remain untracked; no push/
-  publication. Fetch/verify terminal output and locally replay/ingest only an
-  exact zero-hole negative.
+- Laplace v7 `20260912T175947-6e6db89bc419` is fetched/primary-ingested
+  (`37e485fb...`): novel d117/d116/d115 zero-hole posets `b9b2b6...`,
+  `f9dc0f...`, `afd69f...` are exact-positive (5,951,569--5,979,155 states;
+  582.635--630.809 s), all controls exact-known-match. Disjoint v8 now uses
+  all three Laplace CPUs under 10-GiB high/12-GiB hard/no-swap/128 tasks. Host
+  v144's distinct d101 `ec9b39...` completed exact-positive in 40.906 s /
+  1,828,823 states (one nice-10 CPU, run `1961de21...`). Before every
+  submission, audit both queues, host, prior results, candidate keys, and
+  quotient-poset hashes; never mirror Abacus. Generated artifacts remain
+  untracked; no push/publication. Fetch/verify terminal output and locally
+  replay/ingest only an exact zero-hole negative.
 - Poset-audited successors are queued: Abacus v143
   `20260912T180331-410c67f48eb7` after v142, six novel d114--d111 cases,
   inputs `f405c172...`, `0f6c76c8...`, `a8169ca6...`, `3974c647...`,

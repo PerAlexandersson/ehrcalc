@@ -29,16 +29,16 @@ exact-positive (3,861,858--5,980,132 states; 195.775--339.061 s). Abacus v143
 remains the six-CPU successor. The preparer now also reserves a poset already
 pending in another candidate, not only an exact poset (private `97a274a`).
 
-Separately, Laplace v7 `20260912T175947-6e6db89bc419` is live with three
-distinct, previously uncomputed zero-hole posets `b9b2b6...` (d117),
-`f9dc0f...` (d116), and `afd69f...` (d115), at the same bounds; inputs
-`76af71f9...`, `4df2d439...`, `1ecc1317...`; run key `3bb31b3b...`. Its
-three explicit children use CPUs 0--2 under 10-GiB high/12-GiB hard/no-swap/
-128-task limits. Host v144 completed its distinct d101 `ec9b39...`
-exact-positive in 40.906 s / 1,828,823 states (run `1961de21...`) on one
-nice-10 pinned CPU. Generated runs/logs remain untracked; do not push or
-publish. Fetch/verify every terminal job; byte-match local replay and ingest
-only an exact zero-hole negative.
+Laplace v7 `20260912T175947-6e6db89bc419` is fetched and primary-ingested
+under `37e485fb...`: its three distinct d117/d116/d115 zero-hole targets
+`b9b2b6...`, `f9dc0f...`, and `afd69f...` are exact-positive (5,951,569--
+5,979,155 states; 582.635--630.809 s), with every control exact-known-match.
+Its disjoint successor v8 is now running on CPUs 0--2 within the established
+10-GiB high/12-GiB hard/no-swap/128-task limits. Host v144 completed its
+distinct d101 `ec9b39...` exact-positive in 40.906 s / 1,828,823 states (run
+`1961de21...`) on one nice-10 pinned CPU. Generated runs/logs remain
+untracked; do not push or publish. Fetch/verify every terminal job; byte-match
+local replay and ingest only an exact zero-hole negative.
 
 The renewed poset audit also queued Abacus v143
 `20260912T180331-410c67f48eb7` after v142: six novel d114--d111 closures,
