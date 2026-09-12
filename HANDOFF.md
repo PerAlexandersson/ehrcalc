@@ -80,6 +80,14 @@ negative Ehrhart coefficients in degrees 1--2. Its zero-hole d111 closure
 d106 `3f89f4ee...` at 1,512,790 states; its separate archived local replay is
 active before ingestion. No flagged zero-hole negative is certified yet.
 
+Continuation 4 (2026-09-12): v39 d106 `3f89f4ee...` has matching archived
+local replay and ingestion (1,512,790 states; ledger `b9726259...`). v36
+exact-positive flagged closure `9944986a...` matched locally and was reused in
+cross-validation (ledger `356ae75d...`). After an idle remote check, sole v40
+`20260912T071605-2e03a797c1e5` began independent exact validation of new
+nine-flag one-hole d110 `12c81c1e...`, input `6f91a3ef...`, 6M/360 s per case
+and 900-s outer. No flagged zero-hole negative is certified yet.
+
 The best certified negative now has **one genuine nonflag hole**. Candidate
 `86b98937ad8a...` has `(a,b)=(10,11)`, mask `0x10000000000`, one equality,
 degree 109, and negative linear coefficient

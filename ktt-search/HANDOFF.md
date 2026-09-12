@@ -63,6 +63,13 @@
   exact-positive (3,308,370 states). v39 `20260912T070834-aa54b96e6755`
   exactly completed d106 `3f89f4ee...` at 1,512,790 states; matching local
   replay is active before ingestion. No flagged zero-hole negative is certified.
+- Continuation 4 (2026-09-12): archived local replay exactly matched and
+  ingested v39 d106 `3f89f4ee...` (1,512,790 states; ledger `b9726259...`).
+  v36 exact-positive flagged closure `9944986a...` also locally matched and
+  was cross-validation-reused (ledger `356ae75d...`). Fresh queue check found
+  Abacus idle; sole active job v40 `20260912T071605-2e03a797c1e5` is the
+  independent exact cross-check of new nine-flag one-hole negative d110
+  `12c81c1e...`, input SHA `6f91a3ef...`, 6M/360 s per case and 900-s outer.
 - Best certified negative `86b98937ad8a...` has one bad edge, `(a,b)=(10,11)`,
   mask `0x10000000000`, degree 109, and one negative Ehrhart coefficient
   (degree one). Its lift is `(12,1^10)/(1)`, weight `1^21`, with sole bad pair
