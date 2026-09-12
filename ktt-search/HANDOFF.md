@@ -7,12 +7,18 @@
 -  primary-ingested Laplace v13/14/15 and Abacus v160/v162/v164 add 23
   further positives, completing this exact two-hole-closure campaign at 56
   (latest ledgers `52f1cebe...` and `64b28601...`).
-- Abacus v166
-  `20260912T203243-b2e772b0a3ba` is live on two fresh d120/d118 zero-hole
-  closures from the bounded one-hole reservoir (run `e0cb7a85...`). Audits
-  covered both queues, every terminal/pending quotient-poset row, the other
-  remote batch, and host v159. One equivalent d77 reduced mask was deferred,
-  not duplicated; the two-hole frontier is exhausted.
+- Abacus v166 `20260912T203243-b2e772b0a3ba` is fetched/verified and
+  primary-ingested (`e381a915...`): its two direct d120/d118 closures of
+  `9b0689...` are exact-positive. Immediately before Abacus v168
+  `20260912T204326-f2b97a0f24c1` was submitted, both queues, all
+  terminal/pending candidate and quotient-poset records, and the actual host
+  process were re-audited. v168 now uses all six Abacus CPUs for six distinct
+  d124/d124/d111/d109/d109/d109 one-hole-derived zero-hole closures, with a
+  2100-second envelope. A d77 presentation and a known v149-positive poset
+  were explicitly deferred as quotient-poset duplicates.
+- Laplace v16 `20260912T203916-6753c1c93869` remains live on one disjoint d116
+  second-order zero-hole closure, within its three-CPU/12-GiB hard limit; it
+  does not mirror the Abacus batch.
 - Both jobs use the known control, 30M states/1200 seconds per target and a
   2100-second envelope; runner/helper/archive hashes are
   `e3bd01d...`/`a4aae249...`/`bf1cfa42...`. Host v159 added a positive d107

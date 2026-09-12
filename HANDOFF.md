@@ -16,20 +16,23 @@ runner/helper/archive hashes
 `e3bd01d...`/`a4aae249...`/`bf1cfa42...` under 30M states, 1200 seconds per
 target, and a 2100-second envelope.
 
-Both queues were re-audited immediately before the current submission.
-Abacus v166 `20260912T203243-b2e772b0a3ba` is running two fresh d120/d118
-zero-hole closures from the bounded exact-negative one-hole reservoir (run
-`e0cb7a85...`; inputs `467f842d...`, `5b806efa...`).  A third d77
-presentation was identified before v164 submission as the same quotient poset
-as the selected d77 representative and is explicitly deferred as a duplicate.
-The unique two-hole-closure frontier is exhausted; v166 is the only remaining
-known fresh direct one-hole closure after omitting a locally recorded v149
-positive poset.
+Abacus v166 `20260912T203243-b2e772b0a3ba` is fetched, hash/control/profile
+verified, and primary-ingested under `e381a915...`: both direct d120/d118
+closures of the fresh four-negative one-hole parent `9b0689...` are exact
+positive.  Both queues were again audited immediately before the current
+Abacus v168 submission `20260912T204326-f2b97a0f24c1`: six pairwise distinct
+d124/d124/d111/d109/d109/d109 zero-hole closures, drawn from the bounded
+one-hole-negative reservoir, run in parallel across all six Abacus CPUs
+(2100-second envelope). Candidate, terminal/pending quotient-poset, host, and
+Laplace reservations were excluded. The equivalent v149 d77 presentation and
+a known v149-positive poset were explicitly deferred, not duplicated.
+Laplace v16 `20260912T203916-6753c1c93869` independently runs its one
+non-overlapping d116 second-order closure on CPUs 0--2.
 
-Host v159 finished with two new exact cases: d107 `ad0be9...` is positive and
-fresh d119 one-hole negative `9b0689...` has four negative coefficients;
-v166 holds its two audited zero-hole closures. Host v161 is the sole local
-process: one nice-10 CPU-15, 1000-second broad grow/flag pass (seed
+Host v159 finished with d107 `ad0be9...` positive and fresh d119 one-hole
+negative `9b0689...` with four negative coefficients; its direct zero-hole
+closures are now v166 positive evidence. Host v161 is the sole local process:
+one nice-10 CPU-15, 1000-second broad grow/flag pass (seed
 `202609120161`) guarded against every global pending quotient poset.
 Fetch/verify every terminal remote bundle.
 Only an exact zero-hole negative warrants a byte-matched local replay before
