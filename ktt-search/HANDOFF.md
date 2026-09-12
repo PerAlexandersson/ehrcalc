@@ -12,6 +12,11 @@
   bad-edge prunes; no exact zero-hole negative. Zero-hole closures remain
   positive. Generated artifacts stay untracked; no push/publication.
 
+- Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`
+  (d114) and `be158...` (d111), whose six fresh zero-hole flag closures are
+  exact-positive (noncached d112/d109 checks 95.518/95.180 s); distinct d125/
+  d128 moves reached the 6M cap. Codex remains sole writer.
+
 ## One-hole exact-negative breakthrough — 2026-09-11 (active)
 
 - Suspension checkpoint: Abacus is paused with no running KTT job, and no

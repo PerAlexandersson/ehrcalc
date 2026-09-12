@@ -13,6 +13,11 @@ prunes; all exact zero-hole closures remain positive and no target exists.
 Continue bounded zero-hole then one-hole growth/closure search; generated
 runs/logs stay untracked and there is no push or publication authorization.
 
+Latest local v85/v87 expansion found exact one-hole negatives `cc6d...`
+(d114) and `be158...` (d111), but their six fresh zero-hole flag closures are
+positive (noncached d112/d109 checks 95.518/95.180 s); distinct d125/d128
+moves reached the 6M cap. Codex remains the sole writer.
+
 ## KTT one-hole exact-negative breakthrough — 2026-09-11 (active)
 
 User-requested suspension checkpoint: Abacus is paused and no KTT process is
