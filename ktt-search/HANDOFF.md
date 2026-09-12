@@ -32,8 +32,10 @@
   negative; its initial detached launch exited before calculation for a
   missing `PYTHONPATH`, then was correctly relaunched. Host v137 finished
   with 362 exact/cache results, 46 deferrals, and 140 prunes with no zero-hole
-  negative. Host v138 (seed `20261119`) is the only low-priority local core.
-  Generated artifacts stay untracked; no push or
+  negative. Host v138 finished with 369 exact/cache results, 47 deferrals,
+  and 140 prunes, again with no zero-hole negative. Host v139 (seed
+  `20261120`) is the only low-priority local core. Generated artifacts stay
+  untracked; no push or
   publication.
 
 - Latest local expansion v85/v87 produced exact one-hole negatives `cc6d...`
