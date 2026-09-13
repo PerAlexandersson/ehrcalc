@@ -1,5 +1,30 @@
 # Ehrcalc Handoff
 
+## GPU feasibility worktree — 2026-09-13 (active)
+
+Host supervisor owns branch `feat/gpu-kostka-prototype` in the isolated
+worktree `/mnt/2TB-Babel/ai-storage/worktrees/ehrcalc-gpu`. Scope is packed
+modular counting, exact CRT reconstruction, GPU aggregation prototypes, and
+their benchmarks. The KTT worker retains sole ownership of `main`, the KTT
+search, generated evidence, and MariaDB. No GPU-prototype file may be edited in
+the live `/workspace/rust/ehrcalc` checkout, and this branch must not run KTT
+searches or write the KTT database.
+
+Initial target: establish a tested packed modular CPU reference, then compare a
+GPU one-layer aggregation kernel on Euler's RX 9070 XT without changing the
+default exact backend. ROCm/HIP is not installed at this checkpoint; avoid a
+system driver replacement and prefer a userspace/container installation after
+the CPU representation is verified.
+
+First checkpoint is implemented in `packed_modular.rs`: dynamic `u128` state
+packing, one-to-eight shared modular lanes, transition/state instrumentation,
+and bounded CRT reconstruction that refuses an ambiguous modulus product. It
+supports ordinary, skew, and row-flagged counts; strict/interior counting is
+still pending. The exhaustive deterministic small-skew test plus flagged and
+CRT tests pass. Full `ehrcalc-kostka-engine` tests pass (42/42), Clippy passes
+with warnings denied, and `git diff --check` passes. Builds used the external
+host cache `/mnt/2TB-Babel/ai-storage/cargo-target`; no local `target/` exists.
+
 ## Current KTT state — 2026-09-13 (active)
 
 ### Current execution (refreshed 2026-09-13)
