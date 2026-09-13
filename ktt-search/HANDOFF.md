@@ -206,7 +206,13 @@
   in 231.752 seconds with nonnegative h* and no negative Ehrhart coefficient;
   its exact ledger row is present. After a fresh ledger/v193 audit, CPU 7 was
   refilled by distinct `07975fb3...` (PID 1252349) under the same bound. Do not
-  duplicate any active host case or add a ninth host job. After an immediate
+  duplicate any active host case or add a ninth host job.
+  `7fe8ec33...` subsequently completed exactly in 690.315 seconds with
+  nonnegative h* and no negative Ehrhart coefficient; its exact ledger row is
+  present. After a fresh ledger/v193 audit, CPU 12 was refilled by distinct
+  dimension-28 `19bb184b...` (PID 1255058) under the same
+  1,200-second-sample / 7,200-second-envelope policy. Host use remains exactly
+  8 of 16 CPUs; do not duplicate any active case. After an immediate
   Abacus/Laplace queue audit (Laplace remains
   unplugged and unreachable), Abacus v193 `20260913T152558-1f2918e2998b`
   started its distinct six-child structural-tail d7--d10 batch under the
