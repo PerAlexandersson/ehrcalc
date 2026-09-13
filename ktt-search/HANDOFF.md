@@ -239,6 +239,17 @@
   distinct 3,600-second attempt key / 7,200-second envelope (PID 1275566,
   output `...19bb-completed-3600s...`). This is a resource-limited sample
   retry, not a duplicate exact evaluation; host use remains exactly 8 of 16 CPUs.
+  **Negative pending independent validation:** `07975fb3...` (dimension 24,
+  `pair:outer:9->11+weight:8->15`) completed its packed interpolation with
+  four negative Ehrhart coefficients (degrees 2, 3, 5, 6) and a negative h*
+  block. It has `nonflagged_inequalities: 0`, so it is structurally a flagged
+  zero-hole candidate, but it has not been inserted or claimed. The sole writer
+  started the required independent general-`ehrcalc kostka` out-of-range replay
+  on CPU 7 (PID 1280122): 100M states, 3,600 seconds/sample, 7,200-second
+  envelope, checking d25 and d26 against the full degree-24 polynomial; output
+  is `...0797-generic-verify26-20260913.json`. Only two exact matching checks
+  permit database admission or a counterexample claim. Ordinary replacement
+  work is paused while this validator uses the spare host capacity.
   `1bf28b70...` then cleanly timed out only d16 at 1,200.109 seconds; it also
   produced no polynomial and remains absent from the exact ledger, with d1--d15
   preserved. A fresh ledger/v193 audit cleared its CPU-8 resume under the
