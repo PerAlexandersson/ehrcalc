@@ -148,12 +148,14 @@ disjoint d23 mutations. Inputs `4a9cd53c...`/`8007ed9f...`/`ac33cab5...`/
 `cf02abfc...`/`ece32560...`/`654de4e8...` yielded 42 exact cases under the
 same profile; every known-end score is positive, so no full exact contender
 arose.
-Abacus v189 `20260913T150008-faabdc1401a8` is live with six disjoint
-20-candidate structural-tail children (120 representatives) under the verified
-six-CPU/20-GiB/256-pid profile. Inputs `a67cee89...`/`c76cda87...`/
-`c987a91d...`/`13a03c6b...`/`e82f7a84...`/`02dcffda...` are disjoint from the
-host d17 case and prior ingested classes. Fetch, verify, locally d6-replay, and
-ingest only after terminal status; no result is claimed yet.
+Abacus v189 `20260913T150008-faabdc1401a8` is fetched, profile/control
+verified, locally d6-replayed, and ingested (`c23f70e2...`) for 120 disjoint
+representatives under the verified six-CPU/20-GiB/256-pid profile. Its inputs
+`a67cee89...`/`c76cda87...`/`c987a91d...`/`13a03c6b...`/`e82f7a84...`/
+`02dcffda...` yielded 725 exact remote cases (719 new plus six controls) and
+120 matching fresh local d6 checks. Its only negative known-end scores are the
+already fully exact-positive d21 leaders `1a231fa6...` and `1d8be73f...`; no
+new full contender arose.
 The legacy Abacus hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it
 is not submitted unchanged to the present 6-CPU Abacus. A negative full result
 still requires the prescribed independent out-of-range replay before any
