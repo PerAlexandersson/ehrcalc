@@ -181,6 +181,10 @@
   `25586b32...`. A quoting error refreshed only the latter's inexpensive strict
   tail cache while its distinct expensive d17 count remained uninterrupted; no
   new full contender arose.
+  The closest remaining positive-score d17 candidate `1a3b03bf...` completed a
+  disjoint full packed interpolation on CPU 14 immediately, with nonnegative
+  h* and Ehrhart coefficients. The host remains at two of 16 CPUs or fewer;
+  only `25586b32...` is the long-running d17 count.
   The legacy Abacus
   hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it is not submitted
   unchanged to the present 6-CPU Abacus. A negative full result still requires
