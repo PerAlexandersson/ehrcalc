@@ -21,9 +21,9 @@
   (`008407bd...`/`6e674d46...`) are fetched, provenance-verified, and
   primary-ingested: all eighteen d100--d95 targets are exact-positive. Host
   v176 completed one new exact evaluation and four state-limited cases, with
-  no zero-hole contender. After fresh queue/host/global-poset audits, Abacus
-  v179 `20260913T090630-334736a57580` runs six distinct
-  d94/d94/d93/d92/d92/d90 closures (run `2efaf7ed...`), while Laplace v27
+  no zero-hole contender. Abacus v179 `20260913T090630-334736a57580` is
+  fetched, provenance-verified, and primary-ingested (`84195b08...`): all six
+  d94/d94/d93/d92/d92/d90 closures are exact-positive. Laplace v27
   `20260913T090810-b930e2fa688a` runs the only two remaining fresh d90/d88
   closures (run `15919056...`). The current 512-parent closure reservoir is
   otherwise exhausted. Host v177 is the sole nice-10 CPU-15 grow/flag pass
