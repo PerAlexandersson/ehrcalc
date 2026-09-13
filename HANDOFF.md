@@ -96,6 +96,16 @@ sample is d17; the sole live strict continuation is PID 1193952 (child
 (`zero-hole-size50-11a6-paired-v2-2558-completed-7200s-20260913.jsonl`). This
 has a distinct attempt-timeout key and reuses every prior exact sample; only a
 negative full result activates independent out-of-range replay.
+Abacus structural-tail v181 `20260913T143205-b5cc011aaa61` is fetched and
+verified as an engine-path launch failure before any target count; its corrected
+retry v181r `20260913T143311-342102c4f37a` is fetched, hash/profile/control
+verified, cross-validated locally at d6, and ingested under ledger
+`29cfbb3d...`. Runner `5564bf69...`, structural engine `f179ae7e...`, and
+five inputs `f3082e51...`/`55430b08...`/`89dc84ff...`/`5faf848e...`/
+`6298d47d...` ran five disjoint d23/d24 zero-hole flagged classes under the
+six-CPU/20-GiB/256-pid profile. All 35 records are exact (five repeated
+controls plus d1--d6 for each target); every target strict-interior count is
+zero through d6 and its known-end score is positive, so none is a contender.
 The legacy Abacus hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it
 is not submitted unchanged to the present 6-CPU Abacus. A negative full result
 still requires the prescribed independent out-of-range replay before any
