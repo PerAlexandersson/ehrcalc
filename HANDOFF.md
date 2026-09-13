@@ -2,6 +2,12 @@
 
 ## Current KTT state — 2026-09-13 (active)
 
+### Current execution (refreshed 2026-09-13)
+
+Codex is the sole KTT worker and local MariaDB writer. `07975fb3...` (dimension 24; `pair:outer:9->11+weight:8->15`) is a structurally audited, flagged zero-hole **negative pending validation**, not an admitted or claimed counterexample: the independent generic `ehrcalc kostka` d25/d26 replay is live on CPU 7 (PID 1280122; 100M states, 3,600 s/sample, 7,200 s envelope). It must match both out-of-range polynomial values before admission.
+
+The host is exactly at its eight-of-16-CPU cap: ordinary resumptions `0f819abc...`/`fb09eaa1...`/`01312ad...` are live on CPUs 13/9/10 (PIDs 1287645/1287646/1287647), after a fresh check that all are absent from the exact ledger, five existing host cases, and the 121 candidates in the six uploaded v193 inputs. Abacus v193 `20260913T152558-1f2918e2998b` is running its sole six-child structural-tail batch (runner `5564bf69...`, engine `f179ae7e...`); do not resubmit or mirror it. Laplace is unplugged, unreachable, and has no KTT job. Generated evidence stays untracked; do not push or publish. Historical chronology follows.
+
 Latest verified evidence: Abacus v175 `20260913T080354-4254d5d665cc`
 (`b60111d6...`) and Laplace v23 `20260913T080436-a1797f1540c7`
 (`10b3b178...`) are fetched, hash/control/profile verified, and
