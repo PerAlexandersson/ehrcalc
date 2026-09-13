@@ -193,8 +193,12 @@
   the global rank's last negative partial-score row without a contender. Its
   exact result is recorded locally. The next eligible disjoint d23
   positive-score case `9a6b7133...` is live on CPU 14 (PID 1249112; 1,200
-  seconds/sample, 7,200-second envelope); host use is one of 16 CPUs and it
-  excludes every ledger row and v193 reservation. After an immediate
+  seconds/sample, 7,200-second envelope). After a fresh ledger/v193/Abacus/
+  Laplace audit, four further distinct positive-score cases began under the
+  same limits: `f75e676b...` CPU 10/PID 1249972, `0478452a...` CPU 11/PID
+  1249973, `7fe8ec33...` CPU 12/PID 1249974, and `0f819abc...` CPU 13/PID
+  1249975. All five exclude every ledger row and v193 reservation; host use
+  is five of 16 CPUs, below the 50% cap. Do not duplicate them. After an immediate
   Abacus/Laplace queue audit (Laplace remains
   unplugged and unreachable), Abacus v193 `20260913T152558-1f2918e2998b`
   started its distinct six-child structural-tail d7--d10 batch under the
