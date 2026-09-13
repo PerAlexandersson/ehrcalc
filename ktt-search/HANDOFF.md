@@ -155,13 +155,13 @@
   120 matching fresh local d6 checks. The only negative known-end scores are
   the already fully exact-positive d21 leaders `1a231fa6...` and `1d8be73f...`;
   no new full contender arose.
-  Abacus v190 `20260913T150655-6f71cccd762f` is live with six further disjoint
-  20-candidate structural-tail children (120 representatives) under the same
-  six-CPU/20-GiB/256-pid profile. The prebuilt batch containing active host
-  candidate `25586b32...` was excluded and replaced by disjoint input
-  `63f1be23...`; all inputs are `224e9c5b...`/`63f1be23...`/`bcb7e714...`/
-  `500e170d...`/`97e7c9dd...`/`2cf2806a...`. Fetch, verify, locally d6-replay,
-  and ingest only after terminal status; no result is claimed yet.
+  Abacus v190 `20260913T150655-6f71cccd762f` is fetched, profile/control
+  verified, locally d6-replayed, and ingested (`5b1fbb78...`) for 120 further
+  disjoint representatives. The prebuilt batch containing active host candidate
+  `25586b32...` was excluded and replaced by `63f1be23...`; inputs are
+  `224e9c5b...`/`63f1be23...`/`bcb7e714...`/`500e170d...`/`97e7c9dd...`/
+  `2cf2806a...`. All 726 remote cases are exact (720 new plus six controls) and
+  all 120 local d6 checks match; every known-end score is positive.
   The legacy Abacus
   hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it is not submitted
   unchanged to the present 6-CPU Abacus. A negative full result still requires
