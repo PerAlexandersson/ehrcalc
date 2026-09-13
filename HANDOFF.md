@@ -112,6 +112,12 @@ disjoint d24--d30 classes, with inputs `13d7f56d...`/`cdc3494f...`/
 `e5182bdc...`/`97303afc...`/`a5ca4d4e...`/`99931761...`. Five have zero
 strict-interior counts through d6; d24 `2986d182...` has exact positive
 d4--d6 interior counts but still a positive known-end score. No contender arose.
+Abacus v183 `20260913T144117-7e985ae054bb` is fetched, profile/control
+verified, locally d6-replayed, and ingested (`e5228382...`) for six disjoint
+d24 flag-mutation classes (inputs `8cf4275a...`/`8ab6c116...`/`09e43084...`/
+`ac98a5be...`/`a7680290...`/`f1cf58b3...`). Every class has a nonzero exact
+strict tail by d3 or d4, but all six known-end scores are positive; none is a
+full exact contender.
 The legacy Abacus hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it
 is not submitted unchanged to the present 6-CPU Abacus. A negative full result
 still requires the prescribed independent out-of-range replay before any
