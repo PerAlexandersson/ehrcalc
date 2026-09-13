@@ -28,9 +28,13 @@ d94/d94/d93/d92/d92/d90 closures are exact-positive. Laplace v27
 `20260913T090810-b930e2fa688a` is fetched, provenance-verified, and
 primary-ingested (`147be2f7...`): both remaining d90/d88 closures are exact-
 positive. The closure inventory is genuinely exhausted: the 512-parent
-selector already covers all 292 exact one-hole-negative parents. Sole host
-v177 is the nice-10 CPU-15 broad grow/flag pass, seed `202609130177`, to
-replenish it. Remote work uses verified
+selector already covers all 292 exact one-hole-negative parents. Host v177
+then completed three new exact evaluations and three state-limited cases, with
+no zero-hole contender, but yielded two fresh d114/d110 closures. After a
+fresh audit, Abacus v180 `20260913T092335-e1856906106a` runs those two
+closures (run `0920e0c5...`) under the primary profile. Sole host v178 is the
+nice-10 CPU-15 broad grow/flag pass, seed `202609130178`, excluding both
+pending remote quotient posets. Remote work uses verified
 runner/helper/archive hashes `e3bd01d...`/`a4aae249...`/`bf1cfa42...`, 30M
 states, 1200 seconds per child, and a 2100-second envelope. Generated output
 remains untracked; do not push or publish.
