@@ -185,6 +185,9 @@
   disjoint full packed interpolation on CPU 14 immediately, with nonnegative
   h* and Ehrhart coefficients. The host remains at two of 16 CPUs or fewer;
   only `25586b32...` is the long-running d17 count.
+  The next disjoint d21 positive-score candidate `1caa386b...` is live on CPU
+  14 under a 1,200-second-per-sample / 7,200-second-envelope attempt (parent
+  PID 1245899; packed child 1245992); `25586b32...` remains alone on CPU 15.
   The legacy Abacus
   hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it is not submitted
   unchanged to the present 6-CPU Abacus. A negative full result still requires
