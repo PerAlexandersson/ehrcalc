@@ -168,12 +168,19 @@
   `9061de35...`/`24946da5...`/`45c68a1c...`/`e5bef587...` yielded 726 exact
   remote cases (720 new plus six controls), with all 120 local d6 checks
   matching; every known-end score is positive.
-  Abacus v192 `20260913T151522-cbdfef82afdf` is live: the final 64 prebuilt,
-  host-disjoint unprocessed v2 representatives split 11/11/11/11/10/10 across
-  six structural-tail children under the same six-CPU/20-GiB/256-pid profile.
-  Inputs are `418cb6f6...`/`fbd64f77...`/`2e55372b...`/`88ad2ae7...`/
-  `c6d4b611...`/`cc8c19b3...`. Fetch, verify, locally d6-replay, and ingest
-  only after terminal status.
+  Abacus v192 `20260913T151522-cbdfef82afdf` is fetched, profile/control
+  verified, locally d6-replayed, and ingested (`0d818a44...`) for the final 64
+  prebuilt host-disjoint v2 representatives. Inputs `418cb6f6...`/
+  `fbd64f77...`/`2e55372b...`/`88ad2ae7...`/`c6d4b611...`/`cc8c19b3...` yielded
+  390 exact remote cases (384 new plus six controls), with all 64 local d6
+  checks matching.
+
+  All 469 v2 zero-hole signature representatives are structurally certified
+  through d6. The global known-end rank has only three negative rows: already
+  full-exact-positive `1a231fa6...` and `1d8be73f...`, plus live d17 leader
+  `25586b32...`. A quoting error refreshed only the latter's inexpensive strict
+  tail cache while its distinct expensive d17 count remained uninterrupted; no
+  new full contender arose.
   The legacy Abacus
   hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it is not submitted
   unchanged to the present 6-CPU Abacus. A negative full result still requires
