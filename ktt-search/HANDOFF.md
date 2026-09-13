@@ -239,6 +239,12 @@
   distinct 3,600-second attempt key / 7,200-second envelope (PID 1275566,
   output `...19bb-completed-3600s...`). This is a resource-limited sample
   retry, not a duplicate exact evaluation; host use remains exactly 8 of 16 CPUs.
+  `1bf28b70...` then cleanly timed out only d16 at 1,200.109 seconds; it also
+  produced no polynomial and remains absent from the exact ledger, with d1--d15
+  preserved. A fresh ledger/v193 audit cleared its CPU-8 resume under the
+  distinct 3,600-second attempt key / 7,200-second envelope (PID 1277966,
+  output `...1bf2-completed-3600s...`). This is a resource-limited sample
+  retry, not a duplicate exact evaluation; host use remains exactly 8 of 16 CPUs.
   After an immediate
   Abacus/Laplace queue audit (Laplace remains
   unplugged and unreachable), Abacus v193 `20260913T152558-1f2918e2998b`
