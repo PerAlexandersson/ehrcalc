@@ -6,16 +6,16 @@ Latest verified evidence: Abacus v175 `20260913T080354-4254d5d665cc`
 (`b60111d6...`) and Laplace v23 `20260913T080436-a1797f1540c7`
 (`10b3b178...`) are fetched, hash/control/profile verified, and
 primary-ingested; all nine d104--d102 zero-hole targets are exact-positive.
-Host v173 then completed one new exact evaluation, no zero-hole contender, and
-three state-limited cases. Codex remains sole KTT worker and MariaDB writer.
-After a fresh queue/host/candidate/quotient-poset audit, Abacus v176
-`20260913T081844-0abadaa146e5` runs six distinct d102/d101 closures (run
-`130be1d9...`; `aeee2a1c...`/`adfc60e0...`/`ddb9b5ce...`/`be7626ca...`/
-`1f238ee1...`/`3863244d...`), while non-mirroring Laplace v24
+Abacus v176 `20260913T081844-0abadaa146e5` is now likewise fetched,
+hash/control/profile verified, and primary-ingested (`31ccaedc...`): all six
+distinct d102/d101 closures are exact-positive (1,756,040--3,261,972 states;
+79.516--179.629 s); its only negative output was the exact-known-match
+control. Codex remains sole KTT worker and MariaDB writer. Non-mirroring
+Laplace v24
 `20260913T081922-f2886ff50550` runs d101/d100/d100 closures (run
 `13130c9b...`; `44a0884e...`/`77d6104a...`/`1ce3f9b9...`). Sole host v174
 is the nice-10 CPU-15 broad grow/flag pass, seed `202609130174`, and skips all
-nine remote pending quotient posets. Remote work uses verified
+three remaining remote pending quotient posets. Remote work uses verified
 runner/helper/archive hashes `e3bd01d...`/`a4aae249...`/`bf1cfa42...`, 30M
 states, 1200 seconds per child, and a 2100-second envelope. Generated output
 remains untracked; do not push or publish.

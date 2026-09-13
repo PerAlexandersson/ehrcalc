@@ -1,6 +1,31 @@
 # KTT Search Handoff
 
-## Current state — 2026-09-12 (active)
+## Current state — 2026-09-13 (active)
+
+- Codex remains sole private KTT worker and sole local MariaDB writer; no exact
+  flagged zero-hole-negative exists. Abacus v175 and Laplace v23 were
+  fetched, hash/control/profile verified, and primary-ingested
+  (`b60111d6...`/`10b3b178...`): all nine d104--d102 targets are positive.
+- Abacus v176 `20260913T081844-0abadaa146e5` is fetched, provenance-verified,
+  and primary-ingested (`31ccaedc...`): all six pairwise-distinct d102/d101
+  zero-hole closures are exact-positive (1,756,040--3,261,972 states;
+  79.516--179.629 s); its only negative was the exact-known-match control.
+  Inputs were `aeee2a1c...`/`adfc60e0...`/`ddb9b5ce...`/`be7626ca...`/
+  `1f238ee1...`/`3863244d...`, run `130be1d9...`.
+- Disjoint Laplace v24 `20260913T081922-f2886ff50550` remains active with
+  three d101/d100/d100 closures (run `13130c9b...`; inputs `44a0884e...`/
+  `77d6104a...`/`1ce3f9b9...`) under its three-CPU/12-GiB-hard policy. Host
+  v174 is the sole nice-10 CPU-15 broad grow/flag pass (seed `202609130174`)
+  and excludes these pending quotient posets. Before any successor submission,
+  recheck both queues and audit against host, remote reservations, and all
+  prior candidate/poset identities; never mirror the six-case Abacus batch.
+- Verified runner/helper/archive hashes remain `e3bd01d...`/`a4aae249...`/
+  `bf1cfa42...`; child limits are 30M states/1200 seconds in a 2100-second
+  envelope. An exact zero-hole negative requires byte-matched local replay
+  before ingest or claim. Generated output remains untracked; do not push or
+  publish.
+
+## Superseded current state — 2026-09-12
 
 - Codex remains sole private KTT worker and sole local MariaDB writer; no
   exact flagged zero-hole-negative exists.  Fetched/verified and
