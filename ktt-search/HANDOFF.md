@@ -162,6 +162,12 @@
   `224e9c5b...`/`63f1be23...`/`bcb7e714...`/`500e170d...`/`97e7c9dd...`/
   `2cf2806a...`. All 726 remote cases are exact (720 new plus six controls) and
   all 120 local d6 checks match; every known-end score is positive.
+  Abacus v191 `20260913T151119-d4c25f810bd3` is live with six further disjoint
+  20-candidate structural-tail children (120 representatives) under the same
+  six-CPU/20-GiB/256-pid profile. The v190 replacement was removed from the
+  next prebuilt partition and replaced disjointly. Inputs are `f5112e19...`/
+  `38db78c5...`/`9061de35...`/`24946da5...`/`45c68a1c...`/`e5bef587...`. Fetch,
+  verify, locally d6-replay, and ingest only after terminal status.
   The legacy Abacus
   hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it is not submitted
   unchanged to the present 6-CPU Abacus. A negative full result still requires
