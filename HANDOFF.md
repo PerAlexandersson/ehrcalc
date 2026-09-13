@@ -88,8 +88,9 @@ the aggregate limit in d13, and its enlarged 600-second/900-second pass saved
 d13 and d14. Its next 1,800-second/1,810-second pass saved d15, then recorded
 a 756.707-second deadline-bound d16 attempt. (The certified tail begins at
 index 18, so exact d16 and d17 are still required.) The sole live finite
-continuation now allows 3,600 seconds per dilation in a 7,200-second envelope
-on CPU 15/nice-10, resuming only d16. This is a strict continuation by saved
+continuation allows 3,600 seconds per dilation in a 7,200-second envelope on
+CPU 15/nice-10. Its d16 count has now completed exactly, and the sole live
+child is the final required d17 count. This is a strict continuation by saved
 exact samples and distinct attempt-timeout keys; only a negative full result
 activates independent out-of-range replay.
 The legacy Abacus hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it
