@@ -36,10 +36,12 @@
   new exact evaluations and three state-limited cases, no zero-hole contender,
   and no fresh closure. Host v179 then completed three new exact evaluations
   and two state-limited cases, again without a zero-hole contender or fresh
-  closure. Both remote queues were idle and the selector again returned zero
-  fresh targets immediately before sole host v180 began: the bounded, nice-10
-  CPU-15 grow/flag pass uses seed `202609130180` (eight new exact-case cap, 6M
-  states/360 seconds each, 1000-second outer limit). Before
+  closure. Host v180 then completed one new exact evaluation and four
+  state-limited cases, again with no fresh closure. Both remote queues were
+  idle and the selector again returned zero fresh targets immediately before
+  sole host v181 began: the bounded, nice-10 CPU-15 grow/flag pass uses seed
+  `202609130181` (eight new exact-case cap, 6M states/360 seconds each,
+  1000-second outer limit). Before
   any successor submission, recheck both queues
   and audit against host, remote reservations, and all prior candidate/poset
   identities; never mirror the six-case Abacus batch.
