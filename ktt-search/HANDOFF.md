@@ -42,11 +42,16 @@
   closure. Host v182 then completed two new exact evaluations and four
   state-limited cases, again with no zero-hole contender or fresh closure. Host
   v183 then completed four new exact evaluations and three state-limited cases,
-  again with no zero-hole contender or fresh closure. Both remote queues were
-  idle and the selector again returned zero fresh targets immediately before
-  sole host v184 began: the bounded, nice-10 CPU-15 grow/flag pass uses seed
-  `202609130184` (eight new exact-case cap, 6M states/360 seconds each,
-  1000-second outer limit). Before
+  again with no zero-hole contender or fresh closure. Host v184 then completed
+  two new exact evaluations and three state-limited cases, again with no
+  zero-hole contender or fresh closure. The high-priority zero-hole lead
+  `a7a59559...` was re-audited: its exact database row already gives a
+  dimension-21 coefficient-positive polynomial, so the resumable completer
+  correctly skipped it rather than duplicating counts. Both remote queues were
+  idle. The sole host writer now runs the disjoint paired shape/content/flag
+  screen from positive `0a2c22ef...`, CPU 15/nice-10, with three-count
+  signatures, 6M states/60 seconds per count, and a 290-second envelope;
+  outputs are `zero-hole-size50-0a2c-paired-v1-20260913.*`. Before
   any successor submission, recheck both queues
   and audit against host, remote reservations, and all prior candidate/poset
   identities; never mirror the six-case Abacus batch.
