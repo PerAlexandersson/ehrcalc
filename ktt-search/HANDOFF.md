@@ -198,7 +198,12 @@
   same limits: `f75e676b...` CPU 10/PID 1249972, `0478452a...` CPU 11/PID
   1249973, `7fe8ec33...` CPU 12/PID 1249974, and `0f819abc...` CPU 13/PID
   1249975. All five exclude every ledger row and v193 reservation; host use
-  is five of 16 CPUs, below the 50% cap. Do not duplicate them. After an immediate
+  is five of 16 CPUs, below the 50% cap. A second fresh audit then admitted
+  exactly the remaining three host slots: `66799c00...` CPU 7/PID 1250440,
+  `1bf28b70...` CPU 8/PID 1250441, and `fb09eaa1...` CPU 9/PID 1250442,
+  under the same limits. All eight are distinct from the ledger and v193;
+  host use is now exactly 8 of 16 CPUs. Do not duplicate or add host work until
+  a slot ends. After an immediate
   Abacus/Laplace queue audit (Laplace remains
   unplugged and unreachable), Abacus v193 `20260913T152558-1f2918e2998b`
   started its distinct six-child structural-tail d7--d10 batch under the
