@@ -213,6 +213,13 @@ present. After a fresh ledger/v193 audit, CPU 12 was refilled by distinct
 dimension-28 `19bb184b...` (PID 1255058) under the same 1,200-second-sample /
 7,200-second-envelope policy. Host use remains exactly 8 of 16 CPUs; do not
 duplicate any active case.
+`9a6b7133...` then cleanly timed out only its d15 sample at 1,200.207 seconds;
+it produced no interpolated polynomial and remains absent from the exact
+ledger. Its d1--d14 samples are preserved. After checking the unchanged v193
+reservation, the sole writer resumed that same missing d15 on CPU 14 with a
+distinct 3,600-second attempt key / 7,200-second envelope (PID 1269031,
+output `...9a6b-completed-3600s...`). This is a retry of a resource-limited
+sample, not a duplicate exact evaluation; host use remains 8 of 16 CPUs.
 `f75e676b...` subsequently completed exactly in 806.507 seconds with
 nonnegative h* and no negative Ehrhart coefficient; its exact ledger row is
 present. After a fresh ledger/v193 audit, CPU 10 was refilled by distinct
