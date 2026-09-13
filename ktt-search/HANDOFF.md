@@ -185,9 +185,19 @@
   disjoint full packed interpolation on CPU 14 immediately, with nonnegative
   h* and Ehrhart coefficients. The host remains at two of 16 CPUs or fewer;
   only `25586b32...` is the long-running d17 count.
-  The next disjoint d21 positive-score candidate `1caa386b...` is live on CPU
-  14 under a 1,200-second-per-sample / 7,200-second-envelope attempt (parent
-  PID 1245899; packed child 1245992); `25586b32...` remains alone on CPU 15.
+  The next disjoint d21 positive-score candidate `1caa386b...` completed its
+  full packed interpolation in 205.974 seconds: its h* vector and every
+  Ehrhart coefficient are nonnegative. Thus only `25586b32...` remains live
+  on CPU 15. After an immediate Abacus/Laplace queue audit (Laplace remains
+  unplugged and unreachable), Abacus v193 `20260913T152558-1f2918e2998b`
+  started its distinct six-child structural-tail d7--d10 batch under the
+  six-CPU/20-GiB/256-pid profile. Runner/engine hashes are
+  `5564bf69...`/`f179ae7e...`; input hashes are `f0259454...`/
+  `05adc923...`/`a4d311b9...`/`ae073bcc...`/`9d751065...`/`be43e4a2...`.
+  It is disjoint from the host d17 leader, the completed d21 case, all prior
+  exact rows, and every prior/active remote reservation. Fetch, verify
+  profile/control/hash provenance, locally replay d10, then ingest only on
+  terminal completion; do not resubmit or mirror it.
   The legacy Abacus
   hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it is not submitted
   unchanged to the present 6-CPU Abacus. A negative full result still requires
