@@ -37,6 +37,25 @@ pub struct ModularKostkaStats {
     pub level_transitions: Vec<u64>,
 }
 
+/// One contribution emitted while advancing a packed modular DP layer.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+pub struct PackedModularRecord {
+    pub key: u128,
+    pub value: u32,
+}
+
+/// Raw contributions and independently hash-reduced output for one real DP
+/// layer. This diagnostic representation is intended for backend validation.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct PackedModularLayerTrace {
+    pub rows: usize,
+    pub bits_per_row: u32,
+    pub modulus: u32,
+    pub source_states: usize,
+    pub records: Vec<PackedModularRecord>,
+    pub reduced: Vec<PackedModularRecord>,
+}
+
 impl ModularKostkaStats {
     /// Reconstruct the unique nonnegative answer not exceeding `upper_bound`.
     ///
@@ -363,6 +382,126 @@ pub fn try_skew_kostka_modular_stats(
     )
 }
 
+/// Materialize one real flagged-skew DP layer for validating an alternative
+/// aggregation backend. `layer` is zero-indexed in the supplied weight order.
+///
+/// This intentionally supports one modulus: large traces are diagnostic data,
+/// while the regular counter shares transition enumeration across all lanes.
+#[allow(clippy::too_many_arguments)]
+pub fn try_flagged_skew_kostka_modular_layer_trace(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    modulus: u32,
+    layer: usize,
+    max_states: Option<usize>,
+) -> Result<PackedModularLayerTrace, String> {
+    validate_moduli(&[modulus])?;
+    if layer >= weight.len() {
+        return Err(format!(
+            "layer {layer} is outside weight length {}",
+            weight.len()
+        ));
+    }
+    let skew_size = lambda.size().saturating_sub(mu.size());
+    let weight_size: u32 = weight.iter().sum();
+    if skew_size != weight_size || !mu.partition_less_equal(lambda) {
+        return Err("shape and weight do not define a nonempty compatible DP".to_string());
+    }
+
+    let packer = PackedPartitions::new(lambda)?;
+    let mu_key = packer.pack_partition(mu)?;
+    let mut lambda_parts = [0_u32; MAX_PACKED_ROWS];
+    lambda_parts[..lambda.num_parts()].copy_from_slice(lambda.parts());
+    let moduli = [modulus];
+    let mut states = state_map_with_capacity(1);
+    states.insert(mu_key, Residues::one(1));
+
+    for (label, &strip_size) in weight.iter().enumerate().take(layer + 1) {
+        let row_lo = lower_flags
+            .and_then(|flags| flags.get(label))
+            .map(|&flag| (flag as usize).saturating_sub(1).min(packer.rows))
+            .unwrap_or(0);
+        let row_hi = upper_flags
+            .and_then(|flags| flags.get(label))
+            .map(|&flag| (flag as usize).min(packer.rows))
+            .unwrap_or(packer.rows);
+        let context = ExtensionContext {
+            packer,
+            lambda: &lambda_parts,
+            row_lo,
+            row_hi,
+        };
+        let mut next = state_map_with_capacity(states.len().saturating_mul(2));
+        let mut records = if label == layer {
+            Some(Vec::new())
+        } else {
+            None
+        };
+
+        for (&key, &count) in &states {
+            if strip_size == 0 {
+                if let Some(records) = &mut records {
+                    records.push(PackedModularRecord {
+                        key,
+                        value: count.0[0],
+                    });
+                }
+                next.entry(key)
+                    .or_insert(Residues([0; MAX_MODULI]))
+                    .add_assign(count, &moduli);
+                continue;
+            }
+            let alpha = packer.unpack(key);
+            context.visit_extensions(&alpha, strip_size, |target| {
+                if let Some(records) = &mut records {
+                    records.push(PackedModularRecord {
+                        key: target,
+                        value: count.0[0],
+                    });
+                }
+                next.entry(target)
+                    .or_insert(Residues([0; MAX_MODULI]))
+                    .add_assign(count, &moduli);
+            })?;
+        }
+
+        if let Some(limit) = max_states {
+            if next.len() > limit {
+                return Err(format!(
+                    "DP state count {} exceeds --max-states {}.",
+                    next.len(),
+                    limit
+                ));
+            }
+        }
+
+        if label == layer {
+            let mut reduced: Vec<PackedModularRecord> = next
+                .into_iter()
+                .map(|(key, value)| PackedModularRecord {
+                    key,
+                    value: value.0[0],
+                })
+                .collect();
+            reduced.sort_unstable_by_key(|record| record.key);
+            return Ok(PackedModularLayerTrace {
+                rows: packer.rows,
+                bits_per_row: packer.bits,
+                modulus,
+                source_states: states.len(),
+                records: records.expect("selected layer must collect records"),
+                reduced,
+            });
+        }
+        states = next;
+    }
+
+    unreachable!("validated layer must be visited")
+}
+
 fn zero_stats(moduli: &[u32]) -> ModularKostkaStats {
     ModularKostkaStats {
         residues: vec![0; moduli.len()],
@@ -572,6 +711,33 @@ mod tests {
         assert_eq!(actual.reconstruct_bounded(&expected).unwrap(), expected);
         assert_eq!(actual.level_states.len(), weight.len() + 1);
         assert_eq!(actual.level_transitions.len(), weight.len());
+    }
+
+    #[test]
+    fn layer_trace_sort_reduction_matches_hash_reduction() {
+        let lambda = Partition::from_sorted(vec![5, 4, 2]);
+        let mu = Partition::from_sorted(vec![1]);
+        let weight = [3, 4, 3];
+        let modulus = DEFAULT_MODULI[0];
+        let trace = try_flagged_skew_kostka_modular_layer_trace(
+            &lambda, &mu, &weight, None, None, modulus, 1, None,
+        )
+        .unwrap();
+
+        let mut records = trace.records;
+        records.sort_unstable_by_key(|record| record.key);
+        let mut reduced = Vec::<PackedModularRecord>::new();
+        for record in records {
+            if let Some(previous) = reduced.last_mut() {
+                if previous.key == record.key {
+                    let sum = previous.value + record.value;
+                    previous.value = if sum >= modulus { sum - modulus } else { sum };
+                    continue;
+                }
+            }
+            reduced.push(record);
+        }
+        assert_eq!(reduced, trace.reduced);
     }
 
     #[test]

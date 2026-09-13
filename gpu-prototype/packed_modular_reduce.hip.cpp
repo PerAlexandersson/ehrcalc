@@ -3,6 +3,7 @@
 #include <cstring>
 #include <cstdint>
 #include <cstdlib>
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <stdexcept>
@@ -61,6 +62,10 @@ std::uint32_t make_value(std::uint64_t index) {
 struct Record {
     Key key;
     std::uint32_t value;
+
+    bool operator==(const Record& other) const {
+        return key == other.key && value == other.value;
+    }
 };
 
 std::uint32_t reduce_mod(std::uint32_t left, std::uint32_t right) {
@@ -164,14 +169,121 @@ std::vector<Record> cpu_reference(const std::vector<Key>& keys,
     return reduced;
 }
 
+std::uint32_t read_u32(std::istream& input) {
+    std::uint8_t bytes[4]{};
+    input.read(reinterpret_cast<char*>(bytes), sizeof(bytes));
+    return static_cast<std::uint32_t>(bytes[0]) |
+           (static_cast<std::uint32_t>(bytes[1]) << 8) |
+           (static_cast<std::uint32_t>(bytes[2]) << 16) |
+           (static_cast<std::uint32_t>(bytes[3]) << 24);
+}
+
+std::uint64_t read_u64(std::istream& input) {
+    std::uint8_t bytes[8]{};
+    input.read(reinterpret_cast<char*>(bytes), sizeof(bytes));
+    std::uint64_t value = 0;
+    for (unsigned int index = 0; index < 8; ++index) {
+        value |= static_cast<std::uint64_t>(bytes[index]) << (8 * index);
+    }
+    return value;
+}
+
+Record read_record(std::istream& input) {
+    const std::uint64_t low = read_u64(input);
+    const std::uint64_t high = read_u64(input);
+    const std::uint32_t value = read_u32(input);
+    return {(static_cast<Key>(high) << 64) | static_cast<Key>(low), value};
+}
+
+struct InputData {
+    std::string source;
+    std::size_t rows = 0;
+    std::size_t bits_per_row = 0;
+    std::size_t source_states = 0;
+    std::size_t requested_groups = 0;
+    std::vector<Key> keys;
+    std::vector<std::uint32_t> values;
+    std::vector<Record> expected;
+};
+
+InputData load_trace(const std::string& path) {
+    std::ifstream input(path, std::ios::binary);
+    if (!input) {
+        throw std::runtime_error("failed to open trace " + path);
+    }
+    char magic[8]{};
+    input.read(magic, sizeof(magic));
+    if (std::memcmp(magic, "EHRGPU1\0", sizeof(magic)) != 0) {
+        throw std::runtime_error("invalid trace magic");
+    }
+    const std::uint32_t modulus = read_u32(input);
+    if (modulus != kModulus) {
+        throw std::runtime_error("trace modulus does not match prototype modulus");
+    }
+
+    InputData data;
+    data.source = path;
+    data.rows = read_u32(input);
+    data.bits_per_row = read_u32(input);
+    static_cast<void>(read_u32(input));
+    data.source_states = read_u64(input);
+    const std::size_t record_count = read_u64(input);
+    const std::size_t reduced_count = read_u64(input);
+    data.requested_groups = reduced_count;
+    data.keys.resize(record_count);
+    data.values.resize(record_count);
+    for (std::size_t index = 0; index < record_count; ++index) {
+        const Record record = read_record(input);
+        data.keys[index] = record.key;
+        data.values[index] = record.value;
+    }
+    data.expected.reserve(reduced_count);
+    for (std::size_t index = 0; index < reduced_count; ++index) {
+        data.expected.push_back(read_record(input));
+    }
+    if (!input) {
+        throw std::runtime_error("truncated trace file");
+    }
+    return data;
+}
+
+InputData synthetic_input(std::size_t record_count, std::size_t requested_groups) {
+    InputData data;
+    data.source = "synthetic";
+    data.requested_groups = requested_groups;
+    data.keys.resize(record_count);
+    data.values.resize(record_count);
+    for (std::size_t index = 0; index < record_count; ++index) {
+        const std::uint64_t group =
+            mix(index * 0x9e3779b97f4a7c15ULL) % requested_groups;
+        data.keys[index] = make_key(group);
+        data.values[index] = make_value(index);
+    }
+    return data;
+}
+
 }  // namespace
 
 int main(int argc, char** argv) try {
-    const std::size_t record_count =
-        argc > 1 ? std::stoull(argv[1]) : 1'000'000ULL;
-    const std::size_t requested_groups =
-        argc > 2 ? std::stoull(argv[2]) : record_count / 4;
-    const std::size_t repetitions = argc > 3 ? std::stoull(argv[3]) : 5;
+    const bool file_input = argc > 1 && std::string(argv[1]) == "--file";
+    InputData data;
+    std::size_t repetitions = 5;
+    if (file_input) {
+        if (argc < 3) {
+            throw std::runtime_error("--file requires a packed layer trace path");
+        }
+        data = load_trace(argv[2]);
+        repetitions = argc > 3 ? std::stoull(argv[3]) : 5;
+    } else {
+        const std::size_t record_count =
+            argc > 1 ? std::stoull(argv[1]) : 1'000'000ULL;
+        const std::size_t requested_groups =
+            argc > 2 ? std::stoull(argv[2]) : record_count / 4;
+        repetitions = argc > 3 ? std::stoull(argv[3]) : 5;
+        data = synthetic_input(record_count, requested_groups);
+    }
+    const std::size_t record_count = data.keys.size();
+    const std::size_t requested_groups = data.requested_groups;
     if (record_count == 0 || requested_groups == 0 || repetitions == 0) {
         throw std::runtime_error("record and group counts must be positive");
     }
@@ -185,18 +297,16 @@ int main(int argc, char** argv) try {
     hipDeviceProp_t properties{};
     HIP_CHECK(hipGetDeviceProperties(&properties, 0));
 
-    std::vector<Key> host_keys(record_count);
-    std::vector<std::uint32_t> host_values(record_count);
-    for (std::size_t index = 0; index < record_count; ++index) {
-        const std::uint64_t group =
-            mix(index * 0x9e3779b97f4a7c15ULL) % requested_groups;
-        host_keys[index] = make_key(group);
-        host_values[index] = make_value(index);
-    }
-
     const auto cpu_start = std::chrono::steady_clock::now();
-    const std::vector<Record> expected = cpu_reference(host_keys, host_values);
+    const std::vector<Record> cpu_expected = cpu_reference(data.keys, data.values);
     const auto cpu_stop = std::chrono::steady_clock::now();
+    if (!data.expected.empty() && data.expected != cpu_expected) {
+        throw std::runtime_error("Rust hash reduction and CPU sort reduction differ");
+    }
+    if (data.expected.empty()) {
+        data.expected = cpu_expected;
+    }
+    const std::vector<Record>& expected = data.expected;
 
     DeviceBuffer<Key> keys_input(record_count);
     DeviceBuffer<Key> keys_sorted(record_count);
@@ -207,9 +317,9 @@ int main(int argc, char** argv) try {
     DeviceBuffer<std::size_t> unique_count_device(1);
 
     const float host_to_device_ms = time_gpu([&] {
-        HIP_CHECK(hipMemcpy(keys_input.get(), host_keys.data(),
+        HIP_CHECK(hipMemcpy(keys_input.get(), data.keys.data(),
                             record_count * sizeof(Key), hipMemcpyHostToDevice));
-        HIP_CHECK(hipMemcpy(values_input.get(), host_values.data(),
+        HIP_CHECK(hipMemcpy(values_input.get(), data.values.data(),
                             record_count * sizeof(std::uint32_t),
                             hipMemcpyHostToDevice));
     });
@@ -293,6 +403,10 @@ int main(int argc, char** argv) try {
                                             + reduce_milliseconds + device_to_host_ms;
     std::cout << std::fixed << std::setprecision(3)
               << "{\"device\":\"" << properties.name << "\","
+              << "\"source\":\"" << data.source << "\","
+              << "\"rows\":" << data.rows << ','
+              << "\"bits_per_row\":" << data.bits_per_row << ','
+              << "\"source_states\":" << data.source_states << ','
               << "\"records\":" << record_count << ','
               << "\"requested_groups\":" << requested_groups << ','
               << "\"unique_groups\":" << unique_count << ','

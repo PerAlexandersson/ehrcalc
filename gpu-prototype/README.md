@@ -9,7 +9,7 @@ Build the userspace-only development image:
 docker build -t ehrcalc-rocm:7.2.4 gpu-prototype
 ```
 
-Compile and run the exact sort/reduce check with access to the host AMD GPU:
+Compile and run the synthetic sort/reduce check with access to the host AMD GPU:
 
 ```text
 docker run --rm \
@@ -30,3 +30,61 @@ It exits nonzero on any mismatch.
 
 This tests the aggregation half of a future DP level. Transition generation is
 still on the CPU and is not represented in this microbenchmark.
+
+The directory now also contains two end-to-end modular prototypes:
+
+- `packed_flagged_kostka_gpu.hip.cpp` enumerates transitions on the CPU and
+  sends every layer to the GPU. It is retained as a measured negative result.
+- `packed_flagged_kostka_gpu_resident.hip.cpp` keeps states on the GPU and
+  counts and emits horizontal-strip transitions there before rocPRIM
+  sort/reduce. This is the useful implementation.
+
+Compile the GPU-resident variant:
+
+```text
+docker run --rm \
+  --device=/dev/kfd --device=/dev/dri \
+  --group-add video --security-opt seccomp=unconfined \
+  -v "$PWD/gpu-prototype:/source:ro" \
+  -v /mnt/2TB-Babel/ai-storage/gpu-build:/build \
+  ehrcalc-rocm:7.2.4 bash -lc \
+  'hipcc --offload-arch=gfx1201 -O3 -std=c++17 \
+     /source/packed_flagged_kostka_gpu_resident.hip.cpp \
+     -o /build/packed-flagged-kostka-gpu-resident'
+```
+
+Its command line is:
+
+```text
+packed-flagged-kostka-gpu-resident \
+  DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS \
+  [MAX_TRANSITIONS] [MODULUS]
+```
+
+Lists are comma-separated; use `-` for an empty partition or absent flags.
+The default transition limit is 150 million and the default modulus is
+2,147,483,647. The modulus must be in `2..2^31`; exact integer answers require
+enough pairwise-coprime residue runs to exceed a separately certified bound.
+
+Run the small two-modulus CPU/GPU smoke comparison from the repository root:
+
+```text
+gpu-prototype/run-smoke.sh
+```
+
+This builds outside the repository, compares skew, flagged, and zero-weight
+cases with the Rust packed-modular reference, and exits on the first mismatch.
+For an exact integer computation, supply a mathematically certified upper bound:
+
+```text
+gpu-prototype/run-exact.sh \
+  UPPER_BOUND DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS
+```
+
+`run-exact.sh` evaluates successive pairwise-coprime residue passes and invokes
+the Rust bounded-CRT routine after each one. It prints an integer only after the
+combined modulus exceeds the supplied bound and the reconstruction lies below
+it; otherwise it fails rather than treating an ambiguous residue as exact.
+Because the current HIP value has one lane, repeated passes multiply runtime.
+
+The measured real-layer and full-DP results are in `gpu-prototype/results/`.

@@ -10,31 +10,36 @@ search, generated evidence, and MariaDB. No GPU-prototype file may be edited in
 the live `/workspace/rust/ehrcalc` checkout, and this branch must not run KTT
 searches or write the KTT database.
 
-Initial target: establish a tested packed modular CPU reference, then compare a
-GPU one-layer aggregation kernel on Euler's RX 9070 XT without changing the
-default exact backend. ROCm/HIP is not installed at this checkpoint; avoid a
-system driver replacement and prefer a userspace/container installation after
-the CPU representation is verified.
+The GPU proof of concept is now end-to-end and reproducible without changing
+Ehrcalc's default backend or the host graphics driver. `packed_modular.rs`
+provides dynamic `u128` state packing, one-to-eight shared CPU residue lanes,
+transition/state instrumentation, real-layer trace export, and bounded CRT that
+refuses an ambiguous modulus product. The isolated ROCm 7.2.4 container builds
+three HIP programs: synthetic aggregation, a measured CPU-enumerated hybrid,
+and the useful GPU-resident horizontal-strip DP. `gpu-prototype/run-smoke.sh`
+checks skew, flagged, and zero-strip cases against Rust under two primes;
+`run-exact.sh` evaluates successive GPU primes and returns an integer only when
+a caller-supplied certified bound makes CRT unique.
 
-First checkpoint is implemented in `packed_modular.rs`: dynamic `u128` state
-packing, one-to-eight shared modular lanes, transition/state instrumentation,
-and bounded CRT reconstruction that refuses an ambiguous modulus product. It
-supports ordinary, skew, and row-flagged counts; strict/interior counting is
-still pending. The exhaustive deterministic small-skew test plus flagged and
-CRT tests pass. Full `ehrcalc-kostka-engine` tests pass (42/42), Clippy passes
-with warnings denied, and `git diff --check` passes. Builds used the external
-host cache `/mnt/2TB-Babel/ai-storage/cargo-target`; no local `target/` exists.
+On real straight flagged candidate `42d92b82...`, dilation 9 matched the exact
+stored residue with 243,369 peak states and 115,666,316 peak transitions. The
+GPU-resident algorithm took 12.929 s internally versus 48.86 s for the packed
+CPU modular reference, a 3.78x speedup (13.37 s / 3.65x including a fresh
+container). The CPU-enumerated hybrid took 67.676 s and is retained as negative
+evidence. Real exported layers reached 31.9--32.1x aggregation speedup at
+73--116 million records, but full resident count/emit kernels now dominate.
+The peak resident allocation is approximately 9.27 GB and fits the 16 GiB RX
+9070 XT. A two-prime dilation-6 run reconstructed the stored exact integer
+157798415095915566. Full commands, inputs, timings, limitations, and memory
+accounting are in `gpu-prototype/results/2026-09-13-real-dp.md`.
 
-The first HIP aggregation prototype is also runnable in an isolated ROCm 7.2.4
-container; the host graphics driver was not changed. It radix-sorts synthetic
-128-bit transition keys with rocPRIM, reduces 31-bit modular values by key, and
-checks every output against independent CPU sorting/reduction. The complete
-12-case sweep is in
-`gpu-prototype/results/2026-09-13-initial-sort-reduce.md`: GPU pipeline time
-including transfers was roughly break-even at 100K records, 7.9--10.5x faster
-at 1M, 19.0--22.4x at 5M, and 23.1--30.2x at 10M versus the serial CPU
-comparison-sort reference. These are aggregation-only results, not an Ehrcalc
-speedup claim. Next gate is a real exported DP layer and multiple residue lanes.
+Strict/interior counting, bundled multi-prime GPU lanes, transition chunking,
+and production Rust/CLI integration remain pending. The next useful step is a
+two-lane resident value type so exact CRT does not multiply the 12.9-second
+large-case runtime by the number of primes. Current verification should be
+refreshed before merge: full engine tests, strict Clippy, shell syntax, smoke,
+HIP compilation, and `git diff --check`. Builds use
+`/mnt/2TB-Babel/ai-storage/cargo-target`; no local `target/` is allowed.
 
 ## Current KTT state — 2026-09-13 (active)
 
