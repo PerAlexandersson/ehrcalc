@@ -187,11 +187,15 @@
   only `25586b32...` is the long-running d17 count.
   The next disjoint d21 positive-score candidate `1caa386b...` completed its
   full packed interpolation in 205.974 seconds: its h* vector and every
-  Ehrhart coefficient are nonnegative. `25586b32...` remains live on CPU 15,
-  and the next eligible disjoint d23 positive-score case `9a6b7133...` is live
-  on CPU 14 (PID 1249112; 1,200 seconds/sample, 7,200-second envelope). This
-  keeps the host at two of 16 CPUs and excludes every ledger row and v193
-  reservation. After an immediate Abacus/Laplace queue audit (Laplace remains
+  Ehrhart coefficient are nonnegative. The final d23 negative-known-ends
+  leader `25586b32...` then completed d17 in 3,735.572 seconds: its full
+  degree-23 h* vector and every Ehrhart coefficient are nonnegative, resolving
+  the global rank's last negative partial-score row without a contender. Its
+  exact result is recorded locally. The next eligible disjoint d23
+  positive-score case `9a6b7133...` is live on CPU 14 (PID 1249112; 1,200
+  seconds/sample, 7,200-second envelope); host use is one of 16 CPUs and it
+  excludes every ledger row and v193 reservation. After an immediate
+  Abacus/Laplace queue audit (Laplace remains
   unplugged and unreachable), Abacus v193 `20260913T152558-1f2918e2998b`
   started its distinct six-child structural-tail d7--d10 batch under the
   six-CPU/20-GiB/256-pid profile. Runner/engine hashes are
