@@ -250,6 +250,9 @@
   is `...0797-generic-verify26-20260913.json`. Only two exact matching checks
   permit database admission or a counterexample claim. Ordinary replacement
   work is paused while this validator uses the spare host capacity.
+  The local structural audit independently confirms canonical-key equality,
+  partition/interval validity, generated-flag equality, and zero nonflagged
+  inequalities. It does not replace the pending d25/d26 count gate.
   `1bf28b70...` then cleanly timed out only d16 at 1,200.109 seconds; it also
   produced no polynomial and remains absent from the exact ledger, with d1--d15
   preserved. A fresh ledger/v193 audit cleared its CPU-8 resume under the
