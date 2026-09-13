@@ -1,6 +1,6 @@
 # Ehrcalc Handoff
 
-## Current KTT state — 2026-09-12 (active)
+## Current KTT state — 2026-09-13 (active)
 
 Codex is the sole private KTT worker and local MariaDB writer.  No exact
 flagged zero-hole-negative is known.  The completed two-hole-closure campaign
@@ -16,44 +16,26 @@ runner/helper/archive hashes
 `e3bd01d...`/`a4aae249...`/`bf1cfa42...` under 30M states, 1200 seconds per
 target, and a 2100-second envelope.
 
-Abacus v166 `20260912T203243-b2e772b0a3ba` is fetched, hash/control/profile
-verified, and primary-ingested under `e381a915...`: both direct d120/d118
-closures of the fresh four-negative one-hole parent `9b0689...` are exact
-positive. Abacus v168 `20260912T204326-f2b97a0f24c1` is likewise fetched,
-verified, and primary-ingested (`03c64315...`): its six d124/d124/d111/
-d109/d109/d109 targets are exact-positive. Both queues were re-audited before
-the current Abacus v170 submission `20260912T210343-e7d1601bd9cc`: six fresh
-d122/d122/d120/d120/d118/d118 zero-hole closures from 190 exact-negative
-one-hole parents are now running on all six CPUs (run `5f834e56...`; inputs
-`82d29e70...`/`ef2c3c0c...`/`61c9f548...`/`af681e15...`/`cebc1c7c...`/
-`f1fe96b1...`). Candidate, terminal/pending quotient-poset, host, and Laplace
-reservations were excluded. The equivalent v149 d77 presentation and
-a known v149-positive poset were explicitly deferred, not duplicated.
-Laplace v16 `20260912T203916-6753c1c93869` is fetched, hash/control/profile
-verified, and primary-ingested under `3e677e5a...`: its d116 second-order
-closure is exact-positive (6,254,248 states; 465.552 seconds). Its audited,
-non-overlapping successor v17 `20260912T204802-c0683b3c49ee` is fetched,
-verified, and primary-ingested (`623f17ec...`): d126/d126/d117 are all
-exact-positive. Two-child v18
-`20260912T204820-ed13f32b6594` (d115/d114; `b813bcb7...`/`1e605d12...`).
-Each remains under the three-child, 12-GiB-hard Laplace policy and has the
-same verified runner/helper/archive hashes; none mirrors v168.
+Abacus v170 `20260912T210343-e7d1601bd9cc` is fetched, hash/control/profile
+verified, and primary-ingested (`cec990e6...`): all six d122/d120/d118
+one-hole-derived zero-hole closures are exact-positive (7,343,336--7,719,140
+states; 484.705--551.242 seconds).  Laplace v18
+`20260912T204820-ed13f32b6594` is likewise verified and primary-ingested
+(`cac3e755...`): d115 and d114 are exact-positive (3,861,858/281.350 s and
+6,008,860/446.260 s).  Every negative output was the exact-known-match
+control; no contender arose.
 
-Host v159 finished with d107 `ad0be9...` positive and fresh d119 one-hole
-negative `9b0689...` with four negative coefficients; its direct zero-hole
-closures are now v166 positive evidence. Host v161's completed broad grow/flag
-pass (seed `202609120161`) added one fresh d117
-one-hole negative `9297a8...` (146.349 seconds), but its d118 zero-hole exit
-was already positive and its d116 exit is v16. Host v163 added fresh d118
-one-hole negative `66e283...` (70.418 seconds). Host v165 is the sole
-nice-10 CPU-15 broad pass (seed `202609120165`), guarded against every global
-pending quotient poset. Both direct zero-hole exits of `66e283...` (d119/d118)
-are already exact-positive, so it produces no remote reservation.
-User-directed wind-down is in effect: do not submit, reserve, or start any
-successor batch.  Let only host v165, Abacus v170, and Laplace v18 drain;
-when terminal, fetch and verify their evidence before the requested computer
-suspension.
-Fetch/verify every terminal remote bundle.
+Fresh queues and every stored candidate/quotient-poset identity were audited
+on 2026-09-13 before Abacus v171 `20260913T065823-4d37d64fdebf` and Laplace
+v19 `20260913T065938-2a1249b7bc45`. v171 runs six pairwise-distinct
+d117/d117/d116/d116/d116/d115 closures across all Abacus CPUs (run
+`ed5f389c...`; inputs `c5f63572...`/`c8586897...`/`dfa3cee4...`/
+`aa001c0b...`/`42ef4e4a...`/`eb68da0f...`). Disjoint two-child Laplace v19
+runs d115/d115 (run `be0c678b...`; inputs `19c527de...`/`09b7a687...`), well
+within its three-child/12-GiB-hard policy and not mirroring v171. Host v165
+is finished; sole host v167 is a nice-10 CPU-15 broad grow/flag pass (seed
+`202609130167`) that skips globally pending quotient posets. Fetch/verify
+every terminal remote bundle before any successor reservation.
 Only an exact zero-hole negative warrants a byte-matched local replay before
 ingestion or any claim.  Generated reports and logs remain untracked; do not
 push or publish.
