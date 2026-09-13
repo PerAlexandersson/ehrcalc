@@ -51,11 +51,16 @@
   shape/content/flag screen from positive `0a2c22ef...` then completed 8,153
   deduplicated proposals: 4,772 terminal three-count signatures in 528 classes,
   2,544 empty, 837 dimension-pruned, and zero resource-limited; no exact
-  negative arose at this screening stage. Both remote queues were idle. The
-  sole host writer now ranks reciprocal tails for this new frontier, CPU
-  15/nice-10, using verified packed strict binary `9852ecd5...`, depth six/60
-  seconds per dilation and a 290-second envelope; outputs are
-  `zero-hole-size50-0a2c-paired-v1-tail6-20260913.*`. Before
+  negative arose at this screening stage. The verified packed strict tail
+  ranker (`9852ecd5...`) then certified 221 classes at depth six (77
+  span-deficient classes withheld). It exposed new d21 zero-hole flagged
+  candidate `10770dd0...` with negative exact prefix-plus-tail score; it is
+  not in the exact ledger, and both remote queues were idle. The sole host
+  writer now resumes its full middle-dilation interpolation, CPU 15/nice-10,
+  60 seconds per count in a 290-second envelope, producing
+  `zero-hole-size50-0a2c-paired-v1-10770-completed-20260913.*`. A negative
+  full result requires the prescribed independent out-of-range replay before
+  any ingest or claim. Before
   any successor submission, recheck both queues
   and audit against host, remote reservations, and all prior candidate/poset
   identities; never mirror the six-case Abacus batch.
