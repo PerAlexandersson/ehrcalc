@@ -77,10 +77,17 @@ all three v2 negative-known-ends leaders are exact-positive. The sole host
 writer resumed the same v2 paired screen's 1,844 deferred proposals, skipping
 terminal identities: it added 1,065 signatures (469 total classes) with no
 new limit. The resumed strict-tail pass certified eight further classes and
-exposed three new unresolved d21 negative-known-ends leaders. The sole host
-writer now fully interpolates strongest `1a231fa6...` under the same
-three-count/6M-state/60-second/290-second bounds; only a negative full result
-activates independent out-of-range replay.
+exposed three new unresolved d21 negative-known-ends leaders. The strongest,
+`1a231fa6...`, has since completed exact-positive; its h* vector and every
+Ehrhart coefficient are nonnegative. The next `1d8be73f...` also completed
+exact-positive in 78.175 seconds, with nonnegative h* and no negative
+coefficient. The sole host writer is now continuing the final v2
+negative-known-ends leader, `25586b32...`: its 60-second attempt timed out at
+d12, its 280-second/290-second aggregate retry saved d12 exactly and reached
+the aggregate limit in d13, and the live finite continuation uses 600 seconds
+per dilation and a 900-second aggregate envelope on CPU 15/nice-10. This is a
+strict continuation by saved exact samples and distinct attempt-timeout keys;
+only a negative full result activates independent out-of-range replay.
 The legacy Abacus hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it
 is not submitted unchanged to the present 6-CPU Abacus. A negative full result
 still requires the prescribed independent out-of-range replay before any
