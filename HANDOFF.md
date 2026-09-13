@@ -106,6 +106,12 @@ five inputs `f3082e51...`/`55430b08...`/`89dc84ff...`/`5faf848e...`/
 six-CPU/20-GiB/256-pid profile. All 35 records are exact (five repeated
 controls plus d1--d6 for each target); every target strict-interior count is
 zero through d6 and its known-end score is positive, so none is a contender.
+Abacus v182 `20260913T143811-1677a83fd1b1` is likewise fetched, profile/control
+verified, locally d6-replayed, and ingested (`79bc161b...`) for six further
+disjoint d24--d30 classes, with inputs `13d7f56d...`/`cdc3494f...`/
+`e5182bdc...`/`97303afc...`/`a5ca4d4e...`/`99931761...`. Five have zero
+strict-interior counts through d6; d24 `2986d182...` has exact positive
+d4--d6 interior counts but still a positive known-end score. No contender arose.
 The legacy Abacus hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it
 is not submitted unchanged to the present 6-CPU Abacus. A negative full result
 still requires the prescribed independent out-of-range replay before any
