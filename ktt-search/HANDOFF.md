@@ -58,15 +58,19 @@
   not in the exact ledger, and both remote queues were idle. Its full middle-
   dilation interpolation then completed after an intentional 280-second retry
   of d15: its h* vector and every Ehrhart coefficient are nonnegative, so it
-  is now exact-positive. The only remaining negative-known-ends rank leader is
-  distinct d21 zero-hole flagged `11a67846...`; the sole host writer now
-  resumes its middle-dilation interpolation on CPU 15/nice-10, 60 seconds per
-  count in a 290-second envelope, producing
-  `zero-hole-size50-0a2c-paired-v1-11a6-completed-20260913.*`. The legacy
-  Abacus hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it is not
-  submitted unchanged to the present 6-CPU Abacus. A negative full result
-  still requires the prescribed independent out-of-range replay before any
-  ingest or claim. Before
+  is now exact-positive. The only remaining negative-known-ends rank leader,
+  distinct d21 zero-hole flagged `11a67846...`, likewise completed after the
+  intentional 280-second d15 retry and is exact-positive (the same nonnegative
+  h* vector as the prior d21 class). Thus every negative-known-ends leader in
+  this paired frontier is resolved without a contender. The sole host writer
+  now opens the next disjoint paired shape/content/flag screen from
+  `11a67846...`, CPU 15/nice-10, three-count signatures, 6M states/60 seconds
+  per count and a 290-second envelope; outputs are
+  `zero-hole-size50-11a6-paired-v2-20260913.*`. The legacy Abacus hybrid
+  runner asserts a superseded 2-CPU/8-GiB profile, so it is not submitted
+  unchanged to the present 6-CPU Abacus. A negative full result still requires
+  the prescribed independent out-of-range replay before any ingest or claim.
+  Before
   any successor submission, recheck both queues
   and audit against host, remote reservations, and all prior candidate/poset
   identities; never mirror the six-case Abacus batch.
