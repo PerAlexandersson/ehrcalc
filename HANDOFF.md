@@ -202,7 +202,11 @@ All five exclude every ledger row and v193 reservation; host use is five of
 remaining three host slots: `66799c00...` CPU 7/PID 1250440,
 `1bf28b70...` CPU 8/PID 1250441, and `fb09eaa1...` CPU 9/PID 1250442, under
 the same limits. All eight are distinct from the ledger and v193; host use is
-now exactly 8 of 16 CPUs. Do not duplicate or add host work until a slot ends.
+now exactly 8 of 16 CPUs. `66799c00...` then completed exactly in 231.752
+seconds with nonnegative h* and no negative Ehrhart coefficient; its exact
+ledger row is present. After a fresh ledger/v193 audit, CPU 7 was refilled by
+distinct `07975fb3...` (PID 1252349) under the same bound. Do not duplicate
+any active host case or add a ninth host job.
 After an immediate Abacus/Laplace queue audit (Laplace remains unplugged and
 unreachable), Abacus v193 `20260913T152558-1f2918e2998b` started its distinct
 six-child structural-tail d7--d10 batch under the six-CPU/20-GiB/256-pid
