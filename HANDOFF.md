@@ -16,26 +16,27 @@ runner/helper/archive hashes
 `e3bd01d...`/`a4aae249...`/`bf1cfa42...` under 30M states, 1200 seconds per
 target, and a 2100-second envelope.
 
-Abacus v170 `20260912T210343-e7d1601bd9cc` is fetched, hash/control/profile
-verified, and primary-ingested (`cec990e6...`): all six d122/d120/d118
-one-hole-derived zero-hole closures are exact-positive (7,343,336--7,719,140
-states; 484.705--551.242 seconds).  Laplace v18
-`20260912T204820-ed13f32b6594` is likewise verified and primary-ingested
-(`cac3e755...`): d115 and d114 are exact-positive (3,861,858/281.350 s and
-6,008,860/446.260 s).  Every negative output was the exact-known-match
-control; no contender arose.
+Abacus v170 `20260912T210343-e7d1601bd9cc` and v171
+`20260913T065823-4d37d64fdebf` are fetched, hash/control/profile verified,
+and primary-ingested (`cec990e6...` and `4ee1fb2d...`): their twelve
+d122--d115 zero-hole closures are exact-positive. Laplace v18
+`20260912T204820-ed13f32b6594` and v19 `20260913T065938-2a1249b7bc45` are
+likewise verified and primary-ingested (`cac3e755...` and `d1414ec6...`):
+their four d115/d114 closures are exact-positive. Every negative output was
+the exact-known-match control; no contender arose.
 
-Fresh queues and every stored candidate/quotient-poset identity were audited
-on 2026-09-13 before Abacus v171 `20260913T065823-4d37d64fdebf` and Laplace
-v19 `20260913T065938-2a1249b7bc45`. v171 runs six pairwise-distinct
-d117/d117/d116/d116/d116/d115 closures across all Abacus CPUs (run
-`ed5f389c...`; inputs `c5f63572...`/`c8586897...`/`dfa3cee4...`/
-`aa001c0b...`/`42ef4e4a...`/`eb68da0f...`). Disjoint two-child Laplace v19
-runs d115/d115 (run `be0c678b...`; inputs `19c527de...`/`09b7a687...`), well
-within its three-child/12-GiB-hard policy and not mirroring v171. Host v165
-is finished; sole host v167 is a nice-10 CPU-15 broad grow/flag pass (seed
-`202609130167`) that skips globally pending quotient posets. Fetch/verify
-every terminal remote bundle before any successor reservation.
+After host v167 completed (four new exact evaluations, no zero-hole
+contender), fresh queues and every stored candidate/quotient-poset identity
+were audited before Abacus v172 `20260913T071348-6daf4efd3051` and Laplace
+v20 `20260913T071442-95b24c7527d3`. v172 runs six pairwise-distinct
+d114/d114/d114/d113/d113/d112 closures (run `b8dca95a...`; inputs
+`381c71fc...`/`83d59ba8...`/`502dfbda...`/`d718fd5f...`/`e580d692...`/
+`b1d2c240...`). Disjoint two-child Laplace v20 runs d112/d112 (run
+`dff50965...`; inputs `85c3cb27...`/`19b99f68...`), within its
+three-child/12-GiB-hard policy and not mirroring v172. Sole host v169 is a
+nice-10 CPU-15 broad grow/flag pass (seed `202609130169`) that skips global
+pending quotient posets. Fetch/verify every terminal remote bundle before any
+successor reservation.
 Only an exact zero-hole negative warrants a byte-matched local replay before
 ingestion or any claim.  Generated reports and logs remain untracked; do not
 push or publish.
