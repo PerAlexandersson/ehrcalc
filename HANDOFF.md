@@ -66,6 +66,14 @@ this paired frontier is resolved without a contender. The sole host writer now
 opens the next disjoint paired shape/content/flag screen from `11a67846...`,
 CPU 15/nice-10, three-count signatures, 6M states/60 seconds per count and a
 290-second envelope; outputs are `zero-hole-size50-11a6-paired-v2-20260913.*`.
+That v2 screen completed 6,875 terminal attempts (4,080 complete signatures
+in 445 classes), with 2,129 empty, 666 dimension-pruned, and 1,844 deferred
+for a later resume. Its depth-six strict-tail pass certified 198 classes (18
+span-deficient withheld) and yielded three new negative-known-ends d21 leads.
+The strongest, `87c10509...`, is now fully exact-positive after its intentional
+280-second d15 retry. The sole host writer now interpolates disjoint next lead
+`1603714e...` under the same 60-second/290-second bounds; only a negative full
+result activates independent out-of-range replay.
 The legacy Abacus hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it
 is not submitted unchanged to the present 6-CPU Abacus. A negative full result
 still requires the prescribed independent out-of-range replay before any
