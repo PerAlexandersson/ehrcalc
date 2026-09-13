@@ -21,9 +21,15 @@ closures are exact-positive. Abacus v178 `20260913T085023-de5e9aed7003` and
 Laplace v26 `20260913T085111-f9c281fd61ac` are likewise fetched, verified,
 and primary-ingested (`008407bd...`/`6e674d46...`): all nine d98--d95
 closures are exact-positive. Codex remains sole KTT worker and MariaDB writer.
-Sole host v176 is the nice-10 CPU-15 broad grow/flag pass, seed
-`202609130176`; both remote queues are clear pending its completion and a
-fresh candidate/quotient-poset audit. Remote work uses verified
+Host v176 completed one new exact evaluation and four state-limited cases,
+with no zero-hole contender. After a fresh audit, Abacus v179
+`20260913T090630-334736a57580` runs six distinct d94/d94/d93/d92/d92/d90
+closures (run `2efaf7ed...`), while Laplace v27
+`20260913T090810-b930e2fa688a` runs the remaining two distinct d90/d88
+closures (run `15919056...`). The closure inventory thereafter has no fresh
+target in the current 512-parent reservoir. Sole host v177 is the nice-10
+CPU-15 broad grow/flag pass, seed `202609130177`, to replenish it while
+excluding all eight pending remote quotient posets. Remote work uses verified
 runner/helper/archive hashes `e3bd01d...`/`a4aae249...`/`bf1cfa42...`, 30M
 states, 1200 seconds per child, and a 2100-second envelope. Generated output
 remains untracked; do not push or publish.
