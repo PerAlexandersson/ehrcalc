@@ -24,11 +24,12 @@
   no zero-hole contender. Abacus v179 `20260913T090630-334736a57580` is
   fetched, provenance-verified, and primary-ingested (`84195b08...`): all six
   d94/d94/d93/d92/d92/d90 closures are exact-positive. Laplace v27
-  `20260913T090810-b930e2fa688a` runs the only two remaining fresh d90/d88
-  closures (run `15919056...`). The current 512-parent closure reservoir is
-  otherwise exhausted. Host v177 is the sole nice-10 CPU-15 grow/flag pass
-  (seed `202609130177`) to replenish it while excluding all eight pending
-  remote quotient posets. Before any successor submission, recheck both queues
+  `20260913T090810-b930e2fa688a` is fetched, provenance-verified, and
+  primary-ingested (`147be2f7...`): both remaining d90/d88 closures are
+  exact-positive. The closure inventory is genuinely exhausted: the selector's
+  512-parent bound already covers all 292 exact one-hole-negative parents.
+  Host v177 is the sole nice-10 CPU-15 grow/flag pass (seed `202609130177`) to
+  replenish it. Before any successor submission, recheck both queues
   and audit against host, remote reservations, and all prior candidate/poset
   identities; never mirror the six-case Abacus batch.
 - Verified runner/helper/archive hashes remain `e3bd01d...`/`a4aae249...`/
