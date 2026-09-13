@@ -118,6 +118,11 @@ d24 flag-mutation classes (inputs `8cf4275a...`/`8ab6c116...`/`09e43084...`/
 `ac98a5be...`/`a7680290...`/`f1cf58b3...`). Every class has a nonzero exact
 strict tail by d3 or d4, but all six known-end scores are positive; none is a
 full exact contender.
+Abacus v184 `20260913T144344-0434ab2447bb` is fetched, profile/control
+verified, locally d6-replayed, and ingested (`1b3a9a42...`) for six additional
+d24 flag mutations (inputs `45b3580a...`/`c752de38...`/`ffd9c78a...`/
+`c24ebda8...`/`cb5c5685...`/`65e7bca7...`). All have nonzero d4--d6 strict
+tails, yet every known-end score is positive; no full exact contender arose.
 The legacy Abacus hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it
 is not submitted unchanged to the present 6-CPU Abacus. A negative full result
 still requires the prescribed independent out-of-range replay before any
