@@ -41,6 +41,12 @@
   any successor submission, recheck both queues
   and audit against host, remote reservations, and all prior candidate/poset
   identities; never mirror the six-case Abacus batch.
+- The current re-audit fetched the cancelled v141 `20260912T175005-d8860a38ea79`,
+  v5 `20260912T174740-ea6a08a88d40`, and v6 `20260912T175248-752c0bdc9999`
+  bundles: v141 emitted metadata only, v5 only its three exact controls, and
+  v6 never dispatched. Their twelve stale candidate reservations all represent
+  the single already exact-positive d120 poset `c5af9f97...` (5,980,260 states),
+  so they are not resubmitted.
 - Verified runner/helper/archive hashes remain `e3bd01d...`/`a4aae249...`/
   `bf1cfa42...`; child limits are 30M states/1200 seconds in a 2100-second
   envelope. An exact zero-hole negative requires byte-matched local replay

@@ -39,6 +39,12 @@ fresh closure. Both remote queues were idle and the selector again returned
 zero fresh targets immediately before sole host v179 began: the bounded,
 nice-10 CPU-15 grow/flag pass uses seed `202609130179` (eight new exact-case
 cap, 6M states/360 seconds each, 1000-second outer limit).
+The current re-audit also fetched the cancelled v141 `20260912T175005-d8860a38ea79`, v5
+`20260912T174740-ea6a08a88d40`, and v6 `20260912T175248-752c0bdc9999`
+bundles: v141 emitted metadata only, v5 only its three exact controls, and
+v6 never dispatched. Their twelve stale candidate reservations all represent
+the single already exact-positive d120 poset `c5af9f97...` (5,980,260 states),
+so they are not resubmitted.
 Remote work uses verified
 runner/helper/archive hashes `e3bd01d...`/`a4aae249...`/`bf1cfa42...`, 30M
 states, 1200 seconds per child, and a 2100-second envelope. Generated output
