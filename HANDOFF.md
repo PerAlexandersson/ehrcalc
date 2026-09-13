@@ -213,6 +213,12 @@ present. After a fresh ledger/v193 audit, CPU 12 was refilled by distinct
 dimension-28 `19bb184b...` (PID 1255058) under the same 1,200-second-sample /
 7,200-second-envelope policy. Host use remains exactly 8 of 16 CPUs; do not
 duplicate any active case.
+`f75e676b...` subsequently completed exactly in 806.507 seconds with
+nonnegative h* and no negative Ehrhart coefficient; its exact ledger row is
+present. After a fresh ledger/v193 audit, CPU 10 was refilled by distinct
+dimension-28 `01312ad9...` (PID 1255968) under the same 1,200-second-sample /
+7,200-second-envelope policy. Host use remains exactly 8 of 16 CPUs; do not
+duplicate any active case.
 After an immediate Abacus/Laplace queue audit (Laplace remains unplugged and
 unreachable), Abacus v193 `20260913T152558-1f2918e2998b` started its distinct
 six-child structural-tail d7--d10 batch under the six-CPU/20-GiB/256-pid
