@@ -41,11 +41,12 @@ Host v180 then completed one new exact evaluation and four state-limited cases,
 again with no fresh closure. Host v181 then completed two new exact evaluations
 and three state-limited cases, again with no fresh closure. Host v182 then
 completed two new exact evaluations and four state-limited cases, again with no
-zero-hole contender or fresh closure. Both remote queues were idle and the
-selector again returned zero fresh targets immediately before sole host v183
-began: the bounded, nice-10 CPU-15 grow/flag pass uses seed `202609130183`
-(eight new exact-case cap, 6M states/360 seconds each, 1000-second outer
-limit).
+zero-hole contender or fresh closure. Host v183 then completed four new exact
+evaluations and three state-limited cases, again with no zero-hole contender or
+fresh closure. Both remote queues were idle and the selector again returned
+zero fresh targets immediately before sole host v184 began: the bounded,
+nice-10 CPU-15 grow/flag pass uses seed `202609130184` (eight new exact-case
+cap, 6M states/360 seconds each, 1000-second outer limit).
 The current re-audit also fetched the cancelled v141 `20260912T175005-d8860a38ea79`, v5
 `20260912T174740-ea6a08a88d40`, and v6 `20260912T175248-752c0bdc9999`
 bundles: v141 emitted metadata only, v5 only its three exact controls, and
