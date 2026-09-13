@@ -85,10 +85,12 @@
   coefficient. The sole host writer is now continuing the final d23 v2
   negative-known-ends leader, `25586b32...`: its 60-second attempt timed out at
   d12, its 280-second/290-second aggregate retry saved d12 exactly and reached
-  the aggregate limit in d13, and the live finite continuation uses 600 seconds
-  per dilation and a 900-second aggregate envelope on CPU 15/nice-10. This is a
-  strict continuation by saved exact samples and distinct attempt-timeout keys;
-  only a negative full result activates independent out-of-range replay. The legacy Abacus
+  the aggregate limit in d13, and its enlarged 600-second/900-second pass then
+  saved d13 and d14 exactly before the aggregate limit reached d15. The sole
+  live finite continuation now allows d15 1,800 seconds in a 1,810-second
+  envelope on CPU 15/nice-10. This is a strict continuation by saved exact
+  samples and distinct attempt-timeout keys; only a negative full result
+  activates independent out-of-range replay. The legacy Abacus
   hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it is not submitted
   unchanged to the present 6-CPU Abacus. A negative full result still requires
   the prescribed independent out-of-range replay before any ingest or claim.
