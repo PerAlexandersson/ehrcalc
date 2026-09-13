@@ -25,6 +25,17 @@ CRT tests pass. Full `ehrcalc-kostka-engine` tests pass (42/42), Clippy passes
 with warnings denied, and `git diff --check` passes. Builds used the external
 host cache `/mnt/2TB-Babel/ai-storage/cargo-target`; no local `target/` exists.
 
+The first HIP aggregation prototype is also runnable in an isolated ROCm 7.2.4
+container; the host graphics driver was not changed. It radix-sorts synthetic
+128-bit transition keys with rocPRIM, reduces 31-bit modular values by key, and
+checks every output against independent CPU sorting/reduction. The complete
+12-case sweep is in
+`gpu-prototype/results/2026-09-13-initial-sort-reduce.md`: GPU pipeline time
+including transfers was roughly break-even at 100K records, 7.9--10.5x faster
+at 1M, 19.0--22.4x at 5M, and 23.1--30.2x at 10M versus the serial CPU
+comparison-sort reference. These are aggregation-only results, not an Ehrcalc
+speedup claim. Next gate is a real exported DP layer and multiple residue lanes.
+
 ## Current KTT state — 2026-09-13 (active)
 
 ### Current execution (refreshed 2026-09-13)
