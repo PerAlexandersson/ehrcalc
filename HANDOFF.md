@@ -2,6 +2,17 @@
 
 ## Current KTT state — 2026-09-13 (active)
 
+Latest verified evidence: Abacus v172 `20260913T071348-6daf4efd3051`
+(`65d0d5ef...`) and Laplace v20 `20260913T071442-95b24c7527d3`
+(`beae5062...`) are fetched, hash/control/profile verified, and
+primary-ingested; all eight zero-hole targets are exact-positive. Codex remains
+sole KTT worker and MariaDB writer. After fresh queue and quotient-poset audits,
+Abacus v173 `20260913T073112-3c7355bcec90` runs six d115--d110 closures (run
+`aff3fae1...`) and non-mirroring Laplace v21 `20260913T073158-7a8ab1f41a4d`
+runs three d110/d109/d108 closures (run `dd6c1d4d...`). Sole host v171 is the
+nice-10 CPU-15 pass, seed `202609130171`. Generated output remains untracked;
+do not push or publish.
+
 Codex is the sole private KTT worker and local MariaDB writer.  No exact
 flagged zero-hole-negative is known.  The completed two-hole-closure campaign
 has 56
