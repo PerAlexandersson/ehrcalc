@@ -30,10 +30,11 @@
   512-parent bound already covers all 292 exact one-hole-negative parents.
   Host v177 completed three new exact evaluations and three state-limited
   cases, with no zero-hole contender, but yielded two fresh d114/d110 closures.
-  After queue/host/global-poset audit, Abacus v180
-  `20260913T092335-e1856906106a` runs both (run `0920e0c5...`). Host v178 is
-  the sole nice-10 CPU-15 grow/flag pass (seed `202609130178`) and excludes
-  both pending remote quotient posets. Before any successor submission, recheck both queues
+  Abacus v180 `20260913T092335-e1856906106a` is fetched, provenance-verified,
+  and primary-ingested (`50e276e9...`): both are exact-positive in 6,282,430 /
+  6,032,950 states (286.417 / 270.950 s). Host v178 is the sole nice-10
+  CPU-15 grow/flag pass (seed `202609130178`); the closure inventory is again
+  empty. Before any successor submission, recheck both queues
   and audit against host, remote reservations, and all prior candidate/poset
   identities; never mirror the six-case Abacus batch.
 - Verified runner/helper/archive hashes remain `e3bd01d...`/`a4aae249...`/

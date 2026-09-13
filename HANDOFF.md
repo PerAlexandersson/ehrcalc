@@ -30,11 +30,12 @@ primary-ingested (`147be2f7...`): both remaining d90/d88 closures are exact-
 positive. The closure inventory is genuinely exhausted: the 512-parent
 selector already covers all 292 exact one-hole-negative parents. Host v177
 then completed three new exact evaluations and three state-limited cases, with
-no zero-hole contender, but yielded two fresh d114/d110 closures. After a
-fresh audit, Abacus v180 `20260913T092335-e1856906106a` runs those two
-closures (run `0920e0c5...`) under the primary profile. Sole host v178 is the
-nice-10 CPU-15 broad grow/flag pass, seed `202609130178`, excluding both
-pending remote quotient posets. Remote work uses verified
+no zero-hole contender, but yielded two fresh d114/d110 closures. Abacus v180
+`20260913T092335-e1856906106a` is fetched, provenance-verified, and primary-
+ingested (`50e276e9...`): both are exact-positive (6,282,430 / 6,032,950
+states; 286.417 / 270.950 s). Sole host v178 is the nice-10 CPU-15 broad
+grow/flag pass, seed `202609130178`; the closure inventory is again empty.
+Remote work uses verified
 runner/helper/archive hashes `e3bd01d...`/`a4aae249...`/`bf1cfa42...`, 30M
 states, 1200 seconds per child, and a 2100-second envelope. Generated output
 remains untracked; do not push or publish.
