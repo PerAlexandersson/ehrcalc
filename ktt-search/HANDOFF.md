@@ -130,6 +130,12 @@
   `a47f824f...`/`f6ac3f1d...`/`9ff9a6b3...`/`7c9c1283...`). All have nonzero
   exact strict tails through d6, yet every known-end score is positive; no full
   exact contender arose.
+  Abacus v186 `20260913T145127-90e72add27d2` is fetched, profile/control
+  verified, locally d6-replayed, and ingested (`83eda51c...`) for six further
+  disjoint d24 flag mutations. Its inputs `d33afe33...`/`f5bf829d...`/
+  `0bd7a533...`/`8507b14a...`/`5432d767...`/`40b1b059...` yielded 42 exact
+  cases including controls under the same six-CPU/20-GiB/256-pid profile; every
+  known-end score is positive, so no full exact contender arose.
   The legacy Abacus
   hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it is not submitted
   unchanged to the present 6-CPU Abacus. A negative full result still requires
