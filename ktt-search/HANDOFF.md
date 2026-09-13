@@ -34,10 +34,12 @@
   and primary-ingested (`50e276e9...`): both are exact-positive in 6,282,430 /
   6,032,950 states (286.417 / 270.950 s). Host v178 then finished with two
   new exact evaluations and three state-limited cases, no zero-hole contender,
-  and no fresh closure. Both remote queues were idle and the selector again
-  returned zero fresh targets immediately before sole host v179 began: the
-  bounded, nice-10 CPU-15 grow/flag pass uses seed `202609130179` (eight new
-  exact-case cap, 6M states/360 seconds each, 1000-second outer limit). Before
+  and no fresh closure. Host v179 then completed three new exact evaluations
+  and two state-limited cases, again without a zero-hole contender or fresh
+  closure. Both remote queues were idle and the selector again returned zero
+  fresh targets immediately before sole host v180 began: the bounded, nice-10
+  CPU-15 grow/flag pass uses seed `202609130180` (eight new exact-case cap, 6M
+  states/360 seconds each, 1000-second outer limit). Before
   any successor submission, recheck both queues
   and audit against host, remote reservations, and all prior candidate/poset
   identities; never mirror the six-case Abacus batch.

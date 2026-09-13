@@ -35,10 +35,12 @@ no zero-hole contender, but yielded two fresh d114/d110 closures. Abacus v180
 ingested (`50e276e9...`): both are exact-positive (6,282,430 / 6,032,950
 states; 286.417 / 270.950 s). Host v178 then finished with two new exact
 evaluations and three state-limited cases, no zero-hole contender, and no
-fresh closure. Both remote queues were idle and the selector again returned
-zero fresh targets immediately before sole host v179 began: the bounded,
-nice-10 CPU-15 grow/flag pass uses seed `202609130179` (eight new exact-case
-cap, 6M states/360 seconds each, 1000-second outer limit).
+fresh closure. Host v179 then completed three new exact evaluations and two
+state-limited cases, again without a zero-hole contender or fresh closure.
+Both remote queues were idle and the selector again returned zero fresh targets
+immediately before sole host v180 began: the bounded, nice-10 CPU-15 grow/flag
+pass uses seed `202609130180` (eight new exact-case cap, 6M states/360 seconds
+each, 1000-second outer limit).
 The current re-audit also fetched the cancelled v141 `20260912T175005-d8860a38ea79`, v5
 `20260912T174740-ea6a08a88d40`, and v6 `20260912T175248-752c0bdc9999`
 bundles: v141 emitted metadata only, v5 only its three exact controls, and
