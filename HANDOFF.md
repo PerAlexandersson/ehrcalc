@@ -87,12 +87,15 @@ d12, its 280-second/290-second aggregate retry saved d12 exactly and reached
 the aggregate limit in d13, and its enlarged 600-second/900-second pass saved
 d13 and d14. Its next 1,800-second/1,810-second pass saved d15, then recorded
 a 756.707-second deadline-bound d16 attempt. (The certified tail begins at
-index 18, so exact d16 and d17 are still required.) The sole live finite
-continuation allows 3,600 seconds per dilation in a 7,200-second envelope on
-CPU 15/nice-10. Its d16 count has now completed exactly, and the sole live
-child is the final required d17 count. This is a strict continuation by saved
-exact samples and distinct attempt-timeout keys; only a negative full result
-activates independent out-of-range replay.
+index 18, so exact d16 and d17 are still required.) The 3,600-second
+per-dilation / 7,200-second envelope continuation completed d16 exactly but
+recorded a clean 3,600.328-second deadline-bound d17 attempt. Its only unsaved
+sample is d17; the sole live strict continuation is PID 1193952 (child
+1193977), CPU 15/nice-10, with a 7,200-second d17 allowance and a
+7,220-second outer bound
+(`zero-hole-size50-11a6-paired-v2-2558-completed-7200s-20260913.jsonl`). This
+has a distinct attempt-timeout key and reuses every prior exact sample; only a
+negative full result activates independent out-of-range replay.
 The legacy Abacus hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it
 is not submitted unchanged to the present 6-CPU Abacus. A negative full result
 still requires the prescribed independent out-of-range replay before any
