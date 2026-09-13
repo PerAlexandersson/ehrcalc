@@ -19,10 +19,24 @@ using Key = unsigned __int128;
 
 namespace {
 
-constexpr std::uint32_t kDefaultModulus = 2'147'483'647U;
+#ifndef EHRGPU_RESIDUE_LANES
+#define EHRGPU_RESIDUE_LANES 1
+#endif
+
+constexpr std::size_t kResidueLanes = EHRGPU_RESIDUE_LANES;
+static_assert(kResidueLanes >= 1 && kResidueLanes <= 8);
+constexpr std::uint32_t kDefaultModuli[] = {
+    2'147'483'647U, 2'147'483'629U, 2'147'483'587U, 2'147'483'579U,
+    2'147'483'563U, 2'147'483'549U, 2'147'483'543U, 2'147'483'497U,
+};
 constexpr std::size_t kMaximumRows = 32;
+constexpr std::uint32_t kMaximumStripSize = 128;
 constexpr std::size_t kDefaultMaximumTransitions = 150'000'000;
-constexpr unsigned int kBlockSize = 256;
+#ifndef EHRGPU_BLOCK_SIZE
+#define EHRGPU_BLOCK_SIZE 128
+#endif
+constexpr unsigned int kBlockSize = EHRGPU_BLOCK_SIZE;
+static_assert(kBlockSize >= 64 && kBlockSize <= 1024);
 
 #define HIP_CHECK(call)                                                        \
     do {                                                                       \
@@ -33,13 +47,23 @@ constexpr unsigned int kBlockSize = 256;
         }                                                                      \
     } while (false)
 
-struct ModularAdd {
-    std::uint32_t modulus;
+struct Residues {
+    std::uint32_t values[kResidueLanes];
+};
 
-    __host__ __device__ std::uint32_t operator()(std::uint32_t left,
-                                                  std::uint32_t right) const {
-        const std::uint32_t sum = left + right;
-        return sum >= modulus ? sum - modulus : sum;
+struct ModularAdd {
+    Residues moduli;
+
+    __host__ __device__ Residues operator()(Residues left,
+                                            Residues right) const {
+#pragma unroll
+        for (std::size_t lane = 0; lane < kResidueLanes; ++lane) {
+            const std::uint32_t sum = left.values[lane] + right.values[lane];
+            left.values[lane] = sum >= moduli.values[lane]
+                                    ? sum - moduli.values[lane]
+                                    : sum;
+        }
+        return left;
     }
 };
 
@@ -153,102 +177,138 @@ __host__ __device__ Key pack_parts(const DeviceShape& shape,
     return key;
 }
 
-template <bool Emit>
-__device__ std::uint64_t enumerate_extensions(
-    Key source_key, std::uint32_t source_value, const DeviceShape& shape,
-    std::uint32_t strip_size, std::uint32_t row_lo, std::uint32_t row_hi,
-    std::uint64_t output_offset, Key* output_keys,
-    std::uint32_t* output_values) {
-    std::uint32_t alpha[kMaximumRows]{};
-    std::uint32_t capacities[kMaximumRows]{};
-    std::uint32_t choices[kMaximumRows]{};
-    std::uint32_t next_choice[kMaximumRows]{};
+__device__ std::uint32_t extension_capacity(
+    Key source_key, const DeviceShape& shape, std::uint32_t strip_size,
+    std::uint32_t row_lo, std::uint32_t row_hi, std::uint32_t row) {
+    if (row < row_lo || row >= row_hi) {
+        return 0;
+    }
+    const std::uint32_t alpha = static_cast<std::uint32_t>(
+        (source_key >> (shape.bits * row)) & shape.mask);
+    const std::uint32_t shape_capacity = shape.outer[row] - alpha;
+    if (row == 0) {
+        return shape_capacity < strip_size ? shape_capacity : strip_size;
+    }
+    const std::uint32_t previous = static_cast<std::uint32_t>(
+        (source_key >> (shape.bits * (row - 1))) & shape.mask);
+    const std::uint32_t strip_capacity = previous - alpha;
+    return shape_capacity < strip_capacity ? shape_capacity : strip_capacity;
+}
+
+__device__ std::uint32_t count_extensions_fast(
+    Key source_key, const DeviceShape& shape, std::uint32_t strip_size,
+    std::uint32_t row_lo, std::uint32_t row_hi,
+    std::uint32_t saturation_limit) {
+    std::uint32_t ways[kMaximumStripSize + 1]{};
+    ways[0] = 1;
     for (std::uint32_t row = 0; row < shape.rows; ++row) {
-        alpha[row] = static_cast<std::uint32_t>(
-            (source_key >> (shape.bits * row)) & shape.mask);
-        if (row < row_lo || row >= row_hi) {
-            capacities[row] = 0;
-        } else {
-            const std::uint32_t shape_capacity = shape.outer[row] - alpha[row];
-            const std::uint32_t strip_capacity =
-                row == 0 ? strip_size : alpha[row - 1] - alpha[row];
-            capacities[row] =
-                shape_capacity < strip_capacity ? shape_capacity : strip_capacity;
+        const std::uint32_t capacity = extension_capacity(
+            source_key, shape, strip_size, row_lo, row_hi, row);
+        for (std::int32_t total = static_cast<std::int32_t>(strip_size);
+             total >= 0; --total) {
+            const std::uint32_t base = ways[total];
+            const std::uint32_t remaining =
+                strip_size - static_cast<std::uint32_t>(total);
+            const std::uint32_t maximum_choice =
+                capacity < remaining ? capacity : remaining;
+            for (std::uint32_t choice = 1; choice <= maximum_choice; ++choice) {
+                std::uint32_t& destination = ways[total + choice];
+                const std::uint64_t candidate =
+                    static_cast<std::uint64_t>(destination) + base;
+                destination = static_cast<std::uint32_t>(
+                    candidate > saturation_limit ? saturation_limit : candidate);
+            }
         }
+    }
+    return ways[strip_size];
+}
+
+__global__ void count_transitions(const Key* state_keys,
+                                  std::size_t state_count, DeviceShape shape,
+                                  std::uint32_t strip_size,
+                                  std::uint32_t row_lo, std::uint32_t row_hi,
+                                  std::uint32_t saturation_limit,
+                                  std::uint32_t* counts) {
+    const std::size_t index = blockIdx.x * blockDim.x + threadIdx.x;
+    if (index < state_count) {
+        counts[index] = count_extensions_fast(state_keys[index], shape, strip_size,
+                                              row_lo, row_hi, saturation_limit);
+    }
+}
+
+__device__ void enumerate_extensions(
+    Key source_key, Residues source_value, const DeviceShape& shape,
+    std::uint32_t strip_size, std::uint32_t row_lo, std::uint32_t row_hi,
+    std::uint32_t output_offset, Key* output_keys,
+    Residues* output_values) {
+    std::uint32_t suffix_capacity[kMaximumRows + 1]{};
+    std::uint32_t choices[kMaximumRows]{};
+    for (std::uint32_t row = shape.rows; row-- > 0;) {
+        suffix_capacity[row] =
+            suffix_capacity[row + 1] +
+            extension_capacity(source_key, shape, strip_size, row_lo, row_hi,
+                               row);
     }
 
     int row = 0;
     std::uint32_t remaining = strip_size;
-    std::uint64_t found = 0;
-    next_choice[0] = 0;
+    std::uint32_t found = 0;
+    Key delta_key = 0;
+    choices[0] = remaining > suffix_capacity[1]
+                     ? remaining - suffix_capacity[1]
+                     : 0;
     while (row >= 0) {
         if (row == static_cast<int>(shape.rows)) {
             if (remaining == 0) {
-                if constexpr (Emit) {
-                    std::uint32_t beta[kMaximumRows]{};
-                    for (std::uint32_t index = 0; index < shape.rows; ++index) {
-                        beta[index] = alpha[index] + choices[index];
-                    }
-                    output_keys[output_offset + found] = pack_parts(shape, beta);
-                    output_values[output_offset + found] = source_value;
-                }
+                output_keys[output_offset + found] = source_key + delta_key;
+                output_values[output_offset + found] = source_value;
                 ++found;
             }
             --row;
             if (row >= 0) {
+                delta_key -= static_cast<Key>(choices[row])
+                             << (shape.bits * row);
                 remaining += choices[row];
-                next_choice[row] = choices[row] + 1;
+                ++choices[row];
             }
             continue;
         }
 
-        const std::uint32_t choice = next_choice[row];
-        if (choice <= capacities[row] && choice <= remaining) {
-            choices[row] = choice;
+        const std::uint32_t choice = choices[row];
+        const std::uint32_t capacity =
+            suffix_capacity[row] - suffix_capacity[row + 1];
+        if (choice <= capacity && choice <= remaining) {
+            delta_key += static_cast<Key>(choice) << (shape.bits * row);
             remaining -= choice;
             ++row;
             if (row < static_cast<int>(shape.rows)) {
-                next_choice[row] = 0;
+                choices[row] =
+                    remaining > suffix_capacity[row + 1]
+                        ? remaining - suffix_capacity[row + 1]
+                        : 0;
             }
         } else {
-            next_choice[row] = 0;
             --row;
             if (row >= 0) {
+                delta_key -= static_cast<Key>(choices[row])
+                             << (shape.bits * row);
                 remaining += choices[row];
-                next_choice[row] = choices[row] + 1;
+                ++choices[row];
             }
         }
     }
-    return found;
 }
 
-__global__ void count_transitions(const Key* state_keys,
-                                  const std::uint32_t* state_values,
-                                  std::size_t state_count, DeviceShape shape,
-                                  std::uint32_t strip_size,
-                                  std::uint32_t row_lo, std::uint32_t row_hi,
-                                  std::uint64_t* counts) {
+__global__ void emit_transitions(
+    const Key* state_keys, const Residues* state_values,
+    std::size_t state_count, DeviceShape shape, std::uint32_t strip_size,
+    std::uint32_t row_lo, std::uint32_t row_hi, const std::uint32_t* offsets,
+    Key* transition_keys, Residues* transition_values) {
     const std::size_t index = blockIdx.x * blockDim.x + threadIdx.x;
     if (index < state_count) {
-        counts[index] = enumerate_extensions<false>(
-            state_keys[index], state_values[index], shape, strip_size, row_lo,
-            row_hi, 0, nullptr, nullptr);
-    }
-}
-
-__global__ void emit_transitions(const Key* state_keys,
-                                 const std::uint32_t* state_values,
-                                 std::size_t state_count, DeviceShape shape,
-                                 std::uint32_t strip_size,
-                                 std::uint32_t row_lo, std::uint32_t row_hi,
-                                 const std::uint64_t* offsets,
-                                 Key* transition_keys,
-                                 std::uint32_t* transition_values) {
-    const std::size_t index = blockIdx.x * blockDim.x + threadIdx.x;
-    if (index < state_count) {
-        static_cast<void>(enumerate_extensions<true>(
-            state_keys[index], state_values[index], shape, strip_size, row_lo,
-            row_hi, offsets[index], transition_keys, transition_values));
+        enumerate_extensions(state_keys[index], state_values[index], shape,
+                             strip_size, row_lo, row_hi, offsets[index],
+                             transition_keys, transition_values);
     }
 }
 
@@ -263,7 +323,7 @@ struct LayerTimings {
 
 struct StateLayer {
     DeviceBuffer<Key> keys;
-    DeviceBuffer<std::uint32_t> values;
+    DeviceBuffer<Residues> values;
     std::size_t size = 0;
 };
 
@@ -278,43 +338,46 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
                             std::uint32_t strip_size, std::uint32_t row_lo,
                             std::uint32_t row_hi,
                             std::size_t maximum_transitions,
-                            std::uint32_t modulus) {
+                            Residues moduli) {
     const unsigned int blocks =
         static_cast<unsigned int>((states.size + kBlockSize - 1) / kBlockSize);
-    DeviceBuffer<std::uint64_t> counts(states.size);
-    DeviceBuffer<std::uint64_t> offsets(states.size);
+    DeviceBuffer<std::uint32_t> counts(states.size);
+    DeviceBuffer<std::uint32_t> offsets(states.size);
     AdvanceResult result;
     result.timings.count_ms = time_gpu([&] {
         hipLaunchKernelGGL(count_transitions, dim3(blocks), dim3(kBlockSize), 0, 0,
-                           states.keys.get(), states.values.get(), states.size,
-                           shape, strip_size, row_lo, row_hi, counts.get());
+                           states.keys.get(), states.size, shape, strip_size,
+                           row_lo, row_hi,
+                           static_cast<std::uint32_t>(maximum_transitions + 1),
+                           counts.get());
         HIP_CHECK(hipGetLastError());
     });
 
     std::size_t scan_temp_bytes = 0;
     HIP_CHECK(rocprim::exclusive_scan(nullptr, scan_temp_bytes, counts.get(),
-                                      offsets.get(), std::uint64_t{0}, states.size,
-                                      rocprim::plus<std::uint64_t>{}));
+                                      offsets.get(), std::uint32_t{0}, states.size,
+                                      rocprim::plus<std::uint32_t>{}));
     RawDeviceBuffer scan_temp(scan_temp_bytes);
     result.timings.scan_ms = time_gpu([&] {
         HIP_CHECK(rocprim::exclusive_scan(
             scan_temp.get(), scan_temp_bytes, counts.get(), offsets.get(),
-            std::uint64_t{0}, states.size, rocprim::plus<std::uint64_t>{}));
+            std::uint32_t{0}, states.size, rocprim::plus<std::uint32_t>{}));
     });
-    std::uint64_t last_offset = 0;
-    std::uint64_t last_count = 0;
+    std::uint32_t last_offset = 0;
+    std::uint32_t last_count = 0;
     HIP_CHECK(hipMemcpy(&last_offset, offsets.get() + states.size - 1,
                         sizeof(last_offset), hipMemcpyDeviceToHost));
     HIP_CHECK(hipMemcpy(&last_count, counts.get() + states.size - 1,
                         sizeof(last_count), hipMemcpyDeviceToHost));
-    const std::uint64_t transition_count_u64 = last_offset + last_count;
+    const std::uint64_t transition_count_u64 =
+        static_cast<std::uint64_t>(last_offset) + last_count;
     if (transition_count_u64 == 0 || transition_count_u64 > maximum_transitions) {
         throw std::runtime_error("transition count is zero or exceeds configured limit");
     }
     result.transitions = static_cast<std::size_t>(transition_count_u64);
 
     DeviceBuffer<Key> transition_keys(result.transitions);
-    DeviceBuffer<std::uint32_t> transition_values(result.transitions);
+    DeviceBuffer<Residues> transition_values(result.transitions);
     result.timings.emit_ms = time_gpu([&] {
         hipLaunchKernelGGL(emit_transitions, dim3(blocks), dim3(kBlockSize), 0, 0,
                            states.keys.get(), states.values.get(), states.size,
@@ -324,32 +387,31 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
     });
 
     DeviceBuffer<Key> sorted_keys(result.transitions);
-    DeviceBuffer<std::uint32_t> sorted_values(result.transitions);
-    DeviceBuffer<Key> unique_keys(result.transitions);
-    DeviceBuffer<std::uint32_t> unique_values(result.transitions);
+    DeviceBuffer<Residues> sorted_values(result.transitions);
     DeviceBuffer<std::size_t> unique_count_device(1);
     std::size_t sort_temp_bytes = 0;
     HIP_CHECK(rocprim::radix_sort_pairs(
         nullptr, sort_temp_bytes, transition_keys.get(), sorted_keys.get(),
-        transition_values.get(), sorted_values.get(), result.transitions));
+        transition_values.get(), sorted_values.get(), result.transitions, 0,
+        shape.rows * shape.bits));
     std::size_t reduce_temp_bytes = 0;
     HIP_CHECK(rocprim::reduce_by_key(
         nullptr, reduce_temp_bytes, sorted_keys.get(), sorted_values.get(),
-        result.transitions, unique_keys.get(), unique_values.get(),
-        unique_count_device.get(), ModularAdd{modulus}, rocprim::equal_to<Key>{}));
+        result.transitions, transition_keys.get(), transition_values.get(),
+        unique_count_device.get(), ModularAdd{moduli}, rocprim::equal_to<Key>{}));
     RawDeviceBuffer aggregate_temp(std::max(sort_temp_bytes, reduce_temp_bytes));
     result.sort_temp_bytes = sort_temp_bytes;
     result.timings.sort_ms = time_gpu([&] {
         HIP_CHECK(rocprim::radix_sort_pairs(
             aggregate_temp.get(), sort_temp_bytes, transition_keys.get(),
             sorted_keys.get(), transition_values.get(), sorted_values.get(),
-            result.transitions));
+            result.transitions, 0, shape.rows * shape.bits));
     });
     result.timings.reduce_ms = time_gpu([&] {
         HIP_CHECK(rocprim::reduce_by_key(
             aggregate_temp.get(), reduce_temp_bytes, sorted_keys.get(),
-            sorted_values.get(), result.transitions, unique_keys.get(),
-            unique_values.get(), unique_count_device.get(), ModularAdd{modulus},
+            sorted_values.get(), result.transitions, transition_keys.get(),
+            transition_values.get(), unique_count_device.get(), ModularAdd{moduli},
             rocprim::equal_to<Key>{}));
     });
 
@@ -357,12 +419,12 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
     HIP_CHECK(hipMemcpy(&unique_count, unique_count_device.get(),
                         sizeof(unique_count), hipMemcpyDeviceToHost));
     StateLayer compact{DeviceBuffer<Key>(unique_count),
-                       DeviceBuffer<std::uint32_t>(unique_count), unique_count};
+                       DeviceBuffer<Residues>(unique_count), unique_count};
     result.timings.compact_ms = time_gpu([&] {
-        HIP_CHECK(hipMemcpy(compact.keys.get(), unique_keys.get(),
+        HIP_CHECK(hipMemcpy(compact.keys.get(), transition_keys.get(),
                             unique_count * sizeof(Key), hipMemcpyDeviceToDevice));
-        HIP_CHECK(hipMemcpy(compact.values.get(), unique_values.get(),
-                            unique_count * sizeof(std::uint32_t),
+        HIP_CHECK(hipMemcpy(compact.values.get(), transition_values.get(),
+                            unique_count * sizeof(Residues),
                             hipMemcpyDeviceToDevice));
     });
     result.states = std::move(compact);
@@ -410,7 +472,7 @@ int main(int argc, char** argv) try {
     if (argc < 7 || argc > 9) {
         std::cerr << "usage: packed_flagged_kostka_gpu_resident DILATION OUTER "
                      "INNER WEIGHT UPPER_FLAGS LOWER_FLAGS [MAX_TRANSITIONS] "
-                     "[MODULUS]\n";
+                     "[MODULI]\n";
         return 2;
     }
     const std::uint32_t dilation = static_cast<std::uint32_t>(std::stoul(argv[1]));
@@ -424,15 +486,34 @@ int main(int argc, char** argv) try {
     const std::vector<std::uint32_t> lower = parse_list(argv[6]);
     const std::size_t maximum_transitions =
         argc >= 8 ? std::stoull(argv[7]) : kDefaultMaximumTransitions;
-    const std::uint32_t modulus =
-        argc == 9 ? static_cast<std::uint32_t>(std::stoul(argv[8]))
-                  : kDefaultModulus;
-    if (modulus < 2 || modulus >= (std::uint32_t{1} << 31)) {
-        throw std::runtime_error("modulus must lie in 2..2^31");
+    std::vector<std::uint32_t> modulus_values;
+    if (argc == 9) {
+        modulus_values = parse_list(argv[8]);
+    } else {
+        modulus_values.assign(kDefaultModuli, kDefaultModuli + kResidueLanes);
+    }
+    if (modulus_values.size() != kResidueLanes) {
+        throw std::runtime_error("modulus count does not match compiled residue lanes");
+    }
+    Residues moduli{};
+    for (std::size_t lane = 0; lane < kResidueLanes; ++lane) {
+        const std::uint32_t modulus = modulus_values[lane];
+        if (modulus < 2 || modulus >= (std::uint32_t{1} << 31)) {
+            throw std::runtime_error("each modulus must lie in 2..2^31");
+        }
+        moduli.values[lane] = modulus;
+    }
+    if (maximum_transitions >= std::numeric_limits<std::uint32_t>::max()) {
+        throw std::runtime_error("maximum transitions must be below 2^32-1");
     }
     scale(outer, dilation);
     scale(inner, dilation);
     scale(weight, dilation);
+    if (std::any_of(weight.begin(), weight.end(), [](std::uint32_t strip_size) {
+            return strip_size > kMaximumStripSize;
+        })) {
+        throw std::runtime_error("scaled weight part exceeds GPU strip-size limit");
+    }
     if (outer.empty() || inner.size() > outer.size() || sum(outer) < sum(inner) ||
         sum(outer) - sum(inner) != sum(weight)) {
         throw std::runtime_error("incompatible shape and weight");
@@ -455,8 +536,9 @@ int main(int argc, char** argv) try {
     HIP_CHECK(hipGetDeviceProperties(&properties, 0));
     const DeviceShape shape = make_shape(outer);
     const Key initial_key = pack_parts(shape, inner.data());
-    const std::uint32_t initial_value = 1;
-    StateLayer states{DeviceBuffer<Key>(1), DeviceBuffer<std::uint32_t>(1), 1};
+    Residues initial_value{};
+    std::fill(std::begin(initial_value.values), std::end(initial_value.values), 1);
+    StateLayer states{DeviceBuffer<Key>(1), DeviceBuffer<Residues>(1), 1};
     HIP_CHECK(hipMemcpy(states.keys.get(), &initial_key, sizeof(initial_key),
                         hipMemcpyHostToDevice));
     HIP_CHECK(hipMemcpy(states.values.get(), &initial_value, sizeof(initial_value),
@@ -487,7 +569,7 @@ int main(int argc, char** argv) try {
                 : static_cast<std::uint32_t>(outer.size());
         const std::size_t source_states = states.size;
         AdvanceResult next = advance_layer(states, shape, weight[label], row_lo,
-                                           row_hi, maximum_transitions, modulus);
+                                           row_hi, maximum_transitions, moduli);
         states = std::move(next.states);
         peak_states = std::max(peak_states, states.size);
         peak_transitions = std::max(peak_transitions, next.transitions);
@@ -510,18 +592,18 @@ int main(int argc, char** argv) try {
     }
 
     std::vector<Key> final_keys(states.size);
-    std::vector<std::uint32_t> final_values(states.size);
+    std::vector<Residues> final_values(states.size);
     HIP_CHECK(hipMemcpy(final_keys.data(), states.keys.get(), states.size * sizeof(Key),
                         hipMemcpyDeviceToHost));
     HIP_CHECK(hipMemcpy(final_values.data(), states.values.get(),
-                        states.size * sizeof(std::uint32_t),
+                        states.size * sizeof(Residues),
                         hipMemcpyDeviceToHost));
     const Key target = pack_parts(shape, outer.data());
     const auto found = std::lower_bound(final_keys.begin(), final_keys.end(), target);
-    const std::uint32_t answer =
-        found == final_keys.end() || *found != target
-            ? 0
-            : final_values[static_cast<std::size_t>(found - final_keys.begin())];
+    Residues answer{};
+    if (found != final_keys.end() && *found == target) {
+        answer = final_values[static_cast<std::size_t>(found - final_keys.begin())];
+    }
     const double total_ms = std::chrono::duration<double, std::milli>(
                                 std::chrono::steady_clock::now() - total_start)
                                 .count();
@@ -530,8 +612,17 @@ int main(int argc, char** argv) try {
               << "\"dilation\":" << dilation << ','
               << "\"rows\":" << outer.size() << ','
               << "\"bits_per_row\":" << shape.bits << ','
-              << "\"modulus\":" << modulus << ','
-              << "\"residue\":" << answer << ','
+              << "\"modulus\":" << moduli.values[0] << ','
+              << "\"residue\":" << answer.values[0] << ','
+              << "\"moduli\":[";
+    for (std::size_t lane = 0; lane < kResidueLanes; ++lane) {
+        std::cout << (lane == 0 ? "" : ",") << moduli.values[lane];
+    }
+    std::cout << "],\"residues\":[";
+    for (std::size_t lane = 0; lane < kResidueLanes; ++lane) {
+        std::cout << (lane == 0 ? "" : ",") << answer.values[lane];
+    }
+    std::cout << "],"
               << "\"peak_states\":" << peak_states << ','
               << "\"peak_transitions\":" << peak_transitions << ','
               << "\"device_work_ms\":" << device_work_ms << ','

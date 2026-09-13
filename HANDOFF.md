@@ -21,24 +21,30 @@ checks skew, flagged, and zero-strip cases against Rust under two primes;
 `run-exact.sh` evaluates successive GPU primes and returns an integer only when
 a caller-supplied certified bound makes CRT unique.
 
-On real straight flagged candidate `42d92b82...`, dilation 9 matched the exact
-stored residue with 243,369 peak states and 115,666,316 peak transitions. The
-GPU-resident algorithm took 12.929 s internally versus 48.86 s for the packed
-CPU modular reference, a 3.78x speedup (13.37 s / 3.65x including a fresh
-container). The CPU-enumerated hybrid took 67.676 s and is retained as negative
-evidence. Real exported layers reached 31.9--32.1x aggregation speedup at
-73--116 million records, but full resident count/emit kernels now dominate.
-The peak resident allocation is approximately 9.27 GB and fits the 16 GiB RX
-9070 XT. A two-prime dilation-6 run reconstructed the stored exact integer
-157798415095915566. Full commands, inputs, timings, limitations, and memory
-accounting are in `gpu-prototype/results/2026-09-13-real-dp.md`.
+On real straight flagged candidate `42d92b82...`, dilation 9 matched 243,369
+peak states and 115,666,316 peak transitions. Bounded-composition counting,
+feasible-suffix DFS pruning, occupied-bit sorting, buffer reuse, compact DFS
+state, 32-bit capped offsets, and 128-thread blocks reduce the exact three-lane
+run to about 0.525 s warm device work / 0.640 s warm internal total. Its three
+residues reconstruct the complete stored integer `549126938733237505207`.
+This is 76.3x faster than the 48.86-second packed CPU modular reference and
+about 20x faster than the initial 12.929-second resident kernel. Peak
+three-lane allocation is about 9.75 GB and fits the 16 GiB RX 9070 XT. The
+CPU-enumerated hybrid remains negative evidence at 67.676 s. Full commands,
+inputs, timing stages, limitations, and memory accounting are in
+`gpu-prototype/results/2026-09-13-real-dp.md`.
 
-Strict/interior counting, bundled multi-prime GPU lanes, transition chunking,
-and production Rust/CLI integration remain pending. The next useful step is a
-two-lane resident value type so exact CRT does not multiply the 12.9-second
-large-case runtime by the number of primes. Current verification should be
-refreshed before merge: full engine tests, strict Clippy, shell syntax, smoke,
-HIP compilation, and `git diff --check`. Builds use
+One rejected `hipMallocAsync` memory-pool experiment caused an AMDGPU
+memory-aperture fault and wedged Euler's display. Its container exited, the
+unsafe source path was removed, its generated binary was moved to trash, and a
+suspend/resume restored the display without losing tmux/Docker workers. Do not
+retry asynchronous allocation on this display-attached card. No further GPU
+execution should occur in this supervisor session.
+
+Strict/interior counting, transition chunking, and production Rust/CLI
+integration remain pending. Current verification should be refreshed before
+merge using CPU-only Rust tests, strict Clippy, shell syntax, HIP compilation
+without GPU device exposure, and `git diff --check`. Builds use
 `/mnt/2TB-Babel/ai-storage/cargo-target`; no local `target/` is allowed.
 
 ## Current KTT state — 2026-09-13 (active)

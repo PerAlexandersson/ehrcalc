@@ -58,13 +58,16 @@ Its command line is:
 ```text
 packed-flagged-kostka-gpu-resident \
   DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS \
-  [MAX_TRANSITIONS] [MODULUS]
+  [MAX_TRANSITIONS] [MODULI]
 ```
 
 Lists are comma-separated; use `-` for an empty partition or absent flags.
 The default transition limit is 150 million and the default modulus is
 2,147,483,647. The modulus must be in `2..2^31`; exact integer answers require
 enough pairwise-coprime residue runs to exceed a separately certified bound.
+Compile with `-DEHRGPU_RESIDUE_LANES=N` and pass `N` comma-separated moduli to
+carry as many as eight residue lanes together. The exact driver batches at most
+three lanes because that is the measured safe memory point on the 16 GiB card.
 
 Run the small two-modulus CPU/GPU smoke comparison from the repository root:
 
@@ -81,10 +84,15 @@ gpu-prototype/run-exact.sh \
   UPPER_BOUND DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS
 ```
 
-`run-exact.sh` evaluates successive pairwise-coprime residue passes and invokes
-the Rust bounded-CRT routine after each one. It prints an integer only after the
-combined modulus exceeds the supplied bound and the reconstruction lies below
-it; otherwise it fails rather than treating an ambiguous residue as exact.
-Because the current HIP value has one lane, repeated passes multiply runtime.
+`run-exact.sh` first determines how many primes are required for the bound,
+compiles a one-, two-, or three-lane kernel, and evaluates batches of up to
+three pairwise-coprime residues. It prints an integer only after the combined
+modulus exceeds the supplied bound and the reconstruction lies below it;
+otherwise it fails rather than treating an ambiguous residue as exact.
+
+Do not replace the normal `hipMalloc`/`hipFree` buffers with ROCm asynchronous
+memory-pool allocation on this machine. A measured `hipMallocAsync` experiment
+caused an AMDGPU memory-aperture fault and wedged the display until a
+suspend/resume cycle. That implementation was removed and its binary trashed.
 
 The measured real-layer and full-DP results are in `gpu-prototype/results/`.

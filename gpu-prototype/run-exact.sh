@@ -33,46 +33,76 @@ mkdir -p "$build_dir" "$cargo_target"
 CARGO_TARGET_DIR="$cargo_target" cargo build \
     --manifest-path "$repo_root/Cargo.toml" --release \
     -p ehrcalc-kostka-engine --bin reconstruct_modular
-docker run --rm \
-    --device=/dev/kfd --device=/dev/dri \
-    --group-add video --security-opt seccomp=unconfined \
-    -v "$repo_root/gpu-prototype:/source:ro" \
-    -v "$build_dir:/build" \
-    "$image_name" bash -lc \
-    'hipcc --offload-arch=gfx1201 -O3 -std=c++17 \
-       /source/packed_flagged_kostka_gpu_resident.hip.cpp \
-       -o /build/packed-flagged-kostka-gpu-resident'
+needed_moduli=0
+trial_moduli=()
+trial_residues=()
+for modulus in "${modulus_candidates[@]}"; do
+    trial_moduli+=("$modulus")
+    trial_residues+=(0)
+    trial_moduli_csv=$(IFS=,; echo "${trial_moduli[*]}")
+    trial_residues_csv=$(IFS=,; echo "${trial_residues[*]}")
+    if "$reconstruct" "$upper_bound" "$trial_residues_csv" \
+        "$trial_moduli_csv" >/dev/null 2>&1; then
+        needed_moduli=${#trial_moduli[@]}
+        break
+    fi
+done
+if ((needed_moduli == 0)); then
+    echo "eight moduli do not exceed the supplied certified bound" >&2
+    exit 1
+fi
 
 residues=()
 moduli=()
-for modulus in "${modulus_candidates[@]}"; do
-    log_path="$build_dir/exact-d${dilation}-p${modulus}.log"
+batch_start=0
+while ((batch_start < needed_moduli)); do
+    remaining=$((needed_moduli - batch_start))
+    lane_count=$((remaining < 3 ? remaining : 3))
+    batch_moduli=("${modulus_candidates[@]:batch_start:lane_count}")
+    batch_moduli_csv=$(IFS=,; echo "${batch_moduli[*]}")
+    binary_name="packed-flagged-kostka-gpu-resident-lanes${lane_count}"
+    docker run --rm \
+        --device=/dev/kfd --device=/dev/dri \
+        --group-add video --security-opt seccomp=unconfined \
+        -v "$repo_root/gpu-prototype:/source:ro" \
+        -v "$build_dir:/build" \
+        "$image_name" bash -lc \
+        "hipcc --offload-arch=gfx1201 -O3 -std=c++17 \
+          -DEHRGPU_RESIDUE_LANES=$lane_count \
+          /source/packed_flagged_kostka_gpu_resident.hip.cpp \
+          -o /build/$binary_name"
+    log_path="$build_dir/exact-d${dilation}-batch${batch_start}.log"
     gpu_output=$(
         docker run --rm \
             --device=/dev/kfd --device=/dev/dri \
             --group-add video --security-opt seccomp=unconfined \
             -v "$build_dir:/build" \
-            "$image_name" /build/packed-flagged-kostka-gpu-resident \
+            "$image_name" "/build/$binary_name" \
             "$dilation" "$outer" "$inner" "$weight" "$upper_flags" \
-            "$lower_flags" "$maximum_transitions" "$modulus" 2>"$log_path"
+            "$lower_flags" "$maximum_transitions" "$batch_moduli_csv" \
+            2>"$log_path"
     )
-    residue=$(sed -n 's/.*"residue":\([0-9][0-9]*\).*/\1/p' <<<"$gpu_output")
-    if [[ -z $residue ]]; then
+    batch_residues_csv=$(
+        sed -n 's/.*"residues":\[\([^]]*\)\].*/\1/p' <<<"$gpu_output"
+    )
+    if [[ -z $batch_residues_csv ]]; then
         echo "failed to parse GPU result; see $log_path" >&2
         exit 1
     fi
-    residues+=("$residue")
-    moduli+=("$modulus")
+    IFS=, read -r -a batch_residues <<<"$batch_residues_csv"
+    residues+=("${batch_residues[@]}")
+    moduli+=("${batch_moduli[@]}")
     residues_csv=$(IFS=,; echo "${residues[*]}")
     moduli_csv=$(IFS=,; echo "${moduli[*]}")
-    echo "prime ${#moduli[@]}: modulus=$modulus residue=$residue" >&2
+    echo "GPU batch: moduli=$batch_moduli_csv residues=$batch_residues_csv" >&2
     if exact=$(
         "$reconstruct" "$upper_bound" "$residues_csv" "$moduli_csv" 2>/dev/null
     ); then
         echo "$exact"
         exit 0
     fi
+    batch_start=$((batch_start + lane_count))
 done
 
-echo "eight moduli did not certify an answer below the supplied bound" >&2
+echo "GPU residues did not reconstruct an answer below the supplied bound" >&2
 exit 1
