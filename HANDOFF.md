@@ -14,15 +14,18 @@ control. Laplace v24 `20260913T081922-f2886ff50550` is likewise fetched,
 hash/control/profile verified, and primary-ingested (`95120ac2...`): its
 three d101/d100/d100 closures are exact-positive (1,628,770--3,202,500
 states; 145.914--234.188 s), again with only the expected control negative.
-Codex remains sole KTT worker and MariaDB writer. Host v174 completed two new
-exact evaluations and four state-limited cases, with no zero-hole contender.
-After fresh queue/host/candidate/quotient-poset audits, Abacus v177
-`20260913T083446-bd7e4d1f1ed3` runs six disjoint d100/d100/d99/d99/d99/d98
-closures (run `2f827b56...`) and non-mirroring Laplace v25
-`20260913T083531-1097da122aa4` runs three disjoint d98 closures (run
-`773f4f67...`). Sole host v175 is the nice-10 CPU-15 broad grow/flag pass,
-seed `202609130175`, excluding all nine pending remote quotient posets.
-Remote work uses verified
+Abacus v177 `20260913T083446-bd7e4d1f1ed3` and Laplace v25
+`20260913T083531-1097da122aa4` are fetched, hash/control/profile verified,
+and primary-ingested (`89897944...`/`a1c5fb2b...`): all nine d100--d98
+closures are exact-positive. Codex remains sole KTT worker and MariaDB writer.
+Host v175 then completed four new exact evaluations and three state-limited
+cases, with no zero-hole contender. After fresh queue/host/candidate/
+quotient-poset audits, Abacus v178 `20260913T085023-de5e9aed7003` runs six
+disjoint d98/d98/d97/d97/d96/d96 closures (run `f03ea86d...`), while
+non-mirroring Laplace v26 `20260913T085111-f9c281fd61ac` runs d96/d96/d95
+closures (run `b543a9d1...`). Sole host v176 is the nice-10 CPU-15 broad
+grow/flag pass, seed `202609130176`, excluding all nine pending remote
+quotient posets. Remote work uses verified
 runner/helper/archive hashes `e3bd01d...`/`a4aae249...`/`bf1cfa42...`, 30M
 states, 1200 seconds per child, and a 2100-second envelope. Generated output
 remains untracked; do not push or publish.

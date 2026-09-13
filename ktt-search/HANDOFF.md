@@ -16,14 +16,16 @@
   and primary-ingested (`95120ac2...`): its three d101/d100/d100 closures are
   exact-positive (1,628,770--3,202,500 states; 145.914--234.188 s); its only
   negative was the exact-known-match control. Inputs were `44a0884e...`/
-  `77d6104a...`/`1ce3f9b9...`, run `13130c9b...`. Host v174 completed two new
-  exact evaluations and four state-limited cases, with no zero-hole contender.
-  After queue/host/global-candidate/quotient-poset audits, Abacus v177
-  `20260913T083446-bd7e4d1f1ed3` runs six distinct d100/d100/d99/d99/d99/d98
-  closures (run `2f827b56...`), while non-mirroring Laplace v25
-  `20260913T083531-1097da122aa4` runs three distinct d98 closures (run
-  `773f4f67...`). Host v175 is the sole nice-10 CPU-15 grow/flag pass (seed
-  `202609130175`) and excludes all nine remote pending quotient posets. Before
+  `77d6104a...`/`1ce3f9b9...`, run `13130c9b...`. Abacus v177 and Laplace v25
+  are fetched, provenance-verified, and primary-ingested (`89897944...`/
+  `a1c5fb2b...`): all nine d100--d98 targets are exact-positive. Host v175
+  completed four new exact evaluations and three state-limited cases, with no
+  zero-hole contender. After queue/host/global-candidate/quotient-poset audits,
+  Abacus v178 `20260913T085023-de5e9aed7003` runs six distinct
+  d98/d98/d97/d97/d96/d96 closures (run `f03ea86d...`), while non-mirroring
+  Laplace v26 `20260913T085111-f9c281fd61ac` runs d96/d96/d95 closures (run
+  `b543a9d1...`). Host v176 is the sole nice-10 CPU-15 grow/flag pass (seed
+  `202609130176`) and excludes all nine remote pending quotient posets. Before
   any successor submission, recheck both queues and audit against host, remote
   reservations, and all prior candidate/poset identities; never mirror the
   six-case Abacus batch.
