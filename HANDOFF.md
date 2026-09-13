@@ -2,19 +2,19 @@
 
 ## Current KTT state — 2026-09-13 (active)
 
-Latest verified evidence: Abacus v174 `20260913T074656-039afc08ae16`
-(`39bd943a...`) and Laplace v22 `20260913T074739-f8c4d8523da3`
-(`96f28943...`) are fetched, hash/control/profile verified, and
-primary-ingested; all nine d108--d105 zero-hole targets are exact-positive.
-Host v172 then completed two new exact evaluations and no zero-hole contender
-(three state-limited cases). Codex remains sole KTT worker and MariaDB writer.
-After a fresh queue/host/candidate/quotient-poset audit, Abacus v175
-`20260913T080354-4254d5d665cc` runs six distinct d104/d103 closures (run
-`de38a347...`; `b257beba...`/`3b7c46cf...`/`d5f15c89...`/`e08c917a...`/
-`98db62d7...`/`fecc6e22...`), while non-mirroring Laplace v23
-`20260913T080436-a1797f1540c7` runs three d103/d103/d102 closures (run
-`394e62c0...`; `d694c8a1...`/`487fec84...`/`85d939ba...`). Sole host v173
-is the nice-10 CPU-15 broad grow/flag pass, seed `202609130173`, and skips all
+Latest verified evidence: Abacus v175 `20260913T080354-4254d5d665cc`
+(`b60111d6...`) and Laplace v23 `20260913T080436-a1797f1540c7`
+(`10b3b178...`) are fetched, hash/control/profile verified, and
+primary-ingested; all nine d104--d102 zero-hole targets are exact-positive.
+Host v173 then completed one new exact evaluation, no zero-hole contender, and
+three state-limited cases. Codex remains sole KTT worker and MariaDB writer.
+After a fresh queue/host/candidate/quotient-poset audit, Abacus v176
+`20260913T081844-0abadaa146e5` runs six distinct d102/d101 closures (run
+`130be1d9...`; `aeee2a1c...`/`adfc60e0...`/`ddb9b5ce...`/`be7626ca...`/
+`1f238ee1...`/`3863244d...`), while non-mirroring Laplace v24
+`20260913T081922-f2886ff50550` runs d101/d100/d100 closures (run
+`13130c9b...`; `44a0884e...`/`77d6104a...`/`1ce3f9b9...`). Sole host v174
+is the nice-10 CPU-15 broad grow/flag pass, seed `202609130174`, and skips all
 nine remote pending quotient posets. Remote work uses verified
 runner/helper/archive hashes `e3bd01d...`/`a4aae249...`/`bf1cfa42...`, 30M
 states, 1200 seconds per child, and a 2100-second envelope. Generated output
