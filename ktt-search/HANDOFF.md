@@ -16,11 +16,17 @@
   and primary-ingested (`95120ac2...`): its three d101/d100/d100 closures are
   exact-positive (1,628,770--3,202,500 states; 145.914--234.188 s); its only
   negative was the exact-known-match control. Inputs were `44a0884e...`/
-  `77d6104a...`/`1ce3f9b9...`, run `13130c9b...`. Host v174 is now the sole
-  nice-10 CPU-15 broad grow/flag pass (seed `202609130174`); both remote queues
-  are clear. Before any successor submission, recheck both queues and audit
-  against host, remote reservations, and all prior candidate/poset identities;
-  never mirror the six-case Abacus batch.
+  `77d6104a...`/`1ce3f9b9...`, run `13130c9b...`. Host v174 completed two new
+  exact evaluations and four state-limited cases, with no zero-hole contender.
+  After queue/host/global-candidate/quotient-poset audits, Abacus v177
+  `20260913T083446-bd7e4d1f1ed3` runs six distinct d100/d100/d99/d99/d99/d98
+  closures (run `2f827b56...`), while non-mirroring Laplace v25
+  `20260913T083531-1097da122aa4` runs three distinct d98 closures (run
+  `773f4f67...`). Host v175 is the sole nice-10 CPU-15 grow/flag pass (seed
+  `202609130175`) and excludes all nine remote pending quotient posets. Before
+  any successor submission, recheck both queues and audit against host, remote
+  reservations, and all prior candidate/poset identities; never mirror the
+  six-case Abacus batch.
 - Verified runner/helper/archive hashes remain `e3bd01d...`/`a4aae249...`/
   `bf1cfa42...`; child limits are 30M states/1200 seconds in a 2100-second
   envelope. An exact zero-hole negative requires byte-matched local replay
