@@ -142,6 +142,12 @@ disjoint d23 neighbors of the host's leader. Inputs `3a07f127...`/
 42 exact cases under the same profile. Every known-end score is positive (even
 where the partial tail contribution is negative), so no full exact contender
 arose.
+Abacus v188 `20260913T145740-2c15e0aba890` is fetched, profile/control
+verified, locally d6-replayed, and ingested (`6e15df4e...`) for six further
+disjoint d23 mutations. Inputs `4a9cd53c...`/`8007ed9f...`/`ac33cab5...`/
+`cf02abfc...`/`ece32560...`/`654de4e8...` yielded 42 exact cases under the
+same profile; every known-end score is positive, so no full exact contender
+arose.
 The legacy Abacus hybrid runner asserts a superseded 2-CPU/8-GiB profile, so it
 is not submitted unchanged to the present 6-CPU Abacus. A negative full result
 still requires the prescribed independent out-of-range replay before any
