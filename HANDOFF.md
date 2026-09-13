@@ -3,21 +3,20 @@
 ## Current KTT state — 2026-09-13 (active)
 
 Latest verified evidence: Abacus v174 `20260913T074656-039afc08ae16`
-is fetched, hash/control/profile verified, and primary-ingested under ledger
-`39bd943a...`; all six disjoint d108--d106 zero-hole targets are
-exact-positive. Its run key is `589141a6...`, its input hashes are
+(`39bd943a...`) and Laplace v22 `20260913T074739-f8c4d8523da3`
+(`96f28943...`) are fetched, hash/control/profile verified, and
+primary-ingested. All nine disjoint d108--d105 zero-hole targets are
+exact-positive. Their run keys are `589141a6...`/`29a4279e...`; inputs are
 `59e3030a...`/`aedef3ca...`/`a9b43e5c...`/`dc197b6e...`/`8fe938b7...`/
-`eb0a7c1b...`, and every negative record is the exact-known-match control.
-Codex remains sole KTT worker and MariaDB writer. Non-mirroring Laplace v22
-`20260913T074739-f8c4d8523da3` remains active on three d106/d105 closures
-(run `29a4279e...`; `a5748396...`/`0e92b8ee...`/`3e4bb485...`). Sole host
-v172 is the active nice-10 CPU-15 broad grow/flag pass, seed `202609130172`,
-which skips pending quotient posets. Abacus is deliberately held until that
-host audit completes; then recheck both queues before reserving a successor.
-All remote work uses verified runner/helper/archive hashes `e3bd01d...`/
-`a4aae249...`/`bf1cfa42...`, 30M states, 1200 seconds per child, and a
-2100-second envelope. Generated output remains untracked; do not push or
-publish.
+`eb0a7c1b...` and `a5748396...`/`0e92b8ee...`/`3e4bb485...`. Every negative
+record is the exact-known-match control. Codex remains sole KTT worker and
+MariaDB writer. Sole host v172 is the active nice-10 CPU-15 broad grow/flag
+pass, seed `202609130172`, which skips pending quotient posets. Both remote
+queues are deliberately idle until that host audit completes; recheck both
+queues before reserving successors. All remote work uses verified
+runner/helper/archive hashes `e3bd01d...`/`a4aae249...`/`bf1cfa42...`, 30M
+states, 1200 seconds per child, and a 2100-second envelope. Generated output
+remains untracked; do not push or publish.
 
 Codex is the sole private KTT worker and local MariaDB writer.  No exact
 flagged zero-hole-negative is known.  The completed two-hole-closure campaign
