@@ -197,6 +197,14 @@ more GPU counts; next enumerate genuine one-hole equality swaps that move the
 nonflagged equality while retaining one hole, then repeat DB/queue and
 structural audits. No DB write.
 
+The exact one-hole swap audit has 1,764 reduced swaps from 198 parents; 262
+fresh quotient posets remain after ledger exclusion, and `derive_masked_interior`
+leaves 40 nonempty (222 empty). The first nonempty margin-ranked face is
+`0d5b93bc...` from `0095d973...`, mutation `swap_hole:2:5:6:7`: dimension 24,
+sole mask vector `0,0,0,0,4,0,0,0,0,0`, unrestricted endpoint flags, and
+certified `25^24 < 2^112` bound. It is pending a fresh queue/ledger audit and
+serial GPU interpolation; no DB write.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
