@@ -16,6 +16,8 @@
 #include <rocprim/functional.hpp>
 
 using Key = unsigned __int128;
+using TransitionOffset = std::uint64_t;
+static_assert(sizeof(TransitionOffset) == 8);
 
 namespace {
 
@@ -228,7 +230,7 @@ __global__ void count_transitions(const Key* state_keys,
                                   std::uint32_t strip_size,
                                   std::uint32_t row_lo, std::uint32_t row_hi,
                                   std::uint32_t saturation_limit,
-                                  std::uint32_t* counts) {
+                                  TransitionOffset* counts) {
     const std::size_t index = blockIdx.x * blockDim.x + threadIdx.x;
     if (index < state_count) {
         counts[index] = count_extensions_fast(state_keys[index], shape, strip_size,
@@ -239,7 +241,7 @@ __global__ void count_transitions(const Key* state_keys,
 __device__ void enumerate_extensions(
     Key source_key, Residues source_value, const DeviceShape& shape,
     std::uint32_t strip_size, std::uint32_t row_lo, std::uint32_t row_hi,
-    std::uint32_t output_offset, Key* output_keys,
+    TransitionOffset output_offset, Key* output_keys,
     Residues* output_values) {
     std::uint32_t suffix_capacity[kMaximumRows + 1]{};
     std::uint32_t choices[kMaximumRows]{};
@@ -252,7 +254,7 @@ __device__ void enumerate_extensions(
 
     int row = 0;
     std::uint32_t remaining = strip_size;
-    std::uint32_t found = 0;
+    TransitionOffset found = 0;
     Key delta_key = 0;
     choices[0] = remaining > suffix_capacity[1]
                      ? remaining - suffix_capacity[1]
@@ -302,7 +304,8 @@ __device__ void enumerate_extensions(
 __global__ void emit_transitions(
     const Key* state_keys, const Residues* state_values,
     std::size_t state_count, DeviceShape shape, std::uint32_t strip_size,
-    std::uint32_t row_lo, std::uint32_t row_hi, const std::uint32_t* offsets,
+    std::uint32_t row_lo, std::uint32_t row_hi,
+    const TransitionOffset* offsets,
     Key* transition_keys, Residues* transition_values) {
     const std::size_t index = blockIdx.x * blockDim.x + threadIdx.x;
     if (index < state_count) {
@@ -334,6 +337,19 @@ struct AdvanceResult {
     LayerTimings timings;
 };
 
+enum class TransitionDisposition { empty, proceed, over_limit };
+
+TransitionDisposition classify_transition_total(TransitionOffset last_offset,
+                                                 TransitionOffset last_count,
+                                                 std::size_t maximum) {
+    if (last_offset > maximum || last_count > maximum - last_offset) {
+        return TransitionDisposition::over_limit;
+    }
+    return last_offset == 0 && last_count == 0
+               ? TransitionDisposition::empty
+               : TransitionDisposition::proceed;
+}
+
 AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
                             std::uint32_t strip_size, std::uint32_t row_lo,
                             std::uint32_t row_hi,
@@ -341,8 +357,8 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
                             Residues moduli) {
     const unsigned int blocks =
         static_cast<unsigned int>((states.size + kBlockSize - 1) / kBlockSize);
-    DeviceBuffer<std::uint32_t> counts(states.size);
-    DeviceBuffer<std::uint32_t> offsets(states.size);
+    DeviceBuffer<TransitionOffset> counts(states.size);
+    DeviceBuffer<TransitionOffset> offsets(states.size);
     AdvanceResult result;
     result.timings.count_ms = time_gpu([&] {
         hipLaunchKernelGGL(count_transitions, dim3(blocks), dim3(kBlockSize), 0, 0,
@@ -355,25 +371,31 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
 
     std::size_t scan_temp_bytes = 0;
     HIP_CHECK(rocprim::exclusive_scan(nullptr, scan_temp_bytes, counts.get(),
-                                      offsets.get(), std::uint32_t{0}, states.size,
-                                      rocprim::plus<std::uint32_t>{}));
+                                      offsets.get(), TransitionOffset{0}, states.size,
+                                      rocprim::plus<TransitionOffset>{}));
     RawDeviceBuffer scan_temp(scan_temp_bytes);
     result.timings.scan_ms = time_gpu([&] {
         HIP_CHECK(rocprim::exclusive_scan(
             scan_temp.get(), scan_temp_bytes, counts.get(), offsets.get(),
-            std::uint32_t{0}, states.size, rocprim::plus<std::uint32_t>{}));
+            TransitionOffset{0}, states.size,
+            rocprim::plus<TransitionOffset>{}));
     });
-    std::uint32_t last_offset = 0;
-    std::uint32_t last_count = 0;
+    TransitionOffset last_offset = 0;
+    TransitionOffset last_count = 0;
     HIP_CHECK(hipMemcpy(&last_offset, offsets.get() + states.size - 1,
                         sizeof(last_offset), hipMemcpyDeviceToHost));
     HIP_CHECK(hipMemcpy(&last_count, counts.get() + states.size - 1,
                         sizeof(last_count), hipMemcpyDeviceToHost));
-    const std::uint64_t transition_count_u64 =
-        static_cast<std::uint64_t>(last_offset) + last_count;
-    if (transition_count_u64 == 0 || transition_count_u64 > maximum_transitions) {
-        throw std::runtime_error("transition count is zero or exceeds configured limit");
+    const TransitionDisposition disposition = classify_transition_total(
+        last_offset, last_count, maximum_transitions);
+    if (disposition == TransitionDisposition::over_limit) {
+        throw std::runtime_error("transition count exceeds configured limit");
     }
+    if (disposition == TransitionDisposition::empty) {
+        result.states = StateLayer{};
+        return result;
+    }
+    const TransitionOffset transition_count_u64 = last_offset + last_count;
     result.transitions = static_cast<std::size_t>(transition_count_u64);
 
     DeviceBuffer<Key> transition_keys(result.transitions);
@@ -431,7 +453,30 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
     return result;
 }
 
-std::vector<std::uint32_t> parse_list(const std::string& raw) {
+std::uint64_t parse_decimal(const std::string& raw, const std::string& name,
+                            std::uint64_t maximum) {
+    if (raw.empty() || raw.find_first_not_of("0123456789") != std::string::npos) {
+        throw std::runtime_error(name + " must be a nonnegative decimal integer");
+    }
+    std::uint64_t value = 0;
+    try {
+        value = std::stoull(raw);
+    } catch (const std::exception&) {
+        throw std::runtime_error(name + " is outside the supported integer range");
+    }
+    if (value > maximum) {
+        throw std::runtime_error(name + " is outside the supported integer range");
+    }
+    return value;
+}
+
+std::uint32_t parse_u32(const std::string& raw, const std::string& name) {
+    return static_cast<std::uint32_t>(
+        parse_decimal(raw, name, std::numeric_limits<std::uint32_t>::max()));
+}
+
+std::vector<std::uint32_t> parse_list(const std::string& raw,
+                                      const std::string& name) {
     if (raw.empty() || raw == "-") {
         return {};
     }
@@ -439,8 +484,7 @@ std::vector<std::uint32_t> parse_list(const std::string& raw) {
     std::size_t begin = 0;
     while (begin <= raw.size()) {
         const std::size_t end = raw.find(',', begin);
-        values.push_back(static_cast<std::uint32_t>(
-            std::stoul(raw.substr(begin, end - begin))));
+        values.push_back(parse_u32(raw.substr(begin, end - begin), name));
         if (end == std::string::npos) {
             break;
         }
@@ -466,8 +510,54 @@ std::uint64_t sum(const std::vector<std::uint32_t>& values) {
     return total;
 }
 
+std::uint32_t gcd(std::uint32_t left, std::uint32_t right) {
+    while (right != 0) {
+        const std::uint32_t remainder = left % right;
+        left = right;
+        right = remainder;
+    }
+    return left;
+}
+
 }  // namespace
 
+#ifdef EHRGPU_HOST_TEST
+int main() try {
+    if (classify_transition_total(4'304'268'255ULL, 64'609'566ULL,
+                                  150'000'000) !=
+        TransitionDisposition::over_limit) {
+        throw std::runtime_error("wide transition overflow regression failed");
+    }
+    if (classify_transition_total(0, 0, 150'000'000) !=
+        TransitionDisposition::empty) {
+        throw std::runtime_error("empty transition regression failed");
+    }
+    if (classify_transition_total(100, 5, 150'000'000) !=
+        TransitionDisposition::proceed) {
+        throw std::runtime_error("ordinary transition regression failed");
+    }
+    bool rejected_suffix = false;
+    try {
+        static_cast<void>(parse_u32("1junk", "test value"));
+    } catch (const std::runtime_error&) {
+        rejected_suffix = true;
+    }
+    bool rejected_overflow = false;
+    try {
+        static_cast<void>(parse_u32("4294967297", "test value"));
+    } catch (const std::runtime_error&) {
+        rejected_overflow = true;
+    }
+    if (!rejected_suffix || !rejected_overflow) {
+        throw std::runtime_error("strict parser regression failed");
+    }
+    std::cout << "host regressions passed\n";
+    return 0;
+} catch (const std::exception& error) {
+    std::cerr << "error: " << error.what() << '\n';
+    return 1;
+}
+#else
 int main(int argc, char** argv) try {
     if (argc < 7 || argc > 9) {
         std::cerr << "usage: packed_flagged_kostka_gpu_resident DILATION OUTER "
@@ -475,20 +565,24 @@ int main(int argc, char** argv) try {
                      "[MODULI]\n";
         return 2;
     }
-    const std::uint32_t dilation = static_cast<std::uint32_t>(std::stoul(argv[1]));
+    const std::uint32_t dilation = parse_u32(argv[1], "dilation");
     if (dilation == 0) {
         throw std::runtime_error("dilation must be positive");
     }
-    std::vector<std::uint32_t> outer = parse_list(argv[2]);
-    std::vector<std::uint32_t> inner = parse_list(argv[3]);
-    std::vector<std::uint32_t> weight = parse_list(argv[4]);
-    const std::vector<std::uint32_t> upper = parse_list(argv[5]);
-    const std::vector<std::uint32_t> lower = parse_list(argv[6]);
+    std::vector<std::uint32_t> outer = parse_list(argv[2], "outer part");
+    std::vector<std::uint32_t> inner = parse_list(argv[3], "inner part");
+    std::vector<std::uint32_t> weight = parse_list(argv[4], "weight part");
+    const std::vector<std::uint32_t> upper = parse_list(argv[5], "upper flag");
+    const std::vector<std::uint32_t> lower = parse_list(argv[6], "lower flag");
     const std::size_t maximum_transitions =
-        argc >= 8 ? std::stoull(argv[7]) : kDefaultMaximumTransitions;
+        argc >= 8
+            ? static_cast<std::size_t>(parse_decimal(
+                  argv[7], "maximum transitions",
+                  std::numeric_limits<std::size_t>::max()))
+            : kDefaultMaximumTransitions;
     std::vector<std::uint32_t> modulus_values;
     if (argc == 9) {
-        modulus_values = parse_list(argv[8]);
+        modulus_values = parse_list(argv[8], "modulus");
     } else {
         modulus_values.assign(kDefaultModuli, kDefaultModuli + kResidueLanes);
     }
@@ -500,6 +594,11 @@ int main(int argc, char** argv) try {
         const std::uint32_t modulus = modulus_values[lane];
         if (modulus < 2 || modulus >= (std::uint32_t{1} << 31)) {
             throw std::runtime_error("each modulus must lie in 2..2^31");
+        }
+        for (std::size_t previous = 0; previous < lane; ++previous) {
+            if (gcd(moduli.values[previous], modulus) != 1) {
+                throw std::runtime_error("moduli must be pairwise coprime");
+            }
         }
         moduli.values[lane] = modulus;
     }
@@ -589,15 +688,20 @@ int main(int argc, char** argv) try {
                   << ",\"reduce_ms\":" << timing.reduce_ms
                   << ",\"compact_ms\":" << timing.compact_ms
                   << ",\"sort_temp_bytes\":" << next.sort_temp_bytes << "}\n";
+        if (states.size == 0) {
+            break;
+        }
     }
 
     std::vector<Key> final_keys(states.size);
     std::vector<Residues> final_values(states.size);
-    HIP_CHECK(hipMemcpy(final_keys.data(), states.keys.get(), states.size * sizeof(Key),
-                        hipMemcpyDeviceToHost));
-    HIP_CHECK(hipMemcpy(final_values.data(), states.values.get(),
-                        states.size * sizeof(Residues),
-                        hipMemcpyDeviceToHost));
+    if (states.size != 0) {
+        HIP_CHECK(hipMemcpy(final_keys.data(), states.keys.get(),
+                            states.size * sizeof(Key), hipMemcpyDeviceToHost));
+        HIP_CHECK(hipMemcpy(final_values.data(), states.values.get(),
+                            states.size * sizeof(Residues),
+                            hipMemcpyDeviceToHost));
+    }
     const Key target = pack_parts(shape, outer.data());
     const auto found = std::lower_bound(final_keys.begin(), final_keys.end(), target);
     Residues answer{};
@@ -632,3 +736,4 @@ int main(int argc, char** argv) try {
     std::cerr << "error: " << error.what() << '\n';
     return 1;
 }
+#endif

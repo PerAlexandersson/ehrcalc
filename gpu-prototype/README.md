@@ -65,9 +65,23 @@ Lists are comma-separated; use `-` for an empty partition or absent flags.
 The default transition limit is 150 million and the default modulus is
 2,147,483,647. The modulus must be in `2..2^31`; exact integer answers require
 enough pairwise-coprime residue runs to exceed a separately certified bound.
+Numeric arguments are parsed strictly: suffixes, empty list entries, overflow,
+and non-coprime modulus lists are rejected. A mathematically valid empty DP
+frontier returns zero rather than being treated as a runtime failure.
 Compile with `-DEHRGPU_RESIDUE_LANES=N` and pass `N` comma-separated moduli to
 carry as many as eight residue lanes together. The exact driver batches at most
 three lanes because that is the measured safe memory point on the 16 GiB card.
+
+Compile and run the device-free host regressions:
+
+```text
+gpu-prototype/run-host-tests.sh
+```
+
+These checks cover 64-bit transition-total accounting, an empty frontier, and
+strict numeric parsing. The regular HIP source is also safe against an exclusive
+scan exceeding 32 bits: transition counts and offsets use 64-bit storage, while
+the configured per-layer cap remains below `2^32-1`.
 
 Run the small two-modulus CPU/GPU smoke comparison from the repository root:
 
@@ -89,6 +103,9 @@ compiles a one-, two-, or three-lane kernel, and evaluates batches of up to
 three pairwise-coprime residues. It prints an integer only after the combined
 modulus exceeds the supplied bound and the reconstruction lies below it;
 otherwise it fails rather than treating an ambiguous residue as exact.
+The host-test, smoke, and exact drivers share a nonblocking build-directory
+lock. Exact-run logs include a digest of the arguments and HIP source so two
+different invocations cannot silently reuse the same log filename.
 
 Do not replace the normal `hipMalloc`/`hipFree` buffers with ROCm asynchronous
 memory-pool allocation on this machine. A measured `hipMallocAsync` experiment

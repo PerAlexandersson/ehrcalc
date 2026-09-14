@@ -24,15 +24,28 @@ a caller-supplied certified bound makes CRT unique.
 On real straight flagged candidate `42d92b82...`, dilation 9 matched 243,369
 peak states and 115,666,316 peak transitions. Bounded-composition counting,
 feasible-suffix DFS pruning, occupied-bit sorting, buffer reuse, compact DFS
-state, 32-bit capped offsets, and 128-thread blocks reduce the exact three-lane
-run to about 0.525 s warm device work / 0.640 s warm internal total. Its three
-residues reconstruct the complete stored integer `549126938733237505207`.
-This is 76.3x faster than the 48.86-second packed CPU modular reference and
-about 20x faster than the initial 12.929-second resident kernel. Peak
-three-lane allocation is about 9.75 GB and fits the 16 GiB RX 9070 XT. The
+state, and 128-thread blocks reduced the measured exact three-lane run to about
+0.525 s warm device work / 0.640 s warm internal total. Its three residues
+reconstruct the complete stored integer `549126938733237505207`. Porting the
+same feasibility pruning to the packed CPU modular reference reduced its wall
+time from 48.86 s to 12.74 s, making the fair measured speedup about 19.9x.
+Peak three-lane allocation is about 9.75 GB and fits the 16 GiB RX 9070 XT. The
 CPU-enumerated hybrid remains negative evidence at 67.676 s. Full commands,
 inputs, timing stages, limitations, and memory accounting are in
 `gpu-prototype/results/2026-09-13-real-dp.md`.
+
+The Astra audit fixes are implemented but not yet checkpointed: GPU transition
+counts and scan offsets are now 64-bit, valid empty frontiers return zero,
+numeric parsing is strict, and runtime moduli must be pairwise coprime. The
+concrete wide-scan and parser regressions run device-free through
+`gpu-prototype/run-host-tests.sh`; build/run scripts share a nonblocking lock,
+and exact logs are invocation-specific. Both packed modular and maintained
+`BigUint` CPU paths now use wide shape totals, with a regression above `u32`.
+Feasible-suffix pruning is present in the maintained weak, flagged, and
+strict/interior streaming enumerators. The safety-fixed HIP source compiles
+without GPU exposure, but its performance is unmeasured; the 0.640-second result
+predates the 64-bit scan fix and is still mathematically valid because that run
+had only 115,666,316 transitions.
 
 One rejected `hipMallocAsync` memory-pool experiment caused an AMDGPU
 memory-aperture fault and wedged Euler's display. Its container exited, the
@@ -41,10 +54,12 @@ suspend/resume restored the display without losing tmux/Docker workers. Do not
 retry asynchronous allocation on this display-attached card. No further GPU
 execution should occur in this supervisor session.
 
-Strict/interior counting, transition chunking, and production Rust/CLI
-integration remain pending. Current verification should be refreshed before
-merge using CPU-only Rust tests, strict Clippy, shell syntax, HIP compilation
-without GPU device exposure, and `git diff --check`. Builds use
+Strict/interior GPU counting, transition chunking, and production Rust/CLI GPU
+integration remain pending. The audit-fix checkpoint passes all 45 engine tests,
+all 35 top-level Ehrcalc tests, strict engine Clippy, Bash syntax checks, the
+device-free HIP host regressions, and warning-free device-free HIP compilation
+for one and three residue lanes; `git diff --check` is clean. Host `shellcheck`
+was unavailable, so only `bash -n` covered the scripts. Builds use
 `/mnt/2TB-Babel/ai-storage/cargo-target`; no local `target/` is allowed.
 
 ## Current KTT state — 2026-09-13 (active)

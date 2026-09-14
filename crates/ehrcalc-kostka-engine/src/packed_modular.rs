@@ -208,10 +208,43 @@ impl ExtensionContext<'_> {
         mut visit: F,
     ) -> Result<(), String>
     where
-        F: FnMut(u128),
+        F: FnMut(u128) -> Result<(), String>,
     {
         let mut beta = *alpha;
-        self.extend(alpha, strip_size, 0, &mut beta, &mut visit)
+        let mut suffix_capacity = [0_u32; MAX_PACKED_ROWS + 1];
+        for row in (0..self.packer.rows).rev() {
+            let capacity = self.extension_capacity(alpha, strip_size, row);
+            suffix_capacity[row] = suffix_capacity[row + 1]
+                .saturating_add(capacity)
+                .min(strip_size);
+        }
+        self.extend(
+            alpha,
+            strip_size,
+            0,
+            &suffix_capacity,
+            &mut beta,
+            &mut visit,
+        )
+    }
+
+    fn extension_capacity(
+        &self,
+        alpha: &[u32; MAX_PACKED_ROWS],
+        strip_size: u32,
+        row: usize,
+    ) -> u32 {
+        if row < self.row_lo || row >= self.row_hi {
+            return 0;
+        }
+        let base = alpha[row];
+        let shape_capacity = self.lambda[row].saturating_sub(base);
+        let strip_capacity = if row == 0 {
+            strip_size
+        } else {
+            alpha[row - 1].saturating_sub(base)
+        };
+        shape_capacity.min(strip_capacity)
     }
 
     fn extend<F>(
@@ -219,39 +252,49 @@ impl ExtensionContext<'_> {
         alpha: &[u32; MAX_PACKED_ROWS],
         remaining: u32,
         row: usize,
+        suffix_capacity: &[u32; MAX_PACKED_ROWS + 1],
         beta: &mut [u32; MAX_PACKED_ROWS],
         visit: &mut F,
     ) -> Result<(), String>
     where
-        F: FnMut(u128),
+        F: FnMut(u128) -> Result<(), String>,
     {
         if row == self.packer.rows {
             if remaining == 0 {
-                visit(self.packer.pack_parts(beta)?);
+                visit(self.packer.pack_parts(beta)?)?;
             }
             return Ok(());
         }
 
         let base = alpha[row];
-        if row < self.row_lo || row >= self.row_hi {
-            beta[row] = base;
-            return self.extend(alpha, remaining, row + 1, beta, visit);
-        }
-
-        let shape_capacity = self.lambda[row].saturating_sub(base);
-        let strip_capacity = if row == 0 {
-            remaining
-        } else {
-            alpha[row - 1].saturating_sub(base)
-        };
-        let maximum = remaining.min(shape_capacity).min(strip_capacity);
-        for increment in 0..=maximum {
+        let maximum = remaining.min(self.extension_capacity(alpha, remaining, row));
+        let minimum = remaining.saturating_sub(suffix_capacity[row + 1]);
+        for increment in minimum..=maximum {
             beta[row] = base + increment;
-            self.extend(alpha, remaining - increment, row + 1, beta, visit)?;
+            self.extend(
+                alpha,
+                remaining - increment,
+                row + 1,
+                suffix_capacity,
+                beta,
+                visit,
+            )?;
         }
         beta[row] = base;
         Ok(())
     }
+}
+
+fn partition_size_u64(partition: &Partition) -> u64 {
+    partition.parts().iter().map(|&part| u64::from(part)).sum()
+}
+
+fn weight_size_u64(weight: &[u32]) -> Result<u64, String> {
+    weight.iter().try_fold(0_u64, |total, &part| {
+        total
+            .checked_add(u64::from(part))
+            .ok_or_else(|| "weight size exceeds u64".to_string())
+    })
 }
 
 /// Count a skew or flagged skew Kostka coefficient modulo several moduli.
@@ -275,9 +318,12 @@ pub fn try_flagged_skew_kostka_modular_stats(
         return Err("weight sorting is invalid when row flags are active".to_string());
     }
 
-    let skew_size = lambda.size().saturating_sub(mu.size());
-    let weight_size: u32 = weight.iter().sum();
-    if skew_size != weight_size || !mu.partition_less_equal(lambda) {
+    if !mu.partition_less_equal(lambda) {
+        return Ok(zero_stats(moduli));
+    }
+    let skew_size = partition_size_u64(lambda) - partition_size_u64(mu);
+    let weight_size = weight_size_u64(weight)?;
+    if skew_size != weight_size {
         return Ok(zero_stats(moduli));
     }
 
@@ -328,20 +374,23 @@ pub fn try_flagged_skew_kostka_modular_stats(
         for (&key, &count) in &states {
             let alpha = packer.unpack(key);
             context.visit_extensions(&alpha, strip_size, |target| {
-                transitions += 1;
+                transitions = transitions
+                    .checked_add(1)
+                    .ok_or_else(|| "transition count exceeds u64".to_string())?;
                 next.entry(target)
                     .or_insert(Residues([0; MAX_MODULI]))
                     .add_assign(count, moduli);
+                if let Some(limit) = max_states {
+                    if next.len() > limit {
+                        return Err(format!(
+                            "DP state count {} exceeds --max-states {}.",
+                            next.len(),
+                            limit
+                        ));
+                    }
+                }
+                Ok(())
             })?;
-        }
-        if let Some(limit) = max_states {
-            if next.len() > limit {
-                return Err(format!(
-                    "DP state count {} exceeds --max-states {}.",
-                    next.len(),
-                    limit
-                ));
-            }
         }
         peak_states = peak_states.max(next.len());
         level_states.push(next.len());
@@ -405,9 +454,12 @@ pub fn try_flagged_skew_kostka_modular_layer_trace(
             weight.len()
         ));
     }
-    let skew_size = lambda.size().saturating_sub(mu.size());
-    let weight_size: u32 = weight.iter().sum();
-    if skew_size != weight_size || !mu.partition_less_equal(lambda) {
+    if !mu.partition_less_equal(lambda) {
+        return Err("shape and weight do not define a nonempty compatible DP".to_string());
+    }
+    let skew_size = partition_size_u64(lambda) - partition_size_u64(mu);
+    let weight_size = weight_size_u64(weight)?;
+    if skew_size != weight_size {
         return Err("shape and weight do not define a nonempty compatible DP".to_string());
     }
 
@@ -465,17 +517,17 @@ pub fn try_flagged_skew_kostka_modular_layer_trace(
                 next.entry(target)
                     .or_insert(Residues([0; MAX_MODULI]))
                     .add_assign(count, &moduli);
+                if let Some(limit) = max_states {
+                    if next.len() > limit {
+                        return Err(format!(
+                            "DP state count {} exceeds --max-states {}.",
+                            next.len(),
+                            limit
+                        ));
+                    }
+                }
+                Ok(())
             })?;
-        }
-
-        if let Some(limit) = max_states {
-            if next.len() > limit {
-                return Err(format!(
-                    "DP state count {} exceeds --max-states {}.",
-                    next.len(),
-                    limit
-                ));
-            }
         }
 
         if label == layer {
@@ -711,6 +763,17 @@ mod tests {
         assert_eq!(actual.reconstruct_bounded(&expected).unwrap(), expected);
         assert_eq!(actual.level_states.len(), weight.len() + 1);
         assert_eq!(actual.level_transitions.len(), weight.len());
+    }
+
+    #[test]
+    fn modular_uses_wide_shape_totals_for_packable_partitions() {
+        let lambda = Partition::from_sorted(vec![2_147_483_648, 2_147_483_648]);
+        let mu = Partition::from_sorted(vec![2_147_483_648, 2_147_483_647]);
+        let actual =
+            try_skew_kostka_modular_stats(&lambda, &mu, &[1], &DEFAULT_MODULI[..2], None, false)
+                .unwrap();
+        assert_eq!(actual.residues, vec![1, 1]);
+        assert_eq!(actual.level_transitions, vec![1]);
     }
 
     #[test]

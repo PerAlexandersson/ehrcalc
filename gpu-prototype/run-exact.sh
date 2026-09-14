@@ -30,6 +30,17 @@ if ! docker image inspect "$image_name" >/dev/null 2>&1; then
     exit 1
 fi
 mkdir -p "$build_dir" "$cargo_target"
+exec 9>"$build_dir/ehrgpu.lock"
+if ! flock -n 9; then
+    echo "another Ehrcalc GPU build or run holds $build_dir/ehrgpu.lock" >&2
+    exit 1
+fi
+run_id=$(
+    {
+        printf '%s\0' "$@"
+        sha256sum "$repo_root/gpu-prototype/packed_flagged_kostka_gpu_resident.hip.cpp"
+    } | sha256sum | cut -c1-16
+)
 CARGO_TARGET_DIR="$cargo_target" cargo build \
     --manifest-path "$repo_root/Cargo.toml" --release \
     -p ehrcalc-kostka-engine --bin reconstruct_modular
@@ -71,7 +82,7 @@ while ((batch_start < needed_moduli)); do
           -DEHRGPU_RESIDUE_LANES=$lane_count \
           /source/packed_flagged_kostka_gpu_resident.hip.cpp \
           -o /build/$binary_name"
-    log_path="$build_dir/exact-d${dilation}-batch${batch_start}.log"
+    log_path="$build_dir/exact-${run_id}-batch${batch_start}.log"
     gpu_output=$(
         docker run --rm \
             --device=/dev/kfd --device=/dev/dri \

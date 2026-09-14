@@ -120,6 +120,55 @@ fn partition_count_map() -> PartitionCountMap {
     HashMap::with_hasher(PartitionBuildHasher::default())
 }
 
+fn partition_size_u64(partition: &Partition) -> u64 {
+    partition.parts().iter().map(|&part| u64::from(part)).sum()
+}
+
+fn weight_size_u64(weight: &[u32]) -> u64 {
+    weight.iter().map(|&part| u64::from(part)).sum()
+}
+
+fn horizontal_strip_row_capacity(
+    alpha: &Partition,
+    lambda: &Partition,
+    strip_size: u32,
+    row: usize,
+    row_lo: usize,
+    row_hi: usize,
+) -> u32 {
+    if row < row_lo || row >= row_hi {
+        return 0;
+    }
+
+    let base = alpha.part(row);
+    let shape_capacity = lambda.part(row).saturating_sub(base);
+    let strip_capacity = if row == 0 {
+        strip_size
+    } else {
+        alpha.part(row - 1).saturating_sub(base)
+    };
+    shape_capacity.min(strip_capacity)
+}
+
+fn horizontal_strip_suffix_capacities(
+    alpha: &Partition,
+    lambda: &Partition,
+    strip_size: u32,
+    n_rows: usize,
+    row_lo: usize,
+    row_hi: usize,
+) -> Vec<u32> {
+    let mut capacities = vec![0_u32; n_rows + 1];
+    for row in (0..n_rows).rev() {
+        capacities[row] = capacities[row + 1]
+            .saturating_add(horizontal_strip_row_capacity(
+                alpha, lambda, strip_size, row, row_lo, row_hi,
+            ))
+            .min(strip_size);
+    }
+    capacities
+}
+
 /// Legacy vector-building enumerator kept for correctness checks and benchmarking.
 pub fn horizontal_strip_extensions_legacy(
     alpha: &Partition,
@@ -228,15 +277,28 @@ fn for_each_horizontal_strip_extension<F>(
 
     let mut parts = alpha.parts().to_vec();
     parts.resize(n_rows, 0);
-    enumerate_strips_streaming(alpha, lambda, strip_size, 0, n_rows, &mut parts, &mut visit);
+    let suffix_capacity =
+        horizontal_strip_suffix_capacities(alpha, lambda, strip_size, n_rows, 0, n_rows);
+    enumerate_strips_streaming(
+        alpha,
+        lambda,
+        strip_size,
+        0,
+        n_rows,
+        &suffix_capacity,
+        &mut parts,
+        &mut visit,
+    );
 }
 
+#[allow(clippy::too_many_arguments)]
 fn enumerate_strips_streaming<F>(
     alpha: &Partition,
     lambda: &Partition,
     remaining: u32,
     row: usize,
     n_rows: usize,
+    suffix_capacity: &[u32],
     parts: &mut Vec<u32>,
     visit: &mut F,
 ) where
@@ -249,18 +311,28 @@ fn enumerate_strips_streaming<F>(
         return;
     }
 
-    let base = alpha.part(row);
-    let max_from_lambda = lambda.part(row).saturating_sub(base);
-    let max_from_strip = if row == 0 {
-        remaining
-    } else {
-        alpha.part(row - 1).saturating_sub(base)
-    };
-    let max_c = remaining.min(max_from_lambda).min(max_from_strip);
+    if remaining > suffix_capacity[row] {
+        return;
+    }
 
-    for c in 0..=max_c {
+    let base = alpha.part(row);
+    let max_c = remaining.min(horizontal_strip_row_capacity(
+        alpha, lambda, remaining, row, 0, n_rows,
+    ));
+    let min_c = remaining.saturating_sub(suffix_capacity[row + 1]);
+
+    for c in min_c..=max_c {
         parts[row] = base + c;
-        enumerate_strips_streaming(alpha, lambda, remaining - c, row + 1, n_rows, parts, visit);
+        enumerate_strips_streaming(
+            alpha,
+            lambda,
+            remaining - c,
+            row + 1,
+            n_rows,
+            suffix_capacity,
+            parts,
+            visit,
+        );
     }
     parts[row] = base;
 }
@@ -375,16 +447,15 @@ pub fn try_skew_kostka_stats(
     max_states: Option<usize>,
     sort_weight: bool,
 ) -> Result<KostkaDpStats, String> {
-    let skew_size: u32 = lambda.size().saturating_sub(mu.size());
-    let w_size: u32 = w.iter().sum();
-    if skew_size != w_size {
+    if !mu.partition_less_equal(lambda) {
         return Ok(KostkaDpStats {
             value: BigUint::zero(),
             peak_states: 0,
             level_states: Vec::new(),
         });
     }
-    if !mu.partition_less_equal(lambda) {
+    let skew_size = partition_size_u64(lambda) - partition_size_u64(mu);
+    if skew_size != weight_size_u64(w) {
         return Ok(KostkaDpStats {
             value: BigUint::zero(),
             peak_states: 0,
@@ -575,8 +646,19 @@ fn for_each_horizontal_strip_extension_restricted<F>(
 
     let mut parts = alpha.parts().to_vec();
     parts.resize(n_rows, 0);
+    let suffix_capacity =
+        horizontal_strip_suffix_capacities(alpha, lambda, strip_size, n_rows, row_lo, row_hi);
     enumerate_strips_restricted_streaming(
-        alpha, lambda, strip_size, 0, n_rows, row_lo, row_hi, &mut parts, &mut visit,
+        alpha,
+        lambda,
+        strip_size,
+        0,
+        n_rows,
+        row_lo,
+        row_hi,
+        &suffix_capacity,
+        &mut parts,
+        &mut visit,
     );
 }
 
@@ -589,6 +671,7 @@ fn enumerate_strips_restricted_streaming<F>(
     n_rows: usize,
     row_lo: usize,
     row_hi: usize,
+    suffix_capacity: &[u32],
     parts: &mut Vec<u32>,
     visit: &mut F,
 ) where
@@ -601,32 +684,17 @@ fn enumerate_strips_restricted_streaming<F>(
         return;
     }
 
-    let base = alpha.part(row);
-    if row < row_lo || row >= row_hi {
-        parts[row] = base;
-        enumerate_strips_restricted_streaming(
-            alpha,
-            lambda,
-            remaining,
-            row + 1,
-            n_rows,
-            row_lo,
-            row_hi,
-            parts,
-            visit,
-        );
+    if remaining > suffix_capacity[row] {
         return;
     }
 
-    let max_from_lambda = lambda.part(row).saturating_sub(base);
-    let max_from_strip = if row == 0 {
-        remaining
-    } else {
-        alpha.part(row - 1).saturating_sub(base)
-    };
-    let max_c = remaining.min(max_from_lambda).min(max_from_strip);
+    let base = alpha.part(row);
+    let max_c = remaining.min(horizontal_strip_row_capacity(
+        alpha, lambda, remaining, row, row_lo, row_hi,
+    ));
+    let min_c = remaining.saturating_sub(suffix_capacity[row + 1]);
 
-    for c in 0..=max_c {
+    for c in min_c..=max_c {
         parts[row] = base + c;
         enumerate_strips_restricted_streaming(
             alpha,
@@ -636,6 +704,7 @@ fn enumerate_strips_restricted_streaming<F>(
             n_rows,
             row_lo,
             row_hi,
+            suffix_capacity,
             parts,
             visit,
         );
@@ -731,12 +800,11 @@ pub fn try_flagged_skew_kostka(
     lower_flags: Option<&[u32]>,
     max_states: Option<usize>,
 ) -> Result<BigUint, String> {
-    let skew_size: u32 = lambda.size().saturating_sub(mu.size());
-    let w_size: u32 = w.iter().sum();
-    if skew_size != w_size {
+    if !mu.partition_less_equal(lambda) {
         return Ok(BigUint::zero());
     }
-    if !mu.partition_less_equal(lambda) {
+    let skew_size = partition_size_u64(lambda) - partition_size_u64(mu);
+    if skew_size != weight_size_u64(w) {
         return Ok(BigUint::zero());
     }
 
@@ -859,6 +927,34 @@ fn strict_horizontal_strip_extensions_legacy(
 }
 
 #[allow(clippy::too_many_arguments)]
+fn strict_horizontal_strip_row_capacity(
+    alpha: &Partition,
+    lambda: &Partition,
+    row: usize,
+    strict_diag: &[bool],
+    row_lo: usize,
+    row_hi: usize,
+) -> u32 {
+    if row < row_lo || row >= row_hi {
+        return 0;
+    }
+
+    let base = alpha.part(row);
+    let shape_capacity = lambda.part(row).saturating_sub(base);
+    let gap = if row == 0 {
+        u32::MAX
+    } else {
+        alpha.part(row - 1).saturating_sub(base)
+    };
+    let diagonal_capacity = if row > 0 && row < strict_diag.len() && strict_diag[row] {
+        gap.saturating_sub(1)
+    } else {
+        gap
+    };
+    shape_capacity.min(diagonal_capacity)
+}
+
+#[allow(clippy::too_many_arguments)]
 fn enumerate_strips_strict_new(
     alpha: &Partition,
     lambda: &Partition,
@@ -956,6 +1052,7 @@ fn for_each_strict_horizontal_strip_extension_restricted<F>(
     }
 
     let mut min_needed_suffix = vec![0u32; n_rows + 1];
+    let mut max_possible_suffix = vec![0u32; n_rows + 1];
     for r in (0..n_rows).rev() {
         min_needed_suffix[r] = min_needed_suffix[r + 1]
             + if (row_lo..row_hi).contains(&r) && r < strict_lower.len() && strict_lower[r] {
@@ -963,9 +1060,19 @@ fn for_each_strict_horizontal_strip_extension_restricted<F>(
             } else {
                 0
             };
+        max_possible_suffix[r] = max_possible_suffix[r + 1]
+            .saturating_add(strict_horizontal_strip_row_capacity(
+                alpha,
+                lambda,
+                r,
+                strict_diag,
+                row_lo,
+                row_hi,
+            ))
+            .min(strip_size);
     }
 
-    if strip_size < min_needed_suffix[0] {
+    if strip_size < min_needed_suffix[0] || strip_size > max_possible_suffix[0] {
         return;
     }
 
@@ -982,6 +1089,7 @@ fn for_each_strict_horizontal_strip_extension_restricted<F>(
         row_lo,
         row_hi,
         &min_needed_suffix,
+        &max_possible_suffix,
         &mut parts,
         &mut visit,
     );
@@ -999,6 +1107,7 @@ fn enumerate_strips_strict_streaming<F>(
     row_lo: usize,
     row_hi: usize,
     min_needed_suffix: &[u32],
+    max_possible_suffix: &[u32],
     parts: &mut Vec<u32>,
     visit: &mut F,
 ) where
@@ -1011,7 +1120,7 @@ fn enumerate_strips_strict_streaming<F>(
         return;
     }
 
-    if remaining < min_needed_suffix[row] {
+    if remaining < min_needed_suffix[row] || remaining > max_possible_suffix[row] {
         return;
     }
 
@@ -1028,6 +1137,7 @@ fn enumerate_strips_strict_streaming<F>(
             row_lo,
             row_hi,
             min_needed_suffix,
+            max_possible_suffix,
             parts,
             visit,
         );
@@ -1035,25 +1145,19 @@ fn enumerate_strips_strict_streaming<F>(
     }
 
     let need_strict_lower = row < strict_lower.len() && strict_lower[row];
-    let need_strict_diag = row > 0 && row < strict_diag.len() && strict_diag[row];
-
-    let min_c = if need_strict_lower { 1 } else { 0 };
+    let min_c = (if need_strict_lower { 1 } else { 0 })
+        .max(remaining.saturating_sub(max_possible_suffix[row + 1]));
     let base = alpha.part(row);
-    let max_from_lambda = lambda.part(row).saturating_sub(base);
-    let gap = if row == 0 {
-        u32::MAX
-    } else {
-        alpha.part(row - 1).saturating_sub(base)
-    };
-    let max_from_diag = if need_strict_diag {
-        gap.saturating_sub(1)
-    } else {
-        gap
-    };
     let max_for_row = remaining.saturating_sub(min_needed_suffix[row + 1]);
     let max_c = remaining
-        .min(max_from_lambda)
-        .min(max_from_diag)
+        .min(strict_horizontal_strip_row_capacity(
+            alpha,
+            lambda,
+            row,
+            strict_diag,
+            row_lo,
+            row_hi,
+        ))
         .min(max_for_row);
 
     if max_c < min_c {
@@ -1073,6 +1177,7 @@ fn enumerate_strips_strict_streaming<F>(
             row_lo,
             row_hi,
             min_needed_suffix,
+            max_possible_suffix,
             parts,
             visit,
         );
@@ -1250,12 +1355,11 @@ pub fn try_strict_flagged_skew_kostka(
     lower_flags: Option<&[u32]>,
     max_states: Option<usize>,
 ) -> Result<BigUint, String> {
-    let skew_size: u32 = lambda.size().saturating_sub(mu.size());
-    let w_size: u32 = w.iter().sum();
-    if skew_size != w_size {
+    if !mu.partition_less_equal(lambda) {
         return Ok(BigUint::zero());
     }
-    if !mu.partition_less_equal(lambda) {
+    let skew_size = partition_size_u64(lambda) - partition_size_u64(mu);
+    if skew_size != weight_size_u64(w) {
         return Ok(BigUint::zero());
     }
     if upper_flags.is_some_and(|flags| flags.len() != w.len())
@@ -1490,6 +1594,25 @@ mod tests {
         assert_eq!(
             skew_kostka(&lambda, &mu, &w, None, false),
             skew_kostka_legacy(&lambda, &mu, &w, None, false)
+        );
+    }
+
+    #[test]
+    fn production_dp_uses_wide_shape_totals() {
+        let lambda = p(&[2_147_483_648, 2_147_483_648]);
+        let mu = p(&[2_147_483_648, 2_147_483_647]);
+
+        assert_eq!(
+            try_skew_kostka(&lambda, &mu, &[1], None, false).unwrap(),
+            biguint(1)
+        );
+        assert_eq!(
+            try_flagged_skew_kostka(&lambda, &mu, &[1], None, None, None).unwrap(),
+            biguint(1)
+        );
+        assert_eq!(
+            try_strict_skew_kostka(&lambda, &mu, &[1], None, false).unwrap(),
+            biguint(1)
         );
     }
 
