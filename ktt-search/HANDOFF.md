@@ -67,6 +67,20 @@ At 2026-09-14T10:31+02:00 its two GPU residues were `1591401041` and
 the CPU certificate. External log `exact-1372b83f38e392af-batch0.log` has
 SHA-256 `85bbd37f...`. HIP source is `e0cc1690...`; no union sum or DB write
 occurred.
+
+Autonomous bridge follow-up ran two more ledger-disjoint individual faces from
+host `main`/`origin/main` `27ece104...` (HIP source `e0cc1690...`).
+`2c03dee1...` / mask `0x40000000000` / `(8,10)` (quotient `8350fd6e...`) had
+no candidate, attempt, proposal, same-poset, or local-evidence hit; exact CPU
+gave d22 `11880` and d23 `1777278888` under 150M states. Its bridge receipt
+`20260914T084547-ece5bf4c61f6` returned `1777278888` in 8.641 s (residue
+`1777278888` modulo the first prime). `83ec8882...` / mask
+`0x4000000000000` / `(7,11)` (quotient `9c085eb1...`) passed the same audit;
+CPU d22/d23 counts were `52920`/`4342507596`, and receipt
+`20260914T084642-c36fc4991f98` reconstructed `4342507596` in 8.353 s from
+residues `47540302`/`47540338`. Both shared receipts are under
+`/cargo-target/euler-gpu-bridge/results/`. They are exact count cross-checks,
+not polynomial counterexamples; no union sum or DB write occurred.
 After both queue checks (Laplace remains unreachable), v196
 `20260914T073435-1df562e27e39` was queued after v195 as a 60-second,
 hash-checked, non-candidate packed strict control (runner `03435442...`).

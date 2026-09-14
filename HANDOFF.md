@@ -74,6 +74,22 @@ At 2026-09-14T10:31+02:00 the GPU returned residues `1591401041` and
 `exact-1372b83f38e392af-batch0.log` has SHA-256 `85bbd37f...`. HIP source
 remains `e0cc1690...`; no overlapping union or DB write was involved.
 
+Two further individual faces were then audited and completed through the
+serialized `euler-gpu` bridge from host `main`/`origin/main` `27ece104...`,
+with the same HIP source SHA-256 `e0cc1690...`. `2c03dee1...`
+(`a=10,b=11`, mask `0x40000000000`, sole `(8,10)` pair, quotient hash
+`8350fd6e...`) had no candidate/attempt/proposal/same-poset ledger row and no
+same local evidence; CPU exactness gave d22 `11880`, d23 `1777278888` under
+150M states. Bridge receipt `20260914T084547-ece5bf4c61f6` returned the same
+d23 count in 8.641 s, with residue `1777278888` modulo `2147483647`.
+`83ec8882...` (mask `0x4000000000000`, sole `(7,11)` pair, quotient hash
+`9c085eb1...`) passed the same audit; CPU exactness gave d22 `52920`, d23
+`4342507596`. Receipt `20260914T084642-c36fc4991f98` returned exactly that in
+8.353 s, with residues `47540302`/`47540338` at the first two primes and CRT
+reconstruction. Receipts live under `/cargo-target/euler-gpu-bridge/results/`.
+These are independent exact count cross-checks only, not polynomial
+counterexamples; no union sum or MariaDB write occurred.
+
 Abacus remains CPU-only. After immediate Abacus/Laplace queue audit (Laplace
 still unreachable), v196 `20260914T073435-1df562e27e39` was queued behind v195:
 a 60-second non-candidate packed-masked control with runner
