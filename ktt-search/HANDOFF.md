@@ -22,6 +22,23 @@ on retained inputs with no `(11,1^9)/(1)` case; Laplace is unreachable; Euler
 was ready and idle. The first bridge request was rejected before execution
 because the bound-reporting tool change was not yet committed, so there is no
 receipt or ambiguous work from that refusal.
+
+Two paired contractions from that seed are now the priority exact checks.
+Both set `w=(0,2,1^17)` and absorb both holes into boundary runs, hence have
+zero non-flag edges. Candidate `0bc2eb21c110cc5fbd7167868edd13aa6ec4e533260cb5980e35c003f65cd3b4`
+uses the left closure of `(4,6)` and right closure of `(6,10)`, has masks
+`0,0,8,8,8,8,0,0,0,32,32,32,32,48,32,0,0,0,0`, and exact affine
+dimension 30. Candidate `fd1cf879c615243b7164b905fbe7e0694bd7ff3354eaddd0cc61891f21480d34`
+uses the opposite closures, masks
+`0,0,0,0,32,40,40,40,40,40,8,8,8,16,0,0,0,0,0`, and dimension 31.
+Direct candidate/attempt/proposal/sample audits and retained Abacus inputs have
+no identity hit. Exact CPU strict counts for the first child are zero through
+d9 and first nonzero at d10 = 1176, proving codegree 10 and h* degree 21;
+ordinary exact counts are independently in progress. The new research-only
+`masked_count` binary exposes the maintained ordinary masked engine, allowing
+low ordinary samples to determine h* without a costly high strict tail. Do not
+promote either child unless its full exact polynomial has a negative
+coefficient. Untracked evidence is under `runs/cpu-v233-*-zero-hole-exact-20260914.json`.
 The exact Euler receipt arguments reconstruct the inherited candidate
 `83859a42b52cb43349caee3fce174f540a21509868c177149e630842bb2468b8`
 (`a=5`, `b=5`, mask `0x1`, weight `1^10`, equality count 1) and quotient-poset
