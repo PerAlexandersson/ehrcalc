@@ -178,6 +178,14 @@ Abacus v195 is live with v196--v200 queued, and Laplace queue inspection timed
 out. The face is otherwise fresh and will be sampled serially through d20
 from this committed source snapshot; no DB write is authorized.
 
+`12782cc5...` is instead geometrically empty: bridge receipt
+`20260914T152713-85eb32a02e9a` is `ok:true`, cleaned, and carries validated
+`derive_masked_interior` `empty_face` evidence, so no d2--d20 interpolation
+or CPU replay is meaningful. The next fresh one-hole-preserving augmentation
+is `8ed718f4...` from `a26cd5dd...` (d18, sole hole `(3,6)`, masks
+`0,0,0,0,0,4,0,0,0,32`, bound `19^18 < 2^77`); it is distinct from all
+Abacus work and remains unsubmitted pending this checkpoint. No DB write.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
