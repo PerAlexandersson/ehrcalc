@@ -135,6 +135,13 @@ The next fresh individual-face closure, `aee7e11c...` from the one-hole parent
 positive. Evidence remains untracked at `runs/gpu-v212-aee7-interpolation-20260914.json`.
 No CPU replay or MariaDB write follows.
 
+The next audited rank, `9b1427c3...` from `43d8afd...`, is also ruled out:
+eleven clean individual-face GPU CRT receipts (masks
+`0,0,0,0,0,0,0,0,0,0,512,0`) through `20260914T145019-c57f47ded5d7`
+interpolate to an all-positive dimension-11 polynomial. The untracked
+provenance report is `runs/gpu-v213-9b1427-interpolation-20260914.json`.
+No CPU replay or MariaDB write follows.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
