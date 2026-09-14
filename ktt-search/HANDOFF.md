@@ -8,6 +8,9 @@ false positives; no negative zero-hole record remains pending. Abacus v195
 `20260913T183109-69b50bf3bf77` is live on all six allocated CPUs, and audited,
 disjoint v196--v200 successors are queued. Their structural
 runner/engine hashes are `5564bf69...`/`f179ae7e...`; do not duplicate them.
+The current read-only genetic-ledger audit found 15,353 exact negative records
+but none with `nonflagged_inequalities = 0`, so no already-exact flagged
+individual-face negative case exists for a duplicate Euler check.
 
 Euler wide-CRT exact strict count closes `07975fb3...`: receipt
 `20260914T105826-fd315db8e78c` certified `L^circ(7)=0` in 16.230 s using

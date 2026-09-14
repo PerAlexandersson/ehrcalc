@@ -6,7 +6,10 @@ Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
 counterexample is admitted, and no negative zero-hole record remains pending:
 both `07975fb3...` and `fb09eaa1...` are rejected interpolation false positives.
 Abacus v195 `20260913T183109-69b50bf3bf77` is live on all six allocated CPUs;
-its audited successors v196--v200 are queued, with no case overlap.
+its audited successors v196--v200 are queued, with no case overlap. The
+current read-only genetic-ledger audit found 15,353 exact negative records but
+zero with `nonflagged_inequalities = 0`; no already-exact flagged
+individual-face negative case exists for Euler to duplicate.
 
 Euler GPU wide CRT closed `07975fb3...` at strict dilation 7. Bridge receipt
 `20260914T105826-fd315db8e78c` used the certified coordinate-box bound
