@@ -115,6 +115,9 @@ Fresh read-only ledger inventory found no exact negative zero-hole row: all
 15,353 exact negative genetic rows split into 293 one-hole and 15,060 two-hole
 rows. Thus there is no additional already-exact zero-hole candidate to launch
 outside v194's recorded reservations.
+The seven archived `*flag*negative*` exact certificates were also rechecked:
+each explicitly retains one or two nonflagged top-complement equalities, so
+their negative polynomials are not flagged-skew witnesses.
 
 Abacus remains CPU-only. After immediate Abacus/Laplace queue audit (Laplace
 still unreachable), v196 `20260914T073435-1df562e27e39` was queued behind v195:
