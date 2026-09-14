@@ -41,6 +41,9 @@ run_case() {
     local upper=$6
     local lower=$7
     local modulus=$8
+    local forbidden=${9:--}
+    local strict_lower=${10:--}
+    local strict_diagonal=${11:--}
     local cpu_output
     local gpu_output
     local cpu_residue
@@ -48,7 +51,8 @@ run_case() {
 
     cpu_output=$(
         "$reference" - 0 "$dilation" "$outer" "$inner" "$weight" \
-            "$upper" "$lower" "$modulus" 2>&1
+            "$upper" "$lower" "$modulus" "$forbidden" "$strict_lower" \
+            "$strict_diagonal" 2>&1
     )
     cpu_residue=$(sed -n 's/.*residues=\[\([0-9][0-9]*\)\].*/\1/p' <<<"$cpu_output")
     gpu_output=$(
@@ -59,6 +63,7 @@ run_case() {
             "$image_name" /build/packed-flagged-kostka-gpu-resident \
             "$dilation" "$outer" "$inner" \
             "$weight" "$upper" "$lower" 150000000 "$modulus" \
+            "$forbidden" "$strict_lower" "$strict_diagonal" \
             2>"$build_dir/smoke-$name-$modulus.log"
     )
     gpu_residue=$(sed -n 's/.*"residue":\([0-9][0-9]*\).*/\1/p' <<<"$gpu_output")
@@ -73,6 +78,9 @@ for modulus in 2147483647 2147483629; do
     run_case skew 1 5,4,2 1 3,4,3 - - "$modulus"
     run_case flagged 1 4,3,1 1 2,3,2 2,3,3 1,1,2 "$modulus"
     run_case zero-strip 1 3,2 1 2,0,2 - - "$modulus"
+    run_case masked-face 1 2,1 - 1,1,1 - - "$modulus" 0,1,0 0,0,1 0,0,0
+    run_case strict-forced-diagonal 1 2,1 - 1,1,1 2,2,1 - "$modulus" \
+        0,0,0 0,0,0 0,0,2
 done
 
 echo "GPU-resident smoke suite passed"

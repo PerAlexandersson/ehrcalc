@@ -179,38 +179,76 @@ __host__ __device__ Key pack_parts(const DeviceShape& shape,
     return key;
 }
 
-__device__ std::uint32_t extension_capacity(
-    Key source_key, const DeviceShape& shape, std::uint32_t strip_size,
-    std::uint32_t row_lo, std::uint32_t row_hi, std::uint32_t row) {
-    if (row < row_lo || row >= row_hi) {
-        return 0;
-    }
+struct IncrementBounds {
+    std::uint32_t minimum;
+    std::uint32_t maximum;
+};
+
+__host__ __device__ bool increment_bounds(
+    Key source_key, const DeviceShape& shape, std::uint32_t row_lo,
+    std::uint32_t row_hi, std::uint32_t forbidden_mask,
+    std::uint32_t strict_lower_mask, std::uint32_t strict_diagonal_mask,
+    std::uint32_t row, IncrementBounds& bounds) {
+    const std::uint32_t row_bit = std::uint32_t{1} << row;
+    const bool forced_zero = row < row_lo || row >= row_hi ||
+                             (forbidden_mask & row_bit) != 0;
+    const bool strict_lower = (strict_lower_mask & row_bit) != 0;
+    const bool strict_diagonal = row > 0 &&
+                                 (strict_diagonal_mask & row_bit) != 0;
     const std::uint32_t alpha = static_cast<std::uint32_t>(
         (source_key >> (shape.bits * row)) & shape.mask);
-    const std::uint32_t shape_capacity = shape.outer[row] - alpha;
-    if (row == 0) {
-        return shape_capacity < strip_size ? shape_capacity : strip_size;
+    const std::uint32_t gap = row == 0
+                                  ? std::numeric_limits<std::uint32_t>::max()
+                                  : static_cast<std::uint32_t>(
+                                        (source_key >> (shape.bits * (row - 1))) &
+                                        shape.mask) -
+                                        alpha;
+    if (forced_zero) {
+        bounds = IncrementBounds{0, 0};
+        return !strict_lower && (!strict_diagonal || gap != 0);
     }
-    const std::uint32_t previous = static_cast<std::uint32_t>(
-        (source_key >> (shape.bits * (row - 1))) & shape.mask);
-    const std::uint32_t strip_capacity = previous - alpha;
-    return shape_capacity < strip_capacity ? shape_capacity : strip_capacity;
+    if (strict_diagonal && gap == 0) {
+        return false;
+    }
+    const std::uint32_t shape_capacity = shape.outer[row] - alpha;
+    const std::uint32_t diagonal_capacity = strict_diagonal ? gap - 1 : gap;
+    bounds.minimum = strict_lower ? 1 : 0;
+    bounds.maximum = shape_capacity < diagonal_capacity ? shape_capacity
+                                                        : diagonal_capacity;
+    return bounds.minimum <= bounds.maximum;
 }
 
-__device__ std::uint32_t count_extensions_fast(
+__host__ __device__ std::uint32_t count_extensions_fast(
     Key source_key, const DeviceShape& shape, std::uint32_t strip_size,
     std::uint32_t row_lo, std::uint32_t row_hi,
+    std::uint32_t forbidden_mask, std::uint32_t strict_lower_mask,
+    std::uint32_t strict_diagonal_mask,
     std::uint32_t saturation_limit) {
+    std::uint32_t extra_capacity[kMaximumRows]{};
+    std::uint32_t mandatory = 0;
+    for (std::uint32_t row = 0; row < shape.rows; ++row) {
+        IncrementBounds bounds{};
+        if (!increment_bounds(source_key, shape, row_lo, row_hi,
+                              forbidden_mask, strict_lower_mask,
+                              strict_diagonal_mask, row, bounds)) {
+            return 0;
+        }
+        mandatory += bounds.minimum;
+        extra_capacity[row] = bounds.maximum - bounds.minimum;
+    }
+    if (mandatory > strip_size) {
+        return 0;
+    }
+    const std::uint32_t target = strip_size - mandatory;
     std::uint32_t ways[kMaximumStripSize + 1]{};
     ways[0] = 1;
     for (std::uint32_t row = 0; row < shape.rows; ++row) {
-        const std::uint32_t capacity = extension_capacity(
-            source_key, shape, strip_size, row_lo, row_hi, row);
-        for (std::int32_t total = static_cast<std::int32_t>(strip_size);
+        const std::uint32_t capacity = extra_capacity[row];
+        for (std::int32_t total = static_cast<std::int32_t>(target);
              total >= 0; --total) {
             const std::uint32_t base = ways[total];
             const std::uint32_t remaining =
-                strip_size - static_cast<std::uint32_t>(total);
+                target - static_cast<std::uint32_t>(total);
             const std::uint32_t maximum_choice =
                 capacity < remaining ? capacity : remaining;
             for (std::uint32_t choice = 1; choice <= maximum_choice; ++choice) {
@@ -222,43 +260,72 @@ __device__ std::uint32_t count_extensions_fast(
             }
         }
     }
-    return ways[strip_size];
+    return ways[target];
 }
 
 __global__ void count_transitions(const Key* state_keys,
                                   std::size_t state_count, DeviceShape shape,
                                   std::uint32_t strip_size,
                                   std::uint32_t row_lo, std::uint32_t row_hi,
+                                  std::uint32_t forbidden_mask,
+                                  std::uint32_t strict_lower_mask,
+                                  std::uint32_t strict_diagonal_mask,
                                   std::uint32_t saturation_limit,
                                   TransitionOffset* counts) {
     const std::size_t index = blockIdx.x * blockDim.x + threadIdx.x;
     if (index < state_count) {
         counts[index] = count_extensions_fast(state_keys[index], shape, strip_size,
-                                              row_lo, row_hi, saturation_limit);
+                                              row_lo, row_hi, forbidden_mask,
+                                              strict_lower_mask,
+                                              strict_diagonal_mask,
+                                              saturation_limit);
     }
 }
 
-__device__ void enumerate_extensions(
+__host__ __device__ TransitionOffset enumerate_extensions(
     Key source_key, Residues source_value, const DeviceShape& shape,
     std::uint32_t strip_size, std::uint32_t row_lo, std::uint32_t row_hi,
+    std::uint32_t forbidden_mask, std::uint32_t strict_lower_mask,
+    std::uint32_t strict_diagonal_mask,
     TransitionOffset output_offset, Key* output_keys,
     Residues* output_values) {
-    std::uint32_t suffix_capacity[kMaximumRows + 1]{};
+    std::uint32_t row_minimum[kMaximumRows]{};
+    std::uint32_t row_maximum[kMaximumRows]{};
+    std::uint32_t suffix_minimum[kMaximumRows + 1]{};
+    std::uint32_t suffix_maximum[kMaximumRows + 1]{};
     std::uint32_t choices[kMaximumRows]{};
+    for (std::uint32_t row = 0; row < shape.rows; ++row) {
+        IncrementBounds bounds{};
+        if (!increment_bounds(source_key, shape, row_lo, row_hi,
+                              forbidden_mask, strict_lower_mask,
+                              strict_diagonal_mask, row, bounds)) {
+            return 0;
+        }
+        row_minimum[row] = bounds.minimum;
+        row_maximum[row] = bounds.maximum;
+    }
     for (std::uint32_t row = shape.rows; row-- > 0;) {
-        suffix_capacity[row] =
-            suffix_capacity[row + 1] +
-            extension_capacity(source_key, shape, strip_size, row_lo, row_hi,
-                               row);
+        suffix_minimum[row] = suffix_minimum[row + 1] + row_minimum[row];
+        const std::uint64_t maximum =
+            static_cast<std::uint64_t>(suffix_maximum[row + 1]) +
+            row_maximum[row];
+        suffix_maximum[row] = static_cast<std::uint32_t>(
+            maximum < strip_size ? maximum : strip_size);
+    }
+    if (strip_size < suffix_minimum[0] || strip_size > suffix_maximum[0]) {
+        return 0;
     }
 
     int row = 0;
     std::uint32_t remaining = strip_size;
     TransitionOffset found = 0;
     Key delta_key = 0;
-    choices[0] = remaining > suffix_capacity[1]
-                     ? remaining - suffix_capacity[1]
-                     : 0;
+    choices[0] = remaining > suffix_maximum[1]
+                     ? remaining - suffix_maximum[1]
+                     : row_minimum[0];
+    if (choices[0] < row_minimum[0]) {
+        choices[0] = row_minimum[0];
+    }
     while (row >= 0) {
         if (row == static_cast<int>(shape.rows)) {
             if (remaining == 0) {
@@ -277,17 +344,23 @@ __device__ void enumerate_extensions(
         }
 
         const std::uint32_t choice = choices[row];
-        const std::uint32_t capacity =
-            suffix_capacity[row] - suffix_capacity[row + 1];
-        if (choice <= capacity && choice <= remaining) {
+        const std::uint32_t maximum_here =
+            remaining >= suffix_minimum[row + 1]
+                ? remaining - suffix_minimum[row + 1]
+                : 0;
+        if (choice >= row_minimum[row] && choice <= row_maximum[row] &&
+            choice <= remaining && choice <= maximum_here) {
             delta_key += static_cast<Key>(choice) << (shape.bits * row);
             remaining -= choice;
             ++row;
             if (row < static_cast<int>(shape.rows)) {
                 choices[row] =
-                    remaining > suffix_capacity[row + 1]
-                        ? remaining - suffix_capacity[row + 1]
-                        : 0;
+                    remaining > suffix_maximum[row + 1]
+                        ? remaining - suffix_maximum[row + 1]
+                        : row_minimum[row];
+                if (choices[row] < row_minimum[row]) {
+                    choices[row] = row_minimum[row];
+                }
             }
         } else {
             --row;
@@ -299,19 +372,23 @@ __device__ void enumerate_extensions(
             }
         }
     }
+    return found;
 }
 
 __global__ void emit_transitions(
     const Key* state_keys, const Residues* state_values,
     std::size_t state_count, DeviceShape shape, std::uint32_t strip_size,
     std::uint32_t row_lo, std::uint32_t row_hi,
+    std::uint32_t forbidden_mask, std::uint32_t strict_lower_mask,
+    std::uint32_t strict_diagonal_mask,
     const TransitionOffset* offsets,
     Key* transition_keys, Residues* transition_values) {
     const std::size_t index = blockIdx.x * blockDim.x + threadIdx.x;
     if (index < state_count) {
-        enumerate_extensions(state_keys[index], state_values[index], shape,
-                             strip_size, row_lo, row_hi, offsets[index],
-                             transition_keys, transition_values);
+        static_cast<void>(enumerate_extensions(
+            state_keys[index], state_values[index], shape, strip_size, row_lo,
+            row_hi, forbidden_mask, strict_lower_mask, strict_diagonal_mask,
+            offsets[index], transition_keys, transition_values));
     }
 }
 
@@ -353,6 +430,9 @@ TransitionDisposition classify_transition_total(TransitionOffset last_offset,
 AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
                             std::uint32_t strip_size, std::uint32_t row_lo,
                             std::uint32_t row_hi,
+                            std::uint32_t forbidden_mask,
+                            std::uint32_t strict_lower_mask,
+                            std::uint32_t strict_diagonal_mask,
                             std::size_t maximum_transitions,
                             Residues moduli) {
     const unsigned int blocks =
@@ -363,7 +443,8 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
     result.timings.count_ms = time_gpu([&] {
         hipLaunchKernelGGL(count_transitions, dim3(blocks), dim3(kBlockSize), 0, 0,
                            states.keys.get(), states.size, shape, strip_size,
-                           row_lo, row_hi,
+                           row_lo, row_hi, forbidden_mask, strict_lower_mask,
+                           strict_diagonal_mask,
                            static_cast<std::uint32_t>(maximum_transitions + 1),
                            counts.get());
         HIP_CHECK(hipGetLastError());
@@ -403,7 +484,8 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
     result.timings.emit_ms = time_gpu([&] {
         hipLaunchKernelGGL(emit_transitions, dim3(blocks), dim3(kBlockSize), 0, 0,
                            states.keys.get(), states.values.get(), states.size,
-                           shape, strip_size, row_lo, row_hi, offsets.get(),
+                           shape, strip_size, row_lo, row_hi, forbidden_mask,
+                           strict_lower_mask, strict_diagonal_mask, offsets.get(),
                            transition_keys.get(), transition_values.get());
         HIP_CHECK(hipGetLastError());
     });
@@ -522,6 +604,82 @@ std::uint32_t gcd(std::uint32_t left, std::uint32_t right) {
 }  // namespace
 
 #ifdef EHRGPU_HOST_TEST
+struct HostState {
+    Key key;
+    Residues value;
+};
+
+std::uint32_t host_masked_face_count(
+    const std::vector<std::uint32_t>& upper,
+    const std::vector<std::uint32_t>& lower,
+    const std::vector<std::uint32_t>& forbidden,
+    const std::vector<std::uint32_t>& strict_lower,
+    const std::vector<std::uint32_t>& strict_diagonal) {
+    const std::vector<std::uint32_t> outer{2, 1};
+    const std::vector<std::uint32_t> weight{1, 1, 1};
+    const DeviceShape shape = make_shape(outer);
+    const std::uint32_t zero_parts[2]{0, 0};
+    Residues one{};
+    std::fill(std::begin(one.values), std::end(one.values), 1);
+    Residues moduli{};
+    std::fill(std::begin(moduli.values), std::end(moduli.values),
+              kDefaultModuli[0]);
+    std::vector<HostState> states{{pack_parts(shape, zero_parts), one}};
+
+    for (std::size_t label = 0; label < weight.size(); ++label) {
+        const std::uint32_t row_lo =
+            lower.empty() ? 0 : std::min<std::uint32_t>(
+                                      lower[label] == 0 ? 0 : lower[label] - 1,
+                                      shape.rows);
+        const std::uint32_t row_hi =
+            upper.empty() ? shape.rows
+                          : std::min<std::uint32_t>(upper[label], shape.rows);
+        std::vector<HostState> emitted;
+        for (const HostState& source : states) {
+            const std::uint32_t count = count_extensions_fast(
+                source.key, shape, weight[label], row_lo, row_hi,
+                forbidden[label], strict_lower[label], strict_diagonal[label],
+                1'000'000);
+            const std::size_t begin = emitted.size();
+            emitted.resize(begin + count);
+            std::vector<Key> keys(count);
+            std::vector<Residues> values(count);
+            const TransitionOffset found = enumerate_extensions(
+                source.key, source.value, shape, weight[label], row_lo, row_hi,
+                forbidden[label], strict_lower[label], strict_diagonal[label],
+                0, keys.data(), values.data());
+            if (found != count) {
+                throw std::runtime_error(
+                    "host count/emission transition mismatch");
+            }
+            for (std::size_t index = 0; index < count; ++index) {
+                emitted[begin + index] = HostState{keys[index], values[index]};
+            }
+        }
+        std::sort(emitted.begin(), emitted.end(),
+                  [](const HostState& left, const HostState& right) {
+                      return left.key < right.key;
+                  });
+        states.clear();
+        for (const HostState& item : emitted) {
+            if (!states.empty() && states.back().key == item.key) {
+                states.back().value = ModularAdd{moduli}(states.back().value,
+                                                        item.value);
+            } else {
+                states.push_back(item);
+            }
+        }
+    }
+
+    const Key target = pack_parts(shape, outer.data());
+    const auto found = std::lower_bound(
+        states.begin(), states.end(), target,
+        [](const HostState& state, Key key) { return state.key < key; });
+    return found != states.end() && found->key == target
+               ? found->value.values[0]
+               : 0;
+}
+
 int main() try {
     if (classify_transition_total(4'304'268'255ULL, 64'609'566ULL,
                                   150'000'000) !=
@@ -551,6 +709,24 @@ int main() try {
     if (!rejected_suffix || !rejected_overflow) {
         throw std::runtime_error("strict parser regression failed");
     }
+    const std::vector<std::uint32_t> zero_masks(3, 0);
+    if (host_masked_face_count({}, {}, zero_masks, zero_masks, zero_masks) !=
+        2) {
+        throw std::runtime_error("ordinary host transition regression failed");
+    }
+    const std::vector<std::uint32_t> internal_hole{0, 1, 0};
+    const std::vector<std::uint32_t> strict_top_last{0, 0, 1};
+    if (host_masked_face_count({}, {}, internal_hole, strict_top_last,
+                               zero_masks) != 1) {
+        throw std::runtime_error("masked strict face regression failed");
+    }
+    const std::vector<std::uint32_t> upper{2, 2, 1};
+    const std::vector<std::uint32_t> strict_forced_diagonal{0, 0, 2};
+    if (host_masked_face_count(upper, {}, zero_masks, zero_masks,
+                               strict_forced_diagonal) != 0) {
+        throw std::runtime_error(
+            "flag-forced strict diagonal regression failed");
+    }
     std::cout << "host regressions passed\n";
     return 0;
 } catch (const std::exception& error) {
@@ -559,10 +735,11 @@ int main() try {
 }
 #else
 int main(int argc, char** argv) try {
-    if (argc < 7 || argc > 9) {
+    if ((argc < 7 || argc > 9) && argc != 12) {
         std::cerr << "usage: packed_flagged_kostka_gpu_resident DILATION OUTER "
                      "INNER WEIGHT UPPER_FLAGS LOWER_FLAGS [MAX_TRANSITIONS] "
-                     "[MODULI]\n";
+                     "[MODULI [FORBIDDEN_MASKS STRICT_LOWER_MASKS "
+                     "STRICT_DIAGONAL_MASKS]]\n";
         return 2;
     }
     const std::uint32_t dilation = parse_u32(argv[1], "dilation");
@@ -574,6 +751,14 @@ int main(int argc, char** argv) try {
     std::vector<std::uint32_t> weight = parse_list(argv[4], "weight part");
     const std::vector<std::uint32_t> upper = parse_list(argv[5], "upper flag");
     const std::vector<std::uint32_t> lower = parse_list(argv[6], "lower flag");
+    std::vector<std::uint32_t> forbidden_masks;
+    std::vector<std::uint32_t> strict_lower_masks;
+    std::vector<std::uint32_t> strict_diagonal_masks;
+    if (argc == 12) {
+        forbidden_masks = parse_list(argv[9], "forbidden-row mask");
+        strict_lower_masks = parse_list(argv[10], "strict-lower mask");
+        strict_diagonal_masks = parse_list(argv[11], "strict-diagonal mask");
+    }
     const std::size_t maximum_transitions =
         argc >= 8
             ? static_cast<std::size_t>(parse_decimal(
@@ -581,7 +766,7 @@ int main(int argc, char** argv) try {
                   std::numeric_limits<std::size_t>::max()))
             : kDefaultMaximumTransitions;
     std::vector<std::uint32_t> modulus_values;
-    if (argc == 9) {
+    if (argc == 9 || argc == 12) {
         modulus_values = parse_list(argv[8], "modulus");
     } else {
         modulus_values.assign(kDefaultModuli, kDefaultModuli + kResidueLanes);
@@ -616,6 +801,46 @@ int main(int argc, char** argv) try {
     if (outer.empty() || inner.size() > outer.size() || sum(outer) < sum(inner) ||
         sum(outer) - sum(inner) != sum(weight)) {
         throw std::runtime_error("incompatible shape and weight");
+    }
+    if (outer.size() > kMaximumRows) {
+        throw std::runtime_error("shape exceeds GPU row limit");
+    }
+    if ((!upper.empty() && upper.size() != weight.size()) ||
+        (!lower.empty() && lower.size() != weight.size())) {
+        throw std::runtime_error("flag lengths must match weight length");
+    }
+    auto normalize_masks = [&](std::vector<std::uint32_t>& masks,
+                               const char* name) {
+        if (masks.empty()) {
+            masks.resize(weight.size(), 0);
+        } else if (masks.size() != weight.size()) {
+            throw std::runtime_error(std::string(name) +
+                                     " length must match weight length");
+        }
+    };
+    normalize_masks(forbidden_masks, "forbidden-row mask");
+    normalize_masks(strict_lower_masks, "strict-lower mask");
+    normalize_masks(strict_diagonal_masks, "strict-diagonal mask");
+    const std::uint32_t allowed_row_mask =
+        outer.size() == std::numeric_limits<std::uint32_t>::digits
+            ? std::numeric_limits<std::uint32_t>::max()
+            : (std::uint32_t{1} << outer.size()) - 1;
+    for (std::size_t label = 0; label < weight.size(); ++label) {
+        if (((forbidden_masks[label] | strict_lower_masks[label] |
+              strict_diagonal_masks[label]) &
+             ~allowed_row_mask) != 0) {
+            throw std::runtime_error("constraint mask contains a bit outside the shape rows");
+        }
+        if ((strict_diagonal_masks[label] & 1) != 0) {
+            throw std::runtime_error(
+                "strict-diagonal masks cannot contain the first-row bit");
+        }
+        if (weight[label] == 0 &&
+            (strict_lower_masks[label] != 0 ||
+             strict_diagonal_masks[label] != 0)) {
+            throw std::runtime_error(
+                "zero-weight labels must have zero strictness masks");
+        }
     }
     inner.resize(outer.size(), 0);
     for (std::size_t row = 0; row < outer.size(); ++row) {
@@ -667,8 +892,10 @@ int main(int argc, char** argv) try {
                       std::min<std::size_t>(upper[label], outer.size()))
                 : static_cast<std::uint32_t>(outer.size());
         const std::size_t source_states = states.size;
-        AdvanceResult next = advance_layer(states, shape, weight[label], row_lo,
-                                           row_hi, maximum_transitions, moduli);
+        AdvanceResult next = advance_layer(
+            states, shape, weight[label], row_lo, row_hi,
+            forbidden_masks[label], strict_lower_masks[label],
+            strict_diagonal_masks[label], maximum_transitions, moduli);
         states = std::move(next.states);
         peak_states = std::max(peak_states, states.size);
         peak_transitions = std::max(peak_transitions, next.transitions);

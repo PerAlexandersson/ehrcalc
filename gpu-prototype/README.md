@@ -58,7 +58,8 @@ Its command line is:
 ```text
 packed-flagged-kostka-gpu-resident \
   DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS \
-  [MAX_TRANSITIONS] [MODULI]
+  [MAX_TRANSITIONS] [MODULI] \
+  [FORBIDDEN_MASKS STRICT_LOWER_MASKS STRICT_DIAGONAL_MASKS]
 ```
 
 Lists are comma-separated; use `-` for an empty partition or absent flags.
@@ -72,16 +73,27 @@ Compile with `-DEHRGPU_RESIDUE_LANES=N` and pass `N` comma-separated moduli to
 carry as many as eight residue lanes together. The exact driver batches at most
 three lanes because that is the measured safe memory point on the 16 GiB card.
 
+The final three lists are optional per-label row bitmasks. Bit `r` in
+`FORBIDDEN_MASKS[i]` forces label `i+1` to occur zero times in zero-indexed row
+`r`; this represents arbitrary forbidden `(row,label)` pairs in a
+complement-row lift of an individual Kogan face. `STRICT_LOWER_MASKS` requires
+positive row increments, while `STRICT_DIAGONAL_MASKS` requires strict
+horizontal-strip diagonal inequalities. Flags, face masks, and both strictness
+masks are enforced together in transition counting and emission. The masked
+interface supports at most 32 shape rows.
+
 Compile and run the device-free host regressions:
 
 ```text
 gpu-prototype/run-host-tests.sh
 ```
 
-These checks cover 64-bit transition-total accounting, an empty frontier, and
-strict numeric parsing. The regular HIP source is also safe against an exclusive
-scan exceeding 32 bits: transition counts and offsets use 64-bit storage, while
-the configured per-layer cap remains below `2^32-1`.
+These checks cover 64-bit transition-total accounting, an empty frontier,
+strict numeric parsing, a non-interval Kogan-face hole, lower and diagonal
+strictness, a flag-forced zero row, and agreement between transition counting
+and emission. The regular HIP source is also safe against an exclusive scan
+exceeding 32 bits: transition counts and offsets use 64-bit storage, while the
+configured per-layer cap remains below `2^32-1`.
 
 Run the small two-modulus CPU/GPU smoke comparison from the repository root:
 
@@ -103,6 +115,29 @@ compiles a one-, two-, or three-lane kernel, and evaluates batches of up to
 three pairwise-coprime residues. It prints an integer only after the combined
 modulus exceeds the supplied bound and the reconstruction lies below it;
 otherwise it fails rather than treating an ambiguous residue as exact.
+
+For a relative-interior count, including an individual Kogan face with
+non-interval holes, use the strict wrapper:
+
+```text
+gpu-prototype/run-exact-strict.sh \
+  UPPER_BOUND DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS \
+  [MAX_TRANSITIONS [FORBIDDEN_MASKS]]
+```
+
+The wrapper calls the exact Rust affine-structure analyzer on the undilated
+input, derives the lower and diagonal strictness masks, and passes them to the
+same GPU/CRT driver. The analyzer propagates flags and forbidden equalities,
+closes directed cycles in the GT order graph, propagates exact rational
+component bounds through the level-weight equations, and computes their exact
+rank. Small masked faces are exhaustively checked against
+Ehrhart--Macdonald reciprocity in the engine tests. The standalone helper
+`derive_masked_interior` prints the dimension and masks as JSON for other KTT
+drivers.
+
+These APIs count one face. A union of reduced Kogan faces or a full key
+polynomial still needs overlap deduplication or inclusion--exclusion outside
+this kernel; summing face counts directly is not valid in general.
 The host-test, smoke, and exact drivers share a nonblocking build-directory
 lock. Exact-run logs include a digest of the arguments and HIP source so two
 different invocations cannot silently reuse the same log filename.

@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ $# -lt 7 || $# -gt 9 ]]; then
+    echo "usage: $0 UPPER_BOUND DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS [MAX_TRANSITIONS [FORBIDDEN_MASKS]]" >&2
+    exit 2
+fi
+
+upper_bound=$1
+dilation=$2
+outer=$3
+inner=$4
+weight=$5
+upper_flags=$6
+lower_flags=$7
+maximum_transitions=${8:-150000000}
+forbidden_masks=${9:--}
+
+repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
+cargo_target=${EHRGPU_CARGO_TARGET_DIR:-/mnt/2TB-Babel/ai-storage/cargo-target}
+derive_masks="$cargo_target/release/derive_masked_interior"
+
+mkdir -p "$cargo_target"
+CARGO_TARGET_DIR="$cargo_target" cargo build \
+    --manifest-path "$repo_root/Cargo.toml" --release \
+    -p ehrcalc-kostka-engine --bin derive_masked_interior
+
+mask_json=$(
+    "$derive_masks" "$outer" "$inner" "$weight" "$upper_flags" \
+        "$lower_flags" "$forbidden_masks"
+)
+readarray -t derived < <(
+    python3 -c '
+import json
+import sys
+
+data = json.loads(sys.argv[1])
+if data["empty"]:
+    print("empty")
+else:
+    print("nonempty")
+    print(data["dimension"])
+    print(",".join(map(str, data["strict_lower_masks"])))
+    print(",".join(map(str, data["strict_diagonal_masks"])))
+' "$mask_json"
+)
+
+if [[ ${derived[0]} == empty ]]; then
+    echo 0
+    exit 0
+fi
+
+dimension=${derived[1]}
+strict_lower_masks=${derived[2]}
+strict_diagonal_masks=${derived[3]}
+echo "derived relative-interior masks for dimension $dimension" >&2
+
+exec "$repo_root/gpu-prototype/run-exact.sh" \
+    "$upper_bound" "$dilation" "$outer" "$inner" "$weight" \
+    "$upper_flags" "$lower_flags" "$maximum_transitions" \
+    "$forbidden_masks" "$strict_lower_masks" "$strict_diagonal_masks"

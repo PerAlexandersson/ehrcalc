@@ -1,6 +1,6 @@
 use ehrcalc_kostka_engine::packed_modular::{
-    try_flagged_skew_kostka_modular_layer_trace, try_flagged_skew_kostka_modular_stats,
-    DEFAULT_MODULI,
+    try_masked_flagged_skew_kostka_modular_layer_trace,
+    try_masked_flagged_skew_kostka_modular_stats, DEFAULT_MODULI,
 };
 use ehrcalc_kostka_engine::Partition;
 use std::env;
@@ -43,9 +43,10 @@ fn write_u64(output: &mut impl Write, value: u64) -> std::io::Result<()> {
 
 fn main() -> Result<(), String> {
     let arguments: Vec<String> = env::args().collect();
-    if arguments.len() != 9 && arguments.len() != 10 {
+    if arguments.len() != 9 && arguments.len() != 10 && arguments.len() != 13 {
         return Err(format!(
-            "usage: {} OUTPUT LAYER DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS [MODULUS]",
+            "usage: {} OUTPUT LAYER DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS \
+             [MODULUS [FORBIDDEN_MASKS STRICT_LOWER_MASKS STRICT_DIAGONAL_MASKS]]",
             arguments
                 .first()
                 .map(String::as_str)
@@ -73,18 +74,39 @@ fn main() -> Result<(), String> {
         })
         .transpose()?
         .unwrap_or(DEFAULT_MODULI[0]);
+    let forbidden = arguments
+        .get(10)
+        .map(|raw| parse_list(raw, "forbidden-row mask"))
+        .transpose()?
+        .unwrap_or_default();
+    let strict_lower = arguments
+        .get(11)
+        .map(|raw| parse_list(raw, "strict-lower mask"))
+        .transpose()?
+        .unwrap_or_default();
+    let strict_diagonal = arguments
+        .get(12)
+        .map(|raw| parse_list(raw, "strict-diagonal mask"))
+        .transpose()?
+        .unwrap_or_default();
     let lambda = Partition::from_sorted(outer);
     let mu = Partition::from_sorted(inner);
     let upper_flags = (!upper.is_empty()).then_some(upper.as_slice());
     let lower_flags = (!lower.is_empty()).then_some(lower.as_slice());
+    let forbidden_masks = (!forbidden.is_empty()).then_some(forbidden.as_slice());
+    let strict_lower_masks = (!strict_lower.is_empty()).then_some(strict_lower.as_slice());
+    let strict_diagonal_masks = (!strict_diagonal.is_empty()).then_some(strict_diagonal.as_slice());
 
     if output_path == Path::new("-") {
-        let stats = try_flagged_skew_kostka_modular_stats(
+        let stats = try_masked_flagged_skew_kostka_modular_stats(
             &lambda,
             &mu,
             &weight,
             upper_flags,
             lower_flags,
+            forbidden_masks,
+            strict_lower_masks,
+            strict_diagonal_masks,
             &[modulus],
             None,
             false,
@@ -106,12 +128,15 @@ fn main() -> Result<(), String> {
         return Ok(());
     }
 
-    let trace = try_flagged_skew_kostka_modular_layer_trace(
+    let trace = try_masked_flagged_skew_kostka_modular_layer_trace(
         &lambda,
         &mu,
         &weight,
         upper_flags,
         lower_flags,
+        forbidden_masks,
+        strict_lower_masks,
+        strict_diagonal_masks,
         modulus,
         layer,
         None,

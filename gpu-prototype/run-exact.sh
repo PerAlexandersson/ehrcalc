@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ $# -lt 7 || $# -gt 8 ]]; then
-    echo "usage: $0 UPPER_BOUND DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS [MAX_TRANSITIONS]" >&2
+if [[ $# -lt 7 || ($# -gt 8 && $# -ne 11) ]]; then
+    echo "usage: $0 UPPER_BOUND DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS [MAX_TRANSITIONS [FORBIDDEN_MASKS STRICT_LOWER_MASKS STRICT_DIAGONAL_MASKS]]" >&2
     exit 2
 fi
 
@@ -14,6 +14,9 @@ weight=$5
 upper_flags=$6
 lower_flags=$7
 maximum_transitions=${8:-150000000}
+forbidden_masks=${9:--}
+strict_lower_masks=${10:--}
+strict_diagonal_masks=${11:--}
 
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 image_name=${EHRGPU_IMAGE:-ehrcalc-rocm:7.2.4}
@@ -91,6 +94,7 @@ while ((batch_start < needed_moduli)); do
             "$image_name" "/build/$binary_name" \
             "$dilation" "$outer" "$inner" "$weight" "$upper_flags" \
             "$lower_flags" "$maximum_transitions" "$batch_moduli_csv" \
+            "$forbidden_masks" "$strict_lower_masks" "$strict_diagonal_masks" \
             2>"$log_path"
     )
     batch_residues_csv=$(

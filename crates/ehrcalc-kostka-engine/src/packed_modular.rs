@@ -198,6 +198,9 @@ struct ExtensionContext<'a> {
     lambda: &'a [u32; MAX_PACKED_ROWS],
     row_lo: usize,
     row_hi: usize,
+    forbidden_mask: u32,
+    strict_lower_mask: u32,
+    strict_diagonal_mask: u32,
 }
 
 impl ExtensionContext<'_> {
@@ -211,48 +214,77 @@ impl ExtensionContext<'_> {
         F: FnMut(u128) -> Result<(), String>,
     {
         let mut beta = *alpha;
-        let mut suffix_capacity = [0_u32; MAX_PACKED_ROWS + 1];
+        let mut row_minimum = [0_u32; MAX_PACKED_ROWS];
+        let mut row_maximum = [0_u32; MAX_PACKED_ROWS];
+        let mut suffix_minimum = [0_u32; MAX_PACKED_ROWS + 1];
+        let mut suffix_maximum = [0_u32; MAX_PACKED_ROWS + 1];
+        for row in 0..self.packer.rows {
+            let Some((minimum, maximum)) = self.extension_bounds(alpha, row) else {
+                return Ok(());
+            };
+            row_minimum[row] = minimum;
+            row_maximum[row] = maximum;
+        }
         for row in (0..self.packer.rows).rev() {
-            let capacity = self.extension_capacity(alpha, strip_size, row);
-            suffix_capacity[row] = suffix_capacity[row + 1]
-                .saturating_add(capacity)
+            suffix_minimum[row] = suffix_minimum[row + 1].saturating_add(row_minimum[row]);
+            suffix_maximum[row] = suffix_maximum[row + 1]
+                .saturating_add(row_maximum[row])
                 .min(strip_size);
+        }
+        if strip_size < suffix_minimum[0] || strip_size > suffix_maximum[0] {
+            return Ok(());
         }
         self.extend(
             alpha,
             strip_size,
             0,
-            &suffix_capacity,
+            &row_minimum,
+            &row_maximum,
+            &suffix_minimum,
+            &suffix_maximum,
             &mut beta,
             &mut visit,
         )
     }
 
-    fn extension_capacity(
-        &self,
-        alpha: &[u32; MAX_PACKED_ROWS],
-        strip_size: u32,
-        row: usize,
-    ) -> u32 {
-        if row < self.row_lo || row >= self.row_hi {
-            return 0;
-        }
+    fn extension_bounds(&self, alpha: &[u32; MAX_PACKED_ROWS], row: usize) -> Option<(u32, u32)> {
+        let forced_zero =
+            row < self.row_lo || row >= self.row_hi || self.forbidden_mask & (1_u32 << row) != 0;
+        let need_strict_lower = self.strict_lower_mask & (1_u32 << row) != 0;
+        let need_strict_diagonal = row > 0 && self.strict_diagonal_mask & (1_u32 << row) != 0;
         let base = alpha[row];
-        let shape_capacity = self.lambda[row].saturating_sub(base);
-        let strip_capacity = if row == 0 {
-            strip_size
+        let gap = if row == 0 {
+            u32::MAX
         } else {
             alpha[row - 1].saturating_sub(base)
         };
-        shape_capacity.min(strip_capacity)
+        if forced_zero {
+            if need_strict_lower || (need_strict_diagonal && gap == 0) {
+                return None;
+            }
+            return Some((0, 0));
+        }
+
+        let minimum = u32::from(need_strict_lower);
+        let diagonal_capacity = if need_strict_diagonal {
+            gap.checked_sub(1)?
+        } else {
+            gap
+        };
+        let maximum = self.lambda[row].saturating_sub(base).min(diagonal_capacity);
+        (minimum <= maximum).then_some((minimum, maximum))
     }
 
+    #[allow(clippy::too_many_arguments)]
     fn extend<F>(
         &self,
         alpha: &[u32; MAX_PACKED_ROWS],
         remaining: u32,
         row: usize,
-        suffix_capacity: &[u32; MAX_PACKED_ROWS + 1],
+        row_minimum: &[u32; MAX_PACKED_ROWS],
+        row_maximum: &[u32; MAX_PACKED_ROWS],
+        suffix_minimum: &[u32; MAX_PACKED_ROWS + 1],
+        suffix_maximum: &[u32; MAX_PACKED_ROWS + 1],
         beta: &mut [u32; MAX_PACKED_ROWS],
         visit: &mut F,
     ) -> Result<(), String>
@@ -265,17 +297,25 @@ impl ExtensionContext<'_> {
             }
             return Ok(());
         }
+        if remaining < suffix_minimum[row] || remaining > suffix_maximum[row] {
+            return Ok(());
+        }
 
         let base = alpha[row];
-        let maximum = remaining.min(self.extension_capacity(alpha, remaining, row));
-        let minimum = remaining.saturating_sub(suffix_capacity[row + 1]);
+        let minimum = row_minimum[row].max(remaining.saturating_sub(suffix_maximum[row + 1]));
+        let maximum = remaining
+            .min(row_maximum[row])
+            .min(remaining.saturating_sub(suffix_minimum[row + 1]));
         for increment in minimum..=maximum {
             beta[row] = base + increment;
             self.extend(
                 alpha,
                 remaining - increment,
                 row + 1,
-                suffix_capacity,
+                row_minimum,
+                row_maximum,
+                suffix_minimum,
+                suffix_maximum,
                 beta,
                 visit,
             )?;
@@ -297,25 +337,69 @@ fn weight_size_u64(weight: &[u32]) -> Result<u64, String> {
     })
 }
 
-/// Count a skew or flagged skew Kostka coefficient modulo several moduli.
+fn validate_constraint_masks(
+    name: &str,
+    masks: Option<&[u32]>,
+    weight_len: usize,
+    rows: usize,
+) -> Result<(), String> {
+    let Some(masks) = masks else {
+        return Ok(());
+    };
+    if masks.len() != weight_len {
+        return Err(format!(
+            "{name} length {} does not match weight length {weight_len}",
+            masks.len()
+        ));
+    }
+    let allowed = if rows == u32::BITS as usize {
+        u32::MAX
+    } else {
+        (1_u32 << rows) - 1
+    };
+    if let Some((label, mask)) = masks
+        .iter()
+        .enumerate()
+        .find(|(_, mask)| **mask & !allowed != 0)
+    {
+        return Err(format!(
+            "{name} for label {} contains a bit outside the {rows} shape rows: {mask:#x}",
+            label + 1
+        ));
+    }
+    Ok(())
+}
+
+/// Count a constrained skew Kostka coefficient modulo several moduli.
 ///
-/// When flags are absent, `sort_weight` may be used to reduce peak state count.
-/// Flag entries use the same one-indexed row convention as
-/// `kostka_dp::try_flagged_skew_kostka`.
+/// The row-mask convention agrees with
+/// `kostka_dp::try_masked_flagged_skew_kostka`. This supports individual
+/// Kogan faces after a complement-row lift, as well as explicit
+/// relative-interior masks. Weight sorting is valid only when every constraint
+/// argument is absent.
 #[allow(clippy::too_many_arguments)]
-pub fn try_flagged_skew_kostka_modular_stats(
+pub fn try_masked_flagged_skew_kostka_modular_stats(
     lambda: &Partition,
     mu: &Partition,
     weight: &[u32],
     upper_flags: Option<&[u32]>,
     lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+    strict_lower_masks: Option<&[u32]>,
+    strict_diagonal_masks: Option<&[u32]>,
     moduli: &[u32],
     max_states: Option<usize>,
     sort_weight: bool,
 ) -> Result<ModularKostkaStats, String> {
     validate_moduli(moduli)?;
-    if (upper_flags.is_some() || lower_flags.is_some()) && sort_weight {
-        return Err("weight sorting is invalid when row flags are active".to_string());
+    if (upper_flags.is_some()
+        || lower_flags.is_some()
+        || forbidden_row_masks.is_some()
+        || strict_lower_masks.is_some()
+        || strict_diagonal_masks.is_some())
+        && sort_weight
+    {
+        return Err("weight sorting is invalid when row constraints are active".to_string());
     }
 
     if !mu.partition_less_equal(lambda) {
@@ -328,6 +412,32 @@ pub fn try_flagged_skew_kostka_modular_stats(
     }
 
     let packer = PackedPartitions::new(lambda)?;
+    if upper_flags.is_some_and(|flags| flags.len() != weight.len())
+        || lower_flags.is_some_and(|flags| flags.len() != weight.len())
+    {
+        return Err("flag lengths must match the weight length".to_string());
+    }
+    validate_constraint_masks(
+        "forbidden-row mask",
+        forbidden_row_masks,
+        weight.len(),
+        packer.rows,
+    )?;
+    validate_constraint_masks(
+        "strict-lower mask",
+        strict_lower_masks,
+        weight.len(),
+        packer.rows,
+    )?;
+    validate_constraint_masks(
+        "strict-diagonal mask",
+        strict_diagonal_masks,
+        weight.len(),
+        packer.rows,
+    )?;
+    if strict_diagonal_masks.is_some_and(|masks| masks.iter().any(|mask| mask & 1 != 0)) {
+        return Err("strict-diagonal masks cannot contain the first-row bit".to_string());
+    }
     let lambda_key = packer.pack_partition(lambda)?;
     let mu_key = packer.pack_partition(mu)?;
     let mut lambda_parts = [0_u32; MAX_PACKED_ROWS];
@@ -350,6 +460,11 @@ pub fn try_flagged_skew_kostka_modular_stats(
 
     for (label, &strip_size) in effective_weight.iter().enumerate() {
         if strip_size == 0 {
+            if strict_lower_masks.is_some_and(|masks| masks[label] != 0)
+                || strict_diagonal_masks.is_some_and(|masks| masks[label] != 0)
+            {
+                return Err("zero-weight labels must have zero strictness masks".to_string());
+            }
             level_states.push(states.len());
             level_transitions.push(states.len() as u64);
             continue;
@@ -368,6 +483,9 @@ pub fn try_flagged_skew_kostka_modular_stats(
             lambda: &lambda_parts,
             row_lo,
             row_hi,
+            forbidden_mask: forbidden_row_masks.map_or(0, |masks| masks[label]),
+            strict_lower_mask: strict_lower_masks.map_or(0, |masks| masks[label]),
+            strict_diagonal_mask: strict_diagonal_masks.map_or(0, |masks| masks[label]),
         };
         let mut next = state_map_with_capacity(states.len().saturating_mul(2));
         let mut transitions = 0_u64;
@@ -410,6 +528,34 @@ pub fn try_flagged_skew_kostka_modular_stats(
     })
 }
 
+/// Count an ordinary or row-flagged skew Kostka coefficient modulo several
+/// moduli.
+#[allow(clippy::too_many_arguments)]
+pub fn try_flagged_skew_kostka_modular_stats(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    moduli: &[u32],
+    max_states: Option<usize>,
+    sort_weight: bool,
+) -> Result<ModularKostkaStats, String> {
+    try_masked_flagged_skew_kostka_modular_stats(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        None,
+        None,
+        None,
+        moduli,
+        max_states,
+        sort_weight,
+    )
+}
+
 /// Unflagged convenience wrapper.
 pub fn try_skew_kostka_modular_stats(
     lambda: &Partition,
@@ -437,12 +583,15 @@ pub fn try_skew_kostka_modular_stats(
 /// This intentionally supports one modulus: large traces are diagnostic data,
 /// while the regular counter shares transition enumeration across all lanes.
 #[allow(clippy::too_many_arguments)]
-pub fn try_flagged_skew_kostka_modular_layer_trace(
+pub fn try_masked_flagged_skew_kostka_modular_layer_trace(
     lambda: &Partition,
     mu: &Partition,
     weight: &[u32],
     upper_flags: Option<&[u32]>,
     lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+    strict_lower_masks: Option<&[u32]>,
+    strict_diagonal_masks: Option<&[u32]>,
     modulus: u32,
     layer: usize,
     max_states: Option<usize>,
@@ -464,6 +613,32 @@ pub fn try_flagged_skew_kostka_modular_layer_trace(
     }
 
     let packer = PackedPartitions::new(lambda)?;
+    if upper_flags.is_some_and(|flags| flags.len() != weight.len())
+        || lower_flags.is_some_and(|flags| flags.len() != weight.len())
+    {
+        return Err("flag lengths must match the weight length".to_string());
+    }
+    validate_constraint_masks(
+        "forbidden-row mask",
+        forbidden_row_masks,
+        weight.len(),
+        packer.rows,
+    )?;
+    validate_constraint_masks(
+        "strict-lower mask",
+        strict_lower_masks,
+        weight.len(),
+        packer.rows,
+    )?;
+    validate_constraint_masks(
+        "strict-diagonal mask",
+        strict_diagonal_masks,
+        weight.len(),
+        packer.rows,
+    )?;
+    if strict_diagonal_masks.is_some_and(|masks| masks.iter().any(|mask| mask & 1 != 0)) {
+        return Err("strict-diagonal masks cannot contain the first-row bit".to_string());
+    }
     let mu_key = packer.pack_partition(mu)?;
     let mut lambda_parts = [0_u32; MAX_PACKED_ROWS];
     lambda_parts[..lambda.num_parts()].copy_from_slice(lambda.parts());
@@ -472,6 +647,12 @@ pub fn try_flagged_skew_kostka_modular_layer_trace(
     states.insert(mu_key, Residues::one(1));
 
     for (label, &strip_size) in weight.iter().enumerate().take(layer + 1) {
+        if strip_size == 0
+            && (strict_lower_masks.is_some_and(|masks| masks[label] != 0)
+                || strict_diagonal_masks.is_some_and(|masks| masks[label] != 0))
+        {
+            return Err("zero-weight labels must have zero strictness masks".to_string());
+        }
         let row_lo = lower_flags
             .and_then(|flags| flags.get(label))
             .map(|&flag| (flag as usize).saturating_sub(1).min(packer.rows))
@@ -485,6 +666,9 @@ pub fn try_flagged_skew_kostka_modular_layer_trace(
             lambda: &lambda_parts,
             row_lo,
             row_hi,
+            forbidden_mask: forbidden_row_masks.map_or(0, |masks| masks[label]),
+            strict_lower_mask: strict_lower_masks.map_or(0, |masks| masks[label]),
+            strict_diagonal_mask: strict_diagonal_masks.map_or(0, |masks| masks[label]),
         };
         let mut next = state_map_with_capacity(states.len().saturating_mul(2));
         let mut records = if label == layer {
@@ -552,6 +736,33 @@ pub fn try_flagged_skew_kostka_modular_layer_trace(
     }
 
     unreachable!("validated layer must be visited")
+}
+
+/// Materialize one ordinary or row-flagged skew DP layer.
+#[allow(clippy::too_many_arguments)]
+pub fn try_flagged_skew_kostka_modular_layer_trace(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    modulus: u32,
+    layer: usize,
+    max_states: Option<usize>,
+) -> Result<PackedModularLayerTrace, String> {
+    try_masked_flagged_skew_kostka_modular_layer_trace(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        None,
+        None,
+        None,
+        modulus,
+        layer,
+        max_states,
+    )
 }
 
 fn zero_stats(moduli: &[u32]) -> ModularKostkaStats {
@@ -662,7 +873,7 @@ fn inverse_mod(value: u32, modulus: u32) -> Option<u32> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::kostka_dp::{skew_kostka, try_flagged_skew_kostka};
+    use crate::kostka_dp::{skew_kostka, try_flagged_skew_kostka, try_masked_flagged_skew_kostka};
 
     fn compositions(total: u32, parts: usize) -> Vec<Vec<u32>> {
         fn visit(total: u32, parts: usize, prefix: &mut Vec<u32>, output: &mut Vec<Vec<u32>>) {
@@ -763,6 +974,43 @@ mod tests {
         assert_eq!(actual.reconstruct_bounded(&expected).unwrap(), expected);
         assert_eq!(actual.level_states.len(), weight.len() + 1);
         assert_eq!(actual.level_transitions.len(), weight.len());
+    }
+
+    #[test]
+    fn modular_matches_masked_face_and_strict_counts() {
+        let lambda = Partition::from_sorted(vec![2, 1]);
+        let mu = Partition::empty();
+        let weight = [1, 1, 1];
+        let forbidden = [0, 1, 0];
+        let strict_lower = [0, 0, 1];
+        let strict_diagonal = [0, 0, 0];
+        let expected = try_masked_flagged_skew_kostka(
+            &lambda,
+            &mu,
+            &weight,
+            None,
+            None,
+            Some(&forbidden),
+            Some(&strict_lower),
+            Some(&strict_diagonal),
+            None,
+        )
+        .unwrap();
+        let actual = try_masked_flagged_skew_kostka_modular_stats(
+            &lambda,
+            &mu,
+            &weight,
+            None,
+            None,
+            Some(&forbidden),
+            Some(&strict_lower),
+            Some(&strict_diagonal),
+            &DEFAULT_MODULI[..2],
+            None,
+            false,
+        )
+        .unwrap();
+        assert_eq!(actual.reconstruct_bounded(&expected).unwrap(), expected);
     }
 
     #[test]

@@ -1,6 +1,6 @@
 # Ehrcalc Handoff
 
-## GPU feasibility worktree — 2026-09-13 (active)
+## GPU feasibility worktree — 2026-09-14 (active)
 
 Host supervisor owns branch `feat/gpu-kostka-prototype` in the isolated
 worktree `/mnt/2TB-Babel/ai-storage/worktrees/ehrcalc-gpu`. Scope is packed
@@ -17,7 +17,7 @@ transition/state instrumentation, real-layer trace export, and bounded CRT that
 refuses an ambiguous modulus product. The isolated ROCm 7.2.4 container builds
 three HIP programs: synthetic aggregation, a measured CPU-enumerated hybrid,
 and the useful GPU-resident horizontal-strip DP. `gpu-prototype/run-smoke.sh`
-checks skew, flagged, and zero-strip cases against Rust under two primes;
+checks skew, flagged, zero-strip, masked-face, and strict cases against Rust;
 `run-exact.sh` evaluates successive GPU primes and returns an integer only when
 a caller-supplied certified bound makes CRT unique.
 
@@ -34,18 +34,26 @@ CPU-enumerated hybrid remains negative evidence at 67.676 s. Full commands,
 inputs, timing stages, limitations, and memory accounting are in
 `gpu-prototype/results/2026-09-13-real-dp.md`.
 
-The Astra audit fixes are implemented but not yet checkpointed: GPU transition
-counts and scan offsets are now 64-bit, valid empty frontiers return zero,
-numeric parsing is strict, and runtime moduli must be pairwise coprime. The
-concrete wide-scan and parser regressions run device-free through
-`gpu-prototype/run-host-tests.sh`; build/run scripts share a nonblocking lock,
-and exact logs are invocation-specific. Both packed modular and maintained
-`BigUint` CPU paths now use wide shape totals, with a regression above `u32`.
-Feasible-suffix pruning is present in the maintained weak, flagged, and
-strict/interior streaming enumerators. The safety-fixed HIP source compiles
-without GPU exposure, but its performance is unmeasured; the 0.640-second result
-predates the 64-bit scan fix and is still mathematically valid because that run
-had only 115,666,316 transitions.
+The Astra audit fixes are checkpointed at `71a58a7`: GPU transition counts and
+scan offsets are 64-bit, valid empty frontiers return zero, numeric parsing is
+strict, runtime moduli must be pairwise coprime, and both maintained CPU paths
+use wide shape totals. Feasible-suffix pruning is present in the maintained
+weak, flagged, and strict/interior streaming enumerators. The safety-fixed HIP
+source compiles without GPU exposure, but its performance is unmeasured; the
+0.640-second result predates the 64-bit scan fix and remains mathematically
+valid because that run had only 115,666,316 transitions.
+
+Strict/interior and individual Kogan-face constraints are now implemented in
+the uncommitted follow-up. The maintained `BigUint`, packed modular CPU, layer
+exporter, and GPU-resident kernel accept per-label forbidden-row, strict-lower,
+and strict-diagonal masks together with interval flags. The public pair adapter
+converts one-indexed forbidden `(row,label)` data from the complement-row lift.
+`masked_relative_interior_masks` derives strict masks and affine dimension;
+its equality closure uses the GT order graph, exact rational component bounds,
+level-weight equations, and exact rank. `derive_masked_interior` exposes this
+as JSON, while `gpu-prototype/run-exact-strict.sh` derives masks automatically
+before the bounded CRT driver. A forced-zero row still checks diagonal
+strictness, fixing a prior flagged strict-count edge case.
 
 One rejected `hipMallocAsync` memory-pool experiment caused an AMDGPU
 memory-aperture fault and wedged Euler's display. Its container exited, the
@@ -54,13 +62,16 @@ suspend/resume restored the display without losing tmux/Docker workers. Do not
 retry asynchronous allocation on this display-attached card. No further GPU
 execution should occur in this supervisor session.
 
-Strict/interior GPU counting, transition chunking, and production Rust/CLI GPU
-integration remain pending. The audit-fix checkpoint passes all 45 engine tests,
-all 35 top-level Ehrcalc tests, strict engine Clippy, Bash syntax checks, the
+The new affine/strict layer is checked against reciprocity on targeted skew and
+flagged fixtures and exhaustively over all 256 forbidden-mask patterns for
+shape `(3,1)` with standard content. The branch passes all 54 engine tests, all
+35 top-level Ehrcalc tests, strict engine Clippy, Bash syntax checks, the
 device-free HIP host regressions, and warning-free device-free HIP compilation
-for one and three residue lanes; `git diff --check` is clean. Host `shellcheck`
-was unavailable, so only `bash -n` covered the scripts. Builds use
-`/mnt/2TB-Babel/ai-storage/cargo-target`; no local `target/` is allowed.
+for one and three residue lanes; `git diff --check` is clean. No GPU kernel ran
+after the display fault. Host `shellcheck` is unavailable. Transition chunking,
+full union-of-Kogan-faces deduplication, and production Rust/CLI GPU integration
+remain pending. Builds use `/mnt/2TB-Babel/ai-storage/cargo-target`; no local
+`target/` is allowed.
 
 ## Current KTT state — 2026-09-13 (active)
 
