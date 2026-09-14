@@ -186,6 +186,12 @@ is `8ed718f4...` from `a26cd5dd...` (d18, sole hole `(3,6)`, masks
 `0,0,0,0,0,4,0,0,0,32`, bound `19^18 < 2^77`); it is distinct from all
 Abacus work and remains unsubmitted pending this checkpoint. No DB write.
 
+`8ed718f4...` is also geometrically empty: receipt
+`20260914T152907-635992e9df11` is clean `empty_face` evidence. Before another
+GPU interpolation, use the exact non-count `derive_masked_interior` prefilter
+on the remaining 48 fresh faces and submit only a nonempty individual face;
+this changes no ledger state and preserves the separate-mask rule.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
