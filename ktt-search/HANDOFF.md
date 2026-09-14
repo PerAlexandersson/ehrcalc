@@ -263,6 +263,10 @@ through `20260914T162017-be61d7feacee` are zero; resume d8--d17. Three initial
 d2--d4 parser rejections had an extra weight entry, did no computation, and
 are not evidence. No DB write.
 
+Diversified `3a4289e2...` is closed: all 17 valid CRT receipts through
+`20260914T162247-161fe93d7761` exact-interpolate all-positive (first nonzero
+d12 = 1). No CPU replay or DB write follows.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
