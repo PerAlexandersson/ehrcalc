@@ -51,6 +51,14 @@ is consumed from a pinned public Git revision.
 The dependency direction must never make `polytool` or the legacy projects
 depend on an Ehrcalc family adapter.
 
+The opt-in HIP code under `gpu-prototype/` is an alternative exact counting
+backend, not a second interpolation or family implementation. Generic order
+polytopes use packed frontier states and reuse the exact interpolation layer.
+The LR wrapper creates an explicit plan of bounded Kostka jobs and feeds their
+exact CRT reconstructions back into the maintained unitriangular inversion.
+The normal library, CLI, and MCP paths remain CPU-only unless a future backend
+API promotes these prototypes.
+
 ## Exact Representation
 
 The primary result must retain all three notions below:

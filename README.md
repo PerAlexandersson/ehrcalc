@@ -49,6 +49,12 @@ counting command.  Ehrhart data for LR objects will require an explicitly
 specified family, such as a hive-polytope model, rather than treating every
 LR coefficient as an Ehrhart value by default.
 
+The opt-in HIP prototype additionally supports exact generic order-poset
+counts, order-polytope interpolation, and LR calculation through GPU
+skew-Kostka jobs plus exact Kostka-matrix inversion. These routes retain
+certified CRT bounds and CPU reference checks; see
+[`gpu-prototype/README.md`](gpu-prototype/README.md).
+
 ## CLI
 
 Build a fresh checkout with the stable Rust toolchain:

@@ -30,7 +30,10 @@ docker run --rm \
     "$image_name" bash -lc \
     'hipcc --offload-arch=gfx1201 -O3 -std=c++17 \
        /source/packed_flagged_kostka_gpu_resident.hip.cpp \
-       -o /build/packed-flagged-kostka-gpu-resident'
+       -o /build/packed-flagged-kostka-gpu-resident \
+     && hipcc --offload-arch=gfx1201 -O3 -std=c++17 \
+       /source/order_polytope_gpu_resident.hip.cpp \
+       -o /build/order-polytope-gpu-resident'
 
 run_case() {
     local name=$1
@@ -74,6 +77,34 @@ run_case() {
     echo "$name modulus $modulus: residue $gpu_residue (match)"
 }
 
+run_order_case() {
+    local name=$1
+    local vertices=$2
+    local covers=$3
+    local colors=$4
+    local mode=$5
+    local expected=$6
+    local modulus=$7
+    local gpu_output
+    local gpu_residue
+
+    gpu_output=$(
+        docker run --rm \
+            --device=/dev/kfd --device=/dev/dri \
+            --group-add video --security-opt seccomp=unconfined \
+            -v "$build_dir:/build" \
+            "$image_name" /build/order-polytope-gpu-resident \
+            "$vertices" "$covers" "$colors" "$mode" 150000000 "$modulus" \
+            2>"$build_dir/smoke-order-$name-$modulus.log"
+    )
+    gpu_residue=$(sed -n 's/.*"residue":\([0-9][0-9]*\).*/\1/p' <<<"$gpu_output")
+    if [[ -z $gpu_residue || $gpu_residue != "$expected" ]]; then
+        echo "$name modulus $modulus: expected=$expected GPU=$gpu_residue" >&2
+        exit 1
+    fi
+    echo "$name modulus $modulus: residue $gpu_residue (match)"
+}
+
 for modulus in 2147483647 2147483629; do
     run_case skew 1 5,4,2 1 3,4,3 - - "$modulus"
     run_case flagged 1 4,3,1 1 2,3,2 2,3,3 1,1,2 "$modulus"
@@ -81,6 +112,9 @@ for modulus in 2147483647 2147483629; do
     run_case masked-face 1 2,1 - 1,1,1 - - "$modulus" 0,1,0 0,0,1 0,0,0
     run_case strict-forced-diagonal 1 2,1 - 1,1,1 2,2,1 - "$modulus" \
         0,0,0 0,0,0 0,0,2
+    run_order_case order-chain 3 '0<1,1<2' 4 weak 20 "$modulus"
+    run_order_case order-antichain 3 - 4 weak 64 "$modulus"
+    run_order_case order-v-strict 3 '0<2,1<2' 4 strict 14 "$modulus"
 done
 
 echo "GPU-resident smoke suite passed"

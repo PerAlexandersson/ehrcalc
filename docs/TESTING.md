@@ -77,6 +77,20 @@ Before a feature is merged, also run the relevant cross-project comparison
 tests and record any long benchmark separately.  Tests that require more than
 60 seconds must be explicit, bounded, and not become the default test suite.
 
+The device-free HIP host suite checks transition counting/emission for both
+the flagged-Kostka and order-frontier kernels:
+
+```bash
+gpu-prototype/run-host-tests.sh
+```
+
+On the supported AMD host, `gpu-prototype/run-smoke.sh` compares packed
+Kostka residues with the Rust reference and checks weak/strict order counts at
+two primes. `run-order-ehrhart.sh` must also agree coefficient-for-coefficient
+with the normal `ehrcalc order` command on a small branching poset. Planned LR
+Kostka inversion has library tests against the independent Yamanouchi DP; a
+GPU wrapper smoke case should include both a zero and a nonzero LR coefficient.
+
 For a quick command-level key h-star check, run:
 
 ```bash

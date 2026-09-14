@@ -14,6 +14,173 @@ use num_traits::{One, Zero};
 use std::collections::HashMap;
 use std::time::Instant;
 
+/// One exact Kostka count required by a Kostka-matrix inversion for an LR
+/// coefficient.  These jobs are independent and can be evaluated by the CPU
+/// implementation or by an exact CRT/GPU backend.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct LrKostkaJob {
+    pub id: String,
+    pub outer: Partition,
+    pub inner: Partition,
+    pub weight: Vec<u32>,
+    /// Certified upper bound obtained by forgetting all tableau inequalities.
+    pub upper_bound: BigUint,
+}
+
+/// Reusable plan for computing one LR coefficient through Kostka-matrix
+/// inversion.
+#[derive(Clone, Debug)]
+pub struct LrKostkaPlan {
+    partitions: Vec<Partition>,
+    target_index: Option<usize>,
+    trivial_result: Option<BigUint>,
+    pub jobs: Vec<LrKostkaJob>,
+}
+
+impl LrKostkaPlan {
+    /// Return an answer that follows from size/containment checks without any
+    /// Kostka jobs.
+    pub fn trivial_result(&self) -> Option<&BigUint> {
+        self.trivial_result.as_ref()
+    }
+
+    /// Reconstruct the requested coefficient from exact job results keyed by
+    /// [`LrKostkaJob::id`].
+    pub fn reconstruct(&self, counts: &HashMap<String, BigUint>) -> Result<BigUint, String> {
+        if let Some(result) = &self.trivial_result {
+            return Ok(result.clone());
+        }
+        let target_index = self
+            .target_index
+            .ok_or_else(|| "nontrivial LR plan has no target partition".to_string())?;
+        let mut coefficients = Vec::<BigInt>::with_capacity(target_index + 1);
+        for index in 0..=target_index {
+            let skew_id = format!("S:{index}");
+            let skew = counts
+                .get(&skew_id)
+                .ok_or_else(|| format!("missing exact count for job {skew_id}"))?
+                .to_bigint()
+                .ok_or_else(|| format!("could not convert job {skew_id} to BigInt"))?;
+            let mut coefficient = skew;
+            for (earlier, earlier_coefficient) in coefficients.iter().enumerate() {
+                if earlier_coefficient.is_zero()
+                    || !dominates(&self.partitions[earlier], &self.partitions[index])
+                {
+                    continue;
+                }
+                let ordinary_id = format!("K:{earlier}:{index}");
+                let ordinary = counts
+                    .get(&ordinary_id)
+                    .ok_or_else(|| format!("missing exact count for job {ordinary_id}"))?
+                    .to_bigint()
+                    .ok_or_else(|| format!("could not convert job {ordinary_id} to BigInt"))?;
+                coefficient -= earlier_coefficient * ordinary;
+            }
+            coefficients.push(coefficient);
+        }
+        coefficients[target_index]
+            .to_biguint()
+            .ok_or_else(|| "Kostka inversion produced a negative LR coefficient".to_string())
+    }
+}
+
+/// Build the independent Kostka jobs needed to compute `c^lambda_(mu,nu)`.
+///
+/// Only partitions through `nu` in dominance-compatible reverse-lexicographic
+/// order are included.  Ordinary Kostka jobs known to vanish by dominance are
+/// omitted.  Each remaining count is bounded by the corresponding multinomial
+/// coefficient, which makes modular GPU results exactly reconstructible.
+pub fn lr_kostka_plan(
+    lambda: &Partition,
+    mu: &Partition,
+    nu: &Partition,
+) -> Result<LrKostkaPlan, String> {
+    let skew_size = lambda.size().saturating_sub(mu.size());
+    if !mu.partition_less_equal(lambda) || skew_size != nu.size() {
+        return Ok(LrKostkaPlan {
+            partitions: Vec::new(),
+            target_index: None,
+            trivial_result: Some(BigUint::zero()),
+            jobs: Vec::new(),
+        });
+    }
+    if skew_size == 0 {
+        return Ok(LrKostkaPlan {
+            partitions: Vec::new(),
+            target_index: None,
+            trivial_result: Some(if lambda == mu {
+                BigUint::one()
+            } else {
+                BigUint::zero()
+            }),
+            jobs: Vec::new(),
+        });
+    }
+
+    let all_partitions = Partition::all_of_size(skew_size);
+    let target_index = all_partitions
+        .iter()
+        .position(|partition| partition == nu)
+        .ok_or_else(|| "content is not a partition of the skew size".to_string())?;
+    let partitions = all_partitions[..=target_index].to_vec();
+    let mut jobs = Vec::new();
+    for (index, weight_partition) in partitions.iter().enumerate() {
+        let weight = weight_partition.parts().to_vec();
+        let upper_bound = multinomial_bound(&weight);
+        jobs.push(LrKostkaJob {
+            id: format!("S:{index}"),
+            outer: lambda.clone(),
+            inner: mu.clone(),
+            weight: weight.clone(),
+            upper_bound: upper_bound.clone(),
+        });
+        for (earlier, earlier_partition) in partitions.iter().enumerate().take(index) {
+            if dominates(earlier_partition, weight_partition) {
+                jobs.push(LrKostkaJob {
+                    id: format!("K:{earlier}:{index}"),
+                    outer: earlier_partition.clone(),
+                    inner: Partition::empty(),
+                    weight: weight.clone(),
+                    upper_bound: upper_bound.clone(),
+                });
+            }
+        }
+    }
+    Ok(LrKostkaPlan {
+        partitions,
+        target_index: Some(target_index),
+        trivial_result: None,
+        jobs,
+    })
+}
+
+fn dominates(left: &Partition, right: &Partition) -> bool {
+    let length = left.num_parts().max(right.num_parts());
+    let mut left_sum = 0_u64;
+    let mut right_sum = 0_u64;
+    for index in 0..length {
+        left_sum += u64::from(left.part(index));
+        right_sum += u64::from(right.part(index));
+        if left_sum < right_sum {
+            return false;
+        }
+    }
+    left_sum == right_sum
+}
+
+fn multinomial_bound(weight: &[u32]) -> BigUint {
+    let total = weight.iter().copied().sum::<u32>();
+    let mut result = factorial(total);
+    for &part in weight {
+        result /= factorial(part);
+    }
+    result
+}
+
+fn factorial(value: u32) -> BigUint {
+    (2..=value).fold(BigUint::one(), |product, factor| product * factor)
+}
+
 // ── Method 1: Augmented GT DP with Yamanouchi ───────────────────────────────
 
 /// DP state: (current partition α^(k), d-vector).
@@ -337,4 +504,46 @@ fn json_parts(p: &Partition) -> String {
             .collect::<Vec<_>>()
             .join(",")
     )
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn planned_kostka_inversion_matches_yamanouchi_dp() {
+        let cases = [
+            (vec![2, 1], vec![1], vec![2]),
+            (vec![3, 2], vec![1], vec![2, 1, 1]),
+            (vec![3, 2, 1], vec![1, 1], vec![2, 1, 1]),
+        ];
+        for (lambda, mu, nu) in cases {
+            let lambda = Partition::new(lambda);
+            let mu = Partition::new(mu);
+            let nu = Partition::new(nu);
+            let plan = lr_kostka_plan(&lambda, &mu, &nu).expect("valid LR plan");
+            let mut counts = HashMap::new();
+            for job in &plan.jobs {
+                let count = skew_kostka(&job.outer, &job.inner, &job.weight, None, true);
+                assert!(count <= job.upper_bound);
+                counts.insert(job.id.clone(), count);
+            }
+            assert_eq!(
+                plan.reconstruct(&counts).expect("planned reconstruction"),
+                lr_dp(&lambda, &mu, &nu, None)
+            );
+        }
+    }
+
+    #[test]
+    fn planned_inversion_handles_trivial_zero() {
+        let plan = lr_kostka_plan(
+            &Partition::new(vec![2]),
+            &Partition::new(vec![1]),
+            &Partition::new(vec![2]),
+        )
+        .expect("trivial plan");
+        assert_eq!(plan.trivial_result(), Some(&BigUint::zero()));
+        assert!(plan.jobs.is_empty());
+    }
 }

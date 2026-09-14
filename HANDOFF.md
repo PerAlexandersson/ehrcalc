@@ -1,5 +1,41 @@
 # Ehrcalc Handoff
 
+## GPU family expansion — 2026-09-14 (verified, isolated worktree)
+
+The host supervisor owns branch `feat/gpu-order-lr` in isolated worktree
+`/mnt/2TB-Babel/ai-storage/worktrees/ehrcalc-gpu-order-lr`. Its scope is new
+GPU-prototype support for generic order-polytope counts/Ehrhart interpolation
+and a practical exact LR route reusing GPU skew-Kostka counts. It will not edit
+`ktt-search/` or run KTT candidates, and the active KTT worker retains sole
+ownership of its search, database, and main-checkout files.
+
+The generic HIP order kernel now topologically relabels any acyclic input,
+builds the same kind of compact frontier plan as the CPU engine, and supports
+both weak and strict order-preserving maps. Its exact wrapper uses the proved
+bound `colors^vertices`; the Ehrhart wrapper obtains `n+1` positive samples and
+uses Ehrcalc's exact interpolator. The packed-state gate is explicit:
+`frontier_width * ceil(log2(colors+1)) <= 128`. Source SHA-256 is
+`cb3d4bc9eb00932e4a6a0c7a9a5a5e03ec3e463d2d3731facb1d223eef48b121`.
+
+The LR route deliberately does not pretend that the flagged-Kostka kernel
+implements Yamanouchi state. `LrKostkaPlan` instead generates the required
+skew/ordinary Kostka jobs through the target partition, removes
+dominance-forced zeros, certifies each job by a multinomial bound, and performs
+exact `BigInt` unitriangular reconstruction. `run-lr-exact.sh` evaluates those
+jobs with the existing GPU/CRT kernel. The zero fixture
+`c^(3,2)_(1),(2,1,1)=0` and nonzero fixture
+`c^(3,2,1)_(1,1),(2,1,1)=1` both matched the independent Yamanouchi DP.
+
+Verification: the device-free HIP suite passes, including exhaustive weak and
+strict comparison with brute force for every naturally oriented DAG on up to
+five vertices and colors 1--4. The GPU smoke suite passes all original Kostka
+cases and the chain/antichain/strict-V order cases at two primes. The diamond
+order polytope returned samples `1,6,20,50,105` and coefficients
+`[1,7/3,23/12,2/3,1/12]`, exactly matching `ehrcalc order`. Both LR GPU smoke
+fixtures pass. `cargo test --workspace` passes (35 top-level, 120 foundations,
+56 Kostka-engine, 5 MCP, 5 KTT, and doc tests), and focused engine/plan Clippy
+passes with `-D warnings`.
+
 ## Current KTT state — 2026-09-14 (active)
 
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT

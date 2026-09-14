@@ -1,22 +1,16 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if [[ $# -lt 7 || ($# -gt 8 && $# -ne 11) ]]; then
-    echo "usage: $0 UPPER_BOUND DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS [MAX_TRANSITIONS [FORBIDDEN_MASKS STRICT_LOWER_MASKS STRICT_DIAGONAL_MASKS]]" >&2
+if [[ $# -lt 4 || $# -gt 5 ]]; then
+    echo "usage: $0 VERTICES COVERS COLORS weak|strict [MAX_TRANSITIONS]" >&2
     exit 2
 fi
 
-upper_bound=$1
-dilation=$2
-outer=$3
-inner=$4
-weight=$5
-upper_flags=$6
-lower_flags=$7
-maximum_transitions=${8:-150000000}
-forbidden_masks=${9:--}
-strict_lower_masks=${10:--}
-strict_diagonal_masks=${11:--}
+vertices=$1
+covers=$2
+colors=$3
+mode=$4
+maximum_transitions=${5:-150000000}
 
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 image_name=${EHRGPU_IMAGE:-ehrcalc-rocm:7.2.4}
@@ -28,25 +22,35 @@ modulus_candidates=(
     2147483563 2147483549 2147483543 2147483497
 )
 
+if [[ $mode != weak && $mode != strict ]]; then
+    echo "mode must be weak or strict" >&2
+    exit 2
+fi
 if ! docker image inspect "$image_name" >/dev/null 2>&1; then
     echo "missing Docker image $image_name; build it from gpu-prototype/Dockerfile" >&2
     exit 1
 fi
+upper_bound=$(python3 - "$colors" "$vertices" <<'PY'
+import sys
+
+base = int(sys.argv[1])
+exponent = int(sys.argv[2])
+if base < 0 or exponent < 0:
+    raise SystemExit("colors and vertices must be nonnegative")
+print(base ** exponent)
+PY
+)
+
 mkdir -p "$build_dir" "$cargo_target"
 exec 9>"$build_dir/ehrgpu.lock"
 if ! flock -n 9; then
     echo "another Ehrcalc GPU build or run holds $build_dir/ehrgpu.lock" >&2
     exit 1
 fi
-run_id=$(
-    {
-        printf '%s\0' "$@"
-        sha256sum "$repo_root/gpu-prototype/packed_flagged_kostka_gpu_resident.hip.cpp"
-    } | sha256sum | cut -c1-16
-)
 CARGO_TARGET_DIR="$cargo_target" cargo build \
     --manifest-path "$repo_root/Cargo.toml" --release \
     -p ehrcalc-kostka-engine --bin reconstruct_modular
+
 needed_moduli=0
 trial_moduli=()
 trial_residues=()
@@ -62,21 +66,27 @@ for modulus in "${modulus_candidates[@]}"; do
     fi
 done
 if ((needed_moduli == 0)); then
-    echo "eight moduli do not exceed the supplied certified bound" >&2
+    echo "eight moduli do not exceed the certified bound $colors^$vertices" >&2
     exit 1
 fi
 
+run_id=$(
+    {
+        printf '%s\0' "$@"
+        sha256sum "$repo_root/gpu-prototype/order_polytope_gpu_resident.hip.cpp"
+    } | sha256sum | cut -c1-16
+)
+source_path="$repo_root/gpu-prototype/order_polytope_gpu_resident.hip.cpp"
+source_hash=$(sha256sum "$source_path" | cut -d' ' -f1)
 residues=()
 moduli=()
-source_path="$repo_root/gpu-prototype/packed_flagged_kostka_gpu_resident.hip.cpp"
-source_hash=$(sha256sum "$source_path" | cut -d' ' -f1)
 batch_start=0
 while ((batch_start < needed_moduli)); do
     remaining=$((needed_moduli - batch_start))
     lane_count=$((remaining < 3 ? remaining : 3))
     batch_moduli=("${modulus_candidates[@]:batch_start:lane_count}")
     batch_moduli_csv=$(IFS=,; echo "${batch_moduli[*]}")
-    binary_name="packed-flagged-kostka-gpu-resident-lanes${lane_count}-${source_hash:0:12}"
+    binary_name="order-polytope-gpu-resident-lanes${lane_count}-${source_hash:0:12}"
     binary_path="$build_dir/$binary_name"
     if [[ ! -x $binary_path ]]; then
         docker run --rm \
@@ -87,19 +97,18 @@ while ((batch_start < needed_moduli)); do
             "$image_name" bash -lc \
             "hipcc --offload-arch=gfx1201 -O3 -std=c++17 \
               -DEHRGPU_RESIDUE_LANES=$lane_count \
-              /source/packed_flagged_kostka_gpu_resident.hip.cpp \
+              /source/order_polytope_gpu_resident.hip.cpp \
               -o /build/$binary_name"
     fi
-    log_path="$build_dir/exact-${run_id}-batch${batch_start}.log"
+    log_path="$build_dir/order-exact-${run_id}-batch${batch_start}.log"
     gpu_output=$(
         docker run --rm \
             --device=/dev/kfd --device=/dev/dri \
             --group-add video --security-opt seccomp=unconfined \
             -v "$build_dir:/build" \
             "$image_name" "/build/$binary_name" \
-            "$dilation" "$outer" "$inner" "$weight" "$upper_flags" \
-            "$lower_flags" "$maximum_transitions" "$batch_moduli_csv" \
-            "$forbidden_masks" "$strict_lower_masks" "$strict_diagonal_masks" \
+            "$vertices" "$covers" "$colors" "$mode" \
+            "$maximum_transitions" "$batch_moduli_csv" \
             2>"$log_path"
     )
     batch_residues_csv=$(
@@ -124,5 +133,5 @@ while ((batch_start < needed_moduli)); do
     batch_start=$((batch_start + lane_count))
 done
 
-echo "GPU residues did not reconstruct an answer below the supplied bound" >&2
+echo "GPU residues did not reconstruct an answer below the certified bound" >&2
 exit 1

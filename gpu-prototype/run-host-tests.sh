@@ -24,4 +24,10 @@ docker run --rm \
        -Wno-unused-const-variable -DEHRGPU_HOST_TEST \
        /source/packed_flagged_kostka_gpu_resident.hip.cpp \
        -o /build/packed-flagged-kostka-host-tests \
-     && /build/packed-flagged-kostka-host-tests'
+     && /build/packed-flagged-kostka-host-tests \
+     && hipcc --offload-arch=gfx1201 -O3 -std=c++17 \
+       -Wall -Wextra -Werror -Wno-unused-function \
+       -Wno-unused-const-variable -DEHRGPU_HOST_TEST \
+       /source/order_polytope_gpu_resident.hip.cpp \
+       -o /build/order-polytope-host-tests \
+     && /build/order-polytope-host-tests'

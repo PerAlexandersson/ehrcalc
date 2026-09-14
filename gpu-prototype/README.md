@@ -1,7 +1,10 @@
 # Ehrcalc GPU prototype
 
-This directory contains isolated HIP microbenchmarks for the packed modular
-Kostka backend. It does not change Ehrcalc's default exact implementation.
+This directory contains isolated HIP implementations and microbenchmarks for
+packed modular counting. It does not change Ehrcalc's default exact CPU
+implementation. The currently supported GPU routes are flagged/skew Kostka,
+generic order-poset maps, order-polytope Ehrhart interpolation, and an exact
+Kostka-inversion route for Littlewood--Richardson coefficients.
 
 Build the userspace-only development image:
 
@@ -138,6 +141,60 @@ drivers.
 These APIs count one face. A union of reduced Kogan faces or a full key
 polynomial still needs overlap deduplication or inclusion--exclusion outside
 this kernel; summing face counts directly is not valid in general.
+
+## Order polytopes
+
+`order_polytope_gpu_resident.hip.cpp` implements the existing order-poset
+frontier DP on the GPU. At each vertex it emits the possible new frontier
+states, then uses rocPRIM radix sort and modular reduce-by-key. Input labels do
+not need to be a natural labeling: the host validates acyclicity and computes
+a deterministic topological relabeling before it builds the frontier plans.
+
+Count weak or strict order-preserving maps exactly with:
+
+```text
+gpu-prototype/run-order-exact.sh \
+  VERTICES COVERS COLORS weak|strict [MAX_TRANSITIONS]
+```
+
+`COVERS` uses zero-based `lower<upper` pairs separated by commas; use `-` for
+an antichain. The wrapper uses the certified bound `COLORS^VERTICES`, selects
+enough CRT primes, and refuses an answer if the eight available primes do not
+exceed that bound. The packed device state requires
+`maximum_frontier * ceil(log2(COLORS+1)) <= 128`.
+
+Compute the complete order-polytope Ehrhart polynomial from `n+1` exact
+positive samples with:
+
+```text
+gpu-prototype/run-order-ehrhart.sh VERTICES COVERS [MAX_TRANSITIONS]
+```
+
+The final JSON is produced by Ehrcalc's normal exact interpolation layer. Both
+weak and strict kernels are exercised by the host and GPU smoke suites.
+
+## Littlewood--Richardson coefficients
+
+The existing flagged-Kostka kernel does not directly encode the extra
+Yamanouchi state in the primary LR dynamic program. The first exact GPU route
+therefore uses the unitriangular Kostka identity already implemented in
+`ehrcalc-kostka-engine`:
+
+```text
+gpu-prototype/run-lr-exact.sh LAMBDA MU NU [MAX_TRANSITIONS]
+```
+
+`lr_kostka_plan` generates only the skew and ordinary Kostka jobs required up
+to `NU`, omits dominance-forced zeros, and gives every job the multinomial
+bound obtained by forgetting tableau inequalities. The wrapper evaluates the
+jobs with the GPU/CRT Kostka driver and reconstructs the LR coefficient with
+exact `BigInt` back-substitution. This route is intentionally a practical
+baseline rather than an optimal LR kernel: the number of jobs grows with the
+partitions preceding `NU` in dominance order.
+
+`gpu-prototype/run-lr-smoke.sh` checks one zero and one nonzero coefficient
+against the independent Yamanouchi-DP fixtures.
+
 The host-test, smoke, and exact drivers share a nonblocking build-directory
 lock. Exact-run logs include a digest of the arguments and HIP source so two
 different invocations cannot silently reuse the same log filename.
