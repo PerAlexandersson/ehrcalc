@@ -161,8 +161,17 @@ These APIs count one face. A union of reduced Kogan faces or a full key
 polynomial still needs overlap deduplication or inclusion--exclusion outside
 this kernel; summing face counts directly is not valid in general.
 The host-test, smoke, and exact drivers share a nonblocking build-directory
-lock. Exact-run logs include a digest of the arguments and HIP source so two
-different invocations cannot silently reuse the same log filename.
+lock. Bridge runs label every compile and execution container with a unique
+request token, remove any surviving container before releasing ownership, and
+use that token in per-attempt log names. A failed GPU batch emits a structured
+failure record plus the diagnostic log tail; retries do not overwrite earlier
+evidence.
+
+Before allocating sort and reduction buffers, the resident kernel queries the
+actual free VRAM and the rocPRIM scratch requirements. It retains 2 GiB for the
+display and runtime and rejects requests whose conservative live-byte budget
+does not fit. The transition-count ceiling remains an independent work bound,
+not a substitute for this memory check.
 
 Do not replace the normal `hipMalloc`/`hipFree` buffers with ROCm asynchronous
 memory-pool allocation on this machine. A measured `hipMallocAsync` experiment

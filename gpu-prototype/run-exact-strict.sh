@@ -46,6 +46,8 @@ else:
 )
 
 if [[ ${derived[0]} == empty ]]; then
+    derive_binary_sha256=$(sha256sum "$derive_masks" | cut -d' ' -f1)
+    echo "EHRGPU_EMPTY_FACE {\"kind\":\"empty_face\",\"reconstructed\":\"0\",\"derive_binary_sha256\":\"$derive_binary_sha256\"}" >&2
     echo 0
     exit 0
 fi
