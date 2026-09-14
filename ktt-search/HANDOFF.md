@@ -109,8 +109,11 @@ replay also started on CPU 1 as PID `1628228`/`1628229` under the same bounds,
 output `runs/host-fb09-flagged-ordinary-d25-4h-20260914.json`. Its certified
 source record SHA-256 is `660c5afc...`; it must match
 `27198291378648307039700595981` at d25, then independently match
-`63657025156588451239562777670` at d26. The two processes use only two host
-CPUs, far below the 50% cap; poll either before follow-up or DB action.
+`63657025156588451239562777670` at d26. On direct user instruction both local
+ordinary replays were terminated cleanly at 2026-09-14T10:22Z without output:
+`07975fb3...` had 1:23:17 CPU time and `fb09eaa1...` 4:13. No result, failure
+disposition, or DB write follows from either; do not restart independent CPU
+replays without new authorization. Abacus v195 is the sole active KTT compute.
 Fresh read-only ledger inventory found no exact negative zero-hole row: all
 15,353 exact negative genetic rows split into 293 one-hole and 15,060 two-hole
 rows. Thus there is no additional already-exact zero-hole candidate to launch
