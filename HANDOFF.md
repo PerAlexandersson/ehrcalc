@@ -166,6 +166,18 @@ clean two-prime GPU CRT receipts through `20260914T151738-ae0ba5db105a` use
 one-hole/single-add zero-hole closure inventory is exhausted with no KTT
 counterexample and no DB write; broaden the honest one-hole mutation class.
 
+The broadened, one-hole-preserving flag-augmentation inventory is derived from
+reconstructed lifts rather than the legacy ledger `hole_count`: 198 exact
+positive parents produced 344 additions, 111 quotient posets, and 50 fresh
+ledger-disjoint posets after candidate/attempt/proposal/Ehrhart checks. The
+first margin-ranked face is `12782cc5...` from `0095d973...` (dimension 20,
+`add_flag_absorbed:31`): its one true hole is `(2,5)`, while `(5,9)` is an
+endpoint flag; the individual masks are `0,0,0,0,2,0,0,0,16,0` and are never
+unioned. Its certified count bound is `21^20 < 2^88`; the GPU is ready,
+Abacus v195 is live with v196--v200 queued, and Laplace queue inspection timed
+out. The face is otherwise fresh and will be sampled serially through d20
+from this committed source snapshot; no DB write is authorized.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
