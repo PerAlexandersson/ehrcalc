@@ -88,6 +88,14 @@ row, but its three clean bridge receipts (`20260914T142127-f1231b142149` etc.)
 give `empty_face` evidence and exact zero. Stop this face without
 interpolation; full untracked evidence is `runs/gpu-v208-6f9-empty-20260914.json`.
 
+The broad audited one-hole closure inventory yielded 148 fresh child/poset
+pairs. Its first nonempty child, `78cad543...` from parent `0181845c...`
+(`hole_to_flag:4:4:13`, dimension 8, masks `0,0,0,0,0,16,0,0`), passed fresh
+ledger and queue checks. Eight clean GPU CRT receipts interpolate to an
+all-positive Ehrhart polynomial; evidence is untracked at
+`runs/gpu-v209-78cad-interpolation-20260914.json`. No CPU replay or DB write
+follows.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
