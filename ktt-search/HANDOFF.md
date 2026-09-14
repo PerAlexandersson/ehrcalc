@@ -29,6 +29,12 @@ After both queue checks (Laplace remains unreachable), v196
 `20260914T073435-1df562e27e39` was queued after v195 as a 60-second,
 hash-checked, non-candidate packed strict control (runner `03435442...`).
 Fetch/verify it before any new packed candidate batch. No DB write occurred.
+Its argv is `python3 abacus_packed_modular_smoke.py --exact
+strict_masked_count --exact-sha256 77f24efda9ded14a2a1dd592805f89285db97486955c36880db645058707b7ec
+--derive derive_masked_interior --derive-sha256
+fe3985e02407e73f56ffda1d47ed0dec00f90f304b93d7e951598ec66c45e42d
+--packed export_modular_layer --packed-sha256
+19d80f5bf30ae62fb03c82d31e7746704bc39cbd1d7045ee8295d4c9595259af`.
 
 ## Superseded pre-resume checkpoint — 2026-09-13
 
