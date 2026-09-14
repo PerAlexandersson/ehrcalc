@@ -3,12 +3,21 @@
 ## Current KTT state — 2026-09-14 (active)
 
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
-counterexample is admitted: `07975fb3...` and `fb09eaa1...` remain only
-negative pending-validation records. Abacus was audited and resumed at
-2026-09-14T07:30Z: v194 `20260913T173400-b08ab8dc21ff` is running and v195
-`20260913T183109-69b50bf3bf77` is queued behind it. v195's already-audited
-106 non-control tail-10 cases remain disjoint from the ledger, host, v193 and
-v194; its immutable runner/engine hashes are `5564bf69...`/`f179ae7e...`.
+counterexample is admitted. `07975fb3...` is now rejected as an interpolation
+false positive; only `fb09eaa1...` remains a negative pending-validation
+record. Abacus v195 `20260913T183109-69b50bf3bf77` is live on all six allocated
+CPUs; its audited successors v196--v200 are queued, with no case overlap.
+
+Euler GPU wide CRT closed `07975fb3...` at strict dilation 7. Bridge receipt
+`20260914T105826-fd315db8e78c` used the certified coordinate-box bound
+`43^24 = 1596772093453535767288998989560362112801`, five 31-bit primes
+(product above twice the bound), and source SHA-256 `0a37e353...`; it returned
+the exact count `L^circ(7)=0` in 16.230 s. This contradicts its stored
+interpolation prediction `-2168066225856`, so it cannot be a counterexample.
+The prior receipt `20260914T105806-7d6745d7aff1` used a mistyped too-small
+bound and is expressly non-certifying. Sole-writer MariaDB attempt
+`7c5715ec...` records the valid receipt, both GPU binary hashes, residues, and
+count; no overlapping union was used.
 
 The strict masked GPU checkpoint was integrated from
 `feat/gpu-kostka-prototype` code `0e1aaba` / handoff `58d0024` as local commits
