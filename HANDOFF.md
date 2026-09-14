@@ -158,8 +158,9 @@ individual masks `0,0,0,0,0,4,4,0,0,0`. The renewed ledger audit found no
 candidate/poset, attempt, proposal, or mutation row; keys are absent from
 Abacus v195 and queued v196--v200, while Laplace is unreachable. With the
 certified GT bound `22^21 < 2^94`, clean wide-CRT d1 receipt
-`20260914T150513-39c0535fb8ed` is zero (source `071aa415...`). Resume
-d2--d21 only from a committed snapshot; no DB write.
+`20260914T150513-39c0535fb8ed` is zero (source `071aa415...`). Clean d2--d7
+receipts through `20260914T150744-be80667cdacc` are also zero; resume d8--d21
+only from a committed snapshot; no DB write.
 
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
