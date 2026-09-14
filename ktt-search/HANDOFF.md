@@ -234,6 +234,11 @@ ledger/Abacus/Laplace audit. Clean four-prime CRT receipts d1--d7 through
 all-positive dimension-24 polynomial (first nonzero sample d11 = 35). No CPU
 replay or DB write follows; 37 prefiltered nonempty swaps remain.
 
+Active fourth nonempty swap: fresh `36e05398...` (`swap_hole:2:5:6:19`, d24,
+sole mask `0,0,0,0,0,0,32,0,0,0`, bound `25^24 < 2^112`) passed current
+ledger/Abacus/Laplace audit. Clean CRT receipts d1--d7 through
+`20260914T160332-2d29b8013ebd` are zero; resume d8--d24 only. No DB write.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
