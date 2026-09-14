@@ -256,6 +256,13 @@ Diversified `25d0d36c...` is closed: all 19 three-prime CRT receipts through
 first nonzero sample is d12 = 1; exact rational interpolation has no negative
 coefficient. No CPU replay or DB write follows.
 
+Active second diversified swap: fresh `3a4289e2...` from parent `4c0a044c...`
+(`swap_hole:9:9:2:35`, d17, masks `0,0,0,0,0,0,0,0,256,0,0`, bound
+`18^17 < 2^71`) passed current queue/ledger audit. Valid CRT d1--d7 receipts
+through `20260914T162017-be61d7feacee` are zero; resume d8--d17. Three initial
+d2--d4 parser rejections had an extra weight entry, did no computation, and
+are not evidence. No DB write.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
