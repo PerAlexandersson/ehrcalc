@@ -220,6 +220,12 @@ sole mask `0,0,0,8,0,0,0,0,0,0`, unrestricted flags, and `25^24 < 2^112`.
 It is not in the ledger or active/queued zero-hole Abacus batches; re-audit
 immediately before its first GPU count. No DB write.
 
+`0dfd9cbf...` is closed too: all 24 four-prime CRT receipts through
+`20260914T155001-b3c5b9a84ba5` validate and interpolate to an all-positive
+dimension-24 polynomial (first nonzero sample d11 = 20). No CPU replay or
+MariaDB write follows; continue within the 38 remaining nonempty swaps only
+after fresh ledger and queue audit.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
