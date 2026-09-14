@@ -214,6 +214,12 @@ d10 and become nonzero at d11, but all receipt reconstruction and exact
 Fraction back-substitution checks pass. No CPU replay or MariaDB write follows;
 continue with the next fresh nonempty equality swap only after a fresh audit.
 
+Next nonempty swap representative: `0dfd9cbf...` from the same close parent
+`0095d973...` but a distinct quotient poset, with `swap_hole:2:5:6:5`, d24,
+sole mask `0,0,0,8,0,0,0,0,0,0`, unrestricted flags, and `25^24 < 2^112`.
+It is not in the ledger or active/queued zero-hole Abacus batches; re-audit
+immediately before its first GPU count. No DB write.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
