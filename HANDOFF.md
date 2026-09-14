@@ -16,6 +16,20 @@ and 30 s/candidate). It finished cleanly with zero exact polynomials; its
 untracked report `reduced-kogan-mutation-search/runs/host-v201-zero-hole-shape-weight-20260914.jsonl`
 is empty. No candidate result or admission follows.
 
+Direct user authorization now reopens Euler-local CPU discovery in this Docker
+container; no supervisor queue is involved. Immediately before launch, Abacus
+was audited as v195 running with v196--v200 queued, while Laplace's queue check
+timed out (machine unreachable). `v202` is a read-only zero-hole shape/weight
+discovery sweep capped at eight lanes on physical CPUs 0--7 (50% of Euler):
+fresh seeds beginning 2026091500 replenish lanes that finish base-empty or
+bounded-limited, and use
+`kostka_lift_zero_hole_shape_weight_search.py` SHA-256 `df9c964d...` with
+`--seeds R0 --random-seeds 1 --generations 3 --beam-width 10
+--max-neighbors 120 --max-exact 24 --max-seconds 900 --candidate-seconds 60
+--max-states 50000000 --require-base-point --no-db`. Generated JSONL/logs are
+untracked under the companion `runs/`; no MariaDB write occurs until a result
+survives the ledger and remote-reservation audit.
+
 Euler GPU wide CRT closed `07975fb3...` at strict dilation 7. Bridge receipt
 `20260914T105826-fd315db8e78c` used the certified coordinate-box bound
 `43^24 = 1596772093453535767288998989560362112801`, five 31-bit primes
