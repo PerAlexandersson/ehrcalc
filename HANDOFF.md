@@ -43,8 +43,8 @@ source compiles without GPU exposure, but its performance is unmeasured; the
 0.640-second result predates the 64-bit scan fix and remains mathematically
 valid because that run had only 115,666,316 transitions.
 
-Strict/interior and individual Kogan-face constraints are now implemented in
-the uncommitted follow-up. The maintained `BigUint`, packed modular CPU, layer
+Strict/interior and individual Kogan-face constraints are implemented in
+checkpoint `0e1aaba`. The maintained `BigUint`, packed modular CPU, layer
 exporter, and GPU-resident kernel accept per-label forbidden-row, strict-lower,
 and strict-diagonal masks together with interval flags. The public pair adapter
 converts one-indexed forbidden `(row,label)` data from the complement-row lift.
