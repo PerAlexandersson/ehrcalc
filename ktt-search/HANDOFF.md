@@ -63,6 +63,15 @@ interpolation from d0--d14 has no negative coefficient (full untracked
 evidence: `runs/gpu-v205-811-interpolation-20260914.json`), so it is ruled out
 without a CPU replay or DB write.
 
+A third fresh close-the-hole mutation is eliminated too: audited zero-hole
+face `635a7522...` (`hole_to_flag:2:2:8`, dimension 13, masks
+`0,0,0,0,12,8,0,32,0,0`) had no ledger candidate/attempt/proposal or exact
+poset row. Its 13 GPU receipts all certify clean exact CRT counts; d13 receipt
+`20260914T141456-f02e08718922` is `4945875` in 8.031 s. Reciprocity
+interpolation has no negative coefficient; untracked complete evidence is
+`runs/gpu-v206-635-interpolation-20260914.json`. No CPU replay or MariaDB
+write follows.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
