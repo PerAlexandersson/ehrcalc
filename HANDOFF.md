@@ -10,6 +10,11 @@ its audited successors v196--v200 are queued, with no case overlap. The
 current read-only genetic-ledger audit found 15,353 exact negative records but
 zero with `nonflagged_inequalities = 0`; no already-exact flagged
 individual-face negative case exists for Euler to duplicate.
+Host discovery `v201` then ran one nice-10 CPU for its bounded 300 s envelope
+(`random-seed 20260914`, three fresh zero-hole shape/weight seeds, 10M states
+and 30 s/candidate). It finished cleanly with zero exact polynomials; its
+untracked report `reduced-kogan-mutation-search/runs/host-v201-zero-hole-shape-weight-20260914.jsonl`
+is empty. No candidate result or admission follows.
 
 Euler GPU wide CRT closed `07975fb3...` at strict dilation 7. Bridge receipt
 `20260914T105826-fd315db8e78c` used the certified coordinate-box bound

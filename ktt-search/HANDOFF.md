@@ -11,6 +11,11 @@ runner/engine hashes are `5564bf69...`/`f179ae7e...`; do not duplicate them.
 The current read-only genetic-ledger audit found 15,353 exact negative records
 but none with `nonflagged_inequalities = 0`, so no already-exact flagged
 individual-face negative case exists for a duplicate Euler check.
+Host discovery `v201` ran one nice-10 CPU for 300 s (`random-seed 20260914`,
+three fresh zero-hole shape/weight seeds, 10M states and 30 s/candidate). It
+finished cleanly with zero exact polynomials; its untracked companion report
+`runs/host-v201-zero-hole-shape-weight-20260914.jsonl` is empty. No candidate
+result or admission follows.
 
 Euler wide-CRT exact strict count closes `07975fb3...`: receipt
 `20260914T105826-fd315db8e78c` certified `L^circ(7)=0` in 16.230 s using
