@@ -37,6 +37,22 @@ successor `v203` is now using the same read-only command, bounds, niceness, and
 eight-physical-core cap with fresh seeds beginning 2026091524; do not rerun
 `v202`.
 
+`v203` also ended naturally (13 reports, 24 distinct exact zero-hole
+polynomials, zero negatives; no DB write). The first GPU-first near-one-hole
+closure is likewise closed: exact-positive one-hole parent `ff64c7df...`
+(`a=7,b=3`, dimension 15, sole hole `(2,2)`) yielded fresh zero-hole child
+`2ca2bed6...` by `drop_hole:2:2` (`0xa0f3c11880`, dimension 16). Read-only
+candidate/attempt/proposal/poset checks found no prior row; immediately before
+submission Abacus v195 was live with v196--v200 queued and Laplace remained
+unreachable. The individual face used its actual per-label masks
+`0,0,0,0,4,8,0,32,0,0`, never a union. GPU `bits:97` is conservative for
+`(4*16+1)^16`; all d1--d16 receipts are exact CRT successes, and reciprocity
+interpolation has every ordinary Ehrhart coefficient positive. The full
+untracked evidence is `reduced-kogan-mutation-search/runs/gpu-v204-2ca-interpolation-20260914.json`.
+No counterexample or MariaDB write follows. A shell-control error created two
+duplicate d3/d4 receipts; both independently returned zero and are retained in
+the report; submit only missing dilations one at a time going forward.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
