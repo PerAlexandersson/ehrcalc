@@ -101,6 +101,11 @@ Active GPU closure: fresh audited `81557cce...` (parent `11c05b4a...`, margin
 interpolation. Clean d1 receipt `20260914T143430-840c024273e3` is CRT value 0;
 resume only d2--d8 with snapshot `e3bc68a...` after queue audit.
 
+Closure complete: d2--d8 receipts through `20260914T143628-f4ad4842d961` all
+validated as clean CRT evidence. Exact interpolation of `81557cce...` has
+coefficients `1,3293/840,1835/288,539/96,377/128,227/240,35/192,13/672,1/1152`,
+all positive. No DB write follows.
+
 The next distinct margin-ranked parent `d5161cb8...` (margin `1709/2219`)
 likewise has an all-positive fresh zero-hole closure `18692508...`
 (`hole_to_flag:4:4:34`, dimension 10, masks `0,0,0,6,4,0,0,0,192,128,0`).
