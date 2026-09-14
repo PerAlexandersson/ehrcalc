@@ -164,6 +164,17 @@ with v194/v195/v197/v198 or the ledger. It uses the same runner/engine
 `83a1bac1...`, `82cc65ff...`, `f7a41a98...`, `147c63e7...`, `9bba88b7...`,
 and `22fd4168...`. Sole writer remains Codex; do not ingest before a terminal
 fetch and the existing hash/control checks. Generated inputs remain untracked.
+
+v200 `20260914T104857-65df7e591ef2` completes the currently audited
+zero-hole tail-10 remainder behind v199: 18 final representatives, 72 new
+strict d7--d10 cases, and six d6 controls, deliberately repartitioned into
+six 13-case children so all six Abacus CPUs can work. Its pre-submit audit
+again found zero candidate-key, compressed-class, host-pass, or same-engine
+exact-case overlap. It shares the 1,200-second/100M/28,800-second profile and
+runner/engine `5564bf69...`/`f179ae7e...`; input SHA-256 values are
+`cd212554...`, `2c1ce160...`, `cbb0e76a...`, `0fc6e9d6...`, `49d57466...`,
+and `d92a6a81...`. Codex remains sole writer; generated inputs are untracked;
+fetch and verify only at terminal state.
 Its argv is `python3 abacus_packed_modular_smoke.py --exact
 strict_masked_count --exact-sha256 77f24efda9ded14a2a1dd592805f89285db97486955c36880db645058707b7ec
 --derive derive_masked_interior --derive-sha256
