@@ -96,6 +96,14 @@ all-positive Ehrhart polynomial; evidence is untracked at
 `reduced-kogan-mutation-search/runs/gpu-v209-78cad-interpolation-20260914.json`.
 No CPU replay or DB write follows.
 
+Ranking the fresh closure inventory by exact parent margin selected a closer
+one-hole parent `b1bb5d60...` (margin `436669761/598740061`). Its fresh
+zero-hole child `00e0dd00...` (`hole_to_flag:3:3:53`, dimension 10, masks
+`0,2,2,0,0,0,0,0,0,0,512,0`) passed a fresh ledger/queue audit and all ten
+GPU CRT receipts. Exact interpolation is all positive; untracked evidence is
+`reduced-kogan-mutation-search/runs/gpu-v210-00e0dd-interpolation-20260914.json`.
+No CPU replay or DB write follows.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
