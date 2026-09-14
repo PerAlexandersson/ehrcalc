@@ -1,3 +1,4 @@
+use ehrcalc_kostka_engine::gt_dim::gt_polytope_bounds_masked;
 use ehrcalc_kostka_engine::kostka_dp::masked_relative_interior_masks;
 use ehrcalc_kostka_engine::Partition;
 use serde_json::json;
@@ -47,12 +48,25 @@ fn main() -> Result<(), String> {
     )?;
     let output = match result {
         None => json!({ "empty": true }),
-        Some(masks) => json!({
-            "empty": false,
-            "dimension": masks.dimension,
-            "strict_lower_masks": masks.strict_lower_masks,
-            "strict_diagonal_masks": masks.strict_diagonal_masks,
-        }),
+        Some(masks) => {
+            let (_, lower_bounds, upper_bounds) = gt_polytope_bounds_masked(
+                lambda.parts(),
+                mu.parts(),
+                &weight,
+                upper_flags,
+                lower_flags,
+                forbidden_masks,
+            )
+            .ok_or_else(|| "interior masks and affine bounds disagree".to_string())?;
+            json!({
+                "empty": false,
+                "dimension": masks.dimension,
+                "lower_bounds": lower_bounds,
+                "upper_bounds": upper_bounds,
+                "strict_lower_masks": masks.strict_lower_masks,
+                "strict_diagonal_masks": masks.strict_diagonal_masks,
+            })
+        }
     };
     println!("{output}");
     Ok(())

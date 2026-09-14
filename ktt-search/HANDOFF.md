@@ -5,6 +5,23 @@
 Codex is the sole KTT worker and local MariaDB writer. No counterexample is
 admitted. `07975fb3...` and `fb09eaa1...` are both rejected interpolation
 false positives; no negative zero-hole record remains pending.
+
+The active simplification lane now starts from exact-negative two-hole genome
+`612334d74e3ba8f384a8647c90a4a7fcd46f129dde61c9f2999d9a1e77fab474`
+(`a=9`, `b=10`, mask `0x200000000010000001000`, affine dimension 84).
+Its individual Kostka face is outer `(11,1^9)`, inner `(1)`, weight `1^19`,
+and forbidden masks `0,0,0,0,0,8,0,0,0,32,0,0,0,16,0,0,0,0,0`; only
+the row-label pairs `(4,6)` and `(6,10)` are non-flag edges. All 342 single
+weight transfers `1,1 -> 0,2` are nonempty and have exact affine dimensions
+75 (198 cases), 76 (36), or 79 (108). The first GPU candidate is the
+ledger-disjoint dimension-75 transfer `w=(0,2,1^17)`, canonical masked-input
+SHA-256 `9a77b18b1bec4d839d158e961f1bf5fe910d44ec623f8fc7432cf4e900d79d15`.
+The propagated level bounds give the rigorous sample bound `(d+1)^77`, hence
+at most 482 bits through d75. Abacus v198 is running and v199--v200 are queued
+on retained inputs with no `(11,1^9)/(1)` case; Laplace is unreachable; Euler
+was ready and idle. The first bridge request was rejected before execution
+because the bound-reporting tool change was not yet committed, so there is no
+receipt or ambiguous work from that refusal.
 The exact Euler receipt arguments reconstruct the inherited candidate
 `83859a42b52cb43349caee3fce174f540a21509868c177149e630842bb2468b8`
 (`a=5`, `b=5`, mask `0x1`, weight `1^10`, equality count 1) and quotient-poset
