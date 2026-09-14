@@ -36,6 +36,10 @@ fixtures pass. `cargo test --workspace` passes (35 top-level, 120 foundations,
 56 Kostka-engine, 5 MCP, 5 KTT, and doc tests), and focused engine/plan Clippy
 passes with `-D warnings`.
 
+Implementation checkpoint `83f447c` is pushed on `origin/feat/gpu-order-lr`.
+Do not merge it through the active main checkout while the KTT worker owns that
+lane; reconcile this opening with its newer search chronology at integration.
+
 ## Current KTT state — 2026-09-14 (active)
 
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
