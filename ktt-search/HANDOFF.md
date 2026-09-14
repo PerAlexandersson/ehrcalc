@@ -267,6 +267,12 @@ Diversified `3a4289e2...` is closed: all 17 valid CRT receipts through
 `20260914T162247-161fe93d7761` exact-interpolate all-positive (first nonzero
 d12 = 1). No CPU replay or DB write follows.
 
+Active sixth nonempty swap: fresh `3fcb6b4c...` from close parent `0095d973...`
+(`swap_hole:3:4:6:4`, d24, masks `0,0,0,4,0,0,0,0,0,0`, bound
+`25^24 < 2^112`) passed current queue/ledger audit. Clean four-prime CRT
+d1--d7 receipts through `20260914T162619-2cdaa449258b` are zero; resume
+d8--d24. No DB write.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
