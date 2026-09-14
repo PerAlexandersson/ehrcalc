@@ -162,8 +162,9 @@ Active final single-add closure: fresh `95d69bc4...` from `54ea98c0...`
 (margin `1745053/3729873`) has dimension 13 and masks
 `0,2,2,2,0,8,0,0,0`. Fresh ledger/Abacus-manifest audit is clear and Laplace
 is unreachable. Certified GT bound `14^13 < 2^50`; clean two-prime wide-CRT
-d1 receipt `20260914T151434-54852bd66330` is zero. Resume d2--d13 only from a
-committed snapshot; no DB write.
+d1 receipt `20260914T151434-54852bd66330` is zero. Clean d2--d5 receipts
+through `20260914T151553-5ebec25396aa` are also zero; resume d6--d13 only
+from a committed snapshot; no DB write.
 
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
