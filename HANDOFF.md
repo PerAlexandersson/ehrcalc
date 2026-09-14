@@ -152,15 +152,13 @@ Full untracked evidence is
 `reduced-kogan-mutation-search/runs/gpu-v214-00446-interpolation-20260914.json`.
 No CPU replay or MariaDB write follows.
 
-Active Euler GPU closure: fresh `d39e5d15...` from one-hole parent
-`a26cd5dd...` (margin `17147346969/519184344073`) has dimension 21 and
-individual masks `0,0,0,0,0,4,4,0,0,0`. The renewed ledger audit found no
-candidate/poset, attempt, proposal, or mutation row; keys are absent from
-Abacus v195 and queued v196--v200, while Laplace is unreachable. With the
-certified GT bound `22^21 < 2^94`, clean wide-CRT d1 receipt
-`20260914T150513-39c0535fb8ed` is zero (source `071aa415...`). Clean d2--d7
-receipts through `20260914T150744-be80667cdacc` are also zero; resume d8--d21
-only from a committed snapshot; no DB write.
+The second closest fresh audited one-hole closure is complete: `d39e5d15...`
+from `a26cd5dd...` (margin `17147346969/519184344073`) has dimension 21 and
+individual masks `0,0,0,0,0,4,4,0,0,0`. Its 21 clean wide-CRT GPU receipts
+through `20260914T151236-dcf9103b38d7` use `22^21 < 2^94`; exact reciprocity
+interpolation has no negative coefficient. Full untracked evidence is
+`reduced-kogan-mutation-search/runs/gpu-v215-d39e5-interpolation-20260914.json`.
+No CPU replay or MariaDB write follows.
 
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
