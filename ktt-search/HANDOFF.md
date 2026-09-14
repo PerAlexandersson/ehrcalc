@@ -4,8 +4,19 @@
 
 Codex is the sole KTT worker and local MariaDB writer. No counterexample is
 admitted. `07975fb3...` and `fb09eaa1...` are both rejected interpolation
-false positives; no negative zero-hole record remains pending. Abacus v195
-`20260913T183109-69b50bf3bf77` is live on all six allocated CPUs, and audited,
+false positives; no negative zero-hole record remains pending.
+The latest Euler GPU-first screen is the fresh one-hole equality-swap face
+`42f04dc6...` / poset `81d7035e...` (dimension 24, individual masks
+`0,0,0,0,0,32,0,0,0,0`). Direct candidate, attempt, proposal, and Ehrhart
+table audits were all zero; v195 and v196--v200 were disjoint, and Laplace
+was unreachable. All d1--d24 exact-wide receipts
+`20260914T163456-90d6397ed29e` through `20260914T164210-b0a3bc642a66` are
+clean CRT evidence from source `071aa415...`, with `25^24 < 2^112` certified
+coverage. Exact Fraction reciprocity interpolation is all-positive (zero
+through d9, then 4 at d10), so no CPU replay or MariaDB write follows. Full
+untracked evidence is `runs/gpu-v227-42f04d-interpolation-20260914.json`.
+Abacus v195 `20260913T183109-69b50bf3bf77` is live on all six allocated CPUs,
+and audited,
 disjoint v196--v200 successors are queued. Their structural
 runner/engine hashes are `5564bf69...`/`f179ae7e...`; do not duplicate them.
 The current read-only genetic-ledger audit found 15,353 exact negative records
