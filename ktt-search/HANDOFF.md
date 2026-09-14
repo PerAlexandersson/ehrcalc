@@ -135,6 +135,24 @@ supervisor envelope. It follows v195 (running) and v196 (queued); do not mirror
 or resubmit it. Euler GPU bridge status is ready, but no new nonduplicate KTT
 face currently has both the individual-face form and u64 certified bound that
 its exact-strict interface requires; do not spend it on duplicate controls.
+
+After a second immediate queue audit, v198
+`20260914T104149-10548920510b` was queued behind v195/v196/v197 to keep all
+six Abacus CPUs occupied once dispatched. It is a zero-hole-only,
+host-disjoint structural-tail continuation: 108 signature representatives,
+432 previously uncounted same-engine strict cases (dilations 7--10), and six
+known d6 controls, split into six independent 73-case children. The sole KTT
+worker/sole MariaDB writer audited zero candidate-key, compressed-class,
+host-pass, or same-engine exact-case overlap against v194/v195/v197 and the
+ledger; five already complete ordinary interpolations and 15 historic host
+identities were excluded. Each child uses 1,200 seconds/case, 100M states,
+and the 28,800-second supervisor envelope; runner/engine SHA-256 are
+`5564bf69...`/`f179ae7e...`. Input SHA-256 values (children 01--06) are
+`80415b87...`, `febb1ecc...`, `d35cf604...`, `e1dff918...`, `510e8b7b...`,
+and `3a5f384d...`; generated inputs remain untracked. Fetch, hash-verify,
+and use the existing exact/timeout-prefix ingestion protocol only after a
+terminal result. No overlapping union is summed, no Euler GPU work was
+submitted, and no DB write occurred for v198.
 Its argv is `python3 abacus_packed_modular_smoke.py --exact
 strict_masked_count --exact-sha256 77f24efda9ded14a2a1dd592805f89285db97486955c36880db645058707b7ec
 --derive derive_masked_interior --derive-sha256
