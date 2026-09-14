@@ -153,6 +153,17 @@ and `3a5f384d...`; generated inputs remain untracked. Fetch, hash-verify,
 and use the existing exact/timeout-prefix ingestion protocol only after a
 terminal result. No overlapping union is summed, no Euler GPU work was
 submitted, and no DB write occurred for v198.
+
+v199 `20260914T104629-a7df1387d2f2` is the next, distinct six-way zero-hole
+tail batch behind v198: 108 further representatives, 432 new structural
+strict d7--d10 cases, and six d6 controls, again at 1,200 seconds/case, 100M
+states, and 28,800 seconds total. Immediate pre-submit audit found zero
+candidate-key, compressed-class, host-pass, or same-engine exact-case overlap
+with v194/v195/v197/v198 or the ledger. It uses the same runner/engine
+`5564bf69...`/`f179ae7e...`; child input SHA-256 values are
+`83a1bac1...`, `82cc65ff...`, `f7a41a98...`, `147c63e7...`, `9bba88b7...`,
+and `22fd4168...`. Sole writer remains Codex; do not ingest before a terminal
+fetch and the existing hash/control checks. Generated inputs remain untracked.
 Its argv is `python3 abacus_packed_modular_smoke.py --exact
 strict_masked_count --exact-sha256 77f24efda9ded14a2a1dd592805f89285db97486955c36880db645058707b7ec
 --derive derive_masked_interior --derive-sha256
