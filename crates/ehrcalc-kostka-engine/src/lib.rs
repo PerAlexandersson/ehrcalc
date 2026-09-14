@@ -8,6 +8,7 @@ pub mod flow;
 pub mod gt_dim;
 pub mod kostka_dp;
 pub mod lr;
+pub mod packed_modular;
 pub mod partition;
 pub mod syt;
 
