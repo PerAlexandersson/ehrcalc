@@ -127,6 +127,14 @@ GPU CRT receipts. Exact interpolation is all positive; untracked evidence is
 `runs/gpu-v210-00e0dd-interpolation-20260914.json`. No CPU replay or DB write
 follows.
 
+The next fresh individual-face closure, `aee7e11c...` from the one-hole parent
+`caceb1d5...` (margin `4992/6127`), is also closed. Its dimension-8 masks
+`0,0,0,0,8,0,0,64,0` had eight clean CRT GPU receipts through
+`20260914T144346-5b58b3c02cc1`; exact interpolation gives
+`1,971/280,7019/1440,1739/480,1001/640,97/240,59/960,17/3360,1/5760`, all
+positive. Evidence remains untracked at `runs/gpu-v212-aee7-interpolation-20260914.json`.
+No CPU replay or MariaDB write follows.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
