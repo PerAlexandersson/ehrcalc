@@ -106,6 +106,9 @@ validated as clean CRT evidence. Exact interpolation of `81557cce...` has
 coefficients `1,3293/840,1835/288,539/96,377/128,227/240,35/192,13/672,1/1152`,
 all positive. No DB write follows.
 
+Active next rank: fresh `56d716e9...` (dimension 9, masks `0,0,2,2,4,0,0`)
+has clean d1 CRT receipt `20260914T143823-76dea014b2dd` = 0; resume d2--d9.
+
 The next distinct margin-ranked parent `d5161cb8...` (margin `1709/2219`)
 likewise has an all-positive fresh zero-hole closure `18692508...`
 (`hole_to_flag:4:4:34`, dimension 10, masks `0,0,0,6,4,0,0,0,192,128,0`).
