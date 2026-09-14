@@ -90,6 +90,24 @@ reconstruction. Receipts live under `/cargo-target/euler-gpu-bridge/results/`.
 These are independent exact count cross-checks only, not polynomial
 counterexamples; no union sum or MariaDB write occurred.
 
+Fresh remote audit: Abacus is serially occupied by v194
+`20260913T173400-b08ab8dc21ff` (running); v195
+`20260913T183109-69b50bf3bf77` and packed control v196
+`20260914T073435-1df562e27e39` remain queued. Do not add or mirror work.
+The strongest current flagged candidate remains `07975fb3...` (dimension 24,
+`nonflagged_inequalities: 0`) with four negative stored coefficients, but it
+is not admitted: its old generic d25 count timed out. Its stored interpolation
+would predict an impossible negative strict d25 count, so it needs an
+independent ordinary replay. The bridge accepts only a u64 bound; it correctly
+rejected the valid `(6d+1)^24` d25 bound (174 bits), so no uncertified GPU
+reconstruction was attempted. Bounded local strict d25/d26 attempts also gave
+no count. A single host CPU-0/nice-10 generic ordinary d25 retry is live as
+PID `1576498`, `timeout 14400s`, `--max-states 100000000`, output
+`reduced-kogan-mutation-search/runs/host-0797-flagged-ordinary-d25-4h-20260914.json`,
+binary SHA-256 `377b27ea...`. It is a distinct resumed validation attempt,
+uses far below 50% host CPU, and must be polled/reconciled before any d26 retry
+or DB write.
+
 Abacus remains CPU-only. After immediate Abacus/Laplace queue audit (Laplace
 still unreachable), v196 `20260914T073435-1df562e27e39` was queued behind v195:
 a 60-second non-candidate packed-masked control with runner

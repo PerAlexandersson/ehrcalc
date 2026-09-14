@@ -81,6 +81,21 @@ CPU d22/d23 counts were `52920`/`4342507596`, and receipt
 residues `47540302`/`47540338`. Both shared receipts are under
 `/cargo-target/euler-gpu-bridge/results/`. They are exact count cross-checks,
 not polynomial counterexamples; no union sum or DB write occurred.
+
+Fresh remote audit: Abacus v194 `20260913T173400-b08ab8dc21ff` is running;
+v195 `20260913T183109-69b50bf3bf77` and v196
+`20260914T073435-1df562e27e39` are queued. Do not submit a duplicate. The
+strongest flagged candidate is still unadmitted `07975fb3...` (dimension 24,
+zero nonflagged inequalities, four stored negative coefficients): its old
+generic d25 count timed out, and its interpolation gives an impossible negative
+strict d25 value. The bridge correctly rejected the rigorous `(6d+1)^24` d25
+bound because its interface is u64-only; no uncertified GPU reconstruction was
+accepted. Local bounded strict d25/d26 attempts likewise gave no count. A
+single CPU-0/nice-10 host ordinary flagged d25 retry is live as PID `1576498`
+under `timeout 14400s` / 100M states, output
+`reduced-kogan-mutation-search/runs/host-0797-flagged-ordinary-d25-4h-20260914.json`,
+binary SHA-256 `377b27ea...`. It is the sole active resumed validation and uses
+well under 50% host CPU; poll it before a d26 retry or any DB action.
 After both queue checks (Laplace remains unreachable), v196
 `20260914T073435-1df562e27e39` was queued after v195 as a 60-second,
 hash-checked, non-candidate packed strict control (runner `03435442...`).
