@@ -138,6 +138,23 @@ Ehrhart--Macdonald reciprocity in the engine tests. The standalone helper
 `derive_masked_interior` prints the dimension and masks as JSON for other KTT
 drivers.
 
+Counts beyond the legacy wrapper's `u64` bound use the separate wide mode:
+
+```text
+gpu-prototype/run-exact-strict-wide.sh \
+  BOUND_OR_BITS DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS \
+  [MAX_TRANSITIONS [FORBIDDEN_MASKS]]
+```
+
+`BOUND_OR_BITS` is either a nonnegative decimal integer or `bits:N`, which
+means the certified bound `2^N-1`. The wide driver collects sequential batches
+from 24 configured 31-bit primes and requires their product to exceed twice
+the bound before reconstructing. It supports bounds through 700 bits. Its
+machine-readable `EHRGPU_CRT` provenance record contains the normalized bound,
+threshold, moduli, residues, reconstruction, HIP source hash, and hashes of the
+GPU binaries used for each batch. The original strict command and its `u64`
+host-bridge contract remain unchanged.
+
 These APIs count one face. A union of reduced Kogan faces or a full key
 polynomial still needs overlap deduplication or inclusion--exclusion outside
 this kernel; summing face counts directly is not valid in general.

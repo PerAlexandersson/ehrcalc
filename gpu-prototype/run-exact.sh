@@ -17,6 +17,7 @@ maximum_transitions=${8:-150000000}
 forbidden_masks=${9:--}
 strict_lower_masks=${10:--}
 strict_diagonal_masks=${11:--}
+crt_margin=${EHRGPU_CRT_MARGIN:-1}
 
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 image_name=${EHRGPU_IMAGE:-ehrcalc-rocm:7.2.4}
@@ -26,6 +27,25 @@ reconstruct="$cargo_target/release/reconstruct_modular"
 modulus_candidates=(
     2147483647 2147483629 2147483587 2147483579
     2147483563 2147483549 2147483543 2147483497
+    2147483489 2147483477 2147483423 2147483399
+    2147483353 2147483323 2147483269 2147483249
+    2147483237 2147483179 2147483171 2147483137
+    2147483123 2147483077 2147483069 2147483059
+)
+
+if [[ $crt_margin != 1 && $crt_margin != 2 ]]; then
+    echo "EHRGPU_CRT_MARGIN must be 1 or 2" >&2
+    exit 2
+fi
+modulus_threshold=$(python3 - "$upper_bound" "$crt_margin" <<'PY'
+import sys
+
+bound = int(sys.argv[1])
+margin = int(sys.argv[2])
+if bound < 0:
+    raise SystemExit("upper bound must be nonnegative")
+print(bound * margin)
+PY
 )
 
 if ! docker image inspect "$image_name" >/dev/null 2>&1; then
@@ -55,19 +75,20 @@ for modulus in "${modulus_candidates[@]}"; do
     trial_residues+=(0)
     trial_moduli_csv=$(IFS=,; echo "${trial_moduli[*]}")
     trial_residues_csv=$(IFS=,; echo "${trial_residues[*]}")
-    if "$reconstruct" "$upper_bound" "$trial_residues_csv" \
+    if "$reconstruct" "$modulus_threshold" "$trial_residues_csv" \
         "$trial_moduli_csv" >/dev/null 2>&1; then
         needed_moduli=${#trial_moduli[@]}
         break
     fi
 done
 if ((needed_moduli == 0)); then
-    echo "eight moduli do not exceed the supplied certified bound" >&2
+    echo "configured moduli do not exceed the required CRT threshold" >&2
     exit 1
 fi
 
 residues=()
 moduli=()
+binary_sha256s=()
 source_path="$repo_root/gpu-prototype/packed_flagged_kostka_gpu_resident.hip.cpp"
 source_hash=$(sha256sum "$source_path" | cut -d' ' -f1)
 batch_start=0
@@ -90,6 +111,8 @@ while ((batch_start < needed_moduli)); do
               /source/packed_flagged_kostka_gpu_resident.hip.cpp \
               -o /build/$binary_name"
     fi
+    binary_sha256=$(sha256sum "$binary_path" | cut -d' ' -f1)
+    binary_sha256s+=("$binary_sha256")
     log_path="$build_dir/exact-${run_id}-batch${batch_start}.log"
     gpu_output=$(
         docker run --rm \
@@ -115,9 +138,16 @@ while ((batch_start < needed_moduli)); do
     residues_csv=$(IFS=,; echo "${residues[*]}")
     moduli_csv=$(IFS=,; echo "${moduli[*]}")
     echo "GPU batch: moduli=$batch_moduli_csv residues=$batch_residues_csv" >&2
+    if ((${#moduli[@]} < needed_moduli)); then
+        batch_start=$((batch_start + lane_count))
+        continue
+    fi
     if exact=$(
         "$reconstruct" "$upper_bound" "$residues_csv" "$moduli_csv" 2>/dev/null
     ); then
+        binary_sha256s_json=$(printf '\"%s\",' "${binary_sha256s[@]}")
+        binary_sha256s_json=${binary_sha256s_json%,}
+        echo "EHRGPU_CRT {\"upper_bound\":\"$upper_bound\",\"modulus_threshold\":\"$modulus_threshold\",\"moduli\":[$moduli_csv],\"residues\":[$residues_csv],\"reconstructed\":\"$exact\",\"source_sha256\":\"$source_hash\",\"binary_sha256s\":[$binary_sha256s_json]}" >&2
         echo "$exact"
         exit 0
     fi

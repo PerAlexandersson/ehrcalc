@@ -13,6 +13,11 @@ use std::hash::{BuildHasherDefault, Hasher};
 /// Enough lanes for the currently targeted low-dimensional KTT calculations.
 pub const MAX_MODULI: usize = 8;
 
+/// Maximum number of sequential residue batches accepted by CRT
+/// reconstruction. Device DPs remain limited to [`MAX_MODULI`] simultaneous
+/// lanes, while exact drivers may combine many independent batches.
+pub const MAX_CRT_MODULI: usize = 64;
+
 /// Convenient large coprime moduli. All are prime and below `2^31`, so adding
 /// two reduced residues cannot overflow a `u32`.
 pub const DEFAULT_MODULI: [u32; MAX_MODULI] = [
@@ -776,9 +781,17 @@ fn zero_stats(moduli: &[u32]) -> ModularKostkaStats {
 }
 
 fn validate_moduli(moduli: &[u32]) -> Result<(), String> {
-    if moduli.is_empty() || moduli.len() > MAX_MODULI {
+    validate_moduli_with_limit(moduli, MAX_MODULI)
+}
+
+fn validate_crt_moduli(moduli: &[u32]) -> Result<(), String> {
+    validate_moduli_with_limit(moduli, MAX_CRT_MODULI)
+}
+
+fn validate_moduli_with_limit(moduli: &[u32], maximum: usize) -> Result<(), String> {
+    if moduli.is_empty() || moduli.len() > maximum {
         return Err(format!(
-            "expected 1..={MAX_MODULI} moduli, received {}",
+            "expected 1..={maximum} moduli, received {}",
             moduli.len()
         ));
     }
@@ -809,7 +822,7 @@ pub fn crt_reconstruct_bounded(
     moduli: &[u32],
     upper_bound: &BigUint,
 ) -> Result<BigUint, String> {
-    validate_moduli(moduli)?;
+    validate_crt_moduli(moduli)?;
     if residues.len() != moduli.len() {
         return Err("residue and modulus lengths differ".to_string());
     }
@@ -912,6 +925,31 @@ mod tests {
             .iter()
             .fold(BigUint::one(), |product, &modulus| product * modulus);
         assert!(crt_reconstruct_bounded(&residues, moduli, &ambiguous_bound).is_err());
+    }
+
+    #[test]
+    fn crt_combines_more_batches_than_device_lane_limit() {
+        let moduli = [
+            2_147_483_647,
+            2_147_483_629,
+            2_147_483_587,
+            2_147_483_579,
+            2_147_483_563,
+            2_147_483_549,
+            2_147_483_543,
+            2_147_483_497,
+            2_147_483_489,
+        ];
+        let value = (BigUint::one() << 260_u32) + BigUint::from(12_345_u32);
+        let residues = moduli
+            .iter()
+            .map(|&modulus| (&value % BigUint::from(modulus)).to_u32().unwrap())
+            .collect::<Vec<_>>();
+        assert_eq!(
+            crt_reconstruct_bounded(&residues, &moduli, &value).unwrap(),
+            value
+        );
+        assert!(validate_moduli(&moduli).is_err());
     }
 
     #[test]
