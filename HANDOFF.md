@@ -25,18 +25,20 @@ The full `cargo test --workspace` suite passes (including 35 top-level and 54
 engine tests); strict engine Clippy with `-D warnings` and GPU-wrapper Bash
 syntax checks pass. After a fresh divergence audit (zero remote-only commits;
 901 local commits ahead), normal non-force `git push origin main` advanced
-GitHub from `1d53fc3` to `dee07c2`. Keep `feat/gpu-kostka-prototype`; no branch
+GitHub from `1d53fc3` to final documented tip `73cf368` (merge `dee07c2`). Keep
+`feat/gpu-kostka-prototype`; no branch
 deletion was requested.
 
-The GPU smoke gate (`gpu-prototype/run-smoke.sh`) is pending rather than
-waived. Euler's host supervisor confirms that the physical host has `/dev/kfd`,
-`/dev/dri`, and Docker; only this Docker worker lacks host access and Euler SSH
-refused at 2026-09-14T07:32Z. It is therefore a host-side follow-up, not absent
-hardware. Run the documented smoke first, then use `run-exact-strict.sh` only
-for a single face with its
-`forbidden_row_labels` converted to per-label masks; never sum overlapping
-face unions without deduplication. No general Euler-local KTT computation is
-authorized by this entry.
+The Euler host GPU gate is cleared. At 2026-09-14T10:07+02:00, from canonical
+`main` `73cf368`, `gpu-prototype/run-host-tests.sh` passed and
+`gpu-prototype/run-smoke.sh` matched the Rust packed-modular CPU reference in
+all ten comparisons: skew, flagged, zero-strip, masked-face, and
+strict-forced-diagonal cases at both `2147483647` and `2147483629`. The HIP
+source SHA-256 was `e0cc1690...`; the compiled GPU binary was `73cba204...`.
+Strict GPU candidate work may therefore use `run-exact-strict.sh`, but only for
+one face at a time with its `forbidden_row_labels` converted to per-label
+masks, a certified upper bound, enough CRT moduli, and an exact CPU
+cross-check. Never sum overlapping face unions without deduplication.
 
 Abacus remains CPU-only. After immediate Abacus/Laplace queue audit (Laplace
 still unreachable), v196 `20260914T073435-1df562e27e39` was queued behind v195:

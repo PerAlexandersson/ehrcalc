@@ -23,14 +23,19 @@ path exists.
 Full `cargo test --workspace` passes, as do strict-engine Clippy (`-D warnings`)
 and GPU-wrapper Bash syntax checks. Following a fresh audit of the unusual
 local history (901 commits ahead, zero remote-only), normal non-force push
-advanced GitHub `main` from `1d53fc3` to `dee07c2`; retain the feature branch.
+advanced GitHub `main` from `1d53fc3` to final documented tip `73cf368` (merge
+`dee07c2`); retain the feature branch.
 
-Euler's required documented GPU smoke gate has not run. The host supervisor
-confirms Euler has `/dev/kfd`, `/dev/dri`, and Docker; this container simply
-lacks that host access and `ssh euler` refused at 2026-09-14T07:32Z. Treat it
-as a host-side follow-up. On recovery, run `gpu-prototype/run-smoke.sh` before any
-`gpu-prototype/run-exact-strict.sh` face case and exact CPU cross-check; count
-faces individually, never by an overlapping-union sum. Abacus stays CPU-only.
+Euler's required GPU gate passed on the host at
+2026-09-14T10:07+02:00 from canonical Ehrcalc `main` `73cf368`.
+`gpu-prototype/run-host-tests.sh` passed, and `gpu-prototype/run-smoke.sh`
+matched the packed-modular Rust CPU reference for skew, flagged, zero-strip,
+masked-face, and strict-forced-diagonal cases at both configured 31-bit
+moduli (ten matches total). HIP source SHA-256 was `e0cc1690...`; the compiled
+GPU binary was `73cba204...`. Strict GPU face cases are unblocked through
+`gpu-prototype/run-exact-strict.sh`, subject to a certified upper bound,
+sufficient CRT coverage, and an exact CPU cross-check. Count faces
+individually, never by an overlapping-union sum. Abacus stays CPU-only.
 After both queue checks (Laplace remains unreachable), v196
 `20260914T073435-1df562e27e39` was queued after v195 as a 60-second,
 hash-checked, non-candidate packed strict control (runner `03435442...`).
