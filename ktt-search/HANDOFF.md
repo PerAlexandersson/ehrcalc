@@ -82,23 +82,35 @@ residues `47540302`/`47540338`. Both shared receipts are under
 `/cargo-target/euler-gpu-bridge/results/`. They are exact count cross-checks,
 not polynomial counterexamples; no union sum or DB write occurred.
 
-Fresh remote audit: Abacus v194 `20260913T173400-b08ab8dc21ff` is running;
-v195 `20260913T183109-69b50bf3bf77` and v196
-`20260914T073435-1df562e27e39` are queued. Do not submit a duplicate. The
-v194 payload's reserved candidate inventory includes both `07975fb3...` and
-`fb09eaa1...` (neither is an active count case), so do not start a local
-`fb09` replay while v194 retains that reservation. The
+Fresh remote audit: v194 `20260913T173400-b08ab8dc21ff` terminated by its
+supervisor `systemd` timeout (status 15) and was fetched; v195
+`20260913T183109-69b50bf3bf77` is now running and v196
+`20260914T073435-1df562e27e39` remains queued. v194's six child logs validate
+the pinned runner/engine/resource headers and input hashes. Their captured
+ordered prefix has 458 exact counts and 23 per-case time limits; five unseen
+trailing cases were not inferred or written. Sole-writer ingestion ledger
+`5cb14388...` recorded 452 fresh exact attempts, six exact reuses, and all 23
+time limits, with child-output SHA-256 values `d9e02b59...`, `d32143e...`,
+`5a669be...`, `dd87684...`, `d6500b...`, and `2e1d0cb0...`.
+The v194 inventory reservation for `07975fb3...`/`fb09eaa1...` is terminal;
+retain the existing v195 disjointness audit before any new host candidate. The
 strongest flagged candidate is still unadmitted `07975fb3...` (dimension 24,
 zero nonflagged inequalities, four stored negative coefficients): its old
 generic d25 count timed out, and its interpolation gives an impossible negative
 strict d25 value. The bridge correctly rejected the rigorous `(6d+1)^24` d25
 bound because its interface is u64-only; no uncertified GPU reconstruction was
 accepted. Local bounded strict d25/d26 attempts likewise gave no count. A
-single CPU-0/nice-10 host ordinary flagged d25 retry is live as PID `1576498`
-under `timeout 14400s` / 100M states, output
+A CPU-0/nice-10 host ordinary flagged d25 retry for `07975fb3...` is live as
+PID `1576498` under `timeout 14400s` / 100M states, output
 `reduced-kogan-mutation-search/runs/host-0797-flagged-ordinary-d25-4h-20260914.json`,
-binary SHA-256 `377b27ea...`. It is the sole active resumed validation and uses
-well under 50% host CPU; poll it before a d26 retry or any DB action.
+binary SHA-256 `377b27ea...`. With v194 terminal and recorded v195 case
+disjointness rechecked, the distinct zero-hole `fb09eaa1...` d25 ordinary
+replay also started on CPU 1 as PID `1628228`/`1628229` under the same bounds,
+output `runs/host-fb09-flagged-ordinary-d25-4h-20260914.json`. Its certified
+source record SHA-256 is `660c5afc...`; it must match
+`27198291378648307039700595981` at d25, then independently match
+`63657025156588451239562777670` at d26. The two processes use only two host
+CPUs, far below the 50% cap; poll either before follow-up or DB action.
 Fresh read-only ledger inventory found no exact negative zero-hole row: all
 15,353 exact negative genetic rows split into 293 one-hole and 15,060 two-hole
 rows. Thus there is no additional already-exact zero-hole candidate to launch
@@ -109,7 +121,8 @@ their negative polynomials are not flagged-skew witnesses.
 After both queue checks (Laplace remains unreachable), v196
 `20260914T073435-1df562e27e39` was queued after v195 as a 60-second,
 hash-checked, non-candidate packed strict control (runner `03435442...`).
-Fetch/verify it before any new packed candidate batch. No DB write occurred.
+Fetch/verify it before any new packed candidate batch. No DB write beyond the
+v194 verified-prefix ingestion occurred.
 Its argv is `python3 abacus_packed_modular_smoke.py --exact
 strict_masked_count --exact-sha256 77f24efda9ded14a2a1dd592805f89285db97486955c36880db645058707b7ec
 --derive derive_masked_interior --derive-sha256
