@@ -71,6 +71,15 @@ interpolation has no negative coefficient; untracked complete evidence is
 `reduced-kogan-mutation-search/runs/gpu-v206-635-interpolation-20260914.json`.
 No CPU replay or MariaDB write follows.
 
+The final single-flag closure from one-hole parent `ff64c7df...` is also
+eliminated: `eb0bbfdf...` (`hole_to_flag:2:2:19`, dimension 11) is a fresh,
+audited zero-hole face with masks `0,0,0,0,4,8,32,32,0,0`. Its d1--d11 bridge
+receipts are all clean exact CRT evidence; d11 `20260914T141842-d8da7cb9f97b`
+is `33120` in 7.979 s. Exact interpolation has no negative coefficient; full
+untracked evidence is `reduced-kogan-mutation-search/runs/gpu-v207-eb0-interpolation-20260914.json`.
+Thus all three one-flag absorption variants of this parent are ruled out; move
+to a different audited one-hole near-miss family. No DB write occurred.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
