@@ -22,9 +22,11 @@ masked-face control is 1 and both packed residues are 1. Release SHA-256:
 `strict_masked_count` `77f24efd...`.
 
 The GPU smoke gate (`gpu-prototype/run-smoke.sh`) is pending rather than
-waived: this Docker worker has neither GPU/Docker access and Euler SSH refused
-at 2026-09-14T07:32Z. When Euler returns, run the documented smoke first, then
-use `run-exact-strict.sh` only for a single face with its
+waived. Euler's host supervisor confirms that the physical host has `/dev/kfd`,
+`/dev/dri`, and Docker; only this Docker worker lacks host access and Euler SSH
+refused at 2026-09-14T07:32Z. It is therefore a host-side follow-up, not absent
+hardware. Run the documented smoke first, then use `run-exact-strict.sh` only
+for a single face with its
 `forbidden_row_labels` converted to per-label masks; never sum overlapping
 face unions without deduplication. No general Euler-local KTT computation is
 authorized by this entry.

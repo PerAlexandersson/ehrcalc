@@ -20,9 +20,10 @@ packed `19d80f5b...`, mask derivation `fe3985e0...`, reconstruction
 `bcb82e2b...`, direct exact `77f24efd...`. No executable `hipMallocAsync`
 path exists.
 
-Euler's required documented GPU smoke gate has not run: this container lacks
-GPU/Docker access and `ssh euler` refused at 2026-09-14T07:32Z. On recovery,
-run `gpu-prototype/run-smoke.sh` before any
+Euler's required documented GPU smoke gate has not run. The host supervisor
+confirms Euler has `/dev/kfd`, `/dev/dri`, and Docker; this container simply
+lacks that host access and `ssh euler` refused at 2026-09-14T07:32Z. Treat it
+as a host-side follow-up. On recovery, run `gpu-prototype/run-smoke.sh` before any
 `gpu-prototype/run-exact-strict.sh` face case and exact CPU cross-check; count
 faces individually, never by an overlapping-union sum. Abacus stays CPU-only.
 After both queue checks (Laplace remains unreachable), v196
