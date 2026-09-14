@@ -85,6 +85,9 @@ not polynomial counterexamples; no union sum or DB write occurred.
 Fresh remote audit: Abacus v194 `20260913T173400-b08ab8dc21ff` is running;
 v195 `20260913T183109-69b50bf3bf77` and v196
 `20260914T073435-1df562e27e39` are queued. Do not submit a duplicate. The
+v194 payload's reserved candidate inventory includes both `07975fb3...` and
+`fb09eaa1...` (neither is an active count case), so do not start a local
+`fb09` replay while v194 retains that reservation. The
 strongest flagged candidate is still unadmitted `07975fb3...` (dimension 24,
 zero nonflagged inequalities, four stored negative coefficients): its old
 generic d25 count timed out, and its interpolation gives an impossible negative

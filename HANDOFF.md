@@ -94,6 +94,10 @@ Fresh remote audit: Abacus is serially occupied by v194
 `20260913T173400-b08ab8dc21ff` (running); v195
 `20260913T183109-69b50bf3bf77` and packed control v196
 `20260914T073435-1df562e27e39` remain queued. Do not add or mirror work.
+Payload audit on 2026-09-14 additionally confirmed that v194's reserved
+candidate inventory includes both `07975fb3...` and `fb09eaa1...` (neither is
+an active count case). Do not start a local `fb09` replay while v194 owns that
+reservation.
 The strongest current flagged candidate remains `07975fb3...` (dimension 24,
 `nonflagged_inequalities: 0`) with four negative stored coefficients, but it
 is not admitted: its old generic d25 count timed out. Its stored interpolation
