@@ -30,6 +30,23 @@ bounded-limited, and use
 untracked under the companion `runs/`; no MariaDB write occurs until a result
 survives the ledger and remote-reservation audit.
 
+`v202` ended naturally before the resumed-work audit: its 24 generated reports
+contain 65 distinct exact zero-hole polynomials and zero negative coefficients.
+It made no MariaDB write and yielded no contender. Its nonoverlapping direct
+successor `v203` is now using the same read-only command, bounds, niceness, and
+eight-physical-core cap with fresh seeds beginning 2026091524; do not rerun
+`v202`.
+
+Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
+is ready (including container checks); its two end-to-end controls were read
+from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
+is `ok:true`, pinned snapshot `ad49c0b...`, cleaned all containers, and
+certified the six-prime wide-CRT value 1; `20260914T132904-d39fe82a325f` is
+`ok:true`, snapshot-pinned/clean, and provides validated empty-face evidence 0.
+They are controls only, not KTT discoveries or DB writes. For every future
+bridge result inspect the JSON receipt; `ok:false` or `resource-limit` is no
+count.
+
 Euler GPU wide CRT closed `07975fb3...` at strict dilation 7. Bridge receipt
 `20260914T105826-fd315db8e78c` used the certified coordinate-box bound
 `43^24 = 1596772093453535767288998989560362112801`, five 31-bit primes
