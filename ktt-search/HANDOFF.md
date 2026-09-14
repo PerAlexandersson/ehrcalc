@@ -150,6 +150,15 @@ receipts through `20260914T150250-39cbad13a33d` use the certified GT bound
 Full untracked evidence is `runs/gpu-v214-00446-interpolation-20260914.json`.
 No CPU replay or MariaDB write follows.
 
+Active Euler GPU closure: fresh `d39e5d15...` from one-hole parent
+`a26cd5dd...` (margin `17147346969/519184344073`) has dimension 21 and
+individual masks `0,0,0,0,0,4,4,0,0,0`. The renewed ledger audit found no
+candidate/poset, attempt, proposal, or mutation row; keys are absent from
+Abacus v195 and queued v196--v200, while Laplace is unreachable. With the
+certified GT bound `22^21 < 2^94`, clean wide-CRT d1 receipt
+`20260914T150513-39c0535fb8ed` is zero (source `071aa415...`). Resume
+d2--d21 only from a committed snapshot; no DB write.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
