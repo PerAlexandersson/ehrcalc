@@ -3,10 +3,10 @@
 ## Current state — 2026-09-14 (active)
 
 Codex is the sole KTT worker and local MariaDB writer. No counterexample is
-admitted. `07975fb3...` is rejected as an interpolation false positive;
-`fb09eaa1...` is the only remaining negative pending-validation record. Abacus
-v195 `20260913T183109-69b50bf3bf77` is live on all six allocated CPUs, and
-audited, disjoint v196--v200 successors are queued. Their structural
+admitted. `07975fb3...` and `fb09eaa1...` are both rejected interpolation
+false positives; no negative zero-hole record remains pending. Abacus v195
+`20260913T183109-69b50bf3bf77` is live on all six allocated CPUs, and audited,
+disjoint v196--v200 successors are queued. Their structural
 runner/engine hashes are `5564bf69...`/`f179ae7e...`; do not duplicate them.
 
 Euler wide-CRT exact strict count closes `07975fb3...`: receipt
@@ -18,6 +18,13 @@ exact nonnegative count. Engine source SHA-256 is `0a37e353...`; the valid
 MariaDB attempt is `7c5715ec...`. Receipt `20260914T105806-7d6745d7aff1` had a
 mistyped too-small bound and is non-certifying; it is retained only as audit
 provenance. No overlapping union was summed.
+
+Receipt `20260914T110145-6d2921fc01e5` applied the same certified d7
+coordinate-box bound and five-prime CRT to `fb09eaa1...`, returning exact
+`L^circ(7)=0` in 16.187 s, versus its interpolation prediction
+`-1600194183201`. Its valid MariaDB attempt is `be0477e...`; detail includes
+the receipt, residues, binaries, and source hash. Both former negative records
+are eliminated; await the disjoint queued Abacus tail work for new evidence.
 
 Ehrcalc integrated GPU checkpoint `0e1aaba` (source handoff `58d0024`) as
 `5d2ecca`/`5dc8f2b` and canonical merge `dee07c2`: packed modular CPU counting now has suffix pruning, wide

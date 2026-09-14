@@ -3,10 +3,10 @@
 ## Current KTT state — 2026-09-14 (active)
 
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
-counterexample is admitted. `07975fb3...` is now rejected as an interpolation
-false positive; only `fb09eaa1...` remains a negative pending-validation
-record. Abacus v195 `20260913T183109-69b50bf3bf77` is live on all six allocated
-CPUs; its audited successors v196--v200 are queued, with no case overlap.
+counterexample is admitted, and no negative zero-hole record remains pending:
+both `07975fb3...` and `fb09eaa1...` are rejected interpolation false positives.
+Abacus v195 `20260913T183109-69b50bf3bf77` is live on all six allocated CPUs;
+its audited successors v196--v200 are queued, with no case overlap.
 
 Euler GPU wide CRT closed `07975fb3...` at strict dilation 7. Bridge receipt
 `20260914T105826-fd315db8e78c` used the certified coordinate-box bound
@@ -18,6 +18,13 @@ The prior receipt `20260914T105806-7d6745d7aff1` used a mistyped too-small
 bound and is expressly non-certifying. Sole-writer MariaDB attempt
 `7c5715ec...` records the valid receipt, both GPU binary hashes, residues, and
 count; no overlapping union was used.
+
+The same audit closed `fb09eaa1...`: receipt
+`20260914T110145-6d2921fc01e5` used the identical d7 bound/CRT configuration
+and certified `L^circ(7)=0` in 16.187 s, versus its interpolation prediction
+`-1600194183201`. MariaDB attempt `be0477e...` stores the count, receipt,
+residues, binaries, and source hash. Thus neither former negative record is a
+candidate; await the disjoint Abacus tail batches for new search evidence.
 
 The strict masked GPU checkpoint was integrated from
 `feat/gpu-kostka-prototype` code `0e1aaba` / handoff `58d0024` as local commits
