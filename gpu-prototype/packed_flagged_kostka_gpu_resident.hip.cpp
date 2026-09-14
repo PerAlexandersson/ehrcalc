@@ -32,7 +32,11 @@ constexpr std::uint32_t kDefaultModuli[] = {
     2'147'483'563U, 2'147'483'549U, 2'147'483'543U, 2'147'483'497U,
 };
 constexpr std::size_t kMaximumRows = 32;
-constexpr std::uint32_t kMaximumStripSize = 128;
+#ifndef EHRGPU_MAX_STRIP_SIZE
+#define EHRGPU_MAX_STRIP_SIZE 128
+#endif
+constexpr std::uint32_t kMaximumStripSize = EHRGPU_MAX_STRIP_SIZE;
+static_assert(kMaximumStripSize >= 1 && kMaximumStripSize <= 512);
 constexpr std::size_t kDefaultMaximumTransitions = 150'000'000;
 #ifndef EHRGPU_BLOCK_SIZE
 #define EHRGPU_BLOCK_SIZE 128

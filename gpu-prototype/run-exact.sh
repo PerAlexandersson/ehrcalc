@@ -33,6 +33,23 @@ modulus_candidates=(
     2147483123 2147483077 2147483069 2147483059
 )
 
+maximum_strip_size=$(python3 - "$dilation" "$weight" <<'PY'
+import re
+import sys
+
+dilation_text, weight_text = sys.argv[1:]
+if not re.fullmatch(r"[0-9]+", dilation_text):
+    raise SystemExit("dilation must be an unsigned decimal integer")
+if not weight_text or any(not re.fullmatch(r"[0-9]+", part) for part in weight_text.split(",")):
+    raise SystemExit("weight must be a nonempty comma-separated unsigned integer list")
+dilation = int(dilation_text)
+maximum = dilation * max(map(int, weight_text.split(",")))
+if maximum > 512:
+    raise SystemExit("scaled weight part exceeds GPU strip-size limit 512")
+print(max(1, maximum))
+PY
+)
+
 if [[ $crt_margin != 1 && $crt_margin != 2 ]]; then
     echo "EHRGPU_CRT_MARGIN must be 1 or 2" >&2
     exit 2
@@ -97,7 +114,7 @@ while ((batch_start < needed_moduli)); do
     lane_count=$((remaining < 3 ? remaining : 3))
     batch_moduli=("${modulus_candidates[@]:batch_start:lane_count}")
     batch_moduli_csv=$(IFS=,; echo "${batch_moduli[*]}")
-    binary_name="packed-flagged-kostka-gpu-resident-lanes${lane_count}"
+    binary_name="packed-flagged-kostka-gpu-resident-lanes${lane_count}-strip${maximum_strip_size}"
     binary_path="$build_dir/$binary_name"
     docker run --rm \
         --device=/dev/kfd --device=/dev/dri \
@@ -107,6 +124,7 @@ while ((batch_start < needed_moduli)); do
         "$image_name" bash -lc \
         "hipcc --offload-arch=gfx1201 -O3 -std=c++17 \
           -DEHRGPU_RESIDUE_LANES=$lane_count \
+          -DEHRGPU_MAX_STRIP_SIZE=$maximum_strip_size \
           /source/packed_flagged_kostka_gpu_resident.hip.cpp \
           -o /build/$binary_name"
     binary_sha256=$(sha256sum "$binary_path" | cut -d' ' -f1)
@@ -145,7 +163,7 @@ while ((batch_start < needed_moduli)); do
     ); then
         binary_sha256s_json=$(printf '\"%s\",' "${binary_sha256s[@]}")
         binary_sha256s_json=${binary_sha256s_json%,}
-        echo "EHRGPU_CRT {\"upper_bound\":\"$upper_bound\",\"modulus_threshold\":\"$modulus_threshold\",\"moduli\":[$moduli_csv],\"residues\":[$residues_csv],\"reconstructed\":\"$exact\",\"source_sha256\":\"$source_hash\",\"binary_sha256s\":[$binary_sha256s_json]}" >&2
+        echo "EHRGPU_CRT {\"upper_bound\":\"$upper_bound\",\"modulus_threshold\":\"$modulus_threshold\",\"maximum_strip_size\":$maximum_strip_size,\"moduli\":[$moduli_csv],\"residues\":[$residues_csv],\"reconstructed\":\"$exact\",\"source_sha256\":\"$source_hash\",\"binary_sha256s\":[$binary_sha256s_json]}" >&2
         echo "$exact"
         exit 0
     fi

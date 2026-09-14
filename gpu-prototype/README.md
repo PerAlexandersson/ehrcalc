@@ -152,6 +152,11 @@ threshold, moduli, residues, reconstruction, HIP source hash, and hashes of the
 GPU binaries used for each batch. The original strict command and its `u64`
 host-bridge contract remain unchanged.
 
+The exact driver specializes each GPU binary to the largest scaled strip in
+that request, up to 512. This keeps the per-thread transition-count workspace
+small for ordinary jobs while allowing the dilation-25 KTT cases whose largest
+strip is 150; larger requests fail before GPU execution.
+
 These APIs count one face. A union of reduced Kogan faces or a full key
 polynomial still needs overlap deduplication or inclusion--exclusion outside
 this kernel; summing face counts directly is not valid in general.
