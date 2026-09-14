@@ -96,6 +96,13 @@ all-positive Ehrhart polynomial; evidence is untracked at
 `runs/gpu-v209-78cad-interpolation-20260914.json`. No CPU replay or DB write
 follows.
 
+The next distinct margin-ranked parent `d5161cb8...` (margin `1709/2219`)
+likewise has an all-positive fresh zero-hole closure `18692508...`
+(`hole_to_flag:4:4:34`, dimension 10, masks `0,0,0,6,4,0,0,0,192,128,0`).
+All ten audited GPU CRT receipts interpolate positively; evidence is
+`runs/gpu-v211-186925-interpolation-20260914.json`. No CPU replay or DB write
+follows.
+
 Ranking the fresh closure inventory by exact parent margin selected a closer
 one-hole parent `b1bb5d60...` (margin `436669761/598740061`). Its fresh
 zero-hole child `00e0dd00...` (`hole_to_flag:3:3:53`, dimension 10, masks
