@@ -5,7 +5,37 @@
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
 counterexample is admitted, and no negative zero-hole record remains pending:
 both `07975fb3...` and `fb09eaa1...` are rejected interpolation false positives.
-Latest Euler GPU-first screen: fresh one-hole equality-swap face
+The exact Euler receipt arguments reconstruct the inherited candidate
+`83859a42b52cb43349caee3fce174f540a21509868c177149e630842bb2468b8`
+(`a=5`, `b=5`, mask `0x1`, weight `1^10`, equality count 1) and quotient-poset
+hash `60888de10f0f4e191f4e200e9ae4861243d8e27e3f6f0d817b429f672288c17a`.
+Its strict-count input is outer `(6,1,1,1,1,1)`, inner `(1)`, weight `(1^10)`,
+upper flags `(6^10)`, lower flags `(1^10)`, and the single individual mask
+vector `(0,2,0,0,0,0,0,0,0,0)`; no face union is involved. Canonical
+`genome_hash`/`poset_hash` reconstruction and the independently reconstructed
+5-by-5 quotient verify the identities and affine dimension 24. Fresh read-only
+candidate, attempt, proposal, proposal-event, Ehrhart-poset, dilation, and
+shape/weight ledger queries all returned zero.
+
+Abacus v195 and the v196 control are now terminal failures; v197
+`20260914T102537-791bb739fe51` runs from input `4110c144...`, while v198
+`20260914T104149-10548920510b`, v199
+`20260914T104629-a7df1387d2f2`, and v200
+`20260914T104857-65df7e591ef2` remain queued with their previously recorded,
+locally reverified input hashes and shared runner/engine
+`5564bf69...`/`f179ae7e...`. Neither candidate nor poset occurs in those
+inputs. Laplace remains unreachable. All d1--d24 Euler wide-CRT receipts
+`20260914T165031-b18732f8017c` through
+`20260914T183758-4879faddb8d9` are clean, snapshot-pinned to `ec45e3fa...`,
+and use source `071aa415...` with certified `25^24 < 2^112` coverage. The
+first nonzero interior value is d10 = 1. Exact Fraction reciprocity
+interpolation reproduces all samples, all 48 retained binary hashes match,
+and every ordinary Ehrhart coefficient is positive. No CPU replay or MariaDB
+write follows. Full untracked provenance is
+`../../projects/reduced-kogan-mutation-search/runs/gpu-v228-83859a-interpolation-20260914.json`.
+Continue only with a fresh, queue-disjoint face after repeating all audits.
+
+The preceding Euler GPU-first screen was the fresh one-hole equality-swap face
 `42f04dc6...` / poset `81d7035e...` (dimension 24; masks
 `0,0,0,0,0,32,0,0,0,0`) was directly audited against all four local ledger
 tables (all zero), then against Abacus v195 running and v196--v200 queued
@@ -16,8 +46,9 @@ clean CRT evidence using source SHA-256 `071aa415...` and certified
 all-positive, despite its delayed interior onset (zero through d9, then 4 at
 d10); no CPU replay and no DB write follow. Full untracked evidence is
 `reduced-kogan-mutation-search/runs/gpu-v227-42f04d-interpolation-20260914.json`.
-Abacus v195 `20260913T183109-69b50bf3bf77` is live on all six allocated CPUs;
-its audited successors v196--v200 are queued, with no case overlap. The
+At that checkpoint Abacus v195 `20260913T183109-69b50bf3bf77` was live on all
+six allocated CPUs; its audited successors v196--v200 were queued, with no
+case overlap. The
 current read-only genetic-ledger audit found 15,353 exact negative records but
 zero with `nonflagged_inequalities = 0`; no already-exact flagged
 individual-face negative case exists for Euler to duplicate.
