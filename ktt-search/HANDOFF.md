@@ -126,6 +126,15 @@ After both queue checks (Laplace remains unreachable), v196
 hash-checked, non-candidate packed strict control (runner `03435442...`).
 Fetch/verify it before any new packed candidate batch. No DB write beyond the
 v194 verified-prefix ingestion occurred.
+After an immediate v195/v196 queue audit, v197
+`20260914T102537-791bb739fe51` was queued as the only disjoint continuation of
+v194: its five never-observed child-18 suffix cases are `b1a8c4f1...` d10 and
+`c63815d9...` d7--d10. It has input SHA-256 `4110c144...`, runner
+`5564bf69...`, engine `f179ae7e...`, 100M states, 7,200 s/case, and a 28,800 s
+supervisor envelope. It follows v195 (running) and v196 (queued); do not mirror
+or resubmit it. Euler GPU bridge status is ready, but no new nonduplicate KTT
+face currently has both the individual-face form and u64 certified bound that
+its exact-strict interface requires; do not spend it on duplicate controls.
 Its argv is `python3 abacus_packed_modular_smoke.py --exact
 strict_masked_count --exact-sha256 77f24efda9ded14a2a1dd592805f89285db97486955c36880db645058707b7ec
 --derive derive_masked_interior --derive-sha256

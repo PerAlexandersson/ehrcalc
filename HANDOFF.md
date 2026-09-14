@@ -138,6 +138,15 @@ a 60-second non-candidate packed-masked control with runner
 strict masks plus two modular residues against the exact companion; fetch,
 verify, replay, then ingest no candidate data only after it finishes. Generated
 output remains untracked; do not push or publish.
+After an immediate v195/v196 queue audit, v197
+`20260914T102537-791bb739fe51` was queued as the only disjoint continuation of
+v194: its five never-observed child-18 suffix cases are `b1a8c4f1...` d10 and
+`c63815d9...` d7--d10. It has input SHA-256 `4110c144...`, runner
+`5564bf69...`, engine `f179ae7e...`, 100M states, 7,200 s/case, and a 28,800 s
+supervisor envelope. It follows v195 (running) and v196 (queued); do not mirror
+or resubmit it. Euler GPU bridge status is ready, but no new nonduplicate KTT
+face currently has both the individual-face form and u64 certified bound that
+its exact-strict interface requires; do not spend it on duplicate controls.
 
 Its exact argv is `python3 abacus_packed_modular_smoke.py --exact
 strict_masked_count --exact-sha256 77f24efda9ded14a2a1dd592805f89285db97486955c36880db645058707b7ec
