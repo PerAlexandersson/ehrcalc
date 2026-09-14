@@ -50,6 +50,22 @@ returned residue `58212` modulo `2147483647`, and CRT reconstructed exactly
 `58212` in 8.3 seconds. External log `exact-4acd1b008d821063-batch0.log` has
 SHA-256 `e1988efd...`. This closes the complete KTT mask-to-strict-GPU control;
 select a new audited disjoint individual face next.
+
+The next individual face is prepared, not submitted: `a=10,b=11`, mask
+`0x20000000000`, candidate `551f8ccf...`, with sole forbidden pair `(7,10)`
+and label-10 mask `64`. Its quotient-poset hash `91c9d071...` had no candidate,
+attempt, proposal, or same-poset MariaDB row in a fresh read-only audit; local
+run/certificate searches likewise had no same face (the only same-mask text is
+an `a=11,b=11` case). Thus it is disjoint from prior results and the recorded
+v194/v195/v196 reservations. Direct exact CPU `strict_masked_count`
+(`77f24efd...`) found d22 zero and `L^\circ(23)=3738884688` at d23 under the
+150M-state cap. That count is the certified bound; mask derivation is nonempty
+of affine dimension 109. On host canonical `main` `14e2579`, execute exactly
+`gpu-prototype/run-exact-strict.sh 3738884688 23 12,1,1,1,1,1,1,1,1,1,1 1 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 - - 150000000 0,0,0,0,0,0,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0`.
+It requires two configured CRT primes and must reconstruct to the CPU value;
+HIP source is `e0cc1690...`. No union sum or DB write is authorized. The
+Docker worker cannot execute the host-only supervisor tool, so this is a
+host-ready handoff rather than a submission.
 After both queue checks (Laplace remains unreachable), v196
 `20260914T073435-1df562e27e39` was queued after v195 as a 60-second,
 hash-checked, non-candidate packed strict control (runner `03435442...`).

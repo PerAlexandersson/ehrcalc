@@ -56,6 +56,24 @@ reconstruction returned exactly `58212` in 8.3 seconds wall time. External log
 mask/strictness/GPU/CRT path now matches both reciprocity and independent exact
 CPU counting, so a new audited disjoint individual face may be selected.
 
+The next GPU-discovery control is selected but not yet submitted: the distinct
+`a=10,b=11` one-hole face `551f8ccf...` (mask `0x20000000000`, sole forbidden
+pair `(7,10)`, label-10 zero-based row mask `64`). Its quotient-poset hash is
+`91c9d071...`; fresh read-only MariaDB checks found no candidate, attempt,
+proposal, or same-poset row, and local run/certificate searches found no same
+face (the sole same-mask textual hit is the different `a=11,b=11` face).
+It is therefore disjoint from the ledger and the recorded v194/v195/v196
+reservations. The canonical exact CPU companion (`77f24efd...`) gives
+`L^\circ(23)=3738884688` under the 150M-state cap (d22 is zero); this is the
+certified CRT bound. `derive_masked_interior` reports nonempty affine dimension
+109. From canonical `main` `14e2579`, the host supervisor should run exactly
+`gpu-prototype/run-exact-strict.sh 3738884688 23 12,1,1,1,1,1,1,1,1,1,1 1 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 - - 150000000 0,0,0,0,0,0,0,0,0,64,0,0,0,0,0,0,0,0,0,0,0`.
+The bound needs the first two configured CRT primes; compare its reconstructed
+answer to the independent CPU exact count before any interpretation or DB
+write. HIP source remains `e0cc1690...`; no overlapping union is involved.
+This Docker worker cannot invoke the host-only supervisor binary, so no remote
+submission was made here.
+
 Abacus remains CPU-only. After immediate Abacus/Laplace queue audit (Laplace
 still unreachable), v196 `20260914T073435-1df562e27e39` was queued behind v195:
 a 60-second non-candidate packed-masked control with runner
