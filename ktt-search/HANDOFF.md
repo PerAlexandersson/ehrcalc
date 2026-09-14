@@ -54,6 +54,15 @@ No counterexample or MariaDB write follows. A shell-control error created two
 duplicate d3/d4 receipts; both independently returned zero and are retained in
 the report; submit only missing dilations one at a time going forward.
 
+The second disjoint zero-hole closure from that same honest one-hole parent is
+also closed: `81113909...` is `hole_to_flag:2:2:4`, with dimension 14 and
+individual masks `0,0,0,4,4,8,0,32,0,0`. Its d1--d14 Euler wide-CRT receipts
+are all `ok:true`/cleaned and reconstruct exactly; d14 receipt
+`20260914T140858-e907c8431490` returned `26785044` in 8.014 s. Exact
+interpolation from d0--d14 has no negative coefficient (full untracked
+evidence: `runs/gpu-v205-811-interpolation-20260914.json`), so it is ruled out
+without a CPU replay or DB write.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
