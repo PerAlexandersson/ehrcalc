@@ -239,6 +239,12 @@ sole mask `0,0,0,0,0,0,32,0,0,0`, bound `25^24 < 2^112`) passed current
 ledger/Abacus/Laplace audit. Clean CRT receipts d1--d7 through
 `20260914T160332-2d29b8013ebd` are zero; resume d8--d24 only. No DB write.
 
+`36e05398...` is closed: all 24 clean CRT receipts through
+`20260914T160917-dcc1589bacf6` interpolate all-positive. Unlike the first
+three swaps it starts at d10 = 3, but exact rational interpolation has no
+negative coefficient. No CPU replay or DB write; 36 prefiltered nonempty
+swaps remain.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
