@@ -275,6 +275,10 @@ Active sixth nonempty swap: fresh `3fcb6b4c...` from close parent `0095d973...`
 d1--d7 receipts through `20260914T162619-2cdaa449258b` are zero; resume
 d8--d24. No DB write.
 
+`3fcb6b4c...` is closed: all 24 clean CRT receipts through
+`20260914T163209-bc91391c246d` exact-interpolate all-positive (first nonzero
+d11 = 45). No CPU replay or DB write follows.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
