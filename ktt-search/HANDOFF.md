@@ -96,6 +96,11 @@ all-positive Ehrhart polynomial; evidence is untracked at
 `runs/gpu-v209-78cad-interpolation-20260914.json`. No CPU replay or DB write
 follows.
 
+Active GPU closure: fresh audited `81557cce...` (parent `11c05b4a...`, margin
+`118333/151009`, dimension 8, masks `0,0,0,0,0,20,24,16,0`) began exact
+interpolation. Clean d1 receipt `20260914T143430-840c024273e3` is CRT value 0;
+resume only d2--d8 with snapshot `e3bc68a...` after queue audit.
+
 The next distinct margin-ranked parent `d5161cb8...` (margin `1709/2219`)
 likewise has an all-positive fresh zero-hole closure `18692508...`
 (`hole_to_flag:4:4:34`, dimension 10, masks `0,0,0,6,4,0,0,0,192,128,0`).
