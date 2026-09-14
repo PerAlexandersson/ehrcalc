@@ -1,6 +1,36 @@
 # KTT Search Handoff
 
-## Current state — 2026-09-13 (active)
+## Current state — 2026-09-14 (active)
+
+Codex is the sole KTT worker and local MariaDB writer. No counterexample is
+admitted; `07975fb3...` and `fb09eaa1...` remain negative pending-validation
+records. At 2026-09-14T07:30Z the audited Abacus queue was resumed: v194
+`20260913T173400-b08ab8dc21ff` is running, and its already-disjoint 106-case
+successor v195 `20260913T183109-69b50bf3bf77` is queued. Their immutable
+runner/engine hashes are `5564bf69...`/`f179ae7e...`; do not replace or
+resubmit either payload.
+
+Ehrcalc integrated GPU checkpoint `0e1aaba` (source handoff `58d0024`) as
+`5d2ecca`/`5dc8f2b`: packed modular CPU counting now has suffix pruning, wide
+counters, strict and arbitrary individual-face masks, and parser hardening.
+KTT's `ComplementRowLift.forbidden_row_masks()` converts one-based candidate
+pairs to the backend's zero-based per-label masks. The exact CPU control and
+two packed residues match (all 1); 54 engine tests pass. Release SHA-256:
+packed `19d80f5b...`, mask derivation `fe3985e0...`, reconstruction
+`bcb82e2b...`, direct exact `77f24efd...`. No executable `hipMallocAsync`
+path exists.
+
+Euler's required documented GPU smoke gate has not run: this container lacks
+GPU/Docker access and `ssh euler` refused at 2026-09-14T07:32Z. On recovery,
+run `gpu-prototype/run-smoke.sh` before any
+`gpu-prototype/run-exact-strict.sh` face case and exact CPU cross-check; count
+faces individually, never by an overlapping-union sum. Abacus stays CPU-only.
+After both queue checks (Laplace remains unreachable), v196
+`20260914T073435-1df562e27e39` was queued after v195 as a 60-second,
+hash-checked, non-candidate packed strict control (runner `03435442...`).
+Fetch/verify it before any new packed candidate batch. No DB write occurred.
+
+## Superseded pre-resume checkpoint — 2026-09-13
 
 ### Current execution (refreshed 2026-09-13)
 

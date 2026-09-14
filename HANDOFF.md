@@ -1,6 +1,43 @@
 # Ehrcalc Handoff
 
-## Current KTT state — 2026-09-13 (active)
+## Current KTT state — 2026-09-14 (active)
+
+Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
+counterexample is admitted: `07975fb3...` and `fb09eaa1...` remain only
+negative pending-validation records. Abacus was audited and resumed at
+2026-09-14T07:30Z: v194 `20260913T173400-b08ab8dc21ff` is running and v195
+`20260913T183109-69b50bf3bf77` is queued behind it. v195's already-audited
+106 non-control tail-10 cases remain disjoint from the ledger, host, v193 and
+v194; its immutable runner/engine hashes are `5564bf69...`/`f179ae7e...`.
+
+The strict masked GPU checkpoint was integrated from
+`feat/gpu-kostka-prototype` code `0e1aaba` / handoff `58d0024` as local commits
+`5d2ecca` and `5dc8f2b`. It supplies suffix pruning, wide counters, strict
+masks, arbitrary per-label forbidden-row masks, strict parser checks, and the
+GPU-resident strict wrapper. The executable source contains no `hipMallocAsync`
+path. `cargo test -p ehrcalc-kostka-engine --lib` passes 54/54; the exact CPU
+masked-face control is 1 and both packed residues are 1. Release SHA-256:
+`export_modular_layer` `19d80f5b...`, `derive_masked_interior` `fe3985e0...`,
+`reconstruct_modular` `bcb82e2b...`, and exact companion
+`strict_masked_count` `77f24efd...`.
+
+The GPU smoke gate (`gpu-prototype/run-smoke.sh`) is pending rather than
+waived: this Docker worker has neither GPU/Docker access and Euler SSH refused
+at 2026-09-14T07:32Z. When Euler returns, run the documented smoke first, then
+use `run-exact-strict.sh` only for a single face with its
+`forbidden_row_labels` converted to per-label masks; never sum overlapping
+face unions without deduplication. No general Euler-local KTT computation is
+authorized by this entry.
+
+Abacus remains CPU-only. After immediate Abacus/Laplace queue audit (Laplace
+still unreachable), v196 `20260914T073435-1df562e27e39` was queued behind v195:
+a 60-second non-candidate packed-masked control with runner
+`03435442...` and the three deployed binary hashes above. It validates derived
+strict masks plus two modular residues against the exact companion; fetch,
+verify, replay, then ingest no candidate data only after it finishes. Generated
+output remains untracked; do not push or publish.
+
+## Superseded pre-resume checkpoint — 2026-09-13
 
 ### Current execution (refreshed 2026-09-13)
 
