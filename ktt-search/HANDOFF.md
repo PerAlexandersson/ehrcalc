@@ -81,6 +81,13 @@ untracked evidence is `runs/gpu-v207-eb0-interpolation-20260914.json`. Thus
 all three one-flag absorption variants of this parent are ruled out; move to a
 different audited one-hole near-miss family. No DB write occurred.
 
+The first close-the-hole child from the next family is excluded even faster:
+fresh zero-hole `6f9eb252...` from one-hole positive `6dd3c47a...`
+(`hole_to_flag:3:4:3`, dimension 10, masks `0,0,0,2,2,0,0`) had no ledger
+row, but its three clean bridge receipts (`20260914T142127-f1231b142149` etc.)
+give `empty_face` evidence and exact zero. Stop this face without
+interpolation; full untracked evidence is `runs/gpu-v208-6f9-empty-20260914.json`.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
