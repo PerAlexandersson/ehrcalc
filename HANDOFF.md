@@ -207,6 +207,13 @@ sole mask vector `0,0,0,0,4,0,0,0,0,0`, unrestricted endpoint flags, and
 certified `25^24 < 2^112` bound. It is pending a fresh queue/ledger audit and
 serial GPU interpolation; no DB write.
 
+`0d5b93bc...` is now closed: 24 clean four-prime CRT bridge receipts through
+`20260914T154003-89b52b112993` exact-interpolate to a dimension-24 ordinary
+Ehrhart polynomial with every coefficient positive. Samples are zero through
+d10 and become nonzero at d11, but all receipt reconstruction and exact
+Fraction back-substitution checks pass. No CPU replay or MariaDB write follows;
+continue with the next fresh nonempty equality swap only after a fresh audit.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
