@@ -38,6 +38,7 @@ constexpr std::size_t kMaximumRows = 32;
 constexpr std::uint32_t kMaximumStripSize = EHRGPU_MAX_STRIP_SIZE;
 static_assert(kMaximumStripSize >= 1 && kMaximumStripSize <= 512);
 constexpr std::size_t kDefaultMaximumTransitions = 150'000'000;
+constexpr std::size_t kGpuMemoryReserveBytes = std::size_t{2} << 30;
 #ifndef EHRGPU_BLOCK_SIZE
 #define EHRGPU_BLOCK_SIZE 128
 #endif
@@ -415,8 +416,18 @@ struct AdvanceResult {
     StateLayer states;
     std::size_t transitions = 0;
     std::size_t sort_temp_bytes = 0;
+    std::size_t memory_free_bytes = 0;
+    std::size_t memory_required_bytes = 0;
     LayerTimings timings;
 };
+
+std::size_t checked_bytes(std::size_t count, std::size_t width,
+                          const char* description) {
+    if (count > std::numeric_limits<std::size_t>::max() / width) {
+        throw std::runtime_error(std::string(description) + " byte count overflows");
+    }
+    return count * width;
+}
 
 enum class TransitionDisposition { empty, proceed, over_limit };
 
@@ -474,7 +485,9 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
     const TransitionDisposition disposition = classify_transition_total(
         last_offset, last_count, maximum_transitions);
     if (disposition == TransitionDisposition::over_limit) {
-        throw std::runtime_error("transition count exceeds configured limit");
+        throw std::runtime_error(
+            "transition count " + std::to_string(last_offset + last_count) +
+            " exceeds configured limit " + std::to_string(maximum_transitions));
     }
     if (disposition == TransitionDisposition::empty) {
         result.states = StateLayer{};
@@ -485,6 +498,39 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
 
     DeviceBuffer<Key> transition_keys(result.transitions);
     DeviceBuffer<Residues> transition_values(result.transitions);
+    std::size_t sort_temp_bytes = 0;
+    HIP_CHECK(rocprim::radix_sort_pairs(
+        nullptr, sort_temp_bytes, transition_keys.get(), static_cast<Key*>(nullptr),
+        transition_values.get(), static_cast<Residues*>(nullptr), result.transitions,
+        0, shape.rows * shape.bits));
+    std::size_t reduce_temp_bytes = 0;
+    HIP_CHECK(rocprim::reduce_by_key(
+        nullptr, reduce_temp_bytes, static_cast<Key*>(nullptr),
+        static_cast<Residues*>(nullptr), result.transitions,
+        transition_keys.get(), transition_values.get(),
+        static_cast<std::size_t*>(nullptr),
+        ModularAdd{moduli}, rocprim::equal_to<Key>{}));
+    const std::size_t record_bytes = sizeof(Key) + sizeof(Residues);
+    const std::size_t one_record_layer =
+        checked_bytes(result.transitions, record_bytes, "transition record");
+    const std::size_t scratch_bytes = std::max(sort_temp_bytes, reduce_temp_bytes);
+    if (one_record_layer > std::numeric_limits<std::size_t>::max() - scratch_bytes) {
+        throw std::runtime_error("GPU working-set byte count overflows");
+    }
+    const std::size_t remaining_peak = one_record_layer + scratch_bytes;
+    std::size_t free_bytes = 0;
+    std::size_t total_bytes = 0;
+    HIP_CHECK(hipMemGetInfo(&free_bytes, &total_bytes));
+    result.memory_free_bytes = free_bytes;
+    result.memory_required_bytes = remaining_peak;
+    if (free_bytes <= kGpuMemoryReserveBytes ||
+        remaining_peak > free_bytes - kGpuMemoryReserveBytes) {
+        throw std::runtime_error(
+            "GPU byte budget exceeded: need " + std::to_string(remaining_peak) +
+            " additional bytes plus " + std::to_string(kGpuMemoryReserveBytes) +
+            " reserved, only " + std::to_string(free_bytes) + " free of " +
+            std::to_string(total_bytes));
+    }
     result.timings.emit_ms = time_gpu([&] {
         hipLaunchKernelGGL(emit_transitions, dim3(blocks), dim3(kBlockSize), 0, 0,
                            states.keys.get(), states.values.get(), states.size,
@@ -494,38 +540,29 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
         HIP_CHECK(hipGetLastError());
     });
 
-    DeviceBuffer<Key> sorted_keys(result.transitions);
-    DeviceBuffer<Residues> sorted_values(result.transitions);
-    DeviceBuffer<std::size_t> unique_count_device(1);
-    std::size_t sort_temp_bytes = 0;
-    HIP_CHECK(rocprim::radix_sort_pairs(
-        nullptr, sort_temp_bytes, transition_keys.get(), sorted_keys.get(),
-        transition_values.get(), sorted_values.get(), result.transitions, 0,
-        shape.rows * shape.bits));
-    std::size_t reduce_temp_bytes = 0;
-    HIP_CHECK(rocprim::reduce_by_key(
-        nullptr, reduce_temp_bytes, sorted_keys.get(), sorted_values.get(),
-        result.transitions, transition_keys.get(), transition_values.get(),
-        unique_count_device.get(), ModularAdd{moduli}, rocprim::equal_to<Key>{}));
-    RawDeviceBuffer aggregate_temp(std::max(sort_temp_bytes, reduce_temp_bytes));
     result.sort_temp_bytes = sort_temp_bytes;
-    result.timings.sort_ms = time_gpu([&] {
-        HIP_CHECK(rocprim::radix_sort_pairs(
-            aggregate_temp.get(), sort_temp_bytes, transition_keys.get(),
-            sorted_keys.get(), transition_values.get(), sorted_values.get(),
-            result.transitions, 0, shape.rows * shape.bits));
-    });
-    result.timings.reduce_ms = time_gpu([&] {
-        HIP_CHECK(rocprim::reduce_by_key(
-            aggregate_temp.get(), reduce_temp_bytes, sorted_keys.get(),
-            sorted_values.get(), result.transitions, transition_keys.get(),
-            transition_values.get(), unique_count_device.get(), ModularAdd{moduli},
-            rocprim::equal_to<Key>{}));
-    });
-
     std::size_t unique_count = 0;
-    HIP_CHECK(hipMemcpy(&unique_count, unique_count_device.get(),
-                        sizeof(unique_count), hipMemcpyDeviceToHost));
+    {
+        DeviceBuffer<Key> sorted_keys(result.transitions);
+        DeviceBuffer<Residues> sorted_values(result.transitions);
+        DeviceBuffer<std::size_t> unique_count_device(1);
+        RawDeviceBuffer aggregate_temp(scratch_bytes);
+        result.timings.sort_ms = time_gpu([&] {
+            HIP_CHECK(rocprim::radix_sort_pairs(
+                aggregate_temp.get(), sort_temp_bytes, transition_keys.get(),
+                sorted_keys.get(), transition_values.get(), sorted_values.get(),
+                result.transitions, 0, shape.rows * shape.bits));
+        });
+        result.timings.reduce_ms = time_gpu([&] {
+            HIP_CHECK(rocprim::reduce_by_key(
+                aggregate_temp.get(), reduce_temp_bytes, sorted_keys.get(),
+                sorted_values.get(), result.transitions, transition_keys.get(),
+                transition_values.get(), unique_count_device.get(), ModularAdd{moduli},
+                rocprim::equal_to<Key>{}));
+        });
+        HIP_CHECK(hipMemcpy(&unique_count, unique_count_device.get(),
+                            sizeof(unique_count), hipMemcpyDeviceToHost));
+    }
     StateLayer compact{DeviceBuffer<Key>(unique_count),
                        DeviceBuffer<Residues>(unique_count), unique_count};
     result.timings.compact_ms = time_gpu([&] {
@@ -918,7 +955,12 @@ int main(int argc, char** argv) try {
                   << ",\"sort_ms\":" << timing.sort_ms
                   << ",\"reduce_ms\":" << timing.reduce_ms
                   << ",\"compact_ms\":" << timing.compact_ms
-                  << ",\"sort_temp_bytes\":" << next.sort_temp_bytes << "}\n";
+                  << ",\"sort_temp_bytes\":" << next.sort_temp_bytes
+                  << ",\"memory_free_bytes\":" << next.memory_free_bytes
+                  << ",\"memory_required_bytes\":"
+                  << next.memory_required_bytes
+                  << ",\"memory_reserve_bytes\":" << kGpuMemoryReserveBytes
+                  << "}\n";
         if (states.size == 0) {
             break;
         }

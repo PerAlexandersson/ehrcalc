@@ -24,6 +24,19 @@ image_name=${EHRGPU_IMAGE:-ehrcalc-rocm:7.2.4}
 build_dir=${EHRGPU_BUILD_DIR:-/mnt/2TB-Babel/ai-storage/gpu-build}
 cargo_target=${EHRGPU_CARGO_TARGET_DIR:-/mnt/2TB-Babel/ai-storage/cargo-target}
 reconstruct="$cargo_target/release/reconstruct_modular"
+run_token=${EHRGPU_RUN_TOKEN:-standalone-$$-${RANDOM}}
+if [[ ! $run_token =~ ^[A-Za-z0-9_.-]{1,64}$ ]]; then
+    echo "EHRGPU_RUN_TOKEN must use 1..64 safe identifier characters" >&2
+    exit 2
+fi
+container_names=()
+cleanup_containers() {
+    local name
+    for name in "${container_names[@]}"; do
+        docker rm -f "$name" >/dev/null 2>&1 || true
+    done
+}
+trap cleanup_containers EXIT HUP INT TERM
 modulus_candidates=(
     2147483647 2147483629 2147483587 2147483579
     2147483563 2147483549 2147483543 2147483497
@@ -75,12 +88,7 @@ if ! flock -n 9; then
     echo "another Ehrcalc GPU build or run holds $build_dir/ehrgpu.lock" >&2
     exit 1
 fi
-run_id=$(
-    {
-        printf '%s\0' "$@"
-        sha256sum "$repo_root/gpu-prototype/packed_flagged_kostka_gpu_resident.hip.cpp"
-    } | sha256sum | cut -c1-16
-)
+run_id=$run_token
 CARGO_TARGET_DIR="$cargo_target" cargo build \
     --manifest-path "$repo_root/Cargo.toml" --release \
     -p ehrcalc-kostka-engine --bin reconstruct_modular
@@ -106,6 +114,7 @@ fi
 residues=()
 moduli=()
 binary_sha256s=()
+binary_names=()
 source_path="$repo_root/gpu-prototype/packed_flagged_kostka_gpu_resident.hip.cpp"
 source_hash=$(sha256sum "$source_path" | cut -d' ' -f1)
 batch_start=0
@@ -116,7 +125,12 @@ while ((batch_start < needed_moduli)); do
     batch_moduli_csv=$(IFS=,; echo "${batch_moduli[*]}")
     binary_name="packed-flagged-kostka-gpu-resident-lanes${lane_count}-strip${maximum_strip_size}"
     binary_path="$build_dir/$binary_name"
-    docker run --rm \
+    compile_container="ehrgpu-${run_token}-compile-${batch_start}"
+    container_names+=("$compile_container")
+    set +e
+    docker run --rm --name "$compile_container" \
+        --label "ai.ehrcalc.euler-gpu-run=$run_token" \
+        --label "ai.ehrcalc.euler-gpu-role=compile" \
         --device=/dev/kfd --device=/dev/dri \
         --group-add video --security-opt seccomp=unconfined \
         -v "$repo_root/gpu-prototype:/source:ro" \
@@ -127,11 +141,23 @@ while ((batch_start < needed_moduli)); do
           -DEHRGPU_MAX_STRIP_SIZE=$maximum_strip_size \
           /source/packed_flagged_kostka_gpu_resident.hip.cpp \
           -o /build/$binary_name"
+    compile_status=$?
+    set -e
+    if ((compile_status != 0)); then
+        echo "EHRGPU_FAILURE {\"kind\":\"compile\",\"batch\":$batch_start,\"container_exit_code\":$compile_status}" >&2
+        exit "$compile_status"
+    fi
     binary_sha256=$(sha256sum "$binary_path" | cut -d' ' -f1)
     binary_sha256s+=("$binary_sha256")
+    binary_names+=("$binary_name")
     log_path="$build_dir/exact-${run_id}-batch${batch_start}.log"
+    execute_container="ehrgpu-${run_token}-execute-${batch_start}"
+    container_names+=("$execute_container")
+    set +e
     gpu_output=$(
-        docker run --rm \
+        docker run --rm --name "$execute_container" \
+            --label "ai.ehrcalc.euler-gpu-run=$run_token" \
+            --label "ai.ehrcalc.euler-gpu-role=execute" \
             --device=/dev/kfd --device=/dev/dri \
             --group-add video --security-opt seccomp=unconfined \
             -v "$build_dir:/build" \
@@ -141,6 +167,15 @@ while ((batch_start < needed_moduli)); do
             "$forbidden_masks" "$strict_lower_masks" "$strict_diagonal_masks" \
             2>"$log_path"
     )
+    gpu_status=$?
+    set -e
+    if ((gpu_status != 0)); then
+        echo "GPU batch failed; diagnostic tail from $log_path:" >&2
+        tail -n 80 "$log_path" >&2 || true
+        log_name=$(basename "$log_path")
+        echo "EHRGPU_FAILURE {\"kind\":\"gpu_batch\",\"batch\":$batch_start,\"container_exit_code\":$gpu_status,\"log_name\":\"$log_name\"}" >&2
+        exit "$gpu_status"
+    fi
     batch_residues_csv=$(
         sed -n 's/.*"residues":\[\([^]]*\)\].*/\1/p' <<<"$gpu_output"
     )
@@ -163,7 +198,9 @@ while ((batch_start < needed_moduli)); do
     ); then
         binary_sha256s_json=$(printf '\"%s\",' "${binary_sha256s[@]}")
         binary_sha256s_json=${binary_sha256s_json%,}
-        echo "EHRGPU_CRT {\"upper_bound\":\"$upper_bound\",\"modulus_threshold\":\"$modulus_threshold\",\"maximum_strip_size\":$maximum_strip_size,\"moduli\":[$moduli_csv],\"residues\":[$residues_csv],\"reconstructed\":\"$exact\",\"source_sha256\":\"$source_hash\",\"binary_sha256s\":[$binary_sha256s_json]}" >&2
+        binary_names_json=$(printf '\"%s\",' "${binary_names[@]}")
+        binary_names_json=${binary_names_json%,}
+        echo "EHRGPU_CRT {\"upper_bound\":\"$upper_bound\",\"modulus_threshold\":\"$modulus_threshold\",\"maximum_strip_size\":$maximum_strip_size,\"moduli\":[$moduli_csv],\"residues\":[$residues_csv],\"reconstructed\":\"$exact\",\"source_sha256\":\"$source_hash\",\"binary_names\":[$binary_names_json],\"binary_sha256s\":[$binary_sha256s_json]}" >&2
         echo "$exact"
         exit 0
     fi
