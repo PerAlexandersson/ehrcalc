@@ -142,6 +142,16 @@ interpolate to an all-positive dimension-11 polynomial. The untracked
 provenance report is `runs/gpu-v213-9b1427-interpolation-20260914.json`.
 No CPU replay or MariaDB write follows.
 
+Active Euler GPU closure: newly derived zero-hole `00446dee...` is the first
+fresh child of the closest remaining audited one-hole parent `0095d973...`
+(margin `17257827023/925938772272`, dimension 23). Its parent/child and
+poset hashes were absent from the candidate, attempt, proposal, mutation, and
+live/queued Abacus records; Laplace is unreachable. Individual masks are
+`0,0,0,0,2,2,0,0,0,0`, never a face union. The certified GT bound is
+`24^23 < 2^107`; clean wide-CRT d1 receipt
+`20260914T145447-e0248c8d9ed1` gives zero with source `071aa415...`. Resume
+d2--d23 one at a time from the committed snapshot; no DB write.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
