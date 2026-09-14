@@ -251,6 +251,11 @@ Active diversified swap: fresh `25d0d36c...` from distinct parent `43d8afd5...`
 ledger/Abacus/Laplace audit. Clean three-prime CRT d1--d7 receipts through
 `20260914T161425-fef3124b65bc` are zero; resume d8--d19 only. No DB write.
 
+Diversified `25d0d36c...` is closed: all 19 three-prime CRT receipts through
+`20260914T161706-5a0fcf76bac9` validate and interpolate all-positive. Its
+first nonzero sample is d12 = 1; exact rational interpolation has no negative
+coefficient. No CPU replay or DB write follows.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
