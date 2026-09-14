@@ -11,7 +11,7 @@ runner/engine hashes are `5564bf69...`/`f179ae7e...`; do not replace or
 resubmit either payload.
 
 Ehrcalc integrated GPU checkpoint `0e1aaba` (source handoff `58d0024`) as
-`5d2ecca`/`5dc8f2b`: packed modular CPU counting now has suffix pruning, wide
+`5d2ecca`/`5dc8f2b` and canonical merge `dee07c2`: packed modular CPU counting now has suffix pruning, wide
 counters, strict and arbitrary individual-face masks, and parser hardening.
 KTT's `ComplementRowLift.forbidden_row_masks()` converts one-based candidate
 pairs to the backend's zero-based per-label masks. The exact CPU control and
@@ -19,6 +19,11 @@ two packed residues match (all 1); 54 engine tests pass. Release SHA-256:
 packed `19d80f5b...`, mask derivation `fe3985e0...`, reconstruction
 `bcb82e2b...`, direct exact `77f24efd...`. No executable `hipMallocAsync`
 path exists.
+
+Full `cargo test --workspace` passes, as do strict-engine Clippy (`-D warnings`)
+and GPU-wrapper Bash syntax checks. Following a fresh audit of the unusual
+local history (901 commits ahead, zero remote-only), normal non-force push
+advanced GitHub `main` from `1d53fc3` to `dee07c2`; retain the feature branch.
 
 Euler's required documented GPU smoke gate has not run. The host supervisor
 confirms Euler has `/dev/kfd`, `/dev/dri`, and Docker; this container simply

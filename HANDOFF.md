@@ -12,7 +12,7 @@ v194; its immutable runner/engine hashes are `5564bf69...`/`f179ae7e...`.
 
 The strict masked GPU checkpoint was integrated from
 `feat/gpu-kostka-prototype` code `0e1aaba` / handoff `58d0024` as local commits
-`5d2ecca` and `5dc8f2b`. It supplies suffix pruning, wide counters, strict
+`5d2ecca` and `5dc8f2b`, then canonically merged it as `dee07c2`. It supplies suffix pruning, wide counters, strict
 masks, arbitrary per-label forbidden-row masks, strict parser checks, and the
 GPU-resident strict wrapper. The executable source contains no `hipMallocAsync`
 path. `cargo test -p ehrcalc-kostka-engine --lib` passes 54/54; the exact CPU
@@ -20,6 +20,13 @@ masked-face control is 1 and both packed residues are 1. Release SHA-256:
 `export_modular_layer` `19d80f5b...`, `derive_masked_interior` `fe3985e0...`,
 `reconstruct_modular` `bcb82e2b...`, and exact companion
 `strict_masked_count` `77f24efd...`.
+
+The full `cargo test --workspace` suite passes (including 35 top-level and 54
+engine tests); strict engine Clippy with `-D warnings` and GPU-wrapper Bash
+syntax checks pass. After a fresh divergence audit (zero remote-only commits;
+901 local commits ahead), normal non-force `git push origin main` advanced
+GitHub from `1d53fc3` to `dee07c2`. Keep `feat/gpu-kostka-prototype`; no branch
+deletion was requested.
 
 The GPU smoke gate (`gpu-prototype/run-smoke.sh`) is pending rather than
 waived. Euler's host supervisor confirms that the physical host has `/dev/kfd`,
