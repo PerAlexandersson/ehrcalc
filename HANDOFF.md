@@ -160,6 +160,13 @@ interpolation has no negative coefficient. Full untracked evidence is
 `reduced-kogan-mutation-search/runs/gpu-v215-d39e5-interpolation-20260914.json`.
 No CPU replay or MariaDB write follows.
 
+Active final single-add closure: fresh `95d69bc4...` from `54ea98c0...`
+(margin `1745053/3729873`) has dimension 13 and masks
+`0,2,2,2,0,8,0,0,0`. Fresh ledger/Abacus-manifest audit is clear and Laplace
+is unreachable. Certified GT bound `14^13 < 2^50`; clean two-prime wide-CRT
+d1 receipt `20260914T151434-54852bd66330` is zero. Resume d2--d13 only from a
+committed snapshot; no DB write.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
