@@ -45,13 +45,16 @@ discovery or duplicate candidate: `86b98937...`, whose only forbidden pair
 `(6,10)` maps to `0,0,0,0,0,0,0,0,0,32,0,0,0,0,0,0,0,0,0,0,0`. Its stored exact
 ordinary Ehrhart polynomial gives relative-interior `L^\circ(22)=58212` by
 reciprocity, and the independent new `strict_masked_count` CPU command matched
-`58212` at dilation 22 in under one second with a 150M-state cap. Therefore
-`58212` is a certified upper bound and one 31-bit CRT prime suffices. Host
-GPU argv is `gpu-prototype/run-exact-strict.sh 58212 22
+`58212` at dilation 22 in under one second with a 150M-state cap. Euler's host
+then ran `gpu-prototype/run-exact-strict.sh 58212 22
 12,1,1,1,1,1,1,1,1,1,1 1 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 - -
-150000000 0,0,0,0,0,0,0,0,0,32,0,0,0,0,0,0,0,0,0,0,0`. The Docker worker
-cannot invoke host Docker/devices; run this prepared control from Euler's host
-side and record its output before selecting a new, disjoint face.
+150000000 0,0,0,0,0,0,0,0,0,32,0,0,0,0,0,0,0,0,0,0,0` successfully at
+2026-09-14T10:16+02:00. The affine analyzer reported dimension 109; the single
+GPU batch returned residue `58212` modulo `2147483647`, and certified CRT
+reconstruction returned exactly `58212` in 8.3 seconds wall time. External log
+`exact-4acd1b008d821063-batch0.log` has SHA-256 `e1988efd...`. The full
+mask/strictness/GPU/CRT path now matches both reciprocity and independent exact
+CPU counting, so a new audited disjoint individual face may be selected.
 
 Abacus remains CPU-only. After immediate Abacus/Laplace queue audit (Laplace
 still unreachable), v196 `20260914T073435-1df562e27e39` was queued behind v195:
