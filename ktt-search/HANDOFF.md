@@ -36,6 +36,17 @@ GPU binary was `73cba204...`. Strict GPU face cases are unblocked through
 `gpu-prototype/run-exact-strict.sh`, subject to a certified upper bound,
 sufficient CRT coverage, and an exact CPU cross-check. Count faces
 individually, never by an overlapping-union sum. Abacus stays CPU-only.
+
+Post-gate GPU control is the already-ledgered (hence non-discovery) one-hole
+face `86b98937...`: its sole `(6,10)` pair maps to label-10 mask `32` in the
+21-label mask vector. Exact stored reciprocity gives `L^\circ(22)=58212`, and
+the new direct CPU `strict_masked_count` independently returned 58212 at d22
+under 150M states in under one second. Thus 58212 is a certified bound and one
+31-bit CRT prime is sufficient. Prepared host argv is
+`run-exact-strict.sh 58212 22 12,1,1,1,1,1,1,1,1,1,1 1
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 - - 150000000
+0,0,0,0,0,0,0,0,0,32,0,0,0,0,0,0,0,0,0,0,0`. This Docker worker cannot
+invoke host Docker/devices; record the host result before new-face selection.
 After both queue checks (Laplace remains unreachable), v196
 `20260914T073435-1df562e27e39` was queued after v195 as a 60-second,
 hash-checked, non-candidate packed strict control (runner `03435442...`).

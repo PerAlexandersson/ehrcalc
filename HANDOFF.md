@@ -40,6 +40,19 @@ one face at a time with its `forbidden_row_labels` converted to per-label
 masks, a certified upper bound, enough CRT moduli, and an exact CPU
 cross-check. Never sum overlapping face unions without deduplication.
 
+The first post-gate run is an already-ledgered one-hole **control**, not a
+discovery or duplicate candidate: `86b98937...`, whose only forbidden pair
+`(6,10)` maps to `0,0,0,0,0,0,0,0,0,32,0,0,0,0,0,0,0,0,0,0,0`. Its stored exact
+ordinary Ehrhart polynomial gives relative-interior `L^\circ(22)=58212` by
+reciprocity, and the independent new `strict_masked_count` CPU command matched
+`58212` at dilation 22 in under one second with a 150M-state cap. Therefore
+`58212` is a certified upper bound and one 31-bit CRT prime suffices. Host
+GPU argv is `gpu-prototype/run-exact-strict.sh 58212 22
+12,1,1,1,1,1,1,1,1,1,1 1 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1 - -
+150000000 0,0,0,0,0,0,0,0,0,32,0,0,0,0,0,0,0,0,0,0,0`. The Docker worker
+cannot invoke host Docker/devices; run this prepared control from Euler's host
+side and record its output before selecting a new, disjoint face.
+
 Abacus remains CPU-only. After immediate Abacus/Laplace queue audit (Laplace
 still unreachable), v196 `20260914T073435-1df562e27e39` was queued behind v195:
 a 60-second non-candidate packed-masked control with runner
