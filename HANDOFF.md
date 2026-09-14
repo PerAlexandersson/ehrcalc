@@ -111,6 +111,10 @@ PID `1576498`, `timeout 14400s`, `--max-states 100000000`, output
 binary SHA-256 `377b27ea...`. It is a distinct resumed validation attempt,
 uses far below 50% host CPU, and must be polled/reconciled before any d26 retry
 or DB write.
+Fresh read-only ledger inventory found no exact negative zero-hole row: all
+15,353 exact negative genetic rows split into 293 one-hole and 15,060 two-hole
+rows. Thus there is no additional already-exact zero-hole candidate to launch
+outside v194's recorded reservations.
 
 Abacus remains CPU-only. After immediate Abacus/Laplace queue audit (Laplace
 still unreachable), v196 `20260914T073435-1df562e27e39` was queued behind v195:

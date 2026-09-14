@@ -99,6 +99,10 @@ under `timeout 14400s` / 100M states, output
 `reduced-kogan-mutation-search/runs/host-0797-flagged-ordinary-d25-4h-20260914.json`,
 binary SHA-256 `377b27ea...`. It is the sole active resumed validation and uses
 well under 50% host CPU; poll it before a d26 retry or any DB action.
+Fresh read-only ledger inventory found no exact negative zero-hole row: all
+15,353 exact negative genetic rows split into 293 one-hole and 15,060 two-hole
+rows. Thus there is no additional already-exact zero-hole candidate to launch
+outside v194's recorded reservations.
 After both queue checks (Laplace remains unreachable), v196
 `20260914T073435-1df562e27e39` was queued after v195 as a 60-second,
 hash-checked, non-candidate packed strict control (runner `03435442...`).
