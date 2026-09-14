@@ -109,6 +109,9 @@ all positive. No DB write follows.
 Active next rank: fresh `56d716e9...` (dimension 9, masks `0,0,2,2,4,0,0`)
 has clean d1 CRT receipt `20260914T143823-76dea014b2dd` = 0; resume d2--d9.
 
+Completed `56d716e9...`: all d1--d9 receipts are clean CRT evidence and exact
+interpolation has coefficients `1,83/20,179/24,16523/2160,475/96,151/72,7/12,37/360,1/96,1/2160`, all positive.
+
 The next distinct margin-ranked parent `d5161cb8...` (margin `1709/2219`)
 likewise has an all-positive fresh zero-hole closure `18692508...`
 (`hole_to_flag:4:4:34`, dimension 10, masks `0,0,0,6,4,0,0,0,192,128,0`).
