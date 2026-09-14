@@ -247,6 +247,12 @@ three swaps it starts at d10 = 3, but exact rational interpolation has no
 negative coefficient. No CPU replay or DB write; 36 prefiltered nonempty
 swaps remain.
 
+Active diversified swap: fresh `25d0d36c...` from distinct parent `43d8afd5...`
+(`swap_hole:11:11:5:54`, d19, mask
+`0,0,0,0,0,0,0,0,0,0,1024,0`, bound `20^19 < 2^83`) passed the current
+ledger/Abacus/Laplace audit. Clean three-prime CRT d1--d7 receipts through
+`20260914T161425-fef3124b65bc` are zero; resume d8--d19 only. No DB write.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
