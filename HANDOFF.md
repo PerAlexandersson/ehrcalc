@@ -192,6 +192,13 @@ GPU interpolation, use the exact non-count `derive_masked_interior` prefilter
 on the remaining 48 fresh faces and submit only a nonempty individual face;
 this changes no ledger state and preserves the separate-mask rule.
 
+That prefilter is complete: all 50 fresh one-hole-preserving endpoint-flag
+additions return `empty:true` from `derive_masked_interior` (binary
+`fe3985e...`, source `071aa415...`). This entire class is ruled out without
+more GPU counts; next enumerate genuine one-hole equality swaps that move the
+nonflagged equality while retaining one hole, then repeat DB/queue and
+structural audits. No DB write.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
