@@ -224,6 +224,11 @@ dimension-24 polynomial (first nonzero sample d11 = 20). No CPU replay or
 MariaDB write follows; continue within the 38 remaining nonempty swaps only
 after fresh ledger and queue audit.
 
+Active third nonempty swap: fresh `17e53fb7...` (`swap_hole:2:5:6:24`, d24,
+sole mask `0,0,0,0,0,0,0,16,0,0`, bound `25^24 < 2^112`) passed the latest
+ledger/Abacus/Laplace audit. Clean four-prime CRT receipts d1--d7 through
+`20260914T155355-4b80aae0c233` are zero; resume d8--d24 only. No DB write.
+
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
 from their JSON receipts before candidate use. `20260914T132841-d1a46a071d51`
