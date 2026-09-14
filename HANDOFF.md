@@ -160,13 +160,11 @@ interpolation has no negative coefficient. Full untracked evidence is
 `reduced-kogan-mutation-search/runs/gpu-v215-d39e5-interpolation-20260914.json`.
 No CPU replay or MariaDB write follows.
 
-Active final single-add closure: fresh `95d69bc4...` from `54ea98c0...`
-(margin `1745053/3729873`) has dimension 13 and masks
-`0,2,2,2,0,8,0,0,0`. Fresh ledger/Abacus-manifest audit is clear and Laplace
-is unreachable. Certified GT bound `14^13 < 2^50`; clean two-prime wide-CRT
-d1 receipt `20260914T151434-54852bd66330` is zero. Clean d2--d5 receipts
-through `20260914T151553-5ebec25396aa` are also zero; resume d6--d13 only
-from a committed snapshot; no DB write.
+The final fresh one-added-equality closure `95d69bc4...` is complete: all 13
+clean two-prime GPU CRT receipts through `20260914T151738-ae0ba5db105a` use
+`14^13 < 2^50`, and exact interpolation is all positive. Thus the audited
+one-hole/single-add zero-hole closure inventory is exhausted with no KTT
+counterexample and no DB write; broaden the honest one-hole mutation class.
 
 Canonical Ehrcalc `main` is now pushed at `ad49c0b`. The hardened Euler bridge
 is ready (including container checks); its two end-to-end controls were read
