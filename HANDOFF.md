@@ -23,8 +23,8 @@ mutation-search `runs/` directory have SHA-256
 and `bb3a83036c5348dee680894b9038ea11897529a460d5d96cd4a1bb9005a564d3`.
 
 Exact reciprocity-based Ehrhart computations with independent checks at
-`L(d+1)` and `L(d+2)` have resolved 394 fibers, all positive: all 331 fibers
-in dimensions 7--16, the first 48 d17 fibers, and 15 d18 fibers.  The ten
+`L(d+1)` and `L(d+2)` have resolved 435 fibers, all positive: all 331 fibers
+in dimensions 7--16, 89 d17 fibers, and 15 d18 fibers.  The ten
 Abacus audit report hashes for d7--16, in execution order, are `516183f0...`,
 `74575228...`, `cbe5aaba...`, `f70e14d9...`, `a624cfcb...`, `2da06976...`,
 `3d99f059...`, `bb1df4e6...`, `83251871...`, and `e7303435...`.  Euler d17
@@ -34,15 +34,21 @@ report v298a has full SHA-256
 15 exact-positive cases and three preserved time-limited identities
 `d2b7e480...`, `0a5c4eaa...`, and `54022436...`; they remain unresolved.
 
-Abacus job `20260915T134850-6a6b687dfc16` is running 42 disjoint d17 fibers
-(offset 48) six-way.  Runner/binary hashes are `1416e238...`/`8b3dc655...`;
-manifest hashes are `13bc0d46...`, `e962951c...`, `9c21f912...`,
-`17a1b32f...`, `56e78caf...`, and `ec30e08e...`.  Do not resubmit it.  The
-remaining 31 d17 fibers (offset 90) are prepared but unsubmitted as v297b.
-Next fetch and audit v297a; if positive, submit v297b only after a fresh remote
-queue/bridge preflight.  On any negative, stop expansion and independently
-replay and ledger-audit the full original-parent identity before a single,
-non-ambiguous database write.
+Abacus job `20260915T134850-6a6b687dfc16` completed and was fetched once to
+`.../20260915T134850-6a6b687dfc16-pqvlyg_r`.  Its partial exact audit resolved
+41/42 d17 fibers positive and left `a29f05f7...` time-limited; report SHA-256
+is `e11bf0640e0bc80b836027b7d6f0ae68cd466e9e82ea73ac881941beed01ee3c`
+and fetched-job SHA-256 is `28de63d7...`.  Fresh preflight then found Abacus
+empty/unpaused, Euler GPU idle, Laplace unreachable, zero ledger hits, three
+uniquely exact-negative parents, and zero overlap.  The final 31 d17 fibers
+were submitted once as disjoint Abacus job `20260915T140439-e98017891b9f`;
+manifest hashes are `e5a4ddf2...`, `e4309574...`, `5745c456...`,
+`725b5b0f...`, `676577f9...`, and `c506df39...`.  Do not resubmit it.  A
+disjoint low-priority Euler CPU job (local session `51915`) is running the one
+d17 and three d18 time-limited identities at 1800 seconds per subprocess;
+runner SHA-256 is `e1788767...`.  Next fetch/audit v297b and retain any timeout
+as unresolved.  On a negative, stop expansion and independently replay and
+ledger-audit full provenance before one non-ambiguous database write.
 
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
 counterexample is admitted, and no negative zero-hole record remains pending:
