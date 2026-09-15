@@ -1,5 +1,40 @@
 # Ehrcalc Handoff
 
+## Suspend-safe zero-edge checkpoint — 2026-09-15 21:02 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer; the predecessor remains untouched, and all generated `runs/`
+evidence remains untracked.  R211 is the only compute host expected to remain
+awake.  Its independent v378 long retry
+`20260915T204032-03d338e291ce` owns the 13 unresolved v354 d30 identities;
+queued behind it, v383 `20260915T205758-865cf679394a` owns 19 untouched v379
+identities in dimensions 41, 44, 46, 47, 49, and 50.  V383 manifest hashes are
+`d02826df...`, `6928c2cb...`, `717bdb10...`, and `073147f1...`.  Do not submit
+either set elsewhere while its R211 job is active or queued.  Euler-local jobs
+v375, v381, and v382 may pause with the host and must be resumed or audited,
+not duplicated, after wake.
+
+Structural v379 generated 149 novel, nonempty ordinary flagged-Kostka
+candidates in dimensions 23--62, each with zero masks and zero effective
+non-flag edges and each a direct atomic child of one of the six newly audited
+exact-negative two-edge parents.  Its report SHA-256 is
+`b1c35cb31b0dbaa1382799c575200a67fc29246098e0f0369db523d755b3c015`.
+Euler v380 resolved 18 of its 22 d23/d25/d26 cases as exact-positive and left
+four clean time limits; none was negative.  Report SHA-256 is
+`5896daa83d88d6b1f1fe8c89328758d9754c5d9b5e3e38b7a9ccb2a76120e481`.
+Positive children are terminal and must not be mutated.
+
+Abacus v373 `20260915T195304-aa5c68d9191a` completed before suspension and
+was fetched once to result directory suffix `a7f6vxio`.  Independent audit
+verified the source, submitted and fetched runner/engine/manifests, six
+matching controls, resource envelope, candidate identities, provenance, and
+exact h*-to-power reconstruction.  Seven of its 16 zero-edge d26/d31 cases are
+exact-positive, four exceeded the 12M-state ceiling, and five reached clean
+1,200-second limits; there is no negative.  Audit SHA-256 is
+`f55293d594954f5f1245087c309011fecee03238252c073863e3ff3c6fb49e8a`.
+The nine unresolved cases remain unclassified and have no active owner after
+Abacus suspends.  No database write is warranted by these zero-edge results.
+
 ## Six new high-dimensional negatives — 2026-09-15 20:40 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
