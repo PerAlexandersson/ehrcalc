@@ -6,6 +6,50 @@ Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
 counterexample is admitted, and no negative zero-hole record remains pending:
 both `07975fb3...` and `fb09eaa1...` are rejected interpolation false positives.
 
+The smallest verified individual-face negative is now correctly recorded at
+affine dimension 82, not 84. Existing all-ones hook candidate
+`30e04421e7adda3ff6376fdee8d7fa04e7beeb5fb7736ba56ae6fb1fc88ccdf7`
+has `a=9`, `b=10`, mask `0x200080100410000001000`, six selected
+equalities, two non-flag holes `(4,6),(6,10)`, quotient-poset hash
+`ce0fda5b...`, 285202 DP states, and exact-negative coefficients in degrees
+1 and 2. The independent dimension-83 negative `2643bbe2...` has a direct
+flag-absorbed child
+`15e2c2bdb3202490272b5c92058625a26594c08f118f9090d9e7e5527d5a94c3`
+at dimension 82: mask `0x200080000211010001000`, seven selected
+equalities, the same two holes, poset hash `8a8b88cf...`, 285247 DP states,
+and exact-negative degrees 1 and 2. Report
+`../../projects/reduced-kogan-mutation-search/runs/cpu-v260-d82-direct-flags-20260915.json`
+has SHA-256
+`9432fbc04291e4b47aaae834523024ca85232f0133c62adede9854901277b832`.
+
+The requested all-ones adjacent-hook/flag neighborhood is exact and contains
+no smaller one-hole negative. Reports `v259`, `v261`, and `v262` contain 30
+distinct exact-positive quotient faces: twelve one-hole shape-plus-flag faces
+at dimensions 73--79, sixteen immediate descendants of `15e2c2bd...` at
+dimensions 75--83, and two shape contractions of `2643bbe2...` at dimensions
+75/76. Their SHA-256 hashes are respectively
+`d051c6995b5ea0472c6d38ed9f1cae4703d76d1c1e2d80819ef1bdc306143aec`,
+`c539ff322a9c0cecaef57e62489374b734943013e3e2d2b480ba33d8726fa49b`,
+and `f0a35201fc22020985b462cee2c7924a864765b5fc51fc90f8b8151601f81d6b`.
+The larger adjacent-hook growth/one-hole/extra-flag sweep `v263` adds 89
+distinct exact-positive one-hole quotient faces with dimension histogram
+d87:4, d89:3, d90:8, d91:6, d92:4, d93:15, d94:11, d95:18, d96:8,
+d97:12. Its report SHA-256 is
+`5dab14618e368904c6ea9e3216a6512806698ca26ff8acc7bfe8348326881ebe`.
+For all 121 new faces an independent exact check matched coefficient signs and
+the h*-binomial expansion at every integer 0 through the affine dimension.
+They were inserted once into MariaDB as 121 candidate rows and 121 poset rows
+under provenance run `2131f26c1cc0073ce55b6bd2a9b0d9129c0bc85e25e71eb620114c64103030a9`;
+postflight was exactly `121/121/1` candidate/poset/negative. Ingest script
+SHA-256 is
+`6f96d18d5b29b7e378b9c74f8ad702dc87df90bf0e5aff6629f5d82f513395f9`.
+No ambiguous write occurred. The one-hole negative frontier remains dimension
+103. Abacus v199 is done and v200 `20260914T104857-65df7e591ef2` is running
+on disjoint zero-hole work; Laplace remains unreachable, and Euler GPU is
+ready/idle. Next pursue nonlocal one-hole mutations from the two dimension-82
+negative faces or dimension-lowering mutations from the exact dimension-103
+one-hole frontier; do not repeat the exhausted adjacent-hook layer.
+
 The latest exact transition computation closes dimension-43 candidate
 `9cae60245918802e685e7efb854d92e677c371526b8ddc3cda30a96eaaedfa53`
 as coefficient-positive. It has weight
