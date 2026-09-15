@@ -47,14 +47,18 @@ manifest hashes are `e5a4ddf2...`, `e4309574...`, `5745c456...`,
 positive; report SHA-256 is
 `2a27c290b031276b8b876166bb10355dfc4d487aa1481da55c38b1f7fee8189c`
 and fetched-job SHA-256 is `362d765a...`.  Euler session `51915` separately
-resolved the former d17 timeout `a29f05f7...` exact-positive and continues on
-the three d18 timeouts; runner SHA-256 is `e1788767...`.  After a fresh clean
+resolved the former d17 timeout `a29f05f7...` exact-positive.  One d18 case
+continues there; two others reached 11,219,745 states during an out-of-range
+check, just over the 10M cap, and remain unresolved.  They are being rerun once
+under a changed 12M cap in Euler session `44821`; runner SHA-256 is
+`e1788767...`.  After a fresh clean
 ledger/parent/remote preflight, the first 42 d19 fibers were submitted once as
 Abacus job `20260915T141350-d324cdb773da`; manifest hashes are `9a2d363d...`,
 `db78be0d...`, `bdcf73d5...`, `b224dd38...`, `ead5519e...`, and
-`d5fff023...`.  Do not resubmit it.  Next fetch/audit v300a and retain all
-timeouts as unresolved.  On a negative, stop expansion and independently replay and
-ledger-audit full provenance before one non-ambiguous database write.
+`d5fff023...`.  Do not resubmit it.  Next fetch/audit v300a, monitor both Euler
+sessions, and retain every non-exact row as unresolved.  On a negative, stop
+expansion and independently replay and ledger-audit full provenance before one
+non-ambiguous database write.
 
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
 counterexample is admitted, and no negative zero-hole record remains pending:
