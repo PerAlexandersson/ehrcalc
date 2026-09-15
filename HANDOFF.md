@@ -1,5 +1,37 @@
 # Ehrcalc Handoff
 
+## Six new high-dimensional negatives — 2026-09-15 20:40 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer; the predecessor remains untouched.  A supplemental quotient
+lane generated only direct children of ledger-exact-negative d82 parent
+`30e04421e7adda3ff6376fdee8d7fa04e7beeb5fb7736ba56ae6fb1fc88ccdf7`.
+Six new two-nonflag-edge faces are independently exact-negative: d84
+`812b5741...`, d93 `2f5045f3...`, d94 `5d613ce9...`, and d96
+`1d050fa8...`, `67cfaaa3...`, `985f5429...`.  The d84/d93/d94 cases are
+negative in degrees 1--2; two d96 cases are negative in degrees 1--3 and the
+third in degrees 1--2.  Their exact DP sizes are 285,974--675,876 states.
+Source report hashes are `c0093fd7...` and `7a37b2ca...`; all six were
+independently recomputed and their h*/power expansions checked in audit
+`60c565efa3f608c4719a9e1a669cad6bf1378accedb69a912e067532072fc421`.
+
+One non-ambiguous MariaDB write recorded all 16 computed direct children (six
+negative, ten positive) under run
+`2ed5c40d7fb962e3976bbcda4c90d6af122c9799ce99bbd580c6251aa87665e7`;
+postflight was exactly `16/16/6` candidate/poset/negative.  These provide fresh
+high-dimensional negative parents, but do not improve the two-edge minimum d82
+and do not alter the zero-edge target.
+
+R211 v368 job `20260915T194158-d76fecbac978` completed with four matching
+controls; all 13 useful d30 zero-edge cases reached clean 300-second limits,
+so none is sign-classified.  Audit SHA-256 is `bac0902208e82b0231bc1c4cc264a5a1e0c210fbe5e2762b024a31c79598a224`.
+R211 v378 job `20260915T204032-03d338e291ce` is now running the same 13
+identities at 1,200 seconds and unchanged 4M states; manifest hashes are
+`cdbe96d8...`, `27155592...`, `55a77c63...`, `2dc40516...`.  Euler v374
+finished d34 with 7 exact-positive and 13 unresolved, while v375 remains the
+sole owner of all 26 d35 identities.  Abacus v373 remains the sole owner of
+the d26/d31 retries.  No active identities overlap.
+
 ## R211 d27 audit and continued Euler frontier — 2026-09-15 20:10 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
