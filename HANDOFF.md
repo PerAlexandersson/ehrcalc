@@ -15,6 +15,38 @@ through positive intermediates. `v263` remains valid exact evidence, but its
 older second flag layer included children of closure faces not known negative;
 do not use those rows as parents or repeat that workflow.
 
+Direct zero-hole attacks from the verified negatives are now exact but did not
+retain negativity. Three-at-once additions to d103 negative `98f9bed8...`
+gave eight new one-hole faces at d79,82,85,88,91,94:2,97, all positive.
+Structural/exact report SHA-256 values are
+`acfe6b8cd182ad6a3fdeed302452087cf9a60f7a26619a371b6ef8ada95f0adc` and
+`1effe1e1868cc82229a001078274e3ba68148d90514823bebe2e3c080f7d1c29`.
+An atomic suffix-flag closure of the same negative parent adds row-6 labels
+11--16 and produces zero-hole d75 candidate `1fce3fc...`, poset
+`f1d260a7...`, with 762080 DP states; its full polynomial is positive. Report
+SHA-256 is
+`914d1d8b3ac598942aae8aee505472792164ffda0625f51a2ceab4997f483781`.
+The nine rows were inserted once under MariaDB run
+`7fa15960caca3203784f94d8ae3640a58be4b342a5ce57cd3ed28747e27f8058`;
+postflight was `9/9/0`, with no ambiguous write.
+
+Three other direct zero-hole children of the d82/d83 negatives are exact-
+positive: d84 `32e94442...` and d85 `dc11f3db...` drop both holes atomically,
+while d60 `6609c851...` drops `(4,6)` and adds the complete suffix flag run for
+`(6,10)`. Report SHA-256 is
+`8869664797e0ec69d4b49a80e58108f924235edc575cbb33e552628de6959b6b`;
+MariaDB run `f9cd26f6324ead31c040277588e460a1d68f0e41f8cbf355d1ef7f9c67702d59`
+has postflight `3/3/0`. These positives are terminal. The direct one-step
+zero-hole shape neighborhood is also exhausted: 801 shrink presentations
+reduce to four already exact-positive quotient faces, while 924 growth
+presentations yield no zero-hole face. Structural report SHA-256 values are
+`d90e0764207e440d7ce94b6fca08d339857ceab0111e1a5fd490f0aaded956f5` and
+`c823cbe94d9315901415bca584365393aeecdbda8df7f398f8df8682d4bccc83`.
+Abacus v200 `20260914T104857-65df7e591ef2` was running and payload-disjoint,
+Laplace was unreachable, and Euler GPU was ready/idle. Next use only atomic
+nontrivial-weight or combined shape/flag mutations from verified-negative
+parents.
+
 The new direct-negative-parent batches contain no improved negative. Direct
 two-flag child `1b1c0be...` of the d103 one-hole negative is d97/one-hole,
 poset `b20b59ec...`, 1,478,768 DP states, and fully exact-positive. Evidence
