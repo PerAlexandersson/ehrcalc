@@ -6,34 +6,45 @@ Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
 counterexample is admitted, and no negative zero-hole record remains pending:
 both `07975fb3...` and `fb09eaa1...` are rejected interpolation false positives.
 
-Active direct-negative-parent weight lane: structural sweep `v276` made the
-36 atomic transfers that set one bad-edge weight label to zero and a different
-label to two, directly from exact-negative d82 parent `15e2c2bd...`; report
-SHA-256 is `cca120d707c853c106e55ca4d1c7025bcbc824b8f74eddb969eb59c3e35bb737`,
-with no ledger hits. Selected child
-`c7b00f4a8d8da45fe3768257dc4a988f744c36b02dad1fda17657eeda2dae703`
-has weight `(1,1,1,1,1,0,1,1,1,2,1,1,1,1,1,1,1,1,1)`, dimension 74,
-and exactly one effective non-flag edge `(6,10)`. Exact Euler GPU reciprocity
-counts are zero at dilations 1--16, first nonzero `718536` at 17, and complete
-through 26; hence codegree 17 and h* degree 58. GPU evidence SHA-256 values are
-`4165ae97c239510a70d829909efa6b80fd2945c1c0287cd6309bcbc9b043fb09`
-and `fbdac73e4b937abf6837d36d5c61db8c2e2b6c82b3c0d8d2627be310c41d9075`.
-GPU d27 terminated unambiguously at its fixed 150M-transition ceiling; exact
-Euler CPU d27 is
-`27353545812016756113399872562550`, report SHA-256
-`a7836aa226162e90cdba75085214c21834dabec7e6040a9019bc27435e1455da`.
-Euler ordinary counts are exact through d15; reports for d2--7 and d8--19 have
-SHA-256 `51a3c4f363e70c83c3fb54171b49529fdcc155cb78d903b168b7161b646e7742`
-and `ef5ac3a39d7f0a699f960cad3fa837978c4b428a0b1bcd4e03bb06324cde367d`
-(the latter records terminal 1800-second d16--19 attempts). A changed serial
-two-hour Euler profile is active from d16. Abacus six-CPU job
-`20260915T113456-4fcaa1a67766` owns strict d28--58, with runner/manifest/binary
-SHA-256 `e88b7b0e...`/`5801559d...`/`77f24efd...`; d28 and d29 are already
-exact. Do not overlap those dilations. Stop the remote tail only after enough
-exact rows exist for an overdetermined rank-59 solve, then fetch, hash-check,
-validate interpolation and signs, and ingest only if the full polynomial is
-negative. No MariaDB write has occurred for v276. Abacus v200 finished
-successfully and was fetched; Laplace remains unreachable.
+The direct-negative-parent zero-weight lanes are now completely resolved by a
+dilation-compatible alphabet-compression audit. Report
+`../../projects/reduced-kogan-mutation-search/runs/exact-v288-zero-weight-compression-audit-20260915.json`
+has SHA-256
+`87787e331cf3976c978d39f6eb4052c57816d531aa6a9fc666856c9787b9e8f4`;
+the audit script has SHA-256
+`be42888dcda64c74a523eca3c254bad26b85747b0a2821ab5c3446cbbfc7f1b9`.
+Deleting the absent label of `c7b00f4a...` and applying the positive-weight
+reservoir bijection gives the d74 quotient with transformed forbidden pairs
+`(2,8),(2,9),(2,10),(5,13),(6,9)`, nonreduced mask
+`0x200000001110200000`, and poset hash `7a7b39c...`. Its full exact order-
+polytope calculation used 173917 DP states in 2.397 seconds and is positive;
+ordinary dilations 0--16 and independent strict dilations 1--30 all agree.
+Thus `c7b00f4a...` is terminal and must not be mutated.
+
+The same audit corrects the overly broad `v283` zero-edge annotation. The 20
+children with zero weight label 6 retain one compressed non-flag hole `(6,9)`
+and all equal ledger-exact-positive d93 face `45e1197f...` (poset hash
+`7955cd70...`, result-JSON SHA-256 `4cf42fa2...`). The 20 children with zero
+label 10 are the genuine zero-hole cases, but all equal ledger-exact-positive
+d94 face `83b5a69b...` (poset hash `9139e286...`, result-JSON SHA-256
+`1e44bfd0...`). For selected `2ec8007c...`, exact Euler evidence gave codegree
+19/h* degree 75, strict counts through 26, and ordinary counts through 12;
+all agree with `45e1197f...`. Evidence SHA-256 values are `07dfba8c...`,
+`b72c3a47...`, and `80bf663f...`. The unchanged GPU profile terminated cleanly
+at d27 when 209410492 transitions exceeded its fixed 150M cap.
+
+Abacus job `20260915T113456-4fcaa1a67766` produced exact c7b strict d28--30,
+then terminal one-hour failures at d31--35. It was deliberately cancelled once
+the compressed exact polynomial made further work redundant and fetched to
+`/home/dev/.local/share/supervisor-compute-results/abacus/20260915T113456-4fcaa1a67766-3nldhy3j`;
+job/output SHA-256 values are `cb95bf34...`/`2443911a...`, with transferred
+runner/manifest/binary hashes `e88b7b0e...`/`5801559d...`/`77f24efd...` intact.
+Euler CPU children were also stopped and checked absent. No MariaDB write was
+needed or made. Abacus and Euler GPU are idle; Laplace remains unreachable.
+Next, generate only atomic combined shape/weight/flag children directly from
+the d82/d83/d103 exact-negative parents, and audit zero-label compression and
+reservoir neutrality before spending exact compute. The target remains an
+active-weight, zero-nonflag face with a verified negative coefficient.
 
 The mutation parent gate is strict: every generated child must be a direct
 child of a uniquely MariaDB-verified exact-negative Ehrhart face, rechecked
