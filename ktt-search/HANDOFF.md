@@ -23,42 +23,37 @@ was ready and idle. The first bridge request was rejected before execution
 because the bound-reporting tool change was not yet committed, so there is no
 receipt or ambiguous work from that refusal.
 
-Two paired contractions from that seed are now the priority exact checks.
-Both set `w=(0,2,1^17)` and absorb both holes into boundary runs, hence have
-zero non-flag edges. Candidate `0bc2eb21c110cc5fbd7167868edd13aa6ec4e533260cb5980e35c003f65cd3b4`
+Two paired contractions set `w=(0,2,1^17)` and absorb both holes into boundary
+runs, hence have zero non-flag edges. Candidate
+`0bc2eb21c110cc5fbd7167868edd13aa6ec4e533260cb5980e35c003f65cd3b4`
 uses the left closure of `(4,6)` and right closure of `(6,10)`, has masks
 `0,0,8,8,8,8,0,0,0,32,32,32,32,48,32,0,0,0,0`, and exact affine
 dimension 30. Candidate `fd1cf879c615243b7164b905fbe7e0694bd7ff3354eaddd0cc61891f21480d34`
 uses the opposite closures, masks
 `0,0,0,0,32,40,40,40,40,40,8,8,8,16,0,0,0,0,0`, and dimension 31.
 Direct candidate/attempt/proposal/sample audits and retained Abacus inputs have
-no identity hit. Exact CPU strict counts for the first child are zero through
-d9 and first nonzero at d10 = 1176, proving codegree 10 and h* degree 21, but
-the dimension-30 and dimension-31 parent polynomials remain unresolved. The
-research-only `masked_count` binary exposes the maintained ordinary masked
-engine, allowing low ordinary samples to replace costly high strict samples.
-Do not promote either child unless its full exact polynomial has a negative
-coefficient. Untracked parent evidence is under
-`runs/cpu-v233-*-zero-hole-exact-20260914.json`.
+no identity hit. Both full exact Ehrhart polynomials are coefficient-positive;
+the first has codegree 10 and h* degree 21. Evidence is
+`runs/cpu-v238-0bc2eb21-mixed-reciprocity-20260915.json` and
+`runs/cpu-v239-fd1cf879-mixed-reciprocity-20260915.json`.
 
-The first exact zero-hole boundary-contraction neighborhood of the dimension-30
-child is now closed with no negative. Twelve ledger- and queue-disjoint faces,
-all with `w=(0,2,1^17)`, have dimensions
-`10,12,14,15,18,18,18,20,21,22,22,22`. Their full candidate keys are recorded
-in the exact manifest SHA-256
-`602c18a78eb8fce3332b9499704f2d162310d3163ebdec1bc4407d108c9698c3`
-at companion evidence
-`runs/cpu-v236-zero-hole-contraction-manifest-20260915.json`. Eight were
-interpolated from `L(0)=1` and all dimension-many relative-interior samples.
-Four expensive strict tails were replaced exactly by `L(1)` (and for
-`32224a48...`, also `L(2)`) using Ehrhart reciprocity; every interpolation
-point and the h* reconstruction through `L(D)` were checked exactly. All
-twelve have empty negative-coefficient lists. Strict/ordinary binary hashes
-are `77f24efda9ded14a2a1dd592805f89285db97486955c36880db645058707b7ec`
+The completed simplification checkpoint contains 67 distinct exact faces from
+the negative dimension-84 parent: 38 zero-hole, eight one-hole, and 21 two-hole
+faces. Their affine dimensions range from 10 through 40, with twelve at
+dimension 30. Every full power-basis Ehrhart polynomial has an empty negative
+coefficient list. Exact interpolation used mixed positive ordinary samples and
+negative evaluations obtained from relative-interior counts via
+`L^o(n)=(-1)^D L(-n)`; every input point and h* reconstruction through `L(D)`
+was checked. The consolidated untracked manifest is
+`runs/cpu-v245-simplification-exact-manifest-20260915.json`, SHA-256
+`0ff7865685526a08c8e58e357fdc70a6920be707e9ebd235e0942211dfc0866f`.
+Strict/ordinary binary hashes are
+`77f24efda9ded14a2a1dd592805f89285db97486955c36880db645058707b7ec`
 and `4c9d178a124799f8557bdb414d4316a5ed6457c508237d52fb8a4d548e136766`.
-No MariaDB write occurred. Continue from a different contraction/weight
-neighborhood of the exact-negative dimension-84 seed; none of these twelve is
-a better seed.
+No MariaDB write occurred and none is a better seed. The next state is to move
+upward from the exact-positive two-hole dimension-40 boundary and locate the
+lowest multi-zero weight contraction that retains a verified negative before
+attempting one-hole and zero-hole mutations again.
 The exact Euler receipt arguments reconstruct the inherited candidate
 `83859a42b52cb43349caee3fce174f540a21509868c177149e630842bb2468b8`
 (`a=5`, `b=5`, mask `0x1`, weight `1^10`, equality count 1) and quotient-poset
