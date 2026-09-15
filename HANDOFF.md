@@ -23,8 +23,8 @@ mutation-search `runs/` directory have SHA-256
 and `bb3a83036c5348dee680894b9038ea11897529a460d5d96cd4a1bb9005a564d3`.
 
 Exact reciprocity-based Ehrhart computations with independent checks at
-`L(d+1)` and `L(d+2)` have resolved 683 fibers, all positive: every one of the
-668 fibers in dimensions 7--19 and 15/57 d20 fibers.  The d7--17 hashes remain
+`L(d+1)` and `L(d+2)` have resolved 717 fibers, all positive: every one of the
+668 fibers in dimensions 7--19 and 49/57 d20 fibers.  The d7--17 hashes remain
 recorded below.  The three v298a d18
 timeouts were all resolved exact-positive under the justified 12M-state
 validation cap; v301/v302 report SHA-256 values are `c95a2907...` and
@@ -40,13 +40,21 @@ positive.  Obsolete overlapping v300e/v300f/v300g manifests remain evidence
 and must never be submitted.
 
 The 15-case d20 tail is exact-positive under Euler v312--v315 report hashes
-`9a0dea5e...`, `4153e96a...`, `2a0fa94f...`, and `7721d3f2...`.  Current
-Abacus job `20260915T145252-672f7cfb5df7` owns the other 42 d20 fibers with
+`9a0dea5e...`, `4153e96a...`, `2a0fa94f...`, and `7721d3f2...`.  Abacus job
+`20260915T145252-672f7cfb5df7` resolved 34 of the other 42 d20 fibers exact-
+positive and left eight time-limited; partial-audit hash is `df752b45...` and
 manifest hashes `65f02b2d...`, `f9f9c61b...`, `cc1f0bdb...`, `35a7f969...`,
-`32822df7...`, and `a43f85bd...`; do not resubmit it.  D21 packages
-v316a/v316b/v316c are prepared but unsubmitted.  Submit none until d20 is
-terminal and audited and a fresh ledger/parent/remote preflight passes.  On a
-negative, stop expansion and independently replay and ledger-audit full
+`32822df7...`, and `a43f85bd...`.  Euler session `58390` owns the eight
+unresolved identities under a two-worker, 1800-second, 12M-state exact replay;
+do not overlap it.
+
+D21 fibers are independent atomic children of the original exact-negative
+parents, not descendants of d20 cases.  After fresh ledger/parent/remote
+preflight, Abacus job `20260915T151751-ae721eb5ea15` was submitted once for
+d21 offsets 0--41 with manifest hashes `2adf3694...`, `3080d286...`,
+`45738ec6...`, `53fbd1f5...`, `4d3e8b2f...`, and `3238ae54...`; do not
+resubmit it.  V316b/v316c remain prepared but unsubmitted.  On a negative,
+stop expansion and independently replay and ledger-audit full
 provenance before one non-ambiguous database write.
 
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
