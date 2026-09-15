@@ -1,6 +1,6 @@
 # KTT Search Handoff
 
-## Current state — 2026-09-14 (active)
+## Current state — 2026-09-15 (active)
 
 Codex is the sole KTT worker and local MariaDB writer. No counterexample is
 admitted. `07975fb3...` and `fb09eaa1...` are both rejected interpolation
@@ -33,12 +33,32 @@ uses the opposite closures, masks
 `0,0,0,0,32,40,40,40,40,40,8,8,8,16,0,0,0,0,0`, and dimension 31.
 Direct candidate/attempt/proposal/sample audits and retained Abacus inputs have
 no identity hit. Exact CPU strict counts for the first child are zero through
-d9 and first nonzero at d10 = 1176, proving codegree 10 and h* degree 21;
-ordinary exact counts are independently in progress. The new research-only
-`masked_count` binary exposes the maintained ordinary masked engine, allowing
-low ordinary samples to determine h* without a costly high strict tail. Do not
-promote either child unless its full exact polynomial has a negative
-coefficient. Untracked evidence is under `runs/cpu-v233-*-zero-hole-exact-20260914.json`.
+d9 and first nonzero at d10 = 1176, proving codegree 10 and h* degree 21, but
+the dimension-30 and dimension-31 parent polynomials remain unresolved. The
+research-only `masked_count` binary exposes the maintained ordinary masked
+engine, allowing low ordinary samples to replace costly high strict samples.
+Do not promote either child unless its full exact polynomial has a negative
+coefficient. Untracked parent evidence is under
+`runs/cpu-v233-*-zero-hole-exact-20260914.json`.
+
+The first exact zero-hole boundary-contraction neighborhood of the dimension-30
+child is now closed with no negative. Twelve ledger- and queue-disjoint faces,
+all with `w=(0,2,1^17)`, have dimensions
+`10,12,14,15,18,18,18,20,21,22,22,22`. Their full candidate keys are recorded
+in the exact manifest SHA-256
+`602c18a78eb8fce3332b9499704f2d162310d3163ebdec1bc4407d108c9698c3`
+at companion evidence
+`runs/cpu-v236-zero-hole-contraction-manifest-20260915.json`. Eight were
+interpolated from `L(0)=1` and all dimension-many relative-interior samples.
+Four expensive strict tails were replaced exactly by `L(1)` (and for
+`32224a48...`, also `L(2)`) using Ehrhart reciprocity; every interpolation
+point and the h* reconstruction through `L(D)` were checked exactly. All
+twelve have empty negative-coefficient lists. Strict/ordinary binary hashes
+are `77f24efda9ded14a2a1dd592805f89285db97486955c36880db645058707b7ec`
+and `4c9d178a124799f8557bdb414d4316a5ed6457c508237d52fb8a4d548e136766`.
+No MariaDB write occurred. Continue from a different contraction/weight
+neighborhood of the exact-negative dimension-84 seed; none of these twelve is
+a better seed.
 The exact Euler receipt arguments reconstruct the inherited candidate
 `83859a42b52cb43349caee3fce174f540a21509868c177149e630842bb2468b8`
 (`a=5`, `b=5`, mask `0x1`, weight `1^10`, equality count 1) and quotient-poset
