@@ -1,5 +1,27 @@
 # Ehrcalc Handoff
 
+## Three-machine zero-nonflag checkpoint — 2026-09-15 19:30 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer; the predecessor is untouched and no database write has been
+attempted.  R211 is now reachable through the authorized compute bridge.  Its
+queue is enabled and its final compiler acceptance passed; the active resource
+profile is CPUs `4,5,10,11`, memory high 8 GiB / hard 9 GiB, no swap, 128
+tasks, and Landlock write confinement.  R211 job
+`20260915T192820-0457ac1a808a` exclusively owns all 36 untouched v354 d27
+identities under four 300-second, 4M-state lanes.  Runner SHA-256 is
+`6f81413cd3385f067e363815434da41d2e4f006d7bad91ca4159c34d73e2321a`;
+manifest hashes are `824a0157...`, `ae7a1e4f...`, `34c09b13...`, and
+`03cf878e...`; engine SHA-256 is `8b3dc655...`.
+
+Abacus job `20260915T192333-09c2ce1cf10d` continues to own only the ten
+clean d24--25 retries described below.  Euler CPU run v365 owns the disjoint
+20-case d28 frontier with six 300-second, 12M-state workers; its report is
+pending.  All candidates on all three machines have zero masks, zero effective
+non-flag edges, zero ledger hits, and direct ledger-exact-negative parents
+rechecked immediately before submission.  Do not submit or run any of these
+identities elsewhere until their owning job is terminal and audited.
+
 ## True zero-nonflag exact-sign checkpoint — 2026-09-15 19:25 UTC
 
 The current Codex worker is the sole active KTT researcher and sole MariaDB
