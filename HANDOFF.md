@@ -1,10 +1,28 @@
 # Ehrcalc Handoff
 
-## Current KTT state — 2026-09-14 (active)
+## Current KTT state — 2026-09-15 (active)
 
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
 counterexample is admitted, and no negative zero-hole record remains pending:
 both `07975fb3...` and `fb09eaa1...` are rejected interpolation false positives.
+
+The latest exact transition computation closes dimension-43 candidate
+`9cae60245918802e685e7efb854d92e677c371526b8ddc3cda30a96eaaedfa53`
+as coefficient-positive. It has weight
+`(6,0,1,0,1,1,0,1,1,1,1,1,1,1,0,0,1,1,1)`, the inherited two non-flag
+edges `(4,6)` and `(6,10)`, and affine dimension 43. Exact ordinary counts
+`L(1)..L(17)` and strict counts through dilation 26 have codegree 16
+(`L^o(16)=2835`), so h* degree 28. The rank-29 exact h* solve uses
+`L^o(d)=(-1)^43 L(-d)` and reproduces every supplied positive- and
+negative-argument value; all ordinary power-basis coefficients are positive.
+The ordinary/strict binaries have SHA-256 `4c9d178a...`/`77f24efd...`.
+Untracked evidence is
+`../../projects/reduced-kogan-mutation-search/runs/cpu-v250-9cae6024-dim43-exact-20260915.json`,
+SHA-256
+`6220c455970b65d4d686c29ed48a1295058f0edd10a17cd6e3713f2447cfa7fa`.
+The face was ledger- and queue-disjoint before computation; no MariaDB write
+occurred. Continue with a fresh audited dimension-43 transition face.
+
 The exact Euler receipt arguments reconstruct the inherited candidate
 `83859a42b52cb43349caee3fce174f540a21509868c177149e630842bb2468b8`
 (`a=5`, `b=5`, mask `0x1`, weight `1^10`, equality count 1) and quotient-poset
