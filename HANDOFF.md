@@ -23,29 +23,31 @@ mutation-search `runs/` directory have SHA-256
 and `bb3a83036c5348dee680894b9038ea11897529a460d5d96cd4a1bb9005a564d3`.
 
 Exact reciprocity-based Ehrhart computations with independent checks at
-`L(d+1)` and `L(d+2)` have resolved 600 fibers, all positive: all 331 fibers
-in dimensions 7--16, all 121 d17 fibers, all 18 d18 fibers, and 130/198 d19
-fibers.  The d7--17 hashes remain recorded below.  The three v298a d18
+`L(d+1)` and `L(d+2)` have resolved 683 fibers, all positive: every one of the
+668 fibers in dimensions 7--19 and 15/57 d20 fibers.  The d7--17 hashes remain
+recorded below.  The three v298a d18
 timeouts were all resolved exact-positive under the justified 12M-state
 validation cap; v301/v302 report SHA-256 values are `c95a2907...` and
 `5706cd7b...`.
 
 Abacus d19 jobs `20260915T141350-d324cdb773da` and
 `20260915T142045-600f0b5ffe59` each completed 42/42 exact-positive; report
-SHA-256 values are `f1181dc1...` and `02bdd837...`.  Abacus job
-`20260915T143205-53d54e894430` resolved offsets 84--125 exact-positive 42/42,
-report SHA-256 `e4f5dd0f...`, with manifest hashes
-`97ffe011...`, `a172e393...`, `0b1b18d2...`, `866a1008...`, `eef3af5f...`,
-and `1ddb940d...`.  Euler offsets 168--171 completed exact-positive 4/4,
-report SHA-256 `f5544a3e...`.  Current Abacus job
-`20260915T144522-052859780bd3` owns offsets 126--167; manifest hashes are
-`3f529c31...`, `a1c01d57...`, `d8a1b6ce...`, `7fdb4948...`, `82107f18...`,
-and `12586431...`; do not resubmit it.  Remaining offsets 172--197 are
-prepared but unsubmitted as v300f.  The overlapping v300e manifests are
-obsolete evidence and must never be submitted.  Next fetch/audit v300d and
-retain every non-exact row.  On a negative, stop expansion and
-independently replay and ledger-audit full provenance before one non-ambiguous
-database write.
+SHA-256 values are `f1181dc1...` and `02bdd837...`.  Remaining d19 Abacus jobs
+`20260915T143205-53d54e894430` and `20260915T144522-052859780bd3` each resolved
+42/42 exact-positive, with report hashes `e4f5dd0f...` and `67dc73e9...`.
+Euler resolved the 30-case d19 tail in v303--v310; all eight reports are exact-
+positive.  Obsolete overlapping v300e/v300f/v300g manifests remain evidence
+and must never be submitted.
+
+The 15-case d20 tail is exact-positive under Euler v312--v315 report hashes
+`9a0dea5e...`, `4153e96a...`, `2a0fa94f...`, and `7721d3f2...`.  Current
+Abacus job `20260915T145252-672f7cfb5df7` owns the other 42 d20 fibers with
+manifest hashes `65f02b2d...`, `f9f9c61b...`, `cc1f0bdb...`, `35a7f969...`,
+`32822df7...`, and `a43f85bd...`; do not resubmit it.  D21 packages
+v316a/v316b/v316c are prepared but unsubmitted.  Submit none until d20 is
+terminal and audited and a fresh ledger/parent/remote preflight passes.  On a
+negative, stop expansion and independently replay and ledger-audit full
+provenance before one non-ambiguous database write.
 
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
 counterexample is admitted, and no negative zero-hole record remains pending:
