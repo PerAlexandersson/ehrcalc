@@ -23,12 +23,11 @@ mutation-search `runs/` directory have SHA-256
 and `bb3a83036c5348dee680894b9038ea11897529a460d5d96cd4a1bb9005a564d3`.
 
 Exact reciprocity-based Ehrhart computations with independent checks at
-`L(d+1)` and `L(d+2)` have resolved 717 fibers, all positive: every one of the
-668 fibers in dimensions 7--19 and 49/57 d20 fibers.  The d7--17 hashes remain
-recorded below.  The three v298a d18
-timeouts were all resolved exact-positive under the justified 12M-state
-validation cap; v301/v302 report SHA-256 values are `c95a2907...` and
-`5706cd7b...`.
+`L(d+1)` and `L(d+2)` have resolved 802 fibers, all positive: all 668 fibers
+in dimensions 7--19, all 57 d20 fibers, and 77/87 d21 fibers.  The d7--17
+hashes remain recorded below.  The three v298a d18 timeouts were all resolved
+exact-positive under the justified 12M-state validation cap; v301/v302 report
+SHA-256 values are `c95a2907...` and `5706cd7b...`.
 
 Abacus d19 jobs `20260915T141350-d324cdb773da` and
 `20260915T142045-600f0b5ffe59` each completed 42/42 exact-positive; report
@@ -44,18 +43,42 @@ The 15-case d20 tail is exact-positive under Euler v312--v315 report hashes
 `20260915T145252-672f7cfb5df7` resolved 34 of the other 42 d20 fibers exact-
 positive and left eight time-limited; partial-audit hash is `df752b45...` and
 manifest hashes `65f02b2d...`, `f9f9c61b...`, `cc1f0bdb...`, `35a7f969...`,
-`32822df7...`, and `a43f85bd...`.  Euler session `58390` owns the eight
-unresolved identities under a two-worker, 1800-second, 12M-state exact replay;
-do not overlap it.
+`32822df7...`, and `a43f85bd...`.  Euler v317 resolved all eight exact-positive
+at 12M states; report/state SHA-256 values are
+`a9bba63a5759fb2ab7b9c6ef24299759c4f777151231be69baff162163bd371c`
+and `78460ef919d318e30acde9180374e67b889338cee09c5d8a502f97a245700eb0`.
+Thus d20 is exhausted at 57/57 exact-positive.
 
 D21 fibers are independent atomic children of the original exact-negative
-parents, not descendants of d20 cases.  After fresh ledger/parent/remote
-preflight, Abacus job `20260915T151751-ae721eb5ea15` was submitted once for
-d21 offsets 0--41 with manifest hashes `2adf3694...`, `3080d286...`,
-`45738ec6...`, `53fbd1f5...`, `4d3e8b2f...`, and `3238ae54...`; do not
-resubmit it.  V316b/v316c remain prepared but unsubmitted.  On a negative,
-stop expansion and independently replay and ledger-audit full
-provenance before one non-ambiguous database write.
+parents, not descendants of d20 cases.  Euler v319 and v320 resolved offsets
+84--86 and 42--45 exact-positive; report SHA-256 values are `d0471ec4...` and
+`9145dfbd9e21769c625025e25afa9167bd71434abc1975d14fa95ec5b536e16b`.
+Abacus job `20260915T151751-ae721eb5ea15` completed offsets 0--41 with 33
+exact-positive and nine clean time limits.  Its fetched audit has SHA-256
+`2a4d739355ad202006fb583ccd885f1ea0136ea551436821df7ab79599dc2d21`,
+job JSON SHA-256 `3b7724e9...`, six exact control matches, and zero negatives.
+Euler v321 resolved 37/38 offsets 46--83 exact-positive and left only
+`db75042a...` time-limited; report/state SHA-256 values are
+`1d1a1d1e4d61a60118d14113a27c9e671f6180ccf046c9b03832731092519540`
+and `d71cd2c196852ea3d5fa5911ba7dc7fb0c3ec1a2042ae4cb8b94d0af42affeca`.
+
+The ten unresolved d21 identities have zero ledger hits and no overlap.  Euler
+v323 owns `db75042a...` under a one-worker, 1800-second, 12M-state replay.
+Abacus replay job `20260915T160637-e8078a0c431e` owns the other nine under six
+lanes, 1200 seconds per stage and 12M states; manifest SHA-256 values are
+`634f048a...`, `7040e576...`, `b6ad5722...`, `855027c5...`, `93e532d4...`,
+and `b51b0d6f...`, and preparer SHA-256 is `2665a154...`.  All represented
+parents were rechecked as unique MariaDB exact-negative rows immediately before
+submission.  Obsolete overlapping v316b/v316c remain unsubmitted evidence and
+must never be submitted.  On a negative, stop expansion and independently
+replay and ledger-audit full provenance before one non-ambiguous database write.
+
+R211 is user-authorized for KTT compute, but this Docker lane cannot yet reach
+it: the registered queue is intentionally paused pending its first live
+smoke/cgroup test, Docker cannot resolve its MagicDNS name and has no reviewed
+compute transport, and the print-only bridge must not be repurposed.  Do not
+copy the work-account key into Docker.  Laplace remains unreachable; Euler GPU
+was ready/idle at the v322 preflight.  No R211 job or MariaDB write was made.
 
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
 counterexample is admitted, and no negative zero-hole record remains pending:
