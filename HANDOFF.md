@@ -23,42 +23,25 @@ mutation-search `runs/` directory have SHA-256
 and `bb3a83036c5348dee680894b9038ea11897529a460d5d96cd4a1bb9005a564d3`.
 
 Exact reciprocity-based Ehrhart computations with independent checks at
-`L(d+1)` and `L(d+2)` have resolved 467 fibers, all positive: all 331 fibers
-in dimensions 7--16, all 121 d17 fibers, and 15 d18 fibers.  The ten
-Abacus audit report hashes for d7--16, in execution order, are `516183f0...`,
-`74575228...`, `cbe5aaba...`, `f70e14d9...`, `a624cfcb...`, `2da06976...`,
-`3d99f059...`, `bb1df4e6...`, `83251871...`, and `e7303435...`.  Euler d17
-reports v296a/v296b have hashes `3242c128...`/`2942b857...`.  Euler d18
-report v298a has full SHA-256
-`7ed910504acafba36df60d4e13837fc859a8e5342c003a675c26b467fb37e754`:
-15 exact-positive cases and three preserved time-limited identities
-`d2b7e480...`, `0a5c4eaa...`, and `54022436...`; they remain unresolved.
+`L(d+1)` and `L(d+2)` have resolved 554 fibers, all positive: all 331 fibers
+in dimensions 7--16, all 121 d17 fibers, all 18 d18 fibers, and 84/198 d19
+fibers.  The d7--17 hashes remain recorded below.  The three v298a d18
+timeouts were all resolved exact-positive under the justified 12M-state
+validation cap; v301/v302 report SHA-256 values are `c95a2907...` and
+`5706cd7b...`.
 
-Abacus job `20260915T134850-6a6b687dfc16` completed and was fetched once to
-`.../20260915T134850-6a6b687dfc16-pqvlyg_r`.  Its partial exact audit resolved
-41/42 d17 fibers positive and left `a29f05f7...` time-limited; report SHA-256
-is `e11bf0640e0bc80b836027b7d6f0ae68cd466e9e82ea73ac881941beed01ee3c`
-and fetched-job SHA-256 is `28de63d7...`.  Fresh preflight then found Abacus
-empty/unpaused, Euler GPU idle, Laplace unreachable, zero ledger hits, three
-uniquely exact-negative parents, and zero overlap.  The final 31 d17 fibers
-were submitted once as disjoint Abacus job `20260915T140439-e98017891b9f`;
-manifest hashes are `e5a4ddf2...`, `e4309574...`, `5745c456...`,
-`725b5b0f...`, `676577f9...`, and `c506df39...`.  It completed 31/31 exact-
-positive; report SHA-256 is
-`2a27c290b031276b8b876166bb10355dfc4d487aa1481da55c38b1f7fee8189c`
-and fetched-job SHA-256 is `362d765a...`.  Euler session `51915` separately
-resolved the former d17 timeout `a29f05f7...` exact-positive.  One d18 case
-continues there; two others reached 11,219,745 states during an out-of-range
-check, just over the 10M cap, and remain unresolved.  They are being rerun once
-under a changed 12M cap in Euler session `44821`; runner SHA-256 is
-`e1788767...`.  After a fresh clean
-ledger/parent/remote preflight, the first 42 d19 fibers were submitted once as
-Abacus job `20260915T141350-d324cdb773da`; manifest hashes are `9a2d363d...`,
-`db78be0d...`, `bdcf73d5...`, `b224dd38...`, `ead5519e...`, and
-`d5fff023...`.  Do not resubmit it.  Next fetch/audit v300a, monitor both Euler
-sessions, and retain every non-exact row as unresolved.  On a negative, stop
-expansion and independently replay and ledger-audit full provenance before one
-non-ambiguous database write.
+Abacus d19 jobs `20260915T141350-d324cdb773da` and
+`20260915T142045-600f0b5ffe59` each completed 42/42 exact-positive; report
+SHA-256 values are `f1181dc1...` and `02bdd837...`.  Current Abacus job
+`20260915T143205-53d54e894430` owns d19 offsets 84--125 with manifest hashes
+`97ffe011...`, `a172e393...`, `0b1b18d2...`, `866a1008...`, `eef3af5f...`,
+and `1ddb940d...`; do not resubmit it.  Euler session `52629` owns disjoint
+offsets 168--171.  Offsets 126--167 are prepared but unsubmitted as v300d.
+The prepared v300e manifests overlap Euler and must not be submitted; after
+Euler terminates, repackage only offsets 172--197.  Next fetch/audit v300c and
+retain every non-exact row as unresolved.  On a negative, stop expansion and
+independently replay and ledger-audit full provenance before one non-ambiguous
+database write.
 
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
 counterexample is admitted, and no negative zero-hole record remains pending:
