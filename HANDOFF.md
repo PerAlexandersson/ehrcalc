@@ -2,6 +2,48 @@
 
 ## Current KTT state — 2026-09-15 (active)
 
+The replacement Codex session is now the sole active KTT researcher and sole
+MariaDB writer; the quota-stopped predecessor must remain untouched.  The
+smallest verified negative is still d82 with two non-flag holes
+(`30e04421...` and `15e2c2bd...`).  No smaller negative and no negative
+zero-hole face has been found.  The current campaign obeys the strict parent
+gate: every shape/weight/flag compound mutation is one atomic direct child of
+one of the four ledger-verified d82/d83/d103 exact-negative parents; exact-
+positive children are terminal and are never mutated.  No MariaDB write has
+been attempted in this campaign.
+
+The structural campaign produced 13,188 direct candidate identities (21,744
+presentations), of which 2,909 are nonempty.  Exact deletion of zero-weight
+labels preserves nonemptiness and affine dimension and deduplicates these to
+1,106 proper fixed-content zero-hole fibers at dimensions 7--53, with no
+prior exact or validation-failed ledger hit.  Reports v289/v290/v291 in the
+mutation-search `runs/` directory have SHA-256
+`f03a265edc324b41b55cf04e85f368a9994b0a1b648c53d1dde210ca938ea369`,
+`e18509624b2c2db1e1b7ab5d9bb7cbb053814c4d3a4c412c07f1220bc9120036`,
+and `bb3a83036c5348dee680894b9038ea11897529a460d5d96cd4a1bb9005a564d3`.
+
+Exact reciprocity-based Ehrhart computations with independent checks at
+`L(d+1)` and `L(d+2)` have resolved 394 fibers, all positive: all 331 fibers
+in dimensions 7--16, the first 48 d17 fibers, and 15 d18 fibers.  The ten
+Abacus audit report hashes for d7--16, in execution order, are `516183f0...`,
+`74575228...`, `cbe5aaba...`, `f70e14d9...`, `a624cfcb...`, `2da06976...`,
+`3d99f059...`, `bb1df4e6...`, `83251871...`, and `e7303435...`.  Euler d17
+reports v296a/v296b have hashes `3242c128...`/`2942b857...`.  Euler d18
+report v298a has full SHA-256
+`7ed910504acafba36df60d4e13837fc859a8e5342c003a675c26b467fb37e754`:
+15 exact-positive cases and three preserved time-limited identities
+`d2b7e480...`, `0a5c4eaa...`, and `54022436...`; they remain unresolved.
+
+Abacus job `20260915T134850-6a6b687dfc16` is running 42 disjoint d17 fibers
+(offset 48) six-way.  Runner/binary hashes are `1416e238...`/`8b3dc655...`;
+manifest hashes are `13bc0d46...`, `e962951c...`, `9c21f912...`,
+`17a1b32f...`, `56e78caf...`, and `ec30e08e...`.  Do not resubmit it.  The
+remaining 31 d17 fibers (offset 90) are prepared but unsubmitted as v297b.
+Next fetch and audit v297a; if positive, submit v297b only after a fresh remote
+queue/bridge preflight.  On any negative, stop expansion and independently
+replay and ledger-audit the full original-parent identity before a single,
+non-ambiguous database write.
+
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
 counterexample is admitted, and no negative zero-hole record remains pending:
 both `07975fb3...` and `fb09eaa1...` are rejected interpolation false positives.
