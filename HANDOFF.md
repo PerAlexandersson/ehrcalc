@@ -23,8 +23,8 @@ mutation-search `runs/` directory have SHA-256
 and `bb3a83036c5348dee680894b9038ea11897529a460d5d96cd4a1bb9005a564d3`.
 
 Exact reciprocity-based Ehrhart computations with independent checks at
-`L(d+1)` and `L(d+2)` have resolved 554 fibers, all positive: all 331 fibers
-in dimensions 7--16, all 121 d17 fibers, all 18 d18 fibers, and 84/198 d19
+`L(d+1)` and `L(d+2)` have resolved 600 fibers, all positive: all 331 fibers
+in dimensions 7--16, all 121 d17 fibers, all 18 d18 fibers, and 130/198 d19
 fibers.  The d7--17 hashes remain recorded below.  The three v298a d18
 timeouts were all resolved exact-positive under the justified 12M-state
 validation cap; v301/v302 report SHA-256 values are `c95a2907...` and
@@ -32,14 +32,18 @@ validation cap; v301/v302 report SHA-256 values are `c95a2907...` and
 
 Abacus d19 jobs `20260915T141350-d324cdb773da` and
 `20260915T142045-600f0b5ffe59` each completed 42/42 exact-positive; report
-SHA-256 values are `f1181dc1...` and `02bdd837...`.  Current Abacus job
-`20260915T143205-53d54e894430` owns d19 offsets 84--125 with manifest hashes
+SHA-256 values are `f1181dc1...` and `02bdd837...`.  Abacus job
+`20260915T143205-53d54e894430` resolved offsets 84--125 exact-positive 42/42,
+report SHA-256 `e4f5dd0f...`, with manifest hashes
 `97ffe011...`, `a172e393...`, `0b1b18d2...`, `866a1008...`, `eef3af5f...`,
-and `1ddb940d...`; do not resubmit it.  Euler session `52629` owns disjoint
-offsets 168--171.  Offsets 126--167 are prepared but unsubmitted as v300d.
-The prepared v300e manifests overlap Euler and must not be submitted; after
-Euler terminates, repackage only offsets 172--197.  Next fetch/audit v300c and
-retain every non-exact row as unresolved.  On a negative, stop expansion and
+and `1ddb940d...`.  Euler offsets 168--171 completed exact-positive 4/4,
+report SHA-256 `f5544a3e...`.  Current Abacus job
+`20260915T144522-052859780bd3` owns offsets 126--167; manifest hashes are
+`3f529c31...`, `a1c01d57...`, `d8a1b6ce...`, `7fdb4948...`, `82107f18...`,
+and `12586431...`; do not resubmit it.  Remaining offsets 172--197 are
+prepared but unsubmitted as v300f.  The overlapping v300e manifests are
+obsolete evidence and must never be submitted.  Next fetch/audit v300d and
+retain every non-exact row.  On a negative, stop expansion and
 independently replay and ledger-audit full provenance before one non-ambiguous
 database write.
 
