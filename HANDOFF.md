@@ -23,8 +23,8 @@ mutation-search `runs/` directory have SHA-256
 and `bb3a83036c5348dee680894b9038ea11897529a460d5d96cd4a1bb9005a564d3`.
 
 Exact reciprocity-based Ehrhart computations with independent checks at
-`L(d+1)` and `L(d+2)` have resolved 435 fibers, all positive: all 331 fibers
-in dimensions 7--16, 89 d17 fibers, and 15 d18 fibers.  The ten
+`L(d+1)` and `L(d+2)` have resolved 467 fibers, all positive: all 331 fibers
+in dimensions 7--16, all 121 d17 fibers, and 15 d18 fibers.  The ten
 Abacus audit report hashes for d7--16, in execution order, are `516183f0...`,
 `74575228...`, `cbe5aaba...`, `f70e14d9...`, `a624cfcb...`, `2da06976...`,
 `3d99f059...`, `bb1df4e6...`, `83251871...`, and `e7303435...`.  Euler d17
@@ -43,11 +43,17 @@ empty/unpaused, Euler GPU idle, Laplace unreachable, zero ledger hits, three
 uniquely exact-negative parents, and zero overlap.  The final 31 d17 fibers
 were submitted once as disjoint Abacus job `20260915T140439-e98017891b9f`;
 manifest hashes are `e5a4ddf2...`, `e4309574...`, `5745c456...`,
-`725b5b0f...`, `676577f9...`, and `c506df39...`.  Do not resubmit it.  A
-disjoint low-priority Euler CPU job (local session `51915`) is running the one
-d17 and three d18 time-limited identities at 1800 seconds per subprocess;
-runner SHA-256 is `e1788767...`.  Next fetch/audit v297b and retain any timeout
-as unresolved.  On a negative, stop expansion and independently replay and
+`725b5b0f...`, `676577f9...`, and `c506df39...`.  It completed 31/31 exact-
+positive; report SHA-256 is
+`2a27c290b031276b8b876166bb10355dfc4d487aa1481da55c38b1f7fee8189c`
+and fetched-job SHA-256 is `362d765a...`.  Euler session `51915` separately
+resolved the former d17 timeout `a29f05f7...` exact-positive and continues on
+the three d18 timeouts; runner SHA-256 is `e1788767...`.  After a fresh clean
+ledger/parent/remote preflight, the first 42 d19 fibers were submitted once as
+Abacus job `20260915T141350-d324cdb773da`; manifest hashes are `9a2d363d...`,
+`db78be0d...`, `bdcf73d5...`, `b224dd38...`, `ead5519e...`, and
+`d5fff023...`.  Do not resubmit it.  Next fetch/audit v300a and retain all
+timeouts as unresolved.  On a negative, stop expansion and independently replay and
 ledger-audit full provenance before one non-ambiguous database write.
 
 Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
