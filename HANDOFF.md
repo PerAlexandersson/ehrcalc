@@ -6,6 +6,42 @@ Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
 counterexample is admitted, and no negative zero-hole record remains pending:
 both `07975fb3...` and `fb09eaa1...` are rejected interpolation false positives.
 
+The mutation parent gate is strict: every generated child must be a direct
+child of a uniquely MariaDB-verified exact-negative Ehrhart face, rechecked
+before enumeration and exact computation. Exact-positive cases are terminal
+deduplication evidence and must never become parents. A multi-change mutation
+is allowed only as one atomic child of the negative parent, never as a path
+through positive intermediates. `v263` remains valid exact evidence, but its
+older second flag layer included children of closure faces not known negative;
+do not use those rows as parents or repeat that workflow.
+
+The new direct-negative-parent batches contain no improved negative. Direct
+two-flag child `1b1c0be...` of the d103 one-hole negative is d97/one-hole,
+poset `b20b59ec...`, 1,478,768 DP states, and fully exact-positive. Evidence
+`../../projects/reduced-kogan-mutation-search/runs/cpu-v265-d103-double-flag-20260915.json`
+has SHA-256
+`22ad456b649d594a67e5f55934e6434807478bf7ebc27638505a454ace85cdb2`;
+MariaDB run `e201e05c5db7a9ae50b9f285c398230a7ed0a12e869fc53d0ccf08ccfbdee1d0`
+has postflight `1/1/0`, with no ambiguous write.
+
+Atomic replacement of one hole by two added free equalities produced 13 novel
+one-hole faces at d70,72,74,76,78,79,81; all full exact polynomials are
+positive. Structural/exact report SHA-256 values are
+`ecc9d67d25c135c9f659f9678d5523c203f2389f14ba39072080939222affd94` and
+`45732736c921d71b117d8bbd4963731458a40f3a301e8f1caaf7782164ce9da5`.
+MariaDB run `4f06e580ee8f3bc432cc9576f76c2bd3b23af0e3ea04ff841a1b838b324b2199`
+has postflight `13/13/0`. Replacing one hole by three added equalities produced
+25 further novel one-hole faces at d65,68,69,71,73--78,80, again all fully
+exact-positive. Structural/exact report SHA-256 values are
+`2fe852f2abec976e0baefb9c631a77c19c3d066dfde9c4d4fecc7eeaec5d5017` and
+`2a667693f8e9310538a0498d9165922a2a92571e12e122de983875c6dc8d2ee5`;
+MariaDB run `cd042f46b61616599eef5bdda596887161fa6ff6d5a9d0075a74ecb109a36307`
+has postflight `25/25/0`. Exact consistency checks covered coefficient signs
+and h*-binomial reconstruction at every integer from zero through the affine
+dimension. None of v265/v267/v269 may be mutated. Continue with atomic
+shape/weight/flag changes directly from the d82 two-hole or d103 one-hole
+negative faces only.
+
 The smallest verified individual-face negative is now correctly recorded at
 affine dimension 82, not 84. Existing all-ones hook candidate
 `30e04421e7adda3ff6376fdee8d7fa04e7beeb5fb7736ba56ae6fb1fc88ccdf7`
