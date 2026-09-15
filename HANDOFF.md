@@ -50,6 +50,21 @@ ready/idle. Next pursue nonlocal one-hole mutations from the two dimension-82
 negative faces or dimension-lowering mutations from the exact dimension-103
 one-hole frontier; do not repeat the exhausted adjacent-hook layer.
 
+The direct dimension-lowering hook transports from the minimal-equality
+dimension-103 one-hole negative `98f9bed8f9abaa401e569943d5894b7f14dd92544686f58f0c5c9d079a9350dd`
+are now exhausted. Eleven previously uncomputed one-hole quotient faces at
+dimensions d92:2, d93:2, d94:2, d96:2, and d98:3 all have full exact-positive
+polynomials. Each required only 685593--829840 DP states. Independent h* and
+coefficient checks passed. Evidence
+`../../projects/reduced-kogan-mutation-search/runs/cpu-v264-d103-onehole-shrinks-20260915.json`
+has SHA-256
+`57a87e8dcf402bf304575e9552f6c974641490aee0e1636348fcf85f89c764ee`.
+They were inserted once under MariaDB provenance run
+`9b48730abbec9f19360456ec5541ea187d6787dbdad8115637b4e258f6cbc16f`;
+postflight was exactly `11/11/0`. No ambiguous write occurred. Do not mutate
+these positive children further: next use only exact-negative parents for
+nonlocal mask/flag swaps or other dimension-lowering proposals.
+
 The latest exact transition computation closes dimension-43 candidate
 `9cae60245918802e685e7efb854d92e677c371526b8ddc3cda30a96eaaedfa53`
 as coefficient-positive. It has weight
