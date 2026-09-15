@@ -1,5 +1,69 @@
 # Ehrcalc Handoff
 
+## True zero-nonflag exact-sign checkpoint — 2026-09-15 19:25 UTC
+
+The current Codex worker is the sole active KTT researcher and sole MariaDB
+writer; the quota-stopped predecessor remains untouched.  No MariaDB write has
+been attempted.  Abacus, Laplace, and Euler were rechecked before submission:
+Abacus was enabled and idle on CPUs 0--5 with its 20 GiB cap, Laplace timed out
+over SSH, R211 remained unresolved/unavailable, and the Euler GPU bridge was
+ready and idle.  All generated reports, JSONL state, scripts, manifests, logs,
+and fetched receipts under the mutation-search `runs/` remain untracked
+evidence and must not be cleaned.
+
+Corrected structural enumeration v354 is the authoritative ordinary
+flagged-Kostka frontier.  Its report SHA-256 is
+`3f3ee8a849a24c7c0aaacc77b8c9aa8743a0a0d127a131d21d2d5d6fcce0c298`
+and script SHA-256 is
+`36326326e656b28b025124f4598820778a7e35e00c8b0148fb4042db53c9d457`.
+It contains 1,789 nonempty active-weight candidates in dimensions 16--91,
+each with zero forbidden masks and zero effective non-flag edges, each a
+single atomic shape-plus-flag child of one of the 63 ledger-exact-negative
+two-hole parents, with zero ledger hits.  V352 is rejected because its imported
+dimension derivation omitted the proposed flags.  V346 remains masked-face
+evidence only: after changing shape, its nonzero masks cannot in general be
+replaced by global upper/lower flags and it must not be claimed as a zero-hole
+proper-Kostka family.
+
+The staged Euler/Abacus sign scan has evaluated 116 distinct v354 identities:
+all d16 (16), d17 (20), d21 (6), d22 (8), d23 (13), d24 (10), d25 (21), d26
+(20), and d29 (2).  Complete exact reciprocity interpolations are positive for
+91: d16:16, d17:20, d21:6, d22:8, d23:13, d24:9, d25:12, d26:6, d29:1.
+There is no negative result.  The remaining 25 are clean time/state limits,
+not positive classifications and not mutation parents.  Euler report hashes
+are v355 `8d0e26feee3dcb889243c1f4f7c653652f402aa81558cede3965e3b812d9e10f`,
+v356 `5e41c2ee75b6b09b38a8ac2d19eb3562d8608798918074ef275d397129033895`,
+v357 `b7f7e57a701b031dde622ed606fdfac9f4e6dd7e4268c230ad5998bb582cd00d`,
+v358 `e1f6424fd208cede7cfe8711589bbc30f62519196dd1bb4f82372e7879d27c39`,
+v360 `f7f6ccd2e24a397bd6f431146e2a7f93cd54e79a8a1be7740e3ac7f5e2bb30ec`,
+v361 `8335005b6fbb2aa46bd25f7b9cdf36f72263709bea6533ee0eb05fb3ac0143a1`,
+and v362 `34e922049b63d6072aafeabe69917f3a2f5d153939e389dd9173a6223a4d54f8`.
+V355's one full out-of-sample check and v356's recovery showed that its fifteen
+300-second failures occurred after interpolation, during expensive `L(17)` or
+`L(18)` checks; exact-sign screening therefore now records the complete
+polynomial first and reserves independent replay/out-of-sample validation for
+an actual negative.
+
+Abacus job `20260915T190249-228ded8f9f35` completed and was fetched to
+`20260915T190249-228ded8f9f35-9g5u3dod`.  All six d16 controls matched; 12/21
+d25 cases were exact-positive and nine cleanly timed out.  Independent audit
+SHA-256 is
+`19dc096bd638721b9b58b77a6e25809ae951283779cc9c7ead20657e3db003b7`;
+runner/engine hashes are `5a145d8d48ceb27cdce3fd19b2f73d12dc38837fd633cd05a063d136483eeb0e`
+and `8b3dc655456a8e67c1e6cfebb6e6d395d79df94f977d9feef561234405d2a5bc`.
+Active Abacus job `20260915T192333-09c2ce1cf10d` exclusively owns those nine
+d25 timeouts plus the one d24 state/time-limited case under six 1,200-second
+lanes.  Its manifest hashes are `d623635a...`, `01e0e9dd...`, `77c578b7...`,
+`1776d8ab...`, `0d0717b5...`, and `19894afd...`; no active Euler case overlaps.
+
+Next state: audit/fetch v363 once terminal, run the untouched d27 frontier on
+Euler, and route only clean unresolved identities to a later disjoint Abacus
+batch.  If any exact interpolation is negative, stop expansion, independently
+replay it with out-of-sample and reciprocity checks, recheck its full identity,
+negative parent, ledger, and both queues, and only then make one unambiguous
+database write.  Exact-positive children are terminal and must never be
+mutated.
+
 ## Nearby-seed checkpoint — 2026-09-15 18:20 UTC (supersedes stale run state below)
 
 The current Codex worker remains the sole active KTT researcher and sole
