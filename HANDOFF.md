@@ -1,5 +1,38 @@
 # Ehrcalc Handoff
 
+## R211 d27 audit and continued Euler frontier — 2026-09-15 20:10 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer; the quota-stopped predecessor remains untouched, all `runs/`
+evidence remains untracked, and no database write has been attempted.  There
+are now **124 completed exact-positive** zero-mask/zero-nonflag ordinary
+flagged-Kostka candidates and no negative: the prior 111, twelve newly audited
+d27 cases, and one completed d32 case.  Every tested candidate is still a
+direct atomic child of a ledger-exact-negative parent; positive children are
+terminal and have not been mutated.
+
+R211 job `20260915T192820-0457ac1a808a` finished with exit zero and was fetched
+once to `20260915T192820-0457ac1a808a-gdtosq3n`.  Its 36 d27 identities gave
+12 exact-positive interpolations, 18 clean 300-second limits, and six clean
+4M-state limits (observed counts 4,051,670--5,230,841); all four controls
+matched.  The audit independently checked the source, submitted/fetched
+runner, engine, four manifest and four lane hashes, the R211 affinity and
+8/9-GiB resource envelope, candidate identity/provenance, exact h*-to-power
+reconstruction, and coefficient signs.  Audit SHA-256 is
+`a4d0c61fb838e1f6b56bfab710ed204d1af3a0632aaba545325799bd5ba461b3`;
+the full unresolved IDs and artifact hashes are in its untracked JSON report.
+
+R211 job `20260915T194158-d76fecbac978` is now running and exclusively owns all
+13 d30 cases.  Abacus job `20260915T195304-aa5c68d9191a` still exclusively
+owns the 14 d26 and two d31 retries.  Euler CPU v370 completed all 14 d32 cases
+with one exact-positive and thirteen clean time limits (report SHA-256
+`f05cb859e30565f164a24b35cc2352e6401052df678a339bd3fde9dd8f6a67ab`).
+Euler v371 still owns all 16 d33 cases on CPUs 0--1, while v374 now owns all 20
+d34 cases on CPUs 2--5; both use exact-sign runner SHA-256 `ad64c4e4...` and
+12M states / 300 seconds per case.  Laplace remains unreachable, and the Euler
+GPU bridge was ready and idle at the last pre-launch check.  Do not duplicate
+active identities or classify any time/state-limited case as positive.
+
 ## Expanded remote ownership checkpoint — 2026-09-15 19:55 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
