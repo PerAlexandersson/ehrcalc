@@ -75,6 +75,36 @@ No MariaDB write occurred. These are representatives rather than positivity
 proofs for all support placements; next cluster the dimension-45 supports by
 cheap exact signatures and fully interpolate distinct selected types.
 
+The follow-up exact signature sweep `v256` evaluated all 515 dimension-45
+supports at ordinary dilations 1--3 and relative-interior dilations 13--16.
+All 515 share one seven-value signature. This is strong evidence for a single
+effective polynomial type, but is not being used as a proof of positivity for
+all placements. Untracked report
+`../../projects/reduced-kogan-mutation-search/runs/cpu-v256-dim45-short-signatures-20260915.json`
+has SHA-256
+`d47a24eead15c512aa3a05de7bc6833bf77da86baf661dc557ab6267c3c59c6b`.
+
+Structural sweep `v257` exactly classified all `C(19,4)=3876` four-zero
+supports. Its affine-dimension histogram is d38:30, d42:30, d43:10, d46:60,
+d48:265, d49:325, d50:55, d52:1990, d53:1030, d54:81. Untracked report
+`../../projects/reduced-kogan-mutation-search/runs/structural-v257-four-zero-transition-20260915.json`
+has SHA-256
+`479197243669b51561e8144ee3eda0a54dbcde28ea81e1ffce33fcfa77701f89`.
+The first fresh, ledger- and queue-disjoint dimension-46 representative,
+`c6bf98d194b454f8065d9f7c56cf23bc14eca32e89dbe469e30b9060a3a302ba`,
+has weight `(0,0,0,5,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1)` and retains both
+non-flag edges. Exact CPU ordinary counts through dilation 18 and strict
+counts through dilation 28 give codegree 15 (`L^o(15)=2016`), h* degree 32,
+and a full rank-33 solve. Every supplied ordinary and reciprocity evaluation
+is reproduced and every power-basis coefficient is nonnegative. Evidence is
+`../../projects/reduced-kogan-mutation-search/runs/cpu-v258-c6bf98d1-dim46-exact-20260915.json`,
+SHA-256
+`6bfb8c88bdac9c5305cc5ff930347f4ca9a02abb814c8e5b22d154ff9cb73bca`.
+No MariaDB write occurred. The smallest verified target-class negative remains
+the dimension-84 two-hole seed. Next search nearby shapes at weight `1^19`,
+retaining exactly one non-flag hole while adding flag-absorbed equalities;
+fully interpolate every candidate before promoting it as a better seed.
+
 The exact Euler receipt arguments reconstruct the inherited candidate
 `83859a42b52cb43349caee3fce174f540a21509868c177149e630842bb2468b8`
 (`a=5`, `b=5`, mask `0x1`, weight `1^10`, equality count 1) and quotient-poset
