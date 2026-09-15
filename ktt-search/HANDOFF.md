@@ -54,6 +54,21 @@ No MariaDB write occurred and none is a better seed. The next state is to move
 upward from the exact-positive two-hole dimension-40 boundary and locate the
 lowest multi-zero weight contraction that retains a verified negative before
 attempting one-hole and zero-hole mutations again.
+
+The unique sampled dimension-42 two-hole contraction
+`63342bff603b1660cebf012e3104940906718ed009c8741fc516cca8cf106e33`
+has weight `(0,0,1,1,0,1,1,1,1,5,1,1,0,1,1,1,1,1,1)` and is also fully
+exact coefficient-positive. Its codegree is 14 and h* degree 29. Euler GPU
+receipts d1--d22 are clean, hash-validated, snapshot-pinned to `b73be81`, and
+use source `071aa415...`; d14 is the first nonzero value, 71064. GPU d23
+receipt `20260915T074043-a6fd57180d7b` is a terminal resource failure
+(176612860 transitions exceeded the authorized 150M cap), with cleanup
+confirmed; do not retry it unchanged. Exact CPU strict d23/d24 and ordinary
+d1--d18 completed the rank-30 h* system after ordinary d19/d20 bounded out at
+1800 s. All 43 supplied evaluations are reproduced. Consolidated untracked
+evidence is `runs/cpu-gpu-v249-63342bff-dim42-exact-20260915.json`, SHA-256
+`03e9ea1f23ddebdb0f4c72b26a659705a7c81c92fbaf06b265feb758c5dd3ff6`.
+No MariaDB write occurred. Continue at dimension 43 with two non-flag edges.
 The exact Euler receipt arguments reconstruct the inherited candidate
 `83859a42b52cb43349caee3fce174f540a21509868c177149e630842bb2468b8`
 (`a=5`, `b=5`, mask `0x1`, weight `1^10`, equality count 1) and quotient-poset
