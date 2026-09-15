@@ -56,6 +56,25 @@ SHA-256
 No MariaDB write occurred. Continue the tested two-edge transition above
 dimension 43.
 
+Structural sweep `v253` exactly classified all `C(19,5)=11628` five-zero
+supports of this two-edge face. It found 4070 dimension-44 and 515
+dimension-45 supports (maximum 45), alongside the already lower dimensions.
+The untracked manifest
+`../../projects/reduced-kogan-mutation-search/runs/structural-v253-five-zero-transition-20260915.json`
+has SHA-256
+`b3088fddf11d3a266acd7cba81dfe169ce4ddb38f5064ef11f32942a32f4c963`.
+Fresh ledger/queue-audited exact representatives at both new dimensions are
+coefficient-positive. Dimension-44 `f733592fe643f722...` has codegree 15,
+h* degree 30, and rank 31; evidence SHA-256
+`f8f5a059ddca0bdc7dba57e380f59c1f1e0e34b3ed9934f9045170b9c6db6604`.
+Dimension-45 `59ea1559389e0f7e...` has codegree 14 (`L^o(14)=1`), h* degree
+32, and rank 33; evidence SHA-256
+`534ff325936302d46e9a448856360e84958d45dd91b00b0308f0730249c2e970`.
+Both full polynomials reproduce every ordinary and reciprocity evaluation.
+No MariaDB write occurred. These are representatives rather than positivity
+proofs for all support placements; next cluster the dimension-45 supports by
+cheap exact signatures and fully interpolate distinct selected types.
+
 The exact Euler receipt arguments reconstruct the inherited candidate
 `83859a42b52cb43349caee3fce174f540a21509868c177149e630842bb2468b8`
 (`a=5`, `b=5`, mask `0x1`, weight `1^10`, equality count 1) and quotient-poset
