@@ -23,6 +23,39 @@ SHA-256
 The face was ledger- and queue-disjoint before computation; no MariaDB write
 occurred. Continue with a fresh audited dimension-43 transition face.
 
+Distinct dimension-43 payload
+`1826529f1be250d8a87d8f4af448d35dd90a56613e757a3d3dfc5b473db91c3e`
+with weight `(6,0,0,1,1,1,0,1,1,1,1,0,1,1,1,1,1,1,0)` is likewise
+exact-positive. Its preflight rechecked canonical identity, affine dimension,
+all candidate-key ledger tables, Abacus v199/v200 disjointness, unavailable
+Laplace, and idle Euler GPU state. Exact CPU ordinary counts through 17 plus
+strict counts through 26 give codegree 16, h* degree 28, and a full rank-29
+solve reproducing every reciprocity constraint. Its counts and polynomial
+coincide exactly with `9cae6024...`, although the derived-bound hashes differ;
+do not count it as a new polynomial type pending a formal equivalence check.
+Untracked evidence is
+`../../projects/reduced-kogan-mutation-search/runs/cpu-v251-1826529f-dim43-exact-20260915.json`,
+SHA-256
+`3333e34bc1828abd4d6c5f0b937256f03b030d0d5bb87bfb0c30e08729125b8e`.
+No MariaDB write occurred.
+
+Third audited dimension-43 payload
+`8456828e39e56c37fe2f133c5bbe2c396b0e6d4a11adb772f343d4bead6bb6c3`
+is a different exact polynomial type but is also coefficient-positive. Its
+weight is `(6,1,0,1,1,1,1,0,0,1,1,1,1,1,1,0,1,0,1)` and it retains the
+same two non-flag edges. Fresh ledger and Abacus/Laplace/Euler preflight was
+clean and disjoint. Exact ordinary samples through 17 and strict samples
+through 26 give codegree 16 (`L^o(16)=7938`), h* degree 28, full rank 29, and
+exact reproduction of all 44 positive- and negative-argument evaluations.
+Unlike `1826529f...`, its samples, h*, and polynomial differ from
+`9cae6024...`; all power-basis coefficients remain positive. Untracked
+evidence is
+`../../projects/reduced-kogan-mutation-search/runs/cpu-v252-8456828e-dim43-exact-20260915.json`,
+SHA-256
+`28a206051d771bc529ed79da9b7f177af4cbb5d42ba2764449dc37faf9d053b5`.
+No MariaDB write occurred. Continue the tested two-edge transition above
+dimension 43.
+
 The exact Euler receipt arguments reconstruct the inherited candidate
 `83859a42b52cb43349caee3fce174f540a21509868c177149e630842bb2468b8`
 (`a=5`, `b=5`, mask `0x1`, weight `1^10`, equality count 1) and quotient-poset
