@@ -1,5 +1,67 @@
 # Ehrcalc Handoff
 
+## Nearby-seed checkpoint — 2026-09-15 18:20 UTC (supersedes stale run state below)
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer; the quota-stopped predecessor remains untouched.  A fresh
+read-only ledger audit found 15,126 exact-negative presentations in dimensions
+82--97, deduplicating to **63 distinct negative quotient faces**, all with two
+non-flag holes.  Their dimension histogram is d82:2, d83:1, d84:5, d85:3,
+d86:5, d87:3, d88:4, d92:1, d93:11, d94:9, d95:6, d96:4, d97:9.  Thus the
+nearby quotient seed pool is broad; however, the other fixed-content tables
+contain zero exact-negative active-weight rows in d80--100.  The canonical
+all-one complement-reservoir presentations of the 63 quotient faces are
+weight-neutral and are not claimed as genuine proper-Kostka counterexamples.
+
+Three disjoint structural batches now explore active fixed content by one
+atomic direct shape mutation of those 63 exact-negative parents, always
+retaining the two holes.  V327 moved one--three reservoir cells and found 84
+novel nonempty d90--100 candidates (report SHA-256
+`2a58e0c36e7f746b691ee075c8136f57383e9edf68fcd23ea31af9de277a50f2`).
+V341 moved four--six cells and found 91 further d89--100 candidates (report
+SHA-256 `edf1294d5a92b3778ac22d302367f06caa091adeb29ef1fdc98c3be108f983ef`,
+script `2551a6fdc61b2251d7555a98b3c803871a40582cbbb3aa4ec2fce303c90c5083`).
+V343 moved seven--ten cells and found 71 further d92--100 candidates (report
+SHA-256 `af179944210a9f7a0ffbddc78ed13a2898b7afd6503f7c159b8428d4dc850508`,
+script `e939d8420e5bf083662892d1ce5538a98e35fc88182640ed50e6bb7a212a058b`).
+All 246 candidates are nonempty, mutually disjoint across these batches, have
+zero ledger hits, and are children of current ledger-exact-negative parents,
+not of provisional or positive cases.
+
+The unique new sub-d90 candidate is
+`8cbfe6df05bc98e27e197adf0de4595a92dab77bd48183905a1083da78852435`,
+dimension 89, shape `(6,6,1^8)/(1)`, weight `(1^19)`, holes
+`(4,6),(6,10)`, directly from negative d82 parent `15e2c2bd...`.
+Euler GPU wide-CRT receipts give strict counts exactly zero at dilations 1--17
+and `3318951323167119` at dilation 18, hence codegree 18 and h-star degree
+72.  Report SHA-256 is
+`cfa5450116a8456ed079dcaf502f94dc3fd85fad06982153ec9e01e31667e109`;
+runner SHA-256 is
+`197cd40238cf93b696f82751b3a417379874c970c62ad78f06f4ad52082a4887`.
+This is exact onset evidence only, not an Ehrhart-sign conclusion.
+
+The active d90 candidate `7f28471d...`, shape `(10,2,1^8)/(1)`, has exact
+ordinary counts through dilation 11 and exact strict counts through dilation
+23.  Abacus job `20260915T173947-734ac151c321` added strict d23 =
+`252728461258254268013823761776`; d24--28 each reached the clean 1200-second
+limit.  The fetched audit SHA-256 is
+`0493db02af3ce81fbf19e1c815873f87faab651a83b868e85c5ac3253c323852`,
+with manifest/runner/binary hashes `e61290fd...`/`9fd200cb...`/`77f24efd...`.
+Neither d89 nor d90 has enough samples for exact interpolation, so neither is
+yet a verified negative seed.
+
+The zero-hole v333 d25/d27/d29 batch ended with all nine cases time-limited and
+no sign classification; its independent partial-audit SHA-256 is
+`b2e77f27879b5bb21cefe52767ed987bfb229ebdede054e37275a2ffe690af5f`.
+The one-hole v340 d23 GPU screen ended with 24/24 clean transition limits and
+no exact sample; audit SHA-256 is
+`975e850bc43996f4708afd3edba7e6e339660dbb43d993ed2d1ad6f8851bbe48`.
+These are complexity evidence only.  No MariaDB write was attempted.  Next,
+prioritize full exact interpolation of tractable d80--100 active-weight
+children and enumerate atomic shape-plus-flag neighbors directly from the 63
+verified negative parents; never branch from these provisional children unless
+their complete Ehrhart polynomial is independently verified negative.
+
 ## Current KTT state — 2026-09-15 (active)
 
 The replacement Codex session is now the sole active KTT researcher and sole
