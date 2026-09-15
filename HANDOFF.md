@@ -1,5 +1,38 @@
 # Ehrcalc Handoff
 
+## Expanded remote ownership checkpoint — 2026-09-15 19:55 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer; the predecessor remains untouched and no database write has
+been attempted.  There are now **111 completed exact-positive** ordinary
+flagged-Kostka candidates with zero masks/non-flag edges and no negative:
+the 91 described below, plus 7/20 d28 (Euler v365 report SHA-256
+`aafebe8c7f3669e02598d8c97f0f0b6b38c55ff56a9c850e949701711f76dbe4`),
+6/8 d31 (Euler v369 `2697057593791691f162180f70ebc4c2f65e2959970399e4ed7028b8254864b8`),
+and seven additional d25 cases from the long Abacus replay.
+
+Abacus v363 job `20260915T192333-09c2ce1cf10d` completed and was fetched to
+`20260915T192333-09c2ce1cf10d-rwpug3jc`.  All six controls matched; seven
+cases were exact-positive, while d24 `29043a7a...` and d25 `08721c1f...` /
+`aecaf7af...` exceeded the 12M-state ceiling at 21,013,865 / 13,878,224 /
+19,270,264 states.  Independent audit SHA-256 is
+`456f42ab20a5d573b67692256f8b2cc2630c2e9a1ad158b2525d8a262c7da8f6`.
+Active Abacus job `20260915T195304-aa5c68d9191a` exclusively owns the 14
+clean Euler d26 timeouts and two clean d31 timeouts under six 1,200-second,
+12M-state lanes.  Manifest hashes are `defe09d2...`, `d8dba0a6...`,
+`2711d02e...`, `b3d3f0b7...`, `92ba2c96...`, and `8612963b...`.
+
+R211 job `20260915T192820-0457ac1a808a` remains active on all 36 d27 cases.
+Queued behind it, job `20260915T194158-d76fecbac978` exclusively owns all 13
+d30 cases; its four manifest hashes are `98c1e8d7...`, `3ae27bb2...`,
+`94740dd5...`, and `c67a908e...`.  Euler CPU v370/v371 exclusively own all
+14 d32 and all 16 d33 cases.  The Euler GPU d80 pilot `3ab626b9...` ended
+cleanly at 181,418,888 transitions versus its 150M cap; receipt
+`20260915T193148-be72a9041f65`, report SHA-256
+`bfefdf700450016f5f2c4bf9c59611518a5f7d810f38a52ba87a572c97d49baa`.
+It is complexity evidence only, with no exact count or sign.  These lanes are
+pairwise disjoint; do not duplicate any active/queued identity.
+
 ## Three-machine zero-nonflag checkpoint — 2026-09-15 19:30 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
