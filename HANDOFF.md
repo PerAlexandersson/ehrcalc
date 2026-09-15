@@ -6,6 +6,35 @@ Codex remains the sole KTT worker and sole local MariaDB writer. No KTT
 counterexample is admitted, and no negative zero-hole record remains pending:
 both `07975fb3...` and `fb09eaa1...` are rejected interpolation false positives.
 
+Active direct-negative-parent weight lane: structural sweep `v276` made the
+36 atomic transfers that set one bad-edge weight label to zero and a different
+label to two, directly from exact-negative d82 parent `15e2c2bd...`; report
+SHA-256 is `cca120d707c853c106e55ca4d1c7025bcbc824b8f74eddb969eb59c3e35bb737`,
+with no ledger hits. Selected child
+`c7b00f4a8d8da45fe3768257dc4a988f744c36b02dad1fda17657eeda2dae703`
+has weight `(1,1,1,1,1,0,1,1,1,2,1,1,1,1,1,1,1,1,1)`, dimension 74,
+and exactly one effective non-flag edge `(6,10)`. Exact Euler GPU reciprocity
+counts are zero at dilations 1--16, first nonzero `718536` at 17, and complete
+through 26; hence codegree 17 and h* degree 58. GPU evidence SHA-256 values are
+`4165ae97c239510a70d829909efa6b80fd2945c1c0287cd6309bcbc9b043fb09`
+and `fbdac73e4b937abf6837d36d5c61db8c2e2b6c82b3c0d8d2627be310c41d9075`.
+GPU d27 terminated unambiguously at its fixed 150M-transition ceiling; exact
+Euler CPU d27 is
+`27353545812016756113399872562550`, report SHA-256
+`a7836aa226162e90cdba75085214c21834dabec7e6040a9019bc27435e1455da`.
+Euler ordinary counts are exact through d15; reports for d2--7 and d8--19 have
+SHA-256 `51a3c4f363e70c83c3fb54171b49529fdcc155cb78d903b168b7161b646e7742`
+and `ef5ac3a39d7f0a699f960cad3fa837978c4b428a0b1bcd4e03bb06324cde367d`
+(the latter records terminal 1800-second d16--19 attempts). A changed serial
+two-hour Euler profile is active from d16. Abacus six-CPU job
+`20260915T113456-4fcaa1a67766` owns strict d28--58, with runner/manifest/binary
+SHA-256 `e88b7b0e...`/`5801559d...`/`77f24efd...`; d28 and d29 are already
+exact. Do not overlap those dilations. Stop the remote tail only after enough
+exact rows exist for an overdetermined rank-59 solve, then fetch, hash-check,
+validate interpolation and signs, and ingest only if the full polynomial is
+negative. No MariaDB write has occurred for v276. Abacus v200 finished
+successfully and was fetched; Laplace remains unreachable.
+
 The mutation parent gate is strict: every generated child must be a direct
 child of a uniquely MariaDB-verified exact-negative Ehrhart face, rechecked
 before enumeration and exact computation. Exact-positive cases are terminal
