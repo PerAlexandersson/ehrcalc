@@ -1,5 +1,24 @@
 # Ehrcalc Handoff
 
+## First indecomposable zero-edge class reserved — 2026-09-16 15:59 UTC
+
+V450 attempted the unique lowest-dimensional v434 class with neither a
+forced rectangle nor a saturated product split. It is a d57 compressed class
+covering 11 original weight-active zero-edge presentations and reached the
+900-second Euler limit without a polynomial. It remains unclassified; report
+SHA-256 is
+`39c1bb7600ae3f1f0604d997926c25f769cebda25a2a8c9fe699cfb918a8ca33`.
+
+After rechecking both live queues, the ledger, unreachable Laplace, and idle
+Euler GPU, this distinct class was queued behind Abacus v449 as v451 job
+`20260916T155904-93f16051ebff`, using the general engine SHA `8af3d3c0...`,
+runner SHA `5a145d8d...`, manifest SHA
+`f9f8c79b3d4f33d785947bf7e9cce0c21e81f4a6dc14c3f015ff51b6bcb66493`,
+24M states, and 1,800 seconds. Do not duplicate it while queued and do not
+infer a sign from either cutoff.
+
+
+
 ## General build active remotely; higher product frontier partial — 2026-09-16 15:42 UTC
 
 V446 evaluated all 11 v434 saturated-product classes above d47 on Euler with
