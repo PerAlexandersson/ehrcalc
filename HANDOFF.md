@@ -1,5 +1,29 @@
 # Ehrcalc Handoff
 
+## Future-feasibility pruning verified locally — 2026-09-16 16:32 UTC
+
+Commit `ad4f1dd` (pushed to `origin/main`) makes both weak flagged GT counting
+and masked weak/strict counting enforce the already-propagated per-level GT
+bounds while constructing the DP.  This discards partial chains that cannot
+reach the prescribed top partition; masked bounds include forbidden-row
+equalities.  The full workspace test suite passes (35 Ehrcalc, 120 foundations,
+62 Kostka-engine, 6 MCP, and 5 KTT-search tests including doc tests).  The
+release binary SHA-256 is
+`2860b331d8d69ab6be87ecdd176b17fbae880dd9e1097f3e3dad915dd6e21ce8`.
+
+On the v450 indecomposable d57 class, the old `8af3d3c0...` and new
+`2860b331...` builds returned identical exact Kostka values at dilations
+1--12.  At dilation 10 runtime fell from 16.65 s to 9.76 s; at dilation 11
+from 37.30 s to 21.41 s; at dilation 12 the old build exceeded 60 s while the
+new build finished in 44.98 s.  A full reciprocity interpolation still reached
+the 300-second local pilot limit, so no sign is inferred.  The new binary has
+not been submitted remotely: Abacus v451 and R211 v454 remain live with the
+disjoint `8af3d3c0...` payloads.  Fetch and audit those jobs first, then use the
+new build only for unresolved identities after a fresh ledger/queue preflight.
+No MariaDB write was made.
+
+
+
 ## Indecomposable d60 frontier active on R211 — 2026-09-16 16:17 UTC
 
 V452 attempted all four d60 and both d61 v434 classes without any saturated
