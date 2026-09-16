@@ -1,5 +1,28 @@
 # Ehrcalc Handoff
 
+## Dual orientation and recursive level bounds pushed — 2026-09-16 17:08 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer. Commits `47bed40` and `57fa91d` are pushed to `origin/main`.
+The first enforces propagated per-level bounds inside the recursive
+horizontal-strip generator; on the audited d57 dilation-12 case it reduced
+runtime from 44.85 s to 29.58 s with the same exact count. The second adds an
+automatic 180-degree rectangle-complement orientation for ordinary flagged
+weak and strict counting and chooses the lower estimated restriction score.
+The same d57 weak dilation-12 count takes 2.12 s in the chosen dual
+orientation. Masked faces retain the direct orientation because an audited
+d116 masked pilot showed no benefit, while still receiving the earlier bound
+pruning.
+
+The full workspace suite passes: 35 Ehrcalc, 120 foundations, 63 Kostka-engine,
+6 MCP, and 5 KTT-search tests including documentation tests. Current release
+binary SHA-256 is
+`609cc5ee308b6be4a6d20330a184f07977a16a96e201b59662131abdfe7c5d93`.
+This binary is now the exact-order payload in disjoint Abacus/R211 v460 jobs;
+see the mutation-search handoff for identities and manifests. No MariaDB write
+was made.
+
+
 ## Future-feasibility pruning verified locally — 2026-09-16 16:32 UTC
 
 Commit `ad4f1dd` (pushed to `origin/main`) makes both weak flagged GT counting
