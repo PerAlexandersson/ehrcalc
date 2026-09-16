@@ -1,5 +1,32 @@
 # Ehrcalc Handoff
 
+## Flag-chain boundary and completed v389 — 2026-09-16 07:58 UTC
+
+The focused second generation from the four audited v390 negatives had four
+novel absorbed-flag children, all exact in the fast regime.  One is negative:
+d92 `7dd69db24b9bb357aa1e4d3ce1249c3baf9c3939edcad4196321791b987c1967`,
+obtained by adding absorbed flag 37 to d94 negative `c7cab950...`; it retains
+holes `(4,7),(6,11)`, has 674,266 DP states, and is negative in degrees 1--3.
+The d81/d82 descendants of d83 `ba94339...` and the other d92 descendant are
+positive.  Source SHA-256 is `506e1bff...`; independent bit-for-bit replay
+audit SHA-256 is `c1cee9452fab6e4fa8ad1ce4ddaee58634b122d870d37a0af81fc7cbf173ff20`.
+One guarded ingestion recorded the four results under run
+`bbf43b3811a57d27c8373ba5de67c242aaed767300c0ac5dde13d06db766ea31`,
+postflight `4/4/1`.
+
+The surviving flag chain has a unique further novel child: d90
+`24dae89867ba569efbaf939789b37c451f6651826e0eefe9cfdd64745644dc59`,
+obtained by absorbed flag 29.  It is exact-positive with 669,076 DP states;
+there is no novel equality-removal neighbor.  Source SHA-256 is `f73b9981...`;
+guarded ingestion run `3c2dd49b528853bfcfaa904ed455e384630c19128a2ae8fc5303588a8a51d304`
+had postflight `1/1/0`.  Thus the observed chains are d84 negative -> d83
+negative -> d81/d82 positive, and d94 negative -> d92 negative -> d90
+positive.  Only verified negative nodes may seed any next expansion.
+
+Euler v389 also completed all 42 untouched v354 d36/d37 zero-edge cases:
+two exact-positive and forty clean 300-second limits, with no negative.  Report
+SHA-256 is `dd56e5cbe792a9bb50d27d91c70610cf72e8e7a8d64d3bcfe0a0356857462926`.
+
 ## Fast negative neighborhood succeeds — 2026-09-16 07:48 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
