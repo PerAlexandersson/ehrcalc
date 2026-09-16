@@ -24,10 +24,12 @@ untouched v379 d51/d52 zero-edge direct children.  Its four manifest hashes
 are `402c72f0...`, `e69ca6fb...`, `81e7805a...`, and `b03c7e65...`.  Queued
 behind it, v385 `20260916T071240-bf5271020d29` owns all 19 untouched d53/d54
 children; hashes are `81d68fc4...`, `60c8d602...`, `b0a456fe...`, and
-`057d6973...`.  Immediately before submission, both disjoint sets had zero
-ledger hits and every parent was rechecked as ledger-exact-negative.  Do not
-duplicate either set.  No MariaDB write is warranted unless a negative is
-independently replayed and audited.
+`057d6973...`.  Queued third, v386 `20260916T071436-156ce7208890` owns the
+seven untouched d55/d56 children; hashes are `0a1236be...`, `89266910...`,
+`4157d10a...`, and `99018a89...`.  Immediately before submission, all three
+disjoint sets had zero ledger hits and every parent was rechecked as
+ledger-exact-negative.  Do not duplicate any set.  No MariaDB write is
+warranted unless a negative is independently replayed and audited.
 
 ## Suspend-safe zero-edge checkpoint — 2026-09-15 21:02 UTC
 
