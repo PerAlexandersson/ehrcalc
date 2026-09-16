@@ -1,6 +1,6 @@
 # Ehrcalc Handoff
 
-## Weight-active zero-edge bridge reaches d19; low bands positive — 2026-09-16 13:15 UTC
+## Weight-active zero-edge bridge reaches d19; low bands positive — 2026-09-16 13:18 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
 MariaDB writer; the predecessor remains untouched, all generated `runs/`
@@ -42,8 +42,13 @@ Abacus v409 `20260916T102148-0baec6cb3f4b` ended with all four earlier
 d89--96 active cases time-limited at 7,000 seconds; audit SHA is `bc16f44c...`.
 R211 v387 `20260916T071616-d41688cb0ce3` has 14 unresolved d57--58 cases
 (ten 4M-state errors, four timeouts), audit SHA `ba40923d...`; v388
-`20260916T071619-a440888565de` is running.  Laplace remains unreachable and
-Euler GPU is idle.  The verified negative zero-nonflag goal remains open.
+`20260916T071619-a440888565de` likewise ended with 11 unresolved d59--62
+targets (five state-cap errors, six timeouts), audit SHA `a4904823...`.
+R211 is now running v432 job `20260916T131814-47a7ffb70a42` on the three
+compressed d32 weight-active move classes at 12M states / 1,800 seconds;
+lane hashes are `ead62883...`, `3b486ee5...`, and `f561375e...`.
+Laplace remains unreachable and Euler GPU is idle.  The verified negative
+zero-nonflag goal remains open.
 
 ## Zero-edge d51--56 remain unresolved under raised caps — 2026-09-16 11:39 UTC
 
