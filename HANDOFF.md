@@ -1,5 +1,44 @@
 # Ehrcalc Handoff
 
+## Fast outer ring yields 41 verified negatives — 2026-09-16 08:22 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer; the quota-stopped predecessor remains untouched and all
+generated `runs/` evidence remains untracked.  Euler v393 sampled 150 novel
+direct neighbors of the five independently replayed v390/v391 exact-negative
+two-hole parents: every one of the 30 shape-growth cases and 24 deterministic
+equality swaps per parent.  The source report
+`cpu-v393-outer-negative-ring-20260916.json` has SHA-256
+`bc65c3d509de93cca2943d163310871ceec0b3a981b50f128a8b291900db97de`;
+runner SHA-256 is `9a662df86a953f0bd8430be5a1cde31b1990c5c7bfdba3f02698f7dea593fbc8`.
+It produced 149 exact results and one clean 1.5M-state cutoff.
+
+All 40 negative exact results were independently reconstructed and replayed
+bit-for-bit.  Audit SHA-256 is
+`75b7ada1911e02a429c5f36c4a550b6b5929064b5c2e13ebbe894e035eed9718`;
+audit-script SHA-256 is `2b64826f...`.  A single guarded write ingested only
+the 149 exact rows under run
+`823da5c7df2becf01b1553cd8af5b2db22da597e1bf6f4cc592729e8c1f0a4e9`,
+with postflight `149/149/40`.  The excluded d104 growth case
+`7396ab60...` then completed in v394 at 1,586,801 states and 34.6 seconds and
+was negative.  Source SHA-256 is `cc6a0912...`; independent replay audit
+SHA-256 is `c4349e5a...`.  Its separate guarded ingestion run is
+`488efbb309556081a0e643b9b4b2fea570f9bfe4fd0095f645d7189dbe754462`,
+postflight `1/1/1`.  Thus the whole 150-case ring is now exact, with 41
+verified negatives in dimensions d92 (1), d94 (10), d99 (2), d102 (8), d104
+(17), and d105 (3).
+
+The structural signal is sharp: all 30/30 shape-growth neighbors are negative
+(`grow_a` 22/22, `grow_b` 8/8), while 11/120 equality swaps are negative.
+The successful swaps comprise one from the d92 parent and ten unique d94
+faces; none of the sampled d83 or d95 swaps is negative.  Some d94 negatives
+have two parent lineages, so lineage totals must not be mistaken for distinct
+faces.  The next fast lane should use only these audited negative nodes,
+prefer absorbed-flag descendants of d99--d105 growth cases that return toward
+d80--d100, and concentrate equality swaps around the successful d92/d94
+positions.  Do not mutate any of the 109 positive siblings.  The independent
+zero-edge R211 v384--v388 queue remains unchanged and must not be duplicated.
+
 ## Flag-chain boundary and completed v389 — 2026-09-16 07:58 UTC
 
 The focused second generation from the four audited v390 negatives had four
