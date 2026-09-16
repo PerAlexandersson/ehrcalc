@@ -1,6 +1,6 @@
 # Ehrcalc Handoff
 
-## Weight-active zero-edge bridge reaches d19; low bands positive — 2026-09-16 12:52 UTC
+## Weight-active zero-edge bridge reaches d19; low bands positive — 2026-09-16 13:15 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
 MariaDB writer; the predecessor remains untouched, all generated `runs/`
@@ -28,6 +28,15 @@ sizes one and ten).  Abacus job `20260916T125141-ec76954c501d` is running
 those two representatives at 24M states / 7,000 seconds; input/runner/engine
 hashes are `6fe5fe13...`, `5517a0ba...`, and `8b3dc655...`.  Fetch and
 independently audit it before any sign claim or write.
+
+V428 then tested direct two-cell and three-cell lower-row moves from the same
+negative v408 parents, never using a positive child as a parent.  It produced
+436 nonempty active candidates with no ledger/v422 overlap (SHA `05ce3fff...`).
+Their 120 d19 presentations collapse to 16 compressed classes; v429 computed
+all 16 exactly and all are nonnegative (SHA `cd20c2d7...`).  The 27 d32
+presentations collapse to three classes, one per move size; all three reached
+900 seconds in v430 and remain unclassified (SHA `9d4f4d33...`).  Thus the
+d19 positivity persists when one, two, or three reservoir cells are moved.
 
 Abacus v409 `20260916T102148-0baec6cb3f4b` ended with all four earlier
 d89--96 active cases time-limited at 7,000 seconds; audit SHA is `bc16f44c...`.
