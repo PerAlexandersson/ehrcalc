@@ -1,5 +1,25 @@
 # Ehrcalc Handoff
 
+## Indecomposable d60 frontier active on R211 — 2026-09-16 16:17 UTC
+
+V452 attempted all four d60 and both d61 v434 classes without any saturated
+decomposition. All six reached 900 seconds on Euler and remain unclassified;
+report SHA-256 is
+`d5d802110a42de959785de2a38e41defdf6a50c1628d16506cc1276ddddf0d95`.
+V453 independently audited the terminal general-engine v448/v449 jobs: all
+eight controls matched, but all three d48, two d56, and three d57 product
+targets reached 1,800 seconds. Audit SHA-256 is
+`ea3d008ee67bca3abc190ba10bac147947b710481ca866ed8ff9448b612782ac`.
+
+After a fresh disjointness/ledger/queue preflight, R211 v454 job
+`20260916T161644-f36b4e19685a` is confirmed running the four d60 classes at
+12M states / 1,800 seconds. Manifest hashes are `b3a72837...`, `49b58d7b...`,
+`5efbf83a...`, and `b4aff8dd...`; runner SHA is `6f81413c...` and engine SHA
+is `8af3d3c0...`. Abacus v451 remains independently active on the d57 class.
+No target has a sign classification and no MariaDB write was made.
+
+
+
 ## First indecomposable zero-edge class reserved — 2026-09-16 15:59 UTC
 
 V450 attempted the unique lowest-dimensional v434 class with neither a
