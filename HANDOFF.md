@@ -1,5 +1,32 @@
 # Ehrcalc Handoff
 
+## General build active remotely; higher product frontier partial — 2026-09-16 15:42 UTC
+
+V446 evaluated all 11 v434 saturated-product classes above d47 on Euler with
+the general build. Three d48 classes, representing 35 original zero-edge
+presentations, completed exact and nonnegative in 1.5--2.5 seconds. The other
+three d48, two d56, and three d57 classes reached 900 seconds and remain
+unclassified. Report SHA-256 is
+`03f5a2536ae68551973c9e983692fe8680478efc8c2d5d2cfc191e3f68995dc5`.
+
+The terminal older-build jobs were fetched and audited as v447. All nine
+controls matched, but every d43/d44/d45 target reached 1,800 seconds; none has
+a sign classification. Audit SHA-256 is
+`79a9a6f2529176bf96e44f1c9835b3027d072da7707248bfc074a7ff44a4d7f0`.
+
+After confirming Abacus and R211 idle, Laplace unreachable, Euler GPU idle,
+and all eight v446 identities absent from the ledger and every live queue, the
+general binary SHA `8af3d3c0...` was deployed in two disjoint jobs. R211 v448
+`20260916T154113-24296b1251a4` runs the three d48 timeouts at 12M states and
+1,800 seconds; manifest hashes are `85cf2f61...`, `ae187a9f...`, and
+`25dec6e1...`. Abacus v449 `20260916T154125-98b081900333` runs the two d56
+and three d57 timeouts at 24M states and 1,800 seconds; hashes are
+`c13c05ed...`, `4466bf7d...`, `071a8703...`, `dd185392...`, and
+`bd03b9cd...`. Both are confirmed running with the exact new binary. Fetch and
+audit terminal output before any sign claim or database write.
+
+
+
 ## Saturated product split resolves the remaining low bridge — 2026-09-16 15:42 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
