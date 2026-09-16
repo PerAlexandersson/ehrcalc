@@ -37,6 +37,17 @@ receipt IDs `20260916T094124-47824440ad31`,
 `20260916T094250-27258bb71d2c`.  These are complexity screens, not sign
 results.
 
+Applying the same paired construction directly to all 30 audited v408
+negatives gave 60 endpoint pairs and 106 distinct v410 candidates; 98 are
+empty.  Four additional matched pairs survive, with pure-flagged dimensions
+81,85,90,94 and active Kostka dimensions 93,94,99,106.  Structural report SHA
+is `86b31db3...`.  Their v411 GPU d23 screens are all transition-limited at
+227,388,955; 1,238,032,893; 365,702,141; and 246,151,483 transitions under
+receipts `20260916T103219-cab6fecea39e`,
+`20260916T103321-c63ac7d4aa44`, `20260916T103331-634a20bd75fc`, and
+`20260916T103340-c542b1aca584`.  None is easier than the active v404 quartet,
+so they were not duplicate-submitted to Abacus.
+
 Abacus job `20260916T102148-0baec6cb3f4b` is running the four active Kostka
 partners concurrently with 7,000 seconds per case.  Input/runner/engine hashes
 are `ec4b5c19...`, `493503cf...`, and `8b3dc655...`.  It replaces
