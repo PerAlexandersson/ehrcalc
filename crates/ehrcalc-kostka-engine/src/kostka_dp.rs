@@ -827,6 +827,78 @@ pub fn flagged_skew_kostka(
         .expect("flagged Kostka DP state limit exceeded")
 }
 
+struct DualFlaggedProblem {
+    lambda: Partition,
+    mu: Partition,
+    weight: Vec<u32>,
+    upper_flags: Vec<u32>,
+    lower_flags: Vec<u32>,
+}
+
+fn should_use_dual_flagged_orientation(
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    rows: usize,
+) -> bool {
+    if rows == 0 || rows >= u32::MAX as usize {
+        return false;
+    }
+    let mut forward_score = 0_u128;
+    let mut dual_score = 0_u128;
+    for (label, &multiplicity) in weight.iter().enumerate() {
+        let lower = lower_flags.map_or(1, |flags| flags[label]) as usize;
+        let upper = upper_flags.map_or(rows as u32, |flags| flags[label]) as usize;
+        if lower == 0 || lower > rows || upper == 0 || upper > rows || lower > upper {
+            return false;
+        }
+        forward_score = forward_score
+            .saturating_add(u128::from(multiplicity).saturating_mul((lower - 1) as u128));
+        dual_score = dual_score
+            .saturating_add(u128::from(multiplicity).saturating_mul((rows - upper) as u128));
+    }
+    dual_score > forward_score
+}
+
+fn dual_flagged_problem(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+) -> DualFlaggedProblem {
+    let rows = lambda.num_parts();
+    let width = lambda.part(0);
+    let rows_plus_one = u32::try_from(rows).expect("dual row count fits u32") + 1;
+    let dual_lambda = Partition::from_sorted(
+        (0..rows)
+            .map(|row| width - mu.part(rows - 1 - row))
+            .collect(),
+    );
+    let dual_mu = Partition::from_sorted(
+        (0..rows)
+            .map(|row| width - lambda.part(rows - 1 - row))
+            .collect(),
+    );
+    let mut dual_weight = weight.to_vec();
+    dual_weight.reverse();
+    let dual_upper_flags = (0..weight.len())
+        .rev()
+        .map(|label| rows_plus_one - lower_flags.map_or(1, |flags| flags[label]))
+        .collect();
+    let dual_lower_flags = (0..weight.len())
+        .rev()
+        .map(|label| rows_plus_one - upper_flags.map_or(rows as u32, |flags| flags[label]))
+        .collect();
+    DualFlaggedProblem {
+        lambda: dual_lambda,
+        mu: dual_mu,
+        weight: dual_weight,
+        upper_flags: dual_upper_flags,
+        lower_flags: dual_lower_flags,
+    }
+}
+
 /// Fallible variant of [`flagged_skew_kostka`] that reports a state-limit breach.
 pub fn try_flagged_skew_kostka(
     lambda: &Partition,
@@ -849,6 +921,28 @@ pub fn try_flagged_skew_kostka(
         return Err("flag lengths must match the weight length".to_string());
     }
 
+    if should_use_dual_flagged_orientation(w, upper_flags, lower_flags, lambda.num_parts()) {
+        let dual = dual_flagged_problem(lambda, mu, w, upper_flags, lower_flags);
+        return try_flagged_skew_kostka_oriented(
+            &dual.lambda,
+            &dual.mu,
+            &dual.weight,
+            Some(&dual.upper_flags),
+            Some(&dual.lower_flags),
+            max_states,
+        );
+    }
+    try_flagged_skew_kostka_oriented(lambda, mu, w, upper_flags, lower_flags, max_states)
+}
+
+fn try_flagged_skew_kostka_oriented(
+    lambda: &Partition,
+    mu: &Partition,
+    w: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    max_states: Option<usize>,
+) -> Result<BigUint, String> {
     // Propagated GT bounds contain information from both boundaries, all
     // remaining labels, and all row flags.  Enforcing them at every level
     // avoids retaining partial chains that can never reach `lambda`.
@@ -1731,6 +1825,28 @@ pub fn try_strict_flagged_skew_kostka(
     lower_flags: Option<&[u32]>,
     max_states: Option<usize>,
 ) -> Result<BigUint, String> {
+    if upper_flags.is_some_and(|flags| flags.len() != w.len())
+        || lower_flags.is_some_and(|flags| flags.len() != w.len())
+    {
+        return Err("flag lengths must match the weight length".to_string());
+    }
+    if !mu.partition_less_equal(lambda)
+        || partition_size_u64(lambda) - partition_size_u64(mu) != weight_size_u64(w)
+    {
+        return Ok(BigUint::zero());
+    }
+    if should_use_dual_flagged_orientation(w, upper_flags, lower_flags, lambda.num_parts()) {
+        let dual = dual_flagged_problem(lambda, mu, w, upper_flags, lower_flags);
+        return try_strict_masked_flagged_skew_kostka(
+            &dual.lambda,
+            &dual.mu,
+            &dual.weight,
+            Some(&dual.upper_flags),
+            Some(&dual.lower_flags),
+            None,
+            max_states,
+        );
+    }
     try_strict_masked_flagged_skew_kostka(lambda, mu, w, upper_flags, lower_flags, None, max_states)
 }
 
@@ -2271,6 +2387,70 @@ mod tests {
             flagged_skew_kostka(&lambda, &mu, &w, Some(&upper), Some(&lower), None),
             flagged_skew_kostka_legacy(&lambda, &mu, &w, Some(&upper), Some(&lower), None)
         );
+    }
+
+    #[test]
+    fn dual_flagged_orientation_matches_frontier_fixture() {
+        let lambda = p(&[4, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]);
+        let mu = p(&[1]);
+        let weight = vec![1; 22];
+        let upper = [vec![6; 12], vec![14; 10]].concat();
+        let lower = [vec![1; 10], vec![4; 12]].concat();
+        assert!(should_use_dual_flagged_orientation(
+            &weight,
+            Some(&upper),
+            Some(&lower),
+            lambda.num_parts(),
+        ));
+
+        let dual = dual_flagged_problem(&lambda, &mu, &weight, Some(&upper), Some(&lower));
+        let forward = try_flagged_skew_kostka_oriented(
+            &lambda,
+            &mu,
+            &weight,
+            Some(&upper),
+            Some(&lower),
+            None,
+        )
+        .unwrap();
+        let reversed = try_flagged_skew_kostka_oriented(
+            &dual.lambda,
+            &dual.mu,
+            &dual.weight,
+            Some(&dual.upper_flags),
+            Some(&dual.lower_flags),
+            None,
+        )
+        .unwrap();
+        assert_eq!(forward, biguint(78_408));
+        assert_eq!(reversed, forward);
+        assert_eq!(
+            try_flagged_skew_kostka(&lambda, &mu, &weight, Some(&upper), Some(&lower), None,)
+                .unwrap(),
+            forward,
+        );
+
+        let forward_strict = try_strict_masked_flagged_skew_kostka(
+            &lambda,
+            &mu,
+            &weight,
+            Some(&upper),
+            Some(&lower),
+            None,
+            None,
+        )
+        .unwrap();
+        let reversed_strict = try_strict_masked_flagged_skew_kostka(
+            &dual.lambda,
+            &dual.mu,
+            &dual.weight,
+            Some(&dual.upper_flags),
+            Some(&dual.lower_flags),
+            None,
+            None,
+        )
+        .unwrap();
+        assert_eq!(reversed_strict, forward_strict);
     }
 
     #[test]
