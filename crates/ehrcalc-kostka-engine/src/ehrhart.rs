@@ -28,6 +28,126 @@ pub struct EhrhartPoly {
     pub degree: usize,
 }
 
+#[derive(Debug, PartialEq, Eq)]
+struct FrozenRectangleReduction {
+    lambda: Partition,
+    mu: Partition,
+    weight: Vec<u32>,
+    upper_flags: Option<Vec<u32>>,
+    lower_flags: Option<Vec<u32>>,
+    cut_row: usize,
+    cut_label: usize,
+}
+
+/// Delete a forced unit-width rectangular suffix from a flagged tableau.
+///
+/// If labels after `cut_label` are barred from the first `cut_row` rows and
+/// the preceding labels have total weight equal to the top skew area, the
+/// tableau splits at that row/label cut at every dilation.  When the remaining
+/// rows all have length one, the remaining labels all have weight one, and
+/// label `cut_label + j` is allowed in row `cut_row + j`, the bottom block is
+/// the unique constant-row rectangle.  Removing it is therefore a
+/// dilation-compatible lattice bijection and preserves the Ehrhart polynomial.
+fn frozen_unit_rectangle_reduction(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+) -> Option<FrozenRectangleReduction> {
+    let rows = lambda.num_parts();
+    if rows < 2 || weight.is_empty() || weight.contains(&0) {
+        return None;
+    }
+
+    // Prefer the earliest valid cut, which removes the largest forced suffix.
+    for cut_row in 1..rows {
+        if (cut_row..rows).any(|row| lambda.part(row) != 1 || mu.part(row) != 0) {
+            continue;
+        }
+        let top_area = (0..cut_row)
+            .map(|row| lambda.part(row).saturating_sub(mu.part(row)))
+            .sum::<u32>();
+        let mut prefix_weight = 0u32;
+        let Some(cut_label) = weight
+            .iter()
+            .position(|entry| {
+                prefix_weight = prefix_weight.saturating_add(*entry);
+                prefix_weight == top_area
+            })
+            .map(|index| index + 1)
+        else {
+            continue;
+        };
+        if weight[..cut_label].iter().sum::<u32>() != top_area {
+            continue;
+        }
+
+        let tail_rows = rows - cut_row;
+        if weight.len() - cut_label != tail_rows
+            || weight[cut_label..].iter().any(|entry| *entry != 1)
+        {
+            continue;
+        }
+
+        let upper = |label: usize| {
+            upper_flags
+                .and_then(|flags| flags.get(label))
+                .copied()
+                .unwrap_or(rows as u32)
+                .min(rows as u32)
+        };
+        let lower = |label: usize| {
+            lower_flags
+                .and_then(|flags| flags.get(label))
+                .copied()
+                .unwrap_or(1)
+                .max(1)
+        };
+
+        let mut suffix_is_forced = true;
+        for offset in 0..tail_rows {
+            let label = cut_label + offset;
+            let assigned_row = (cut_row + offset + 1) as u32;
+            if lower(label) <= cut_row as u32
+                || lower(label) > assigned_row
+                || upper(label) < assigned_row
+            {
+                suffix_is_forced = false;
+                break;
+            }
+        }
+        if !suffix_is_forced {
+            continue;
+        }
+
+        let reduced_upper: Vec<u32> = (0..cut_label)
+            .map(|label| upper(label).min(cut_row as u32))
+            .collect();
+        let reduced_lower: Vec<u32> = (0..cut_label).map(lower).collect();
+        if reduced_lower
+            .iter()
+            .zip(&reduced_upper)
+            .any(|(lo, hi)| lo > hi)
+        {
+            continue;
+        }
+        let flags_are_trivial = reduced_lower.iter().all(|flag| *flag == 1)
+            && reduced_upper.iter().all(|flag| *flag == cut_row as u32);
+
+        return Some(FrozenRectangleReduction {
+            lambda: Partition::new(lambda.parts()[..cut_row].to_vec()),
+            mu: Partition::new((0..cut_row).map(|row| mu.part(row)).collect::<Vec<_>>()),
+            weight: weight[..cut_label].to_vec(),
+            upper_flags: (!flags_are_trivial).then_some(reduced_upper),
+            lower_flags: (!flags_are_trivial).then_some(reduced_lower),
+            cut_row,
+            cut_label,
+        });
+    }
+    None
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum EhrhartInterpolation {
     AdaptiveReciprocity,
@@ -389,6 +509,46 @@ fn compute_ehrhart_impl(
         }
         Some(d) => d,
     };
+
+    // The legacy path intentionally retains the unreduced presentation so it
+    // remains an independent comparison implementation for regression tests.
+    if !use_legacy_dp {
+        if let Some(reduced) =
+            frozen_unit_rectangle_reduction(lambda, mu, w, upper_flags, lower_flags)
+        {
+            let reduced_dimension = gt_polytope_dim_full(
+                reduced.lambda.parts(),
+                reduced.mu.parts(),
+                &reduced.weight,
+                reduced.upper_flags.as_deref(),
+                reduced.lower_flags.as_deref(),
+            );
+            if reduced_dimension == Some(d) {
+                if verbose {
+                    eprintln!(
+                        "deleted forced rectangular suffix after row {} and label {}",
+                        reduced.cut_row, reduced.cut_label
+                    );
+                }
+                return compute_ehrhart_impl(
+                    &reduced.lambda,
+                    &reduced.mu,
+                    &reduced.weight,
+                    reduced.upper_flags.as_deref(),
+                    reduced.lower_flags.as_deref(),
+                    verbose,
+                    max_states,
+                    mode,
+                    false,
+                );
+            } else if verbose {
+                eprintln!(
+                    "warning: skipped forced rectangular suffix reduction because dimensions differ: original {}, reduced {:?}",
+                    d, reduced_dimension
+                );
+            }
+        }
+    }
 
     let eval_positive = |t: u64| -> Result<BigUint, String> {
         let tl = scale_partition(lambda, t);
@@ -900,6 +1060,96 @@ mod tests {
         assert_eq!(reciprocal.degree, positive.degree);
         assert_eq!(reciprocal.coeffs, positive.coeffs);
         assert_ne!(positive.coeffs, unflagged.coeffs);
+    }
+
+    #[test]
+    fn detects_forced_unit_rectangle_suffix() {
+        let lambda = p(&[3, 1, 1]);
+        let mu = p(&[1]);
+        let weight = [1, 1, 1, 1];
+        let upper = [3, 3, 3, 3];
+        let lower = [1, 1, 1, 3];
+
+        let reduced =
+            frozen_unit_rectangle_reduction(&lambda, &mu, &weight, Some(&upper), Some(&lower))
+                .expect("forced suffix");
+        assert_eq!(reduced.lambda, p(&[3, 1]));
+        assert_eq!(reduced.mu, p(&[1]));
+        assert_eq!(reduced.weight, [1, 1, 1]);
+        assert_eq!(reduced.upper_flags, None);
+        assert_eq!(reduced.lower_flags, None);
+        assert_eq!((reduced.cut_row, reduced.cut_label), (2, 3));
+    }
+
+    #[test]
+    fn forced_rectangle_reduction_matches_unreduced_legacy_polynomial() {
+        let lambda = p(&[3, 1, 1]);
+        let mu = p(&[1]);
+        let weight = [1, 1, 1, 1];
+        let upper = [3, 3, 3, 3];
+        let lower = [1, 1, 1, 3];
+
+        let reduced = try_compute_ehrhart(
+            &lambda,
+            &mu,
+            &weight,
+            Some(&upper),
+            Some(&lower),
+            false,
+            None,
+            true,
+        )
+        .expect("reduced interpolation");
+        let unreduced = compute_ehrhart_legacy(
+            &lambda,
+            &mu,
+            &weight,
+            Some(&upper),
+            Some(&lower),
+            false,
+            None,
+            true,
+        );
+        assert_eq!(reduced.degree, unreduced.degree);
+        assert_eq!(reduced.coeffs, unreduced.coeffs);
+    }
+
+    #[test]
+    fn forced_rectangle_reduction_rejects_near_misses() {
+        let lambda = p(&[3, 1, 1]);
+        let mu = p(&[1]);
+        let weight = [1, 1, 1, 1];
+        let upper = [3, 3, 3, 3];
+
+        // The suffix label is still allowed in the top block.
+        assert!(frozen_unit_rectangle_reduction(
+            &lambda,
+            &mu,
+            &weight,
+            Some(&upper),
+            Some(&[1, 1, 1, 2]),
+        )
+        .is_none());
+
+        // The suffix label is barred from its uniquely assigned row.
+        assert!(frozen_unit_rectangle_reduction(
+            &lambda,
+            &mu,
+            &weight,
+            Some(&[3, 3, 3, 2]),
+            Some(&[1, 1, 1, 3]),
+        )
+        .is_none());
+
+        // The suffix multiplicity does not match a unit-width tail row.
+        assert!(frozen_unit_rectangle_reduction(
+            &p(&[4, 1, 1]),
+            &mu,
+            &[1, 1, 1, 2],
+            Some(&upper),
+            Some(&[1, 1, 1, 3]),
+        )
+        .is_none());
     }
 
     #[test]

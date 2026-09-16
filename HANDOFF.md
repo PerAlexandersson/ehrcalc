@@ -1,5 +1,56 @@
 # Ehrcalc Handoff
 
+## Forced-rectangle preprocessing eliminates KTT timeout blowup — 2026-09-16 14:11 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer. The predecessor remains untouched, generated `runs/`
+evidence remains untracked, and no MariaDB write was made.
+
+An Astra read-only audit identified a dilation-compatible lattice reduction
+missed by the flagged Kostka DP. If a row/label cut separates the content,
+later labels are barred from the top rows, and the lower shape is a unit-width
+rectangle whose suffix labels have unit weights and permit their uniquely
+assigned rows, the lower tableau is forced at every dilation. Deleting it
+preserves the exact Ehrhart polynomial and affine dimension while retaining
+the nontrivial fixed-content slice. This is a product/bijection reduction, not
+a face sum.
+
+The authoritative research audit is v439, SHA-256
+`eadc98222795a2eb62ba8087ec344e54f5b2148a23de4364ed5c24456e2a4ecb`.
+It reduced 61 compressed classes / 458 labeled presentations to 11 exact
+problems (d16:1, d18:3, d19:3, d29:1, d32:3); every one is exact
+Ehrhart-nonnegative. Fifty-three prior full calculations agree bit-for-bit in
+both power coefficients and h*. This classifies the three v436 d19 timeouts,
+the two v426 d29 classes covering 11 presentations, and the three v432 d32
+classes covering 27 presentations as exact nonnegative. R211's independent
+v432 run itself had three matched controls and three 1,800-second target
+timeouts; v437 audit SHA is
+`15a8e4b952b33346341f51d2267c950be5f4cdff61c59f17c5e781a281f18b6e`.
+
+`ehrcalc-kostka-engine::ehrhart` now detects the narrow proved forced unit
+rectangle before interpolation, verifies that the reduced affine dimension
+matches, clips any retained flags, and recursively computes the reduced
+problem. The legacy path deliberately stays unreduced as an independent
+comparison. Near-miss and legacy-polynomial regression tests were added.
+Verification passed: all 58 engine tests, all 35 `ehrcalc` tests, and a
+release build. V440 then ran the five original v426/v432 timeout inputs using
+the optimized release binary (SHA `dc53ec1a...`); all completed in
+0.39--1.28 seconds and matched v439 exactly. V440 report SHA is
+`153f44d331306cb5983d106f8f9ad6144febac8d6fd7f3574efcef7fe432b78f`.
+The old Abacus v426 job `20260916T125141-ec76954c501d` remains live under the
+old engine SHA `8b3dc655...`; fetch and audit it when terminal, but do not
+raise its cap or duplicate it.
+
+Next optimization priorities from the audit are resumable per-dilation sample
+checkpoints, preparing affine masks once, enforcing future tight bounds during
+DP enumeration, then packed exact state keys. First exploit the present
+canonical reduction on unresolved candidate families: through d47 it applies
+to 174 of 303 compressed bridge classes, representing 1,304 of 2,951 labeled
+presentations and collapsing them to 75 shapes. No negative zero-edge case has
+yet been verified.
+
+
+
 ## Weight-active zero-edge bridge reaches d19; low bands positive — 2026-09-16 13:18 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
