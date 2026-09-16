@@ -1,5 +1,31 @@
 # Ehrcalc Handoff
 
+## Optimized engine deployed in new remote jobs — 2026-09-16 15:05 UTC
+
+The forced-rectangle implementation is pushed in commit `7417a91`. Its
+optimized release binary SHA is
+`dc53ec1a14799e02036050e6f6ae4ef8868dae5772872da90cd7c1dd1bf3d968`
+and is now packaged in active jobs on both R211 and Abacus.
+
+V441 applied the reduction to all v434 classes through d47. It collapsed 1,304
+labeled presentations / 174 compressed classes to 75 canonical polytopes.
+Euler completed 55 exactly, all nonnegative; 20 genuine reduced problems
+remain time-limited in dimensions 43--47. Report SHA is
+`246da3e6f686287423000451980e94c4998de890399f6dc5011c648a09c808e7`.
+The old binary independently completed both v426 d29 classes after about
+6,600 seconds each; they match the optimized 0.39-second reduction exactly.
+V442 audit SHA is
+`04282ebe393276a0745cda66567bde73eb9b55a26190a459d8b0602dbdbfc0e6`.
+
+R211 v443 `20260916T150333-a70cb9eaaeb7` is running three canonical d43
+timeouts at 12M states / 1,800 seconds. Abacus v444
+`20260916T150436-e9ba1cb8baaf` is running five d44 timeouts and one d45
+timeout in six lanes at 24M states / 1,800 seconds. Both use the optimized
+binary SHA above. Fetch and audit terminal outputs; cutoffs do not classify
+signs. No MariaDB write was made, and no negative zero-edge case is verified.
+
+
+
 ## Forced-rectangle preprocessing eliminates KTT timeout blowup — 2026-09-16 14:11 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
