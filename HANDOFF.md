@@ -1,5 +1,34 @@
 # Ehrcalc Handoff
 
+## Zero-edge d51--56 remain unresolved under raised caps — 2026-09-16 11:39 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  R211 jobs v384--v386 were fetched and audited exactly against
+their manifests, source identities, controls, flags, and negative-parent
+provenance.  V384 (`20260916T071114-242e1c60d30f`) has 26 d51--52 zero-edge
+targets: zero exact, 16 timeouts, ten four-million-state cutoffs; audit SHA is
+`4e591eab...`.  V385 (`20260916T071240-bf5271020d29`) has 19 d53--54 targets:
+zero exact, 11 timeouts, eight state cutoffs; audit SHA is `9e687597...`.
+V386 (`20260916T071436-156ce7208890`) has seven d55--56 targets: zero exact,
+five timeouts, two state cutoffs; audit SHA is `6da6aa6b...`.  None has a
+completed target polynomial, so none has a sign classification.
+
+Euler v413 raised the ten v384 state-cap cases to eight million states; all ten
+again stopped cleanly at observed counts 8,047,628--10,953,067 (report SHA
+`f0435fbb...`).  V415 took only the two lowest overflows to 12 million; they
+stopped at 12,442,996 and 13,638,478 states (report SHA `e392db6b...`).  Their
+v416 GPU d23 screens were transition-limited at 561,188,854 and 309,510,460
+under receipts `20260916T113743-165c5c1ebe41` and
+`20260916T113754-ea4fe886e8be`; report SHA is `9534f080...`.  Do not escalate
+these two blindly.
+
+R211 v387 `20260916T071616-d41688cb0ce3` is running with v388
+`20260916T071619-a440888565de` queued.  Abacus job
+`20260916T102148-0baec6cb3f4b` remains live on the four active Kostka partners.
+Fetch and independently audit each terminal job; do not duplicate identities
+or infer signs from cutoffs.  No MariaDB write was made in this tranche.  The
+negative zero-edge goal remains open.
+
 ## Robust one-hole growth family; paired Kostka bridge running — 2026-09-16 10:29 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
