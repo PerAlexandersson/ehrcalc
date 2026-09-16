@@ -638,6 +638,8 @@ fn for_each_horizontal_strip_extension_restricted<F>(
     strip_size: u32,
     row_lo: usize,
     row_hi: usize,
+    level_lower: &[u32],
+    level_upper: &[u32],
     mut visit: F,
 ) where
     F: FnMut(Partition),
@@ -652,34 +654,60 @@ fn for_each_horizontal_strip_extension_restricted<F>(
         return;
     }
 
+    let mut row_minimum = vec![0_u32; n_rows];
+    let mut row_maximum = vec![0_u32; n_rows];
+    for row in 0..n_rows {
+        let base = alpha.part(row);
+        if base > level_upper[row] {
+            return;
+        }
+        row_minimum[row] = level_lower[row].saturating_sub(base);
+        row_maximum[row] =
+            horizontal_strip_row_capacity(alpha, lambda, strip_size, row, row_lo, row_hi)
+                .min(level_upper[row] - base);
+        if row_minimum[row] > row_maximum[row] {
+            return;
+        }
+    }
+
+    let mut min_needed_suffix = vec![0_u32; n_rows + 1];
+    let mut max_possible_suffix = vec![0_u32; n_rows + 1];
+    for row in (0..n_rows).rev() {
+        min_needed_suffix[row] = min_needed_suffix[row + 1].saturating_add(row_minimum[row]);
+        max_possible_suffix[row] = max_possible_suffix[row + 1]
+            .saturating_add(row_maximum[row])
+            .min(strip_size);
+    }
+    if strip_size < min_needed_suffix[0] || strip_size > max_possible_suffix[0] {
+        return;
+    }
+
     let mut parts = alpha.parts().to_vec();
     parts.resize(n_rows, 0);
-    let suffix_capacity =
-        horizontal_strip_suffix_capacities(alpha, lambda, strip_size, n_rows, row_lo, row_hi);
-    enumerate_strips_restricted_streaming(
+    enumerate_bounded_strips_streaming(
         alpha,
-        lambda,
         strip_size,
         0,
         n_rows,
-        row_lo,
-        row_hi,
-        &suffix_capacity,
+        &row_minimum,
+        &row_maximum,
+        &min_needed_suffix,
+        &max_possible_suffix,
         &mut parts,
         &mut visit,
     );
 }
 
 #[allow(clippy::too_many_arguments)]
-fn enumerate_strips_restricted_streaming<F>(
+fn enumerate_bounded_strips_streaming<F>(
     alpha: &Partition,
-    lambda: &Partition,
     remaining: u32,
     row: usize,
     n_rows: usize,
-    row_lo: usize,
-    row_hi: usize,
-    suffix_capacity: &[u32],
+    row_minimum: &[u32],
+    row_maximum: &[u32],
+    min_needed_suffix: &[u32],
+    max_possible_suffix: &[u32],
     parts: &mut Vec<u32>,
     visit: &mut F,
 ) where
@@ -692,27 +720,27 @@ fn enumerate_strips_restricted_streaming<F>(
         return;
     }
 
-    if remaining > suffix_capacity[row] {
+    if remaining < min_needed_suffix[row] || remaining > max_possible_suffix[row] {
         return;
     }
 
+    let min_c = row_minimum[row].max(remaining.saturating_sub(max_possible_suffix[row + 1]));
     let base = alpha.part(row);
-    let max_c = remaining.min(horizontal_strip_row_capacity(
-        alpha, lambda, remaining, row, row_lo, row_hi,
-    ));
-    let min_c = remaining.saturating_sub(suffix_capacity[row + 1]);
+    let max_c = remaining
+        .min(row_maximum[row])
+        .min(remaining.saturating_sub(min_needed_suffix[row + 1]));
 
     for c in min_c..=max_c {
         parts[row] = base + c;
-        enumerate_strips_restricted_streaming(
+        enumerate_bounded_strips_streaming(
             alpha,
-            lambda,
             remaining - c,
             row + 1,
             n_rows,
-            row_lo,
-            row_hi,
-            suffix_capacity,
+            row_minimum,
+            row_maximum,
+            min_needed_suffix,
+            max_possible_suffix,
             parts,
             visit,
         );
@@ -854,18 +882,22 @@ pub fn try_flagged_skew_kostka(
 
         let mut new_dp = partition_count_map();
         for (alpha, count) in &dp {
+            let (level_lower, level_upper) = if i + 1 == w.len() {
+                (lambda.parts(), lambda.parts())
+            } else {
+                (lower_bounds[i].as_slice(), upper_bounds[i].as_slice())
+            };
             for_each_horizontal_strip_extension_restricted(
                 alpha,
                 lambda,
                 strip_size,
                 row_lo,
                 row_hi,
+                level_lower,
+                level_upper,
                 |beta| {
-                    let feasible = i + 1 == w.len()
-                        || partition_within_bounds(&beta, &lower_bounds[i], &upper_bounds[i]);
-                    if feasible {
-                        *new_dp.entry(beta).or_insert_with(BigUint::zero) += count;
-                    }
+                    debug_assert!(partition_within_bounds(&beta, level_lower, level_upper));
+                    *new_dp.entry(beta).or_insert_with(BigUint::zero) += count;
                 },
             );
         }
@@ -1084,6 +1116,8 @@ fn for_each_strict_horizontal_strip_extension_restricted<F>(
     row_lo: usize,
     row_hi: usize,
     forbidden_mask: u32,
+    level_lower: &[u32],
+    level_upper: &[u32],
     mut visit: F,
 ) where
     F: FnMut(Partition),
@@ -1108,8 +1142,15 @@ fn for_each_strict_horizontal_strip_extension_restricted<F>(
         ) else {
             return;
         };
-        row_minimum[row] = minimum;
-        row_maximum[row] = maximum;
+        let base = alpha.part(row);
+        if base > level_upper[row] {
+            return;
+        }
+        row_minimum[row] = minimum.max(level_lower[row].saturating_sub(base));
+        row_maximum[row] = maximum.min(level_upper[row] - base);
+        if row_minimum[row] > row_maximum[row] {
+            return;
+        }
     }
 
     let mut min_needed_suffix = vec![0_u32; n_rows + 1];
@@ -1352,6 +1393,14 @@ pub fn try_masked_flagged_skew_kostka(
 
         let mut next = partition_count_map();
         for (alpha, count) in &states {
+            let (level_lower, level_upper) = if label + 1 == weight.len() {
+                (lambda.parts(), lambda.parts())
+            } else {
+                (
+                    lower_bounds[label].as_slice(),
+                    upper_bounds[label].as_slice(),
+                )
+            };
             for_each_strict_horizontal_strip_extension_restricted(
                 alpha,
                 lambda,
@@ -1361,16 +1410,11 @@ pub fn try_masked_flagged_skew_kostka(
                 row_lo,
                 row_hi,
                 forbidden_mask,
+                level_lower,
+                level_upper,
                 |beta| {
-                    let feasible = label + 1 == weight.len()
-                        || partition_within_bounds(
-                            &beta,
-                            &lower_bounds[label],
-                            &upper_bounds[label],
-                        );
-                    if feasible {
-                        *next.entry(beta).or_insert_with(BigUint::zero) += count;
-                    }
+                    debug_assert!(partition_within_bounds(&beta, level_lower, level_upper));
+                    *next.entry(beta).or_insert_with(BigUint::zero) += count;
                 },
             );
         }
