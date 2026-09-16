@@ -128,6 +128,14 @@ fn weight_size_u64(weight: &[u32]) -> u64 {
     weight.iter().map(|&part| u64::from(part)).sum()
 }
 
+fn partition_within_bounds(partition: &Partition, lower: &[u32], upper: &[u32]) -> bool {
+    lower
+        .iter()
+        .zip(upper)
+        .enumerate()
+        .all(|(row, (&lo, &hi))| lo <= partition.part(row) && partition.part(row) <= hi)
+}
+
 fn horizontal_strip_row_capacity(
     alpha: &Partition,
     lambda: &Partition,
@@ -807,6 +815,24 @@ pub fn try_flagged_skew_kostka(
     if skew_size != weight_size_u64(w) {
         return Ok(BigUint::zero());
     }
+    if upper_flags.is_some_and(|flags| flags.len() != w.len())
+        || lower_flags.is_some_and(|flags| flags.len() != w.len())
+    {
+        return Err("flag lengths must match the weight length".to_string());
+    }
+
+    // Propagated GT bounds contain information from both boundaries, all
+    // remaining labels, and all row flags.  Enforcing them at every level
+    // avoids retaining partial chains that can never reach `lambda`.
+    let Some((_, lower_bounds, upper_bounds)) = crate::gt_dim::gt_polytope_bounds_full(
+        lambda.parts(),
+        mu.parts(),
+        w,
+        upper_flags,
+        lower_flags,
+    ) else {
+        return Ok(BigUint::zero());
+    };
 
     let n = lambda.num_parts();
     let mut dp = partition_count_map();
@@ -835,7 +861,11 @@ pub fn try_flagged_skew_kostka(
                 row_lo,
                 row_hi,
                 |beta| {
-                    *new_dp.entry(beta).or_insert_with(BigUint::zero) += count;
+                    let feasible = i + 1 == w.len()
+                        || partition_within_bounds(&beta, &lower_bounds[i], &upper_bounds[i]);
+                    if feasible {
+                        *new_dp.entry(beta).or_insert_with(BigUint::zero) += count;
+                    }
                 },
             );
         }
@@ -1278,6 +1308,20 @@ pub fn try_masked_flagged_skew_kostka(
         return Err("strict-diagonal masks cannot contain the first-row bit".to_string());
     }
 
+    // Include forbidden-row equalities in the same future-feasibility
+    // filter.  Strict masks only remove chains, so the weak affine bounds
+    // remain necessary for both weak and relative-interior counting.
+    let Some((_, lower_bounds, upper_bounds)) = crate::gt_dim::gt_polytope_bounds_masked(
+        lambda.parts(),
+        mu.parts(),
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+    ) else {
+        return Ok(BigUint::zero());
+    };
+
     let mut states = partition_count_map();
     states.insert(mu.clone(), BigUint::one());
     for (label, &strip_size) in weight.iter().enumerate() {
@@ -1318,7 +1362,15 @@ pub fn try_masked_flagged_skew_kostka(
                 row_hi,
                 forbidden_mask,
                 |beta| {
-                    *next.entry(beta).or_insert_with(BigUint::zero) += count;
+                    let feasible = label + 1 == weight.len()
+                        || partition_within_bounds(
+                            &beta,
+                            &lower_bounds[label],
+                            &upper_bounds[label],
+                        );
+                    if feasible {
+                        *next.entry(beta).or_insert_with(BigUint::zero) += count;
+                    }
                 },
             );
         }
