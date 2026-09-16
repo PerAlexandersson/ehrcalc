@@ -1,5 +1,40 @@
 # Ehrcalc Handoff
 
+## Absorbed flags lower the fast negative family to d88 — 2026-09-16 08:33 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer; the predecessor remains untouched and all `runs/` evidence
+remains untracked.  Starting only from the 41 independently replayed v393/v394
+negatives, Euler v395 exhausted the 19 novel absorbed-flag children in
+dimensions 80--100.  All 19 were exact in 12.0--33.5 seconds and 11 are
+negative: d90 (1), d92 (4), d96 (1), d99 (1), and d100 (4).  Source SHA-256
+is `936fe2bcdacd10442a993e7278644743c19a56564b7762a893995a83801ec92e`;
+independent replay audit SHA-256 is
+`221ca683c0138b2dae4de451941cb46c6bbc746c03954c098db29183c155cde7`.
+One guarded ingestion recorded `19/19/11` under run
+`f6ab699de2a8fba7c17b01016a6210fff5e366e742f13da80ee818c48958c9c0`.
+
+V396 then exhausted the 11 novel absorbed-flag children of those 11 verified
+negative parents.  All 11 were exact in 11.7--32.6 seconds and seven are
+negative: d88 (1), d90 (3), d93 (1), d96 (1), and d98 (1).  Source SHA-256
+is `ed18de812218ff57fb3c3709d651d82396c454003e591a90b6c7e7bcf67f1ef1`;
+independent replay audit SHA-256 is
+`82283253df544b011cbd96313b222bf37db727a7f395213372c057f8ecb59cc5`.
+Guarded ingestion run
+`df36164505ed76fc2f8bec62ac2d7ecf25eb66d0275b0a26588303881b65a7c2`
+has postflight `11/11/7`.  The new smallest member is d88
+`6b9a15b199ae4058b32b45881ae3e4f0b8f578ff1c8ba21e51bac8f44c8de196`,
+still with exactly two nonflag holes and 616,690 DP states.
+
+The negative absorbed-flag chain has one next novel child at d86,
+`61f330dfcbe7...`, obtained from d88 by `add_flag_absorbed:16`; it is not yet
+sign-classified and must not be called negative until exact computation and
+independent replay.  The other six verified v396 negatives have six additional
+novel children at d88 (3), d90, d93, and d96.  Continue only from these seven
+verified-negative parents; never mutate the twelve exact-positive v395/v396
+siblings.  The independent zero-edge R211 v384--v388 ownership remains
+unchanged.
+
 ## Fast outer ring yields 41 verified negatives — 2026-09-16 08:22 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
