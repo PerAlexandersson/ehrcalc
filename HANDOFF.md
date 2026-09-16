@@ -1,5 +1,34 @@
 # Ehrcalc Handoff
 
+## R211 resumed zero-edge frontier — 2026-09-16 07:13 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer; the predecessor remains untouched and all `runs/` artifacts
+remain untracked evidence.  R211 v378 and v383 both completed with exit zero
+and were fetched exactly once.  A combined independent audit verified job,
+result, runner, engine, manifest and lane hashes, four controls per job,
+resource confinement, candidate identities/provenance, and exact h*-to-power
+reconstruction.  V378's 13 d30 retries remain unresolved (nine 4M-state and
+four 1,200-second limits).  V383's 19 d41--50 cases yielded one exact-positive
+and 18 unresolved (six state and twelve time limits).  Neither job found a
+negative.  Audit SHA-256 is
+`24057d65d8158161461745d22b2e691e67d0cdc231306492b294a5a8ad868107`.
+
+The resumed Euler-local runs also terminated cleanly with no negative.  V375
+d35 produced 6 exact-positive / 20 time-limited (report `8ae3e70f...`), v381
+d27--33 produced 6 / 13 (`bd7f5f10...`), and v382 d34--39 produced 1 / 11
+(`38b9ef16...`).  Positive children are terminal and have not been mutated.
+
+R211 now runs disjoint v384 job `20260916T071114-242e1c60d30f` on all 26
+untouched v379 d51/d52 zero-edge direct children.  Its four manifest hashes
+are `402c72f0...`, `e69ca6fb...`, `81e7805a...`, and `b03c7e65...`.  Queued
+behind it, v385 `20260916T071240-bf5271020d29` owns all 19 untouched d53/d54
+children; hashes are `81d68fc4...`, `60c8d602...`, `b0a456fe...`, and
+`057d6973...`.  Immediately before submission, both disjoint sets had zero
+ledger hits and every parent was rechecked as ledger-exact-negative.  Do not
+duplicate either set.  No MariaDB write is warranted unless a negative is
+independently replayed and audited.
+
 ## Suspend-safe zero-edge checkpoint — 2026-09-15 21:02 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
