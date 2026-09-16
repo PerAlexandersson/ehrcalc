@@ -1,5 +1,41 @@
 # Ehrcalc Handoff
 
+## Weight-active zero-edge bridge reaches d19; low bands positive — 2026-09-16 12:52 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer; the predecessor remains untouched, all generated `runs/`
+evidence remains untracked, and no MariaDB write was made in this tranche.
+Only independently replayed exact-negative one-hole parents were mutated.
+
+V418 paired a neutral pure-flagged control with a genuinely weight-active
+zero-edge closure for every zeroed content label of the 15 v403 negatives.
+It found 131 nonempty active cases, including d19:11, d32:9, d35:16, d43:7;
+structural SHA is `5b835539...`.  Positive-only interpolation was prohibitively
+slow, but exact reciprocity completed all d19 and d32 cases.  All 20 are
+Ehrhart-nonnegative and terminal.  V420/v421 report hashes are `63173a1a...`
+and `1d136b8a...`; seven d35 timeouts leave d35/d43 unclassified.
+
+Repeating the construction after the second verified-negative growth layer,
+V422 used all 30 audited v408 negatives and produced 218 nonempty active
+zero-edge candidates, all novel relative to nonempty v418.  Active dimensions
+are d19:60, d29:11, d32:9, d38:24, d43:8, d47:14, d80:10, d84:9, d87:13,
+d89:24, d93:10, d94:13, d99:13; structural SHA is `629e5e8f...`.  V423
+completed all 60 d19 polynomials exactly and all are nonnegative (SHA
+`e70f1fa7...`).  Eight d29 cases timed out at 900 seconds in v424 (SHA
+`91246f76...`), so none has a sign classification.  Zero-label compression
+shows that the 11 d29 presentations form only two distinct polytopes (class
+sizes one and ten).  Abacus job `20260916T125141-ec76954c501d` is running
+those two representatives at 24M states / 7,000 seconds; input/runner/engine
+hashes are `6fe5fe13...`, `5517a0ba...`, and `8b3dc655...`.  Fetch and
+independently audit it before any sign claim or write.
+
+Abacus v409 `20260916T102148-0baec6cb3f4b` ended with all four earlier
+d89--96 active cases time-limited at 7,000 seconds; audit SHA is `bc16f44c...`.
+R211 v387 `20260916T071616-d41688cb0ce3` has 14 unresolved d57--58 cases
+(ten 4M-state errors, four timeouts), audit SHA `ba40923d...`; v388
+`20260916T071619-a440888565de` is running.  Laplace remains unreachable and
+Euler GPU is idle.  The verified negative zero-nonflag goal remains open.
+
 ## Zero-edge d51--56 remain unresolved under raised caps — 2026-09-16 11:39 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
