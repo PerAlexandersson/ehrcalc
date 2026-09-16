@@ -26,7 +26,13 @@ behind it, v385 `20260916T071240-bf5271020d29` owns all 19 untouched d53/d54
 children; hashes are `81d68fc4...`, `60c8d602...`, `b0a456fe...`, and
 `057d6973...`.  Queued third, v386 `20260916T071436-156ce7208890` owns the
 seven untouched d55/d56 children; hashes are `0a1236be...`, `89266910...`,
-`4157d10a...`, and `99018a89...`.  Immediately before submission, all three
+`4157d10a...`, and `99018a89...`.  Queued next, v387
+`20260916T071616-d41688cb0ce3` owns 14 d57/d58 cases (manifest hashes
+`3c1b5704...`, `ab386e46...`, `bfd95d2b...`, `b861a5a2...`) and v388
+`20260916T071619-a440888565de` owns the final 11 d59--62 cases (`6f292282...`,
+`27702636...`, `44983220...`, `06120774...`).  Thus all 149 v379 candidates
+are accounted for: 72 have terminal v380--v383 outcomes and the remaining 77
+are assigned exactly once to v384--v388.  Immediately before submission, all
 disjoint sets had zero ledger hits and every parent was rechecked as
 ledger-exact-negative.  Do not duplicate any set.  No MariaDB write is
 warranted unless a negative is independently replayed and audited.
