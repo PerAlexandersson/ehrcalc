@@ -1,5 +1,17 @@
 # Ehrcalc Handoff
 
+## Parallel untouched v354 lane — 2026-09-16 07:20 UTC
+
+R211 v384 remains authoritatively running with v385--v388 queued and no
+identity overlap.  Euler CPU v389 now exclusively owns all 42 untouched v354
+d36/d37 zero-edge cases in session `27751`, pinned to CPUs 10--15 with six
+workers, 300 seconds and 12M states per case.  A read-only preflight found
+zero overlap with every prior report and queued manifest; the runner then
+rechecked zero ledger hits and every direct parent's exact-negative ledger
+row before starting.  Its report will be
+`cpu-v389-d36-d37-true-zero-hole-exact-sign-20260915.json`.  Do not duplicate
+these identities, and do not mutate any exact-positive output.
+
 ## R211 resumed zero-edge frontier — 2026-09-16 07:13 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
