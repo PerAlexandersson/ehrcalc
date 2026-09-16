@@ -1,5 +1,48 @@
 # Ehrcalc Handoff
 
+## Four verified one-hole negatives; zero closures positive — 2026-09-16 09:01 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer; the predecessor remains untouched and all generated `runs/`
+evidence remains untracked.  The absorbed-flag descent from the d88 family
+ended cleanly: v397 resolved seven children with one independently replayed
+d88 negative `b8f024ba...` and six positives; source/audit SHA-256 values are
+`9ece3395...` and `1480a7e4...`, and guarded ingestion run `d98233a4...` had
+postflight `7/7/1`.  Its sole novel d86 child in v398 was exact-positive and
+was ingested under run `cfe2f92a...`, postflight `1/1/0`.  Thus two distinct
+d86 flag descendants are positive, and the verified flag chain bottoms out at
+d88.
+
+Direct edge reduction from the two d88 negatives produced eight one-hole
+faces and one shared zero-hole d90 face in v399; all nine were exact-positive
+and ingestion run `936a6034...` had postflight `9/9/0`.  Extending the same
+atomic two-equality zero-hole test across all 60 audited fast negatives gave
+nine further d95--d106 zero-hole faces in v400, again all exact-positive;
+source SHA-256 is `0ab0cf3a...` and ingestion run `2d7e2fc6...` had postflight
+`9/9/0`.
+
+The complementary v401 one-hole batch completed all 89 cases exactly and
+found four negatives.  Source SHA-256 is
+`687bcf89a757558ad64c594841d4c61bf67b208f184355f328181f224bd5ea0e`;
+all four were independently replayed under audit SHA-256
+`4ee86789f07d7672095f5092b04d7458fff9df07f93aae22cb53a9482f86ba4d`.
+Guarded ingestion run
+`25e87cbcc66f92b6949a1234c362340ea5797c0b33d90890015669a58534af73`
+has postflight `89/89/4`.  The verified one-hole seeds are d103
+`b70fd214...` with hole `(7,11)`, d105 `6f110a38...` with `(7,11)`, d106
+`ea2379bd...` with `(7,12)`, and d109 `20956942...` with `(7,12)`; their DP
+sizes are 1,480,432--1,512,988 states.  The only novel direct zero-hole child
+of these four, d108 `dad35dff...`, was exact-positive in v402 (source SHA-256
+`3b697281...`) and was ingested under run `00fa2540...`, postflight `1/1/0`.
+
+Per the user's current direction, next spread around these four audited
+one-hole negatives while retaining exactly one hole and the fast regime;
+prioritize shape growth, absorbed flags, and local equality swaps.  Mutate no
+positive case.  Only after establishing the one-hole neighborhood should
+another zero-hole closure wave be attempted.  The goal remains a verified
+negative zero-hole face and is not achieved.  R211 v384 remained running with
+v385--v388 queued at the 09:01 UTC check; do not duplicate those identities.
+
 ## Absorbed flags lower the fast negative family to d88 — 2026-09-16 08:33 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
