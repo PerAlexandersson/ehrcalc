@@ -1,5 +1,44 @@
 # Ehrcalc Handoff
 
+## Saturated product split resolves the remaining low bridge — 2026-09-16 15:42 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer. The predecessor remains untouched, all generated `runs/`
+evidence remains untracked, and no MariaDB write was made.
+
+The engine now recognizes the general form of the earlier forced-rectangle
+reduction. At a row/label cut, if later labels are barred from the top rows and
+the earlier content exactly saturates the top skew area, the tableau polytope
+is the Cartesian product of the top and bottom flagged tableau polytopes at
+every dilation. Ehrhart polynomials are therefore computed independently and
+multiplied exactly. The implementation checks affine-dimension additivity
+before using the split and retains the unreduced legacy path for comparison.
+Tests cover rejection of a near miss, equality with the legacy polynomial,
+and a product with two positive-dimensional factors. All 62 engine tests and
+all 35 CLI/library tests pass; the release binary SHA-256 is
+`8af3d3c0c89d20842e17ab58adb41864e4a47e410ce2de54280c16ea583930fb`.
+
+V445 applied this build to all 129 v434 compressed classes through d47 which
+did not satisfy the narrow rectangle rule. They represent 1,647 original
+zero-edge, weight-active presentations and all admit the certified saturated
+split. All 129 completed exact reciprocity interpolation in 350 seconds total
+(individual times 0.07--299 seconds), and every Ehrhart polynomial is
+nonnegative. The dimension counts are d26:24, d27:16, d33:4, d34:11, d35:8,
+d36:8, d38:6, d39:4, d41:12, d42:17, d43:8, d45:8, d46:3. Report SHA-256 is
+`1117d863a91fc58061d9fe3a6719d312e78809e98382505614b7635eeee7ac86`.
+Together with v441, this evaluates all 303 compressed v434 classes through
+d47 modulo the 20 narrow-reduction timeouts already reserved remotely.
+
+The new `8af3...` binary has not replaced any live payload. R211 v443
+`20260916T150333-a70cb9eaaeb7` and Abacus v444
+`20260916T150436-e9ba1cb8baaf` remain live with the earlier `dc53ec1a...`
+rectangle-only build and own their disjoint d43/d44--45 cases. Fetch and audit
+them when terminal; do not infer signs from cutoffs. Next apply the new split
+to higher-dimensional v434 classes derived directly from the verified-negative
+v408 parents, without mutating any positive child.
+
+
+
 ## Optimized engine deployed in new remote jobs — 2026-09-16 15:05 UTC
 
 The forced-rectangle implementation is pushed in commit `7417a91`. Its

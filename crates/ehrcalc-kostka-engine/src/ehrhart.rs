@@ -39,6 +39,154 @@ struct FrozenRectangleReduction {
     cut_label: usize,
 }
 
+#[derive(Debug, PartialEq, Eq)]
+struct SaturatedSplitFactor {
+    lambda: Partition,
+    mu: Partition,
+    weight: Vec<u32>,
+    upper_flags: Option<Vec<u32>>,
+    lower_flags: Option<Vec<u32>>,
+}
+
+#[derive(Debug, PartialEq, Eq)]
+struct SaturatedRowLabelSplit {
+    top: SaturatedSplitFactor,
+    bottom: SaturatedSplitFactor,
+    cut_row: usize,
+    cut_label: usize,
+}
+
+fn optional_flags(
+    upper: Vec<u32>,
+    lower: Vec<u32>,
+    rows: usize,
+) -> Option<(Option<Vec<u32>>, Option<Vec<u32>>)> {
+    if lower.iter().zip(&upper).any(|(lo, hi)| lo > hi) {
+        return None;
+    }
+    let trivial =
+        lower.iter().all(|flag| *flag == 1) && upper.iter().all(|flag| *flag == rows as u32);
+    Some(((!trivial).then_some(upper), (!trivial).then_some(lower)))
+}
+
+/// Split a flagged tableau at a saturated row/label cut.
+///
+/// Later labels are barred from the top rows and the earlier labels have total
+/// weight exactly equal to the top skew area.  Hence the earlier labels fill
+/// the top block and the later labels fill the bottom block at every dilation.
+/// Since every top label precedes every bottom label, all column inequalities
+/// crossing the cut are automatic.  The lattice points therefore form the
+/// Cartesian product of the two returned flagged tableau polytopes.
+fn saturated_row_label_split(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+) -> Option<SaturatedRowLabelSplit> {
+    let rows = lambda.num_parts();
+    if rows < 2 || weight.len() < 2 || weight.contains(&0) {
+        return None;
+    }
+    let upper = |label: usize| {
+        upper_flags
+            .and_then(|flags| flags.get(label))
+            .copied()
+            .unwrap_or(rows as u32)
+            .min(rows as u32)
+    };
+    let lower = |label: usize| {
+        lower_flags
+            .and_then(|flags| flags.get(label))
+            .copied()
+            .unwrap_or(1)
+            .max(1)
+    };
+
+    for cut_row in 1..rows {
+        let top_area = (0..cut_row)
+            .map(|row| lambda.part(row).saturating_sub(mu.part(row)))
+            .sum::<u32>();
+        let mut prefix_weight = 0u32;
+        let Some(cut_label) = weight
+            .iter()
+            .position(|entry| {
+                prefix_weight = prefix_weight.saturating_add(*entry);
+                prefix_weight == top_area
+            })
+            .map(|index| index + 1)
+        else {
+            continue;
+        };
+        if cut_label == weight.len()
+            || weight[cut_label..]
+                .iter()
+                .enumerate()
+                .any(|(offset, _)| lower(cut_label + offset) <= cut_row as u32)
+        {
+            continue;
+        }
+
+        let top_upper = (0..cut_label)
+            .map(|label| upper(label).min(cut_row as u32))
+            .collect::<Vec<_>>();
+        let top_lower = (0..cut_label).map(lower).collect::<Vec<_>>();
+        let Some((top_upper, top_lower)) = optional_flags(top_upper, top_lower, cut_row) else {
+            continue;
+        };
+
+        let bottom_rows = rows - cut_row;
+        let bottom_upper = (cut_label..weight.len())
+            .map(|label| upper(label).saturating_sub(cut_row as u32))
+            .collect::<Vec<_>>();
+        let bottom_lower = (cut_label..weight.len())
+            .map(|label| lower(label).saturating_sub(cut_row as u32).max(1))
+            .collect::<Vec<_>>();
+        let Some((bottom_upper, bottom_lower)) =
+            optional_flags(bottom_upper, bottom_lower, bottom_rows)
+        else {
+            continue;
+        };
+
+        return Some(SaturatedRowLabelSplit {
+            top: SaturatedSplitFactor {
+                lambda: Partition::new(lambda.parts()[..cut_row].to_vec()),
+                mu: Partition::new((0..cut_row).map(|row| mu.part(row)).collect()),
+                weight: weight[..cut_label].to_vec(),
+                upper_flags: top_upper,
+                lower_flags: top_lower,
+            },
+            bottom: SaturatedSplitFactor {
+                lambda: Partition::new((cut_row..rows).map(|row| lambda.part(row)).collect()),
+                mu: Partition::new((cut_row..rows).map(|row| mu.part(row)).collect()),
+                weight: weight[cut_label..].to_vec(),
+                upper_flags: bottom_upper,
+                lower_flags: bottom_lower,
+            },
+            cut_row,
+            cut_label,
+        });
+    }
+    None
+}
+
+fn multiply_ehrhart(left: EhrhartPoly, right: EhrhartPoly) -> EhrhartPoly {
+    let mut coeffs = vec![BigRational::zero(); left.coeffs.len() + right.coeffs.len() - 1];
+    for (left_degree, left_coefficient) in left.coeffs.iter().enumerate() {
+        for (right_degree, right_coefficient) in right.coeffs.iter().enumerate() {
+            coeffs[left_degree + right_degree] += left_coefficient * right_coefficient;
+        }
+    }
+    let degree = coeffs
+        .iter()
+        .enumerate()
+        .rev()
+        .find(|(_, coefficient)| !coefficient.is_zero())
+        .map(|(degree, _)| degree)
+        .unwrap_or(0);
+    EhrhartPoly { coeffs, degree }
+}
+
 /// Delete a forced unit-width rectangular suffix from a flagged tableau.
 ///
 /// If labels after `cut_label` are barred from the first `cut_row` rows and
@@ -545,6 +693,67 @@ fn compute_ehrhart_impl(
                 eprintln!(
                     "warning: skipped forced rectangular suffix reduction because dimensions differ: original {}, reduced {:?}",
                     d, reduced_dimension
+                );
+            }
+        }
+
+        if let Some(split) = saturated_row_label_split(lambda, mu, w, upper_flags, lower_flags) {
+            let top_dimension = gt_polytope_dim_full(
+                split.top.lambda.parts(),
+                split.top.mu.parts(),
+                &split.top.weight,
+                split.top.upper_flags.as_deref(),
+                split.top.lower_flags.as_deref(),
+            );
+            let bottom_dimension = gt_polytope_dim_full(
+                split.bottom.lambda.parts(),
+                split.bottom.mu.parts(),
+                &split.bottom.weight,
+                split.bottom.upper_flags.as_deref(),
+                split.bottom.lower_flags.as_deref(),
+            );
+            if top_dimension
+                .zip(bottom_dimension)
+                .map(|(top, bottom)| top + bottom)
+                == Some(d)
+            {
+                if verbose {
+                    eprintln!(
+                        "split saturated tableau after row {} and label {}",
+                        split.cut_row, split.cut_label
+                    );
+                }
+                let factor_mode = match mode {
+                    EhrhartInterpolation::Gorenstein => EhrhartInterpolation::AdaptiveReciprocity,
+                    other => other,
+                };
+                let top = compute_ehrhart_impl(
+                    &split.top.lambda,
+                    &split.top.mu,
+                    &split.top.weight,
+                    split.top.upper_flags.as_deref(),
+                    split.top.lower_flags.as_deref(),
+                    verbose,
+                    max_states,
+                    factor_mode,
+                    false,
+                )?;
+                let bottom = compute_ehrhart_impl(
+                    &split.bottom.lambda,
+                    &split.bottom.mu,
+                    &split.bottom.weight,
+                    split.bottom.upper_flags.as_deref(),
+                    split.bottom.lower_flags.as_deref(),
+                    verbose,
+                    max_states,
+                    factor_mode,
+                    false,
+                )?;
+                return Ok(multiply_ehrhart(top, bottom));
+            } else if verbose {
+                eprintln!(
+                    "warning: skipped saturated tableau split because dimensions do not add: original {}, top {:?}, bottom {:?}",
+                    d, top_dimension, bottom_dimension
                 );
             }
         }
@@ -1150,6 +1359,128 @@ mod tests {
             Some(&[1, 1, 1, 3]),
         )
         .is_none());
+    }
+
+    #[test]
+    fn detects_nontrivial_saturated_product_split() {
+        let lambda = p(&[3, 2, 1]);
+        let mu = p(&[1]);
+        let weight = [1, 1, 1, 1, 1];
+        let upper = [3, 3, 3, 3, 3];
+        let lower = [1, 1, 2, 2, 2];
+
+        let split = saturated_row_label_split(&lambda, &mu, &weight, Some(&upper), Some(&lower))
+            .expect("saturated split");
+        assert_eq!((split.cut_row, split.cut_label), (1, 2));
+        assert_eq!(split.top.lambda, p(&[3]));
+        assert_eq!(split.top.mu, p(&[1]));
+        assert_eq!(split.top.weight, [1, 1]);
+        assert_eq!(split.bottom.lambda, p(&[2, 1]));
+        assert_eq!(split.bottom.mu, Partition::empty());
+        assert_eq!(split.bottom.weight, [1, 1, 1]);
+        assert_eq!(split.top.upper_flags, None);
+        assert_eq!(split.top.lower_flags, None);
+        assert_eq!(split.bottom.upper_flags, None);
+        assert_eq!(split.bottom.lower_flags, None);
+    }
+
+    #[test]
+    fn saturated_product_split_matches_unreduced_legacy_polynomial() {
+        let lambda = p(&[3, 2, 1]);
+        let mu = p(&[1]);
+        let weight = [1, 1, 1, 1, 1];
+        let upper = [3, 3, 3, 3, 3];
+        let lower = [1, 1, 2, 2, 2];
+
+        let split = try_compute_ehrhart(
+            &lambda,
+            &mu,
+            &weight,
+            Some(&upper),
+            Some(&lower),
+            false,
+            None,
+            true,
+        )
+        .expect("split interpolation");
+        let unreduced = compute_ehrhart_legacy(
+            &lambda,
+            &mu,
+            &weight,
+            Some(&upper),
+            Some(&lower),
+            false,
+            None,
+            true,
+        );
+        assert_eq!(split.degree, unreduced.degree);
+        assert_eq!(split.coeffs, unreduced.coeffs);
+    }
+
+    #[test]
+    fn saturated_product_split_multiplies_two_nontrivial_factors() {
+        let lambda = p(&[3, 2, 2, 1]);
+        let mu = p(&[1, 1]);
+        let weight = [1, 1, 1, 1, 1, 1];
+        let upper = [2, 2, 2, 4, 4, 4];
+        let lower = [1, 1, 1, 3, 3, 3];
+
+        let factors = saturated_row_label_split(&lambda, &mu, &weight, Some(&upper), Some(&lower))
+            .expect("saturated split");
+        let top_dimension = gt_polytope_dim_full(
+            factors.top.lambda.parts(),
+            factors.top.mu.parts(),
+            &factors.top.weight,
+            factors.top.upper_flags.as_deref(),
+            factors.top.lower_flags.as_deref(),
+        )
+        .expect("nonempty top factor");
+        let bottom_dimension = gt_polytope_dim_full(
+            factors.bottom.lambda.parts(),
+            factors.bottom.mu.parts(),
+            &factors.bottom.weight,
+            factors.bottom.upper_flags.as_deref(),
+            factors.bottom.lower_flags.as_deref(),
+        )
+        .expect("nonempty bottom factor");
+        assert!(top_dimension > 0 && bottom_dimension > 0);
+
+        let split = try_compute_ehrhart(
+            &lambda,
+            &mu,
+            &weight,
+            Some(&upper),
+            Some(&lower),
+            false,
+            None,
+            true,
+        )
+        .expect("split interpolation");
+        let unreduced = compute_ehrhart_legacy(
+            &lambda,
+            &mu,
+            &weight,
+            Some(&upper),
+            Some(&lower),
+            false,
+            None,
+            true,
+        );
+        assert_eq!(split.degree, unreduced.degree);
+        assert_eq!(split.coeffs, unreduced.coeffs);
+    }
+
+    #[test]
+    fn saturated_product_split_requires_later_labels_to_stay_below_cut() {
+        let lambda = p(&[3, 2, 1]);
+        let mu = p(&[1]);
+        let weight = [1, 1, 1, 1, 1];
+        let upper = [3, 3, 3, 3, 3];
+        let lower = [1, 1, 1, 2, 2];
+
+        assert!(
+            saturated_row_label_split(&lambda, &mu, &weight, Some(&upper), Some(&lower),).is_none()
+        );
     }
 
     #[test]
