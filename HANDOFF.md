@@ -1,5 +1,52 @@
 # Ehrcalc Handoff
 
+## Robust one-hole growth family; paired Kostka bridge running — 2026-09-16 10:29 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer; the predecessor remains untouched and all `runs/` evidence in
+the mutation repository remains untracked.  V403 evaluated 73 direct
+one-hole neighbors of the four audited v401 negatives exactly and found 15
+negatives: 13 shape growths, one absorbed-flag child, and one equality swap,
+in dimensions 103, 105, and 113--120.  All 15 independently replayed.
+Source/audit SHA-256 values are `d89b8019...` and `c09f6c00...`; guarded
+ingestion run `1dab0305...` has postflight `73/73/15`.
+
+One more shape-growth layer from those 15 verified-negative parents produced
+69 novel v408 one-hole children: 37 exact and 32 clean six-million-state
+cutoffs.  Thirty of the exact rows are negative, in dimensions 113--129, and
+seven are positive.  The negative class split is `grow_a:21`, `grow_b:9`.
+All 30 passed independent structural and bit-for-bit replay.  Source/audit
+SHA-256 values are `cbbca9a0...` and `a2f0bee7...`; guarded ingestion run
+`fefe4f64...` has postflight `37/37/30`, with all 32 cutoffs excluded.  This
+establishes a broad fast one-hole negative family rather than an isolated
+example.  Continue to mutate only independently verified exact-negative rows;
+positive siblings are terminal.
+
+The user's proposed weight-versus-flag comparison is active.  V404 paired the
+13 v403 negative growth parents with endpoint absorption of the sole hole in
+two regimes: the neutral width-one lower body, integrally equivalent to an
+unsliced pure flagged polytope, and a one-reservoir-cell shape move where fixed
+content is genuinely active.  Eighteen of 26 pairs are empty.  Four nonempty
+matched pairs remain, with pure-flagged dimensions 79,80,85,86 and active
+Kostka dimensions 89,89,94,96; structural report SHA-256 is `8e876f0a...`.
+All eight Euler CPU exact attempts gave clean 900-second cutoffs.  Euler GPU
+d23 screens for the active partners gave exact transition-limit receipts at
+202,547,643; 296,411,761; 480,753,154; and 227,388,955 transitions under
+receipt IDs `20260916T094124-47824440ad31`,
+`20260916T094231-b18dc99b5835`, `20260916T094241-1236a6780e50`, and
+`20260916T094250-27258bb71d2c`.  These are complexity screens, not sign
+results.
+
+Abacus job `20260916T102148-0baec6cb3f4b` is running the four active Kostka
+partners concurrently with 7,000 seconds per case.  Input/runner/engine hashes
+are `ec4b5c19...`, `493503cf...`, and `8b3dc655...`.  It replaces
+failed-before-compute job `20260916T094400-ee8f6aeffde7` and cancelled
+short-cutoff job `20260916T094415-37c4e5b5c91d`; never retry those jobs.
+Euler GPU is ready/idle, Laplace is unreachable, and R211 v385 is running with
+v386--v388 queued after v384 completed.  Next fetch and independently audit
+any exact Abacus output before any sign claim or database write.  The verified
+negative zero-hole goal remains open.
+
 ## Four verified one-hole negatives; zero closures positive — 2026-09-16 09:01 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
