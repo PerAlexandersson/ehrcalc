@@ -1,5 +1,34 @@
 # Ehrcalc Handoff
 
+## Fast negative neighborhood succeeds — 2026-09-16 07:48 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer; the predecessor remains untouched and all `runs/` evidence
+remains untracked.  V390 enumerated only direct children of the six audited
+v376/v377 exact-negative two-hole parents, excluded all ledger and active
+queue identities, retained dimensions 80--98 and exactly two holes, and used
+a 1.5M-state cap to stay in the observed fast regime.  All 61 novel quotient
+faces completed exactly in 4.4--16.1 seconds with 243,056--675,634 DP states.
+Four are negative: d83 `ba94339...`, d94 `c7cab950...`, d94 `fc7540d0...`,
+and d95 `58349500...`.  Source report SHA-256 is
+`b0619b5755e57a741b57cc6ac72edfc6c5015bfe6ab0792dd3b340c66bd4dada`.
+
+All four negatives were independently replayed bit-for-bit, including h*,
+power coefficients, linear extensions, DP states, dimensions, holes, and
+poset hashes.  Audit SHA-256 is
+`1f3d88b755a5e12453e1be2a289f83c99374dd2ecb3a005f151e66404e232503`.
+One guarded MariaDB ingestion recorded all 61 exact candidates and observations
+under run `de5a867e55c0775ed51999a5c059666ee2cbdccfa08db888be9449b830625432`;
+postflight was exactly `61/61/4` candidate/poset/negative.
+
+The mutation signal is sharp: absorbed-flag additions were 3/8 negative and
+the one equality-removal case was negative, whereas all 40 `shrink_a` and all
+12 `shrink_b` cases were positive.  The d83 negative is a one absorbed-flag
+addition from d84 `812b5741...` and retains holes `(4,6),(6,10)`.  Next expand
+only local absorbed-flag/equality moves from these four negatives; never use
+the 57 positive siblings as parents.  The zero-edge R211 queue and Euler v389
+remain independent and unchanged.
+
 ## Parallel untouched v354 lane — 2026-09-16 07:20 UTC
 
 R211 v384 remains authoritatively running with v385--v388 queued and no
