@@ -592,8 +592,8 @@ void add_timings(LayerTimings& target, const LayerTimings& source) {
     target.compact_ms += source.compact_ms;
 }
 
-StateLayer reduce_records(DeviceBuffer<Key>&& keys,
-                          DeviceBuffer<Residues>&& values, std::size_t count,
+StateLayer reduce_records(DeviceBuffer<Key> keys,
+                          DeviceBuffer<Residues> values, std::size_t count,
                           const DeviceShape& shape, Residues moduli,
                           const ReductionSizes& sizes, LayerTimings& timings) {
     std::size_t sort_temp_bytes = sizes.sort_temp_bytes;
@@ -647,7 +647,7 @@ StateLayer merge_layers(StateLayer&& left, StateLayer&& right,
     const ReductionSizes sizes = reduction_sizes(count, shape, moduli);
     const std::size_t required =
         checked_bytes(2, sizes.record_bytes, "merge record layers") +
-        sizes.scratch_bytes;
+        sizes.scratch_bytes + sizeof(std::size_t);
     require_gpu_memory(required, minimum_free_bytes, maximum_required_bytes);
     sort_temp_bytes = std::max(sort_temp_bytes, sizes.sort_temp_bytes);
     DeviceBuffer<Key> keys(count);
@@ -678,9 +678,20 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
                             Residues moduli) {
     const unsigned int blocks =
         static_cast<unsigned int>((states.size + kBlockSize - 1) / kBlockSize);
+    AdvanceResult result;
+    std::size_t scan_temp_bytes = 0;
+    HIP_CHECK(rocprim::exclusive_scan(
+        nullptr, scan_temp_bytes, static_cast<TransitionOffset*>(nullptr),
+        static_cast<TransitionOffset*>(nullptr), TransitionOffset{0}, states.size,
+        rocprim::plus<TransitionOffset>{}));
+    const std::size_t preparation_bytes = checked_bytes(
+        states.size, 2 * sizeof(TransitionOffset), "transition count and offset") +
+        scan_temp_bytes;
+    require_gpu_memory(preparation_bytes, result.memory_free_bytes,
+                       result.memory_required_bytes);
     DeviceBuffer<TransitionOffset> counts(states.size);
     DeviceBuffer<TransitionOffset> offsets(states.size);
-    AdvanceResult result;
+    RawDeviceBuffer scan_temp(scan_temp_bytes);
     result.timings.count_ms = time_gpu([&] {
         hipLaunchKernelGGL(count_transitions, dim3(blocks), dim3(kBlockSize), 0, 0,
                            states.keys.get(), states.size, shape, level_bounds,
@@ -690,11 +701,6 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
                            counts.get());
         HIP_CHECK(hipGetLastError());
     });
-    std::size_t scan_temp_bytes = 0;
-    HIP_CHECK(rocprim::exclusive_scan(nullptr, scan_temp_bytes, counts.get(),
-                                      offsets.get(), TransitionOffset{0}, states.size,
-                                      rocprim::plus<TransitionOffset>{}));
-    RawDeviceBuffer scan_temp(scan_temp_bytes);
     result.timings.scan_ms = time_gpu([&] {
         HIP_CHECK(rocprim::exclusive_scan(
             scan_temp.get(), scan_temp_bytes, counts.get(), offsets.get(),
@@ -715,7 +721,7 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
         const ReductionSizes sizes = reduction_sizes(chunk.transitions, shape, moduli);
         const std::size_t required =
             checked_bytes(2, sizes.record_bytes, "chunk record layers") +
-            sizes.scratch_bytes;
+            sizes.scratch_bytes + sizeof(std::size_t);
         require_gpu_memory(required, result.memory_free_bytes,
                            result.memory_required_bytes);
         result.sort_temp_bytes = std::max(result.sort_temp_bytes,

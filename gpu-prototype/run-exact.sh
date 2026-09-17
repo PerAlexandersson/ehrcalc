@@ -22,23 +22,28 @@ level_lower_bounds=${12:--}
 level_upper_bounds=${13:--}
 crt_margin=${EHRGPU_CRT_MARGIN:-1}
 
-if [[ ! $maximum_transitions =~ ^[0-9]+$ ]] ||
-   ((maximum_transitions < 1 || maximum_transitions >= 4294967295)); then
-    echo "total transition limit must lie in 1..2^32-2" >&2
-    exit 2
-fi
-if [[ -z $chunk_transitions ]]; then
-    chunk_transitions=$maximum_transitions
-    if ((chunk_transitions > 150000000)); then
-        chunk_transitions=150000000
-    fi
-fi
-if [[ ! $chunk_transitions =~ ^[0-9]+$ ]] ||
-   ((chunk_transitions < 1 || chunk_transitions > maximum_transitions ||
-      chunk_transitions >= 4294967295)); then
-    echo "transition limits must satisfy 1 <= chunk <= total < 2^32-1" >&2
-    exit 2
-fi
+read -r maximum_transitions chunk_transitions < <(
+    python3 - "$maximum_transitions" "$chunk_transitions" <<'PY'
+import re
+import sys
+
+total_text, chunk_text = sys.argv[1:]
+if not re.fullmatch(r"[0-9]+", total_text):
+    raise SystemExit("total transition limit must be an unsigned decimal integer")
+total = int(total_text)
+if not 1 <= total < 2**32 - 1:
+    raise SystemExit("total transition limit must lie in 1..2^32-2")
+if chunk_text:
+    if not re.fullmatch(r"[0-9]+", chunk_text):
+        raise SystemExit("chunk transition limit must be an unsigned decimal integer")
+    chunk = int(chunk_text)
+else:
+    chunk = min(total, 150_000_000)
+if not 1 <= chunk <= total:
+    raise SystemExit("chunk transition limit must lie in 1..total")
+print(total, chunk)
+PY
+)
 
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 image_name=${EHRGPU_IMAGE:-ehrcalc-rocm:7.2.4}
