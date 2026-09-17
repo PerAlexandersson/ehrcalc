@@ -592,12 +592,12 @@ fn gt_polytope_dim_impl(
     let n_int = k - 1; // number of interior levels
 
     // Weight-sum targets: |α^{ℓ+1}| = |μ| + w[0] + … + w[ℓ].
-    let mu_sum: u32 = mu_pad.iter().sum();
-    let w_prefix: Vec<u32> = {
-        let mut v = vec![0u32; k];
-        let mut acc = 0u32;
+    let mu_sum = mu_pad.iter().map(|&part| u64::from(part)).sum::<u64>();
+    let w_prefix: Vec<u64> = {
+        let mut v = vec![0u64; k];
+        let mut acc = 0u64;
         for (i, &wi) in w.iter().enumerate() {
-            acc += wi;
+            acc += u64::from(wi);
             v[i] = acc;
         }
         v
@@ -685,20 +685,20 @@ fn gt_polytope_dim_impl(
         // Weight forcing: check each level's feasible sum range.
         for ell in 0..n_int {
             let target = mu_sum + w_prefix[ell];
-            let mut forced_sum = 0u32;
-            let mut min_sum = 0u32;
-            let mut max_sum = 0u32;
+            let mut forced_sum = 0u64;
+            let mut min_sum = 0u64;
+            let mut max_sum = 0u64;
             let mut free_entries: Vec<usize> = Vec::new();
 
             for j in 0..n {
                 if lb[ell][j] >= ub[ell][j] {
-                    forced_sum += lb[ell][j];
-                    min_sum += lb[ell][j];
-                    max_sum += lb[ell][j];
+                    forced_sum += u64::from(lb[ell][j]);
+                    min_sum += u64::from(lb[ell][j]);
+                    max_sum += u64::from(lb[ell][j]);
                 } else {
                     free_entries.push(j);
-                    min_sum += lb[ell][j];
-                    max_sum += ub[ell][j];
+                    min_sum += u64::from(lb[ell][j]);
+                    max_sum += u64::from(ub[ell][j]);
                 }
             }
 
@@ -728,7 +728,8 @@ fn gt_polytope_dim_impl(
             // Exactly 1 free entry: determined by weight.
             else if free_entries.len() == 1 {
                 let j = free_entries[0];
-                let val = target - forced_sum;
+                let val = u32::try_from(target - forced_sum)
+                    .expect("a single feasible GT coordinate must fit u32");
                 if val > lb[ell][j] {
                     lb[ell][j] = val;
                     changed = true;
@@ -1109,6 +1110,23 @@ mod tests {
 
         assert_eq!(dimension, 0);
         assert_eq!(lower, upper);
+    }
+
+    #[test]
+    fn masked_bounds_use_wide_level_sums() {
+        // Every coordinate fits u32, but the boundary and intermediate level
+        // totals exceed u32.  Wrapping those totals used to report this
+        // one-dimensional interval as empty.
+        let lambda = [1_073_741_825, 1_073_741_825, 1_073_741_825, 1_073_741_823];
+        let mu = [1_073_741_825, 1_073_741_825, 1_073_741_823, 1_073_741_822];
+        let (dimension, lower, upper) =
+            gt_polytope_bounds_masked(&lambda, &mu, &[1, 2], None, None, None)
+                .expect("wide-total interval is nonempty");
+
+        assert_eq!(dimension, 1);
+        assert_eq!(lower.len(), 1);
+        assert_eq!(upper.len(), 1);
+        assert_ne!(lower, upper);
     }
 
     #[test]

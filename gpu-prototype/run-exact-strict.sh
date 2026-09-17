@@ -42,7 +42,18 @@ else:
     print(data["dimension"])
     print(",".join(map(str, data["strict_lower_masks"])))
     print(",".join(map(str, data["strict_diagonal_masks"])))
-' "$mask_json"
+    lower = [value for level in data["lower_bounds"] for value in level]
+    upper = [value for level in data["upper_bounds"] for value in level]
+    rows = len(sys.argv[2].split(","))
+    outer = list(map(int, sys.argv[2].split(",")))
+    lower.extend(outer)
+    upper.extend(outer)
+    expected = len(data["strict_lower_masks"]) * rows
+    if len(lower) != expected or len(upper) != expected:
+        raise SystemExit("derived level-bound dimensions are inconsistent")
+    print(",".join(map(str, lower)))
+    print(",".join(map(str, upper)))
+' "$mask_json" "$outer"
 )
 
 if [[ ${derived[0]} == empty ]]; then
@@ -55,9 +66,16 @@ fi
 dimension=${derived[1]}
 strict_lower_masks=${derived[2]}
 strict_diagonal_masks=${derived[3]}
+level_lower_bounds=${derived[4]}
+level_upper_bounds=${derived[5]}
+derive_binary_sha256=$(sha256sum "$derive_masks" | cut -d' ' -f1)
+constraint_payload_sha256=$(printf '%s' "$mask_json" | sha256sum | cut -d' ' -f1)
 echo "derived relative-interior masks for dimension $dimension" >&2
 
+EHRGPU_DERIVE_BINARY_SHA256=$derive_binary_sha256 \
+EHRGPU_CONSTRAINT_PAYLOAD_SHA256=$constraint_payload_sha256 \
 exec "$repo_root/gpu-prototype/run-exact.sh" \
     "$upper_bound" "$dilation" "$outer" "$inner" "$weight" \
     "$upper_flags" "$lower_flags" "$maximum_transitions" \
-    "$forbidden_masks" "$strict_lower_masks" "$strict_diagonal_masks"
+    "$forbidden_masks" "$strict_lower_masks" "$strict_diagonal_masks" \
+    "$level_lower_bounds" "$level_upper_bounds"

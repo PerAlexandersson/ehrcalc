@@ -1,5 +1,17 @@
 # Ehrcalc Handoff
 
+## GPU strict-path optimization owned — 2026-09-17 08:30 UTC
+
+The current Codex worker owns the focused changes to `gt_dim.rs`,
+`packed_modular.rs`, `derive_masked_interior.rs`, and the resident GPU bridge
+and tests.  The user-requested Astra audit is complete and made no edits or
+submissions.  Its first verified finding is a `u32` aggregate-sum overflow in
+the affine bounds analyzer which can falsely classify a wide-total, packable
+strict face as empty; fix and regress this before transporting propagated
+level bounds into the packed CPU/GPU transition generators.  Preserve all
+untracked `runs/` evidence.  No remote computation or MariaDB write is part of
+this source checkpoint.
+
 ## Dual orientation and recursive level bounds pushed — 2026-09-16 17:08 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole

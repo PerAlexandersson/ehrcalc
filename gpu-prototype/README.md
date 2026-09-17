@@ -59,7 +59,8 @@ Its command line is:
 packed-flagged-kostka-gpu-resident \
   DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS \
   [MAX_TRANSITIONS] [MODULI] \
-  [FORBIDDEN_MASKS STRICT_LOWER_MASKS STRICT_DIAGONAL_MASKS]
+  [FORBIDDEN_MASKS STRICT_LOWER_MASKS STRICT_DIAGONAL_MASKS \
+   [LEVEL_LOWER_BOUNDS LEVEL_UPPER_BOUNDS]]
 ```
 
 Lists are comma-separated; use `-` for an empty partition or absent flags.
@@ -82,6 +83,14 @@ horizontal-strip diagonal inequalities. Flags, face masks, and both strictness
 masks are enforced together in transition counting and emission. The masked
 interface supports at most 32 shape rows.
 
+The optional level bounds are flattened label-major arrays with one entry per
+shape row, expressed at dilation one. The resident driver scales them and
+intersects them with every transition interval. The strict wrapper supplies
+the propagated GT bounds automatically, including the exact final outer
+boundary; direct callers may omit them. Transition multiplicities are counted
+by a linear-time sliding-window bounded-composition recurrence rather than the
+former quadratic recurrence.
+
 Compile and run the device-free host regressions:
 
 ```text
@@ -89,9 +98,11 @@ gpu-prototype/run-host-tests.sh
 ```
 
 These checks cover 64-bit transition-total accounting, an empty frontier,
-strict numeric parsing, a non-interval Kogan-face hole, lower and diagonal
-strictness, a flag-forced zero row, and agreement between transition counting
-and emission. The regular HIP source is also safe against an exclusive scan
+strict numeric parsing, exhaustive bounded-composition coefficients at several
+saturation limits, propagated lower-bound clipping, a non-interval Kogan-face
+hole, lower and diagonal strictness, a flag-forced zero row, and agreement
+between transition counting, emission, and an expected destination. The
+regular HIP source is also safe against an exclusive scan
 exceeding 32 bits: transition counts and offsets use 64-bit storage, while the
 configured per-layer cap remains below `2^32-1`.
 
@@ -112,7 +123,9 @@ gpu-prototype/run-exact.sh \
 
 `run-exact.sh` first determines how many primes are required for the bound,
 compiles a one-, two-, or three-lane kernel, and evaluates batches of up to
-three pairwise-coprime residues. It prints an integer only after the combined
+three pairwise-coprime residues. A lane-count specialization is compiled only
+once per invocation and reused by later CRT batches. It prints an integer only
+after the combined
 modulus exceeds the supplied bound and the reconstruction lies below it;
 otherwise it fails rather than treating an ambiguous residue as exact.
 
@@ -126,14 +139,16 @@ gpu-prototype/run-exact-strict.sh \
 ```
 
 The wrapper calls the exact Rust affine-structure analyzer on the undilated
-input, derives the lower and diagonal strictness masks, and passes them to the
-same GPU/CRT driver. The analyzer propagates flags and forbidden equalities,
+input, derives the lower and diagonal strictness masks and all intermediate
+level bounds, and passes them to the same GPU/CRT driver. The analyzer
+propagates flags and forbidden equalities,
 closes directed cycles in the GT order graph, propagates exact rational
 component bounds through the level-weight equations, and computes their exact
 rank. Small masked faces are exhaustively checked against
 Ehrhart--Macdonald reciprocity in the engine tests. The standalone helper
-`derive_masked_interior` prints the dimension and masks as JSON for other KTT
-drivers.
+`derive_masked_interior` prints the dimension, bounds, and masks as JSON for
+other KTT drivers. Nonempty strict provenance also records the helper binary
+hash and the hash of its complete bounds-and-masks JSON payload.
 
 Counts beyond the legacy wrapper's `u64` bound use the separate wide mode:
 

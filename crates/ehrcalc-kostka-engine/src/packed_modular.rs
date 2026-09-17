@@ -201,6 +201,8 @@ fn state_map_with_capacity(capacity: usize) -> StateMap {
 struct ExtensionContext<'a> {
     packer: PackedPartitions,
     lambda: &'a [u32; MAX_PACKED_ROWS],
+    level_lower: &'a [u32],
+    level_upper: &'a [u32],
     row_lo: usize,
     row_hi: usize,
     forbidden_mask: u32,
@@ -263,20 +265,28 @@ impl ExtensionContext<'_> {
         } else {
             alpha[row - 1].saturating_sub(base)
         };
-        if forced_zero {
+        let (mut minimum, mut maximum) = if forced_zero {
             if need_strict_lower || (need_strict_diagonal && gap == 0) {
                 return None;
             }
-            return Some((0, 0));
-        }
-
-        let minimum = u32::from(need_strict_lower);
-        let diagonal_capacity = if need_strict_diagonal {
-            gap.checked_sub(1)?
+            (0, 0)
         } else {
-            gap
+            let minimum = u32::from(need_strict_lower);
+            let diagonal_capacity = if need_strict_diagonal {
+                gap.checked_sub(1)?
+            } else {
+                gap
+            };
+            let maximum = self.lambda[row].saturating_sub(base).min(diagonal_capacity);
+            (minimum, maximum)
         };
-        let maximum = self.lambda[row].saturating_sub(base).min(diagonal_capacity);
+
+        let level_upper = self.level_upper[row];
+        if base > level_upper {
+            return None;
+        }
+        minimum = minimum.max(self.level_lower[row].saturating_sub(base));
+        maximum = maximum.min(level_upper - base);
         (minimum <= maximum).then_some((minimum, maximum))
     }
 
@@ -456,6 +466,18 @@ pub fn try_masked_flagged_skew_kostka_modular_stats(
     } else {
         weight
     };
+    let Some((_, level_lower_bounds, level_upper_bounds)) =
+        crate::gt_dim::gt_polytope_bounds_masked(
+            lambda.parts(),
+            mu.parts(),
+            effective_weight,
+            upper_flags,
+            lower_flags,
+            forbidden_row_masks,
+        )
+    else {
+        return Ok(zero_stats(moduli));
+    };
 
     let mut states = state_map_with_capacity(1);
     states.insert(mu_key, Residues::one(moduli.len()));
@@ -483,9 +505,19 @@ pub fn try_masked_flagged_skew_kostka_modular_stats(
             .and_then(|flags| flags.get(label))
             .map(|&flag| (flag as usize).min(packer.rows))
             .unwrap_or(packer.rows);
+        let (level_lower, level_upper) = if label + 1 == effective_weight.len() {
+            (&lambda_parts[..packer.rows], &lambda_parts[..packer.rows])
+        } else {
+            (
+                level_lower_bounds[label].as_slice(),
+                level_upper_bounds[label].as_slice(),
+            )
+        };
         let context = ExtensionContext {
             packer,
             lambda: &lambda_parts,
+            level_lower,
+            level_upper,
             row_lo,
             row_hi,
             forbidden_mask: forbidden_row_masks.map_or(0, |masks| masks[label]),
@@ -647,6 +679,15 @@ pub fn try_masked_flagged_skew_kostka_modular_layer_trace(
     let mu_key = packer.pack_partition(mu)?;
     let mut lambda_parts = [0_u32; MAX_PACKED_ROWS];
     lambda_parts[..lambda.num_parts()].copy_from_slice(lambda.parts());
+    let (_, level_lower_bounds, level_upper_bounds) = crate::gt_dim::gt_polytope_bounds_masked(
+        lambda.parts(),
+        mu.parts(),
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+    )
+    .ok_or_else(|| "shape and constraints define an empty DP".to_string())?;
     let moduli = [modulus];
     let mut states = state_map_with_capacity(1);
     states.insert(mu_key, Residues::one(1));
@@ -666,9 +707,19 @@ pub fn try_masked_flagged_skew_kostka_modular_layer_trace(
             .and_then(|flags| flags.get(label))
             .map(|&flag| (flag as usize).min(packer.rows))
             .unwrap_or(packer.rows);
+        let (level_lower, level_upper) = if label + 1 == weight.len() {
+            (&lambda_parts[..packer.rows], &lambda_parts[..packer.rows])
+        } else {
+            (
+                level_lower_bounds[label].as_slice(),
+                level_upper_bounds[label].as_slice(),
+            )
+        };
         let context = ExtensionContext {
             packer,
             lambda: &lambda_parts,
+            level_lower,
+            level_upper,
             row_lo,
             row_hi,
             forbidden_mask: forbidden_row_masks.map_or(0, |masks| masks[label]),
@@ -1060,6 +1111,27 @@ mod tests {
                 .unwrap();
         assert_eq!(actual.residues, vec![1, 1]);
         assert_eq!(actual.level_transitions, vec![1]);
+    }
+
+    #[test]
+    fn modular_uses_wide_intermediate_level_totals() {
+        let lambda = Partition::from_sorted(vec![
+            1_073_741_825,
+            1_073_741_825,
+            1_073_741_825,
+            1_073_741_823,
+        ]);
+        let mu = Partition::from_sorted(vec![
+            1_073_741_825,
+            1_073_741_825,
+            1_073_741_823,
+            1_073_741_822,
+        ]);
+        let stats =
+            try_skew_kostka_modular_stats(&lambda, &mu, &[1, 2], &DEFAULT_MODULI[..2], None, false)
+                .unwrap();
+
+        assert_eq!(stats.residues, vec![2, 2]);
     }
 
     #[test]
