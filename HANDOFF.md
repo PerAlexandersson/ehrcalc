@@ -1,16 +1,27 @@
 # Ehrcalc Handoff
 
-## GPU strict-path optimization owned — 2026-09-17 08:30 UTC
+## GPU strict-path bounds and linear counter verified — 2026-09-17 08:45 UTC
 
-The current Codex worker owns the focused changes to `gt_dim.rs`,
-`packed_modular.rs`, `derive_masked_interior.rs`, and the resident GPU bridge
-and tests.  The user-requested Astra audit is complete and made no edits or
-submissions.  Its first verified finding is a `u32` aggregate-sum overflow in
-the affine bounds analyzer which can falsely classify a wide-total, packable
-strict face as empty; fix and regress this before transporting propagated
-level bounds into the packed CPU/GPU transition generators.  Preserve all
-untracked `runs/` evidence.  No remote computation or MariaDB write is part of
-this source checkpoint.
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  The user-requested Astra audit made no edits or submissions.
+Its verified wide-total false-empty finding is fixed in commit `c8c5d3c`:
+affine level totals now use `u64`, packed CPU and resident GPU transitions
+enforce the propagated destination boxes, and the GPU transition counter uses
+an `O(rows * strip)` sliding window instead of the former quadratic bounded
+composition recurrence.  Repeated CRT batches now reuse each compiled lane
+specialization.  Nonempty receipts record the derivation-helper and complete
+constraint-payload hashes.
+
+All 65 Kostka-engine tests pass, including new wide-total regressions; ordinary
+Clippy passes with only the two pre-existing warnings in `ehrhart.rs` and
+`kostka_dp.rs`.  Euler compiled the HIP source and returned exact 1 on both a
+small masked strict face (`20260917T082736-b5b69bc653d7`, receipt SHA
+`a9f710ee...`) and the former wide-total false-zero at dilation 2
+(`20260917T082800-96e85376498e`, receipt SHA `de300cb2...`).  The audited d131
+dilation-24 benchmark reproduced 15,426,180 exactly in 23.761 s, down from
+56.919 s, receipt `20260917T082839-2153957db7ee`, SHA `029e3441...`.  All three
+receipts confirm container cleanup; Euler is idle.  Preserve all untracked
+`runs/` evidence.  No MariaDB write was made in this source checkpoint.
 
 ## Dual orientation and recursive level bounds pushed — 2026-09-16 17:08 UTC
 
