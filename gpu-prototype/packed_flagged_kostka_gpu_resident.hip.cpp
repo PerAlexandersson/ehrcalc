@@ -596,6 +596,8 @@ StateLayer reduce_records(DeviceBuffer<Key>&& keys,
                           DeviceBuffer<Residues>&& values, std::size_t count,
                           const DeviceShape& shape, Residues moduli,
                           const ReductionSizes& sizes, LayerTimings& timings) {
+    std::size_t sort_temp_bytes = sizes.sort_temp_bytes;
+    std::size_t reduce_temp_bytes = sizes.reduce_temp_bytes;
     std::size_t unique_count = 0;
     {
         DeviceBuffer<Key> sorted_keys(count);
@@ -604,13 +606,13 @@ StateLayer reduce_records(DeviceBuffer<Key>&& keys,
         RawDeviceBuffer aggregate_temp(sizes.scratch_bytes);
         timings.sort_ms += time_gpu([&] {
             HIP_CHECK(rocprim::radix_sort_pairs(
-                aggregate_temp.get(), sizes.sort_temp_bytes, keys.get(),
+                aggregate_temp.get(), sort_temp_bytes, keys.get(),
                 sorted_keys.get(), values.get(), sorted_values.get(), count,
                 0, shape.rows * shape.bits));
         });
         timings.reduce_ms += time_gpu([&] {
             HIP_CHECK(rocprim::reduce_by_key(
-                aggregate_temp.get(), sizes.reduce_temp_bytes, sorted_keys.get(),
+                aggregate_temp.get(), reduce_temp_bytes, sorted_keys.get(),
                 sorted_values.get(), count, keys.get(), values.get(),
                 unique_count_device.get(), ModularAdd{moduli},
                 rocprim::equal_to<Key>{}));
