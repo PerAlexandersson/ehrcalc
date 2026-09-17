@@ -64,8 +64,13 @@ packed-flagged-kostka-gpu-resident \
 ```
 
 Lists are comma-separated; use `-` for an empty partition or absent flags.
-The default transition limit is 150 million and the default modulus is
-2,147,483,647. The modulus must be in `2..2^31`; exact integer answers require
+The default total transition limit is 150 million. Large authorized layers can
+be materialized in exact source-state chunks by setting
+`EHRGPU_CHUNK_TRANSITIONS`; its default is 150 million and it must not exceed
+the total limit. Each chunk is independently sorted and reduced, then its
+sorted state map is merged modularly into the accumulated layer. This changes
+only peak memory, not the transition work bound or the resulting state map.
+The default modulus is 2,147,483,647. The modulus must be in `2..2^31`; exact integer answers require
 enough pairwise-coprime residue runs to exceed a separately certified bound.
 Numeric arguments are parsed strictly: suffixes, empty list entries, overflow,
 and non-coprime modulus lists are rejected. A mathematically valid empty DP
@@ -97,7 +102,9 @@ Compile and run the device-free host regressions:
 gpu-prototype/run-host-tests.sh
 ```
 
-These checks cover 64-bit transition-total accounting, an empty frontier,
+These checks cover 64-bit transition-total accounting, exact source-chunk
+planning (including zero counts, cap boundaries, individual overflow, and a
+sum beyond 32 bits), an empty frontier,
 strict numeric parsing, exhaustive bounded-composition coefficients at several
 saturation limits, propagated lower-bound clipping, a non-interval Kogan-face
 hole, lower and diagonal strictness, a flag-forced zero row, and agreement

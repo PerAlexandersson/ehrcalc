@@ -14,12 +14,31 @@ weight=$5
 upper_flags=$6
 lower_flags=$7
 maximum_transitions=${8:-150000000}
+chunk_transitions=${EHRGPU_CHUNK_TRANSITIONS:-}
 forbidden_masks=${9:--}
 strict_lower_masks=${10:--}
 strict_diagonal_masks=${11:--}
 level_lower_bounds=${12:--}
 level_upper_bounds=${13:--}
 crt_margin=${EHRGPU_CRT_MARGIN:-1}
+
+if [[ ! $maximum_transitions =~ ^[0-9]+$ ]] ||
+   ((maximum_transitions < 1 || maximum_transitions >= 4294967295)); then
+    echo "total transition limit must lie in 1..2^32-2" >&2
+    exit 2
+fi
+if [[ -z $chunk_transitions ]]; then
+    chunk_transitions=$maximum_transitions
+    if ((chunk_transitions > 150000000)); then
+        chunk_transitions=150000000
+    fi
+fi
+if [[ ! $chunk_transitions =~ ^[0-9]+$ ]] ||
+   ((chunk_transitions < 1 || chunk_transitions > maximum_transitions ||
+      chunk_transitions >= 4294967295)); then
+    echo "transition limits must satisfy 1 <= chunk <= total < 2^32-1" >&2
+    exit 2
+fi
 
 repo_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 image_name=${EHRGPU_IMAGE:-ehrcalc-rocm:7.2.4}
@@ -167,6 +186,7 @@ while ((batch_start < needed_moduli)); do
             --label "ai.ehrcalc.euler-gpu-role=execute" \
             --device=/dev/kfd --device=/dev/dri \
             --group-add video --security-opt seccomp=unconfined \
+            -e EHRGPU_CHUNK_TRANSITIONS="$chunk_transitions" \
             -v "$build_dir:/build" \
             "$image_name" "/build/$binary_name" \
             "$dilation" "$outer" "$inner" "$weight" "$upper_flags" \
@@ -212,7 +232,7 @@ while ((batch_start < needed_moduli)); do
         if [[ ${EHRGPU_DERIVE_BINARY_SHA256:-} =~ ^[0-9a-f]{64}$ && ${EHRGPU_CONSTRAINT_PAYLOAD_SHA256:-} =~ ^[0-9a-f]{64}$ ]]; then
             provenance_json=",\"derive_binary_sha256\":\"$EHRGPU_DERIVE_BINARY_SHA256\",\"constraint_payload_sha256\":\"$EHRGPU_CONSTRAINT_PAYLOAD_SHA256\""
         fi
-        echo "EHRGPU_CRT {\"upper_bound\":\"$upper_bound\",\"modulus_threshold\":\"$modulus_threshold\",\"maximum_strip_size\":$maximum_strip_size,\"moduli\":[$moduli_csv],\"residues\":[$residues_csv],\"reconstructed\":\"$exact\",\"source_sha256\":\"$source_hash\",\"binary_names\":[$binary_names_json],\"binary_sha256s\":[$binary_sha256s_json]$provenance_json}" >&2
+        echo "EHRGPU_CRT {\"upper_bound\":\"$upper_bound\",\"modulus_threshold\":\"$modulus_threshold\",\"maximum_strip_size\":$maximum_strip_size,\"maximum_transitions\":$maximum_transitions,\"chunk_transitions\":$chunk_transitions,\"moduli\":[$moduli_csv],\"residues\":[$residues_csv],\"reconstructed\":\"$exact\",\"source_sha256\":\"$source_hash\",\"binary_names\":[$binary_names_json],\"binary_sha256s\":[$binary_sha256s_json]$provenance_json}" >&2
         echo "$exact"
         exit 0
     fi

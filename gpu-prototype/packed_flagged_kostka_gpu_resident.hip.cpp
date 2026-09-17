@@ -1,6 +1,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cstdint>
+#include <cstdlib>
 #include <iomanip>
 #include <iostream>
 #include <limits>
@@ -428,7 +429,7 @@ __global__ void emit_transitions(
     std::uint32_t row_lo, std::uint32_t row_hi,
     std::uint32_t forbidden_mask, std::uint32_t strict_lower_mask,
     std::uint32_t strict_diagonal_mask,
-    const TransitionOffset* offsets,
+    const TransitionOffset* offsets, TransitionOffset offset_base,
     Key* transition_keys, Residues* transition_values) {
     const std::size_t index = blockIdx.x * blockDim.x + threadIdx.x;
     if (index < state_count) {
@@ -436,7 +437,7 @@ __global__ void emit_transitions(
             state_keys[index], state_values[index], shape, level_bounds,
             strip_size, row_lo,
             row_hi, forbidden_mask, strict_lower_mask, strict_diagonal_mask,
-            offsets[index], transition_keys, transition_values));
+            offsets[index] - offset_base, transition_keys, transition_values));
     }
 }
 
@@ -458,11 +459,63 @@ struct StateLayer {
 struct AdvanceResult {
     StateLayer states;
     std::size_t transitions = 0;
+    std::size_t chunks = 0;
+    std::size_t largest_chunk = 0;
     std::size_t sort_temp_bytes = 0;
     std::size_t memory_free_bytes = 0;
     std::size_t memory_required_bytes = 0;
     LayerTimings timings;
 };
+
+struct TransitionChunk {
+    std::size_t source_begin = 0;
+    std::size_t source_end = 0;
+    TransitionOffset offset_base = 0;
+    std::size_t transitions = 0;
+};
+
+std::vector<TransitionChunk> plan_source_chunks(
+    const std::vector<TransitionOffset>& counts, std::size_t chunk_limit,
+    std::size_t total_limit) {
+    if (chunk_limit == 0 || total_limit == 0) {
+        throw std::runtime_error("transition limits must be positive");
+    }
+    std::vector<TransitionChunk> chunks;
+    TransitionOffset total = 0;
+    std::size_t begin = 0;
+    TransitionOffset chunk_total = 0;
+    TransitionOffset chunk_base = 0;
+    for (std::size_t source = 0; source < counts.size(); ++source) {
+        const TransitionOffset count = counts[source];
+        if (count > chunk_limit) {
+            throw std::runtime_error(
+                "single-source transition count " + std::to_string(count) +
+                " exceeds chunk limit " + std::to_string(chunk_limit));
+        }
+        if (chunk_total != 0 && count > chunk_limit - chunk_total) {
+            chunks.push_back(TransitionChunk{
+                begin, source, chunk_base, static_cast<std::size_t>(chunk_total)});
+            begin = source;
+            chunk_base = total;
+            chunk_total = 0;
+        }
+        if (count > std::numeric_limits<TransitionOffset>::max() - total) {
+            throw std::runtime_error("total transition count overflows");
+        }
+        total += count;
+        chunk_total += count;
+        if (total > total_limit) {
+            throw std::runtime_error(
+                "transition count " + std::to_string(total) +
+                " exceeds configured total limit " + std::to_string(total_limit));
+        }
+    }
+    if (chunk_total != 0) {
+        chunks.push_back(TransitionChunk{
+            begin, counts.size(), chunk_base, static_cast<std::size_t>(chunk_total)});
+    }
+    return chunks;
+}
 
 std::size_t checked_bytes(std::size_t count, std::size_t width,
                           const char* description) {
@@ -485,6 +538,132 @@ TransitionDisposition classify_transition_total(TransitionOffset last_offset,
                : TransitionDisposition::proceed;
 }
 
+struct ReductionSizes {
+    std::size_t record_bytes = 0;
+    std::size_t sort_temp_bytes = 0;
+    std::size_t reduce_temp_bytes = 0;
+    std::size_t scratch_bytes = 0;
+};
+
+ReductionSizes reduction_sizes(std::size_t count, const DeviceShape& shape,
+                               Residues moduli) {
+    ReductionSizes sizes;
+    sizes.record_bytes = checked_bytes(
+        count, sizeof(Key) + sizeof(Residues), "transition record");
+    HIP_CHECK(rocprim::radix_sort_pairs(
+        nullptr, sizes.sort_temp_bytes, static_cast<Key*>(nullptr),
+        static_cast<Key*>(nullptr), static_cast<Residues*>(nullptr),
+        static_cast<Residues*>(nullptr), count, 0, shape.rows * shape.bits));
+    HIP_CHECK(rocprim::reduce_by_key(
+        nullptr, sizes.reduce_temp_bytes, static_cast<Key*>(nullptr),
+        static_cast<Residues*>(nullptr), count, static_cast<Key*>(nullptr),
+        static_cast<Residues*>(nullptr), static_cast<std::size_t*>(nullptr),
+        ModularAdd{moduli}, rocprim::equal_to<Key>{}));
+    sizes.scratch_bytes = std::max(sizes.sort_temp_bytes, sizes.reduce_temp_bytes);
+    return sizes;
+}
+
+void require_gpu_memory(std::size_t additional_bytes,
+                        std::size_t& minimum_free_bytes,
+                        std::size_t& maximum_required_bytes) {
+    std::size_t free_bytes = 0;
+    std::size_t total_bytes = 0;
+    HIP_CHECK(hipMemGetInfo(&free_bytes, &total_bytes));
+    minimum_free_bytes = minimum_free_bytes == 0
+                             ? free_bytes
+                             : std::min(minimum_free_bytes, free_bytes);
+    maximum_required_bytes = std::max(maximum_required_bytes, additional_bytes);
+    if (free_bytes <= kGpuMemoryReserveBytes ||
+        additional_bytes > free_bytes - kGpuMemoryReserveBytes) {
+        throw std::runtime_error(
+            "GPU byte budget exceeded: need " + std::to_string(additional_bytes) +
+            " additional bytes plus " + std::to_string(kGpuMemoryReserveBytes) +
+            " reserved, only " + std::to_string(free_bytes) + " free of " +
+            std::to_string(total_bytes));
+    }
+}
+
+void add_timings(LayerTimings& target, const LayerTimings& source) {
+    target.count_ms += source.count_ms;
+    target.scan_ms += source.scan_ms;
+    target.emit_ms += source.emit_ms;
+    target.sort_ms += source.sort_ms;
+    target.reduce_ms += source.reduce_ms;
+    target.compact_ms += source.compact_ms;
+}
+
+StateLayer reduce_records(DeviceBuffer<Key>&& keys,
+                          DeviceBuffer<Residues>&& values, std::size_t count,
+                          const DeviceShape& shape, Residues moduli,
+                          const ReductionSizes& sizes, LayerTimings& timings) {
+    std::size_t unique_count = 0;
+    {
+        DeviceBuffer<Key> sorted_keys(count);
+        DeviceBuffer<Residues> sorted_values(count);
+        DeviceBuffer<std::size_t> unique_count_device(1);
+        RawDeviceBuffer aggregate_temp(sizes.scratch_bytes);
+        timings.sort_ms += time_gpu([&] {
+            HIP_CHECK(rocprim::radix_sort_pairs(
+                aggregate_temp.get(), sizes.sort_temp_bytes, keys.get(),
+                sorted_keys.get(), values.get(), sorted_values.get(), count,
+                0, shape.rows * shape.bits));
+        });
+        timings.reduce_ms += time_gpu([&] {
+            HIP_CHECK(rocprim::reduce_by_key(
+                aggregate_temp.get(), sizes.reduce_temp_bytes, sorted_keys.get(),
+                sorted_values.get(), count, keys.get(), values.get(),
+                unique_count_device.get(), ModularAdd{moduli},
+                rocprim::equal_to<Key>{}));
+        });
+        HIP_CHECK(hipMemcpy(&unique_count, unique_count_device.get(),
+                            sizeof(unique_count), hipMemcpyDeviceToHost));
+    }
+    StateLayer compact{DeviceBuffer<Key>(unique_count),
+                       DeviceBuffer<Residues>(unique_count), unique_count};
+    timings.compact_ms += time_gpu([&] {
+        HIP_CHECK(hipMemcpy(compact.keys.get(), keys.get(),
+                            unique_count * sizeof(Key), hipMemcpyDeviceToDevice));
+        HIP_CHECK(hipMemcpy(compact.values.get(), values.get(),
+                            unique_count * sizeof(Residues),
+                            hipMemcpyDeviceToDevice));
+    });
+    return compact;
+}
+
+StateLayer merge_layers(StateLayer&& left, StateLayer&& right,
+                        const DeviceShape& shape, Residues moduli,
+                        LayerTimings& timings, std::size_t& sort_temp_bytes,
+                        std::size_t& minimum_free_bytes,
+                        std::size_t& maximum_required_bytes) {
+    if (left.size == 0) {
+        return std::move(right);
+    }
+    if (right.size == 0) {
+        return std::move(left);
+    }
+    const std::size_t count = left.size + right.size;
+    const ReductionSizes sizes = reduction_sizes(count, shape, moduli);
+    const std::size_t required =
+        checked_bytes(2, sizes.record_bytes, "merge record layers") +
+        sizes.scratch_bytes;
+    require_gpu_memory(required, minimum_free_bytes, maximum_required_bytes);
+    sort_temp_bytes = std::max(sort_temp_bytes, sizes.sort_temp_bytes);
+    DeviceBuffer<Key> keys(count);
+    DeviceBuffer<Residues> values(count);
+    HIP_CHECK(hipMemcpy(keys.get(), left.keys.get(), left.size * sizeof(Key),
+                        hipMemcpyDeviceToDevice));
+    HIP_CHECK(hipMemcpy(keys.get() + left.size, right.keys.get(),
+                        right.size * sizeof(Key), hipMemcpyDeviceToDevice));
+    HIP_CHECK(hipMemcpy(values.get(), left.values.get(),
+                        left.size * sizeof(Residues), hipMemcpyDeviceToDevice));
+    HIP_CHECK(hipMemcpy(values.get() + left.size, right.values.get(),
+                        right.size * sizeof(Residues), hipMemcpyDeviceToDevice));
+    left = StateLayer{};
+    right = StateLayer{};
+    return reduce_records(std::move(keys), std::move(values), count, shape,
+                          moduli, sizes, timings);
+}
+
 AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
                             const DeviceLevelBounds& level_bounds,
                             std::uint32_t strip_size, std::uint32_t row_lo,
@@ -493,6 +672,7 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
                             std::uint32_t strict_lower_mask,
                             std::uint32_t strict_diagonal_mask,
                             std::size_t maximum_transitions,
+                            std::size_t maximum_chunk_transitions,
                             Residues moduli) {
     const unsigned int blocks =
         static_cast<unsigned int>((states.size + kBlockSize - 1) / kBlockSize);
@@ -504,11 +684,10 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
                            states.keys.get(), states.size, shape, level_bounds,
                            strip_size, row_lo, row_hi, forbidden_mask,
                            strict_lower_mask, strict_diagonal_mask,
-                           static_cast<std::uint32_t>(maximum_transitions + 1),
+                           static_cast<std::uint32_t>(maximum_chunk_transitions + 1),
                            counts.get());
         HIP_CHECK(hipGetLastError());
     });
-
     std::size_t scan_temp_bytes = 0;
     HIP_CHECK(rocprim::exclusive_scan(nullptr, scan_temp_bytes, counts.get(),
                                       offsets.get(), TransitionOffset{0}, states.size,
@@ -520,104 +699,52 @@ AdvanceResult advance_layer(const StateLayer& states, const DeviceShape& shape,
             TransitionOffset{0}, states.size,
             rocprim::plus<TransitionOffset>{}));
     });
-    TransitionOffset last_offset = 0;
-    TransitionOffset last_count = 0;
-    HIP_CHECK(hipMemcpy(&last_offset, offsets.get() + states.size - 1,
-                        sizeof(last_offset), hipMemcpyDeviceToHost));
-    HIP_CHECK(hipMemcpy(&last_count, counts.get() + states.size - 1,
-                        sizeof(last_count), hipMemcpyDeviceToHost));
-    const TransitionDisposition disposition = classify_transition_total(
-        last_offset, last_count, maximum_transitions);
-    if (disposition == TransitionDisposition::over_limit) {
-        throw std::runtime_error(
-            "transition count " + std::to_string(last_offset + last_count) +
-            " exceeds configured limit " + std::to_string(maximum_transitions));
-    }
-    if (disposition == TransitionDisposition::empty) {
-        result.states = StateLayer{};
-        return result;
-    }
-    const TransitionOffset transition_count_u64 = last_offset + last_count;
-    result.transitions = static_cast<std::size_t>(transition_count_u64);
-
-    DeviceBuffer<Key> transition_keys(result.transitions);
-    DeviceBuffer<Residues> transition_values(result.transitions);
-    std::size_t sort_temp_bytes = 0;
-    HIP_CHECK(rocprim::radix_sort_pairs(
-        nullptr, sort_temp_bytes, transition_keys.get(), static_cast<Key*>(nullptr),
-        transition_values.get(), static_cast<Residues*>(nullptr), result.transitions,
-        0, shape.rows * shape.bits));
-    std::size_t reduce_temp_bytes = 0;
-    HIP_CHECK(rocprim::reduce_by_key(
-        nullptr, reduce_temp_bytes, static_cast<Key*>(nullptr),
-        static_cast<Residues*>(nullptr), result.transitions,
-        transition_keys.get(), transition_values.get(),
-        static_cast<std::size_t*>(nullptr),
-        ModularAdd{moduli}, rocprim::equal_to<Key>{}));
-    const std::size_t record_bytes = sizeof(Key) + sizeof(Residues);
-    const std::size_t one_record_layer =
-        checked_bytes(result.transitions, record_bytes, "transition record");
-    const std::size_t scratch_bytes = std::max(sort_temp_bytes, reduce_temp_bytes);
-    if (one_record_layer > std::numeric_limits<std::size_t>::max() - scratch_bytes) {
-        throw std::runtime_error("GPU working-set byte count overflows");
-    }
-    const std::size_t remaining_peak = one_record_layer + scratch_bytes;
-    std::size_t free_bytes = 0;
-    std::size_t total_bytes = 0;
-    HIP_CHECK(hipMemGetInfo(&free_bytes, &total_bytes));
-    result.memory_free_bytes = free_bytes;
-    result.memory_required_bytes = remaining_peak;
-    if (free_bytes <= kGpuMemoryReserveBytes ||
-        remaining_peak > free_bytes - kGpuMemoryReserveBytes) {
-        throw std::runtime_error(
-            "GPU byte budget exceeded: need " + std::to_string(remaining_peak) +
-            " additional bytes plus " + std::to_string(kGpuMemoryReserveBytes) +
-            " reserved, only " + std::to_string(free_bytes) + " free of " +
-            std::to_string(total_bytes));
-    }
-    result.timings.emit_ms = time_gpu([&] {
-        hipLaunchKernelGGL(emit_transitions, dim3(blocks), dim3(kBlockSize), 0, 0,
-                           states.keys.get(), states.values.get(), states.size,
-                           shape, level_bounds, strip_size, row_lo, row_hi,
-                           forbidden_mask, strict_lower_mask,
-                           strict_diagonal_mask, offsets.get(),
-                           transition_keys.get(), transition_values.get());
-        HIP_CHECK(hipGetLastError());
-    });
-
-    result.sort_temp_bytes = sort_temp_bytes;
-    std::size_t unique_count = 0;
-    {
-        DeviceBuffer<Key> sorted_keys(result.transitions);
-        DeviceBuffer<Residues> sorted_values(result.transitions);
-        DeviceBuffer<std::size_t> unique_count_device(1);
-        RawDeviceBuffer aggregate_temp(scratch_bytes);
-        result.timings.sort_ms = time_gpu([&] {
-            HIP_CHECK(rocprim::radix_sort_pairs(
-                aggregate_temp.get(), sort_temp_bytes, transition_keys.get(),
-                sorted_keys.get(), transition_values.get(), sorted_values.get(),
-                result.transitions, 0, shape.rows * shape.bits));
+    std::vector<TransitionOffset> host_counts(states.size);
+    HIP_CHECK(hipMemcpy(host_counts.data(), counts.get(),
+                        states.size * sizeof(TransitionOffset),
+                        hipMemcpyDeviceToHost));
+    const std::vector<TransitionChunk> chunks = plan_source_chunks(
+        host_counts, maximum_chunk_transitions, maximum_transitions);
+    result.chunks = chunks.size();
+    StateLayer accumulator;
+    for (const TransitionChunk& chunk : chunks) {
+        result.transitions += chunk.transitions;
+        result.largest_chunk = std::max(result.largest_chunk, chunk.transitions);
+        const ReductionSizes sizes = reduction_sizes(chunk.transitions, shape, moduli);
+        const std::size_t required =
+            checked_bytes(2, sizes.record_bytes, "chunk record layers") +
+            sizes.scratch_bytes;
+        require_gpu_memory(required, result.memory_free_bytes,
+                           result.memory_required_bytes);
+        result.sort_temp_bytes = std::max(result.sort_temp_bytes,
+                                          sizes.sort_temp_bytes);
+        DeviceBuffer<Key> transition_keys(chunk.transitions);
+        DeviceBuffer<Residues> transition_values(chunk.transitions);
+        const std::size_t source_count = chunk.source_end - chunk.source_begin;
+        const unsigned int chunk_blocks = static_cast<unsigned int>(
+            (source_count + kBlockSize - 1) / kBlockSize);
+        LayerTimings chunk_timings;
+        chunk_timings.emit_ms = time_gpu([&] {
+            hipLaunchKernelGGL(
+                emit_transitions, dim3(chunk_blocks), dim3(kBlockSize), 0, 0,
+                states.keys.get() + chunk.source_begin,
+                states.values.get() + chunk.source_begin, source_count, shape,
+                level_bounds, strip_size, row_lo, row_hi, forbidden_mask,
+                strict_lower_mask, strict_diagonal_mask,
+                offsets.get() + chunk.source_begin, chunk.offset_base,
+                transition_keys.get(), transition_values.get());
+            HIP_CHECK(hipGetLastError());
         });
-        result.timings.reduce_ms = time_gpu([&] {
-            HIP_CHECK(rocprim::reduce_by_key(
-                aggregate_temp.get(), reduce_temp_bytes, sorted_keys.get(),
-                sorted_values.get(), result.transitions, transition_keys.get(),
-                transition_values.get(), unique_count_device.get(), ModularAdd{moduli},
-                rocprim::equal_to<Key>{}));
-        });
-        HIP_CHECK(hipMemcpy(&unique_count, unique_count_device.get(),
-                            sizeof(unique_count), hipMemcpyDeviceToHost));
+        StateLayer partial = reduce_records(
+            std::move(transition_keys), std::move(transition_values),
+            chunk.transitions, shape, moduli, sizes, chunk_timings);
+        accumulator = merge_layers(
+            std::move(accumulator), std::move(partial), shape, moduli,
+            chunk_timings, result.sort_temp_bytes, result.memory_free_bytes,
+            result.memory_required_bytes);
+        add_timings(result.timings, chunk_timings);
     }
-    StateLayer compact{DeviceBuffer<Key>(unique_count),
-                       DeviceBuffer<Residues>(unique_count), unique_count};
-    result.timings.compact_ms = time_gpu([&] {
-        HIP_CHECK(hipMemcpy(compact.keys.get(), transition_keys.get(),
-                            unique_count * sizeof(Key), hipMemcpyDeviceToDevice));
-        HIP_CHECK(hipMemcpy(compact.values.get(), transition_values.get(),
-                            unique_count * sizeof(Residues),
-                            hipMemcpyDeviceToDevice));
-    });
-    result.states = std::move(compact);
+    result.states = std::move(accumulator);
     return result;
 }
 
@@ -849,6 +976,41 @@ int main() try {
         TransitionDisposition::proceed) {
         throw std::runtime_error("ordinary transition regression failed");
     }
+    if (!plan_source_chunks({0, 0, 0}, 2, 10).empty()) {
+        throw std::runtime_error("all-zero chunk plan regression failed");
+    }
+    const std::vector<TransitionChunk> planned =
+        plan_source_chunks({0, 2, 0, 1, 1, 0, 2}, 2, 6);
+    if (planned.size() != 3 || planned[0].source_begin != 0 ||
+        planned[0].source_end != 3 || planned[0].offset_base != 0 ||
+        planned[0].transitions != 2 || planned[1].source_begin != 3 ||
+        planned[1].source_end != 6 || planned[1].offset_base != 2 ||
+        planned[1].transitions != 2 || planned[2].source_begin != 6 ||
+        planned[2].source_end != 7 || planned[2].offset_base != 4 ||
+        planned[2].transitions != 2) {
+        throw std::runtime_error("source chunk planning regression failed");
+    }
+    bool rejected_single_source = false;
+    try {
+        static_cast<void>(plan_source_chunks({3}, 2, 10));
+    } catch (const std::runtime_error&) {
+        rejected_single_source = true;
+    }
+    bool rejected_total = false;
+    try {
+        static_cast<void>(plan_source_chunks({2, 2}, 2, 3));
+    } catch (const std::runtime_error&) {
+        rejected_total = true;
+    }
+    const std::vector<TransitionChunk> wide_plan = plan_source_chunks(
+        {std::numeric_limits<std::uint32_t>::max(), 1},
+        std::numeric_limits<std::uint32_t>::max(),
+        std::numeric_limits<TransitionOffset>::max());
+    if (!rejected_single_source || !rejected_total || wide_plan.size() != 2 ||
+        wide_plan[1].offset_base + wide_plan[1].transitions <=
+            std::numeric_limits<std::uint32_t>::max()) {
+        throw std::runtime_error("chunk limit regression failed");
+    }
     bool rejected_suffix = false;
     try {
         static_cast<void>(parse_u32("1junk", "test value"));
@@ -927,6 +1089,12 @@ int main(int argc, char** argv) try {
                   argv[7], "maximum transitions",
                   std::numeric_limits<std::size_t>::max()))
             : kDefaultMaximumTransitions;
+    const char* chunk_environment = std::getenv("EHRGPU_CHUNK_TRANSITIONS");
+    const std::size_t maximum_chunk_transitions = chunk_environment == nullptr
+        ? std::min(maximum_transitions, kDefaultMaximumTransitions)
+        : static_cast<std::size_t>(parse_decimal(
+              chunk_environment, "EHRGPU_CHUNK_TRANSITIONS",
+              std::numeric_limits<std::size_t>::max()));
     std::vector<std::uint32_t> modulus_values;
     if (argc == 9 || argc == 12 || argc == 14) {
         modulus_values = parse_list(argv[8], "modulus");
@@ -951,6 +1119,12 @@ int main(int argc, char** argv) try {
     }
     if (maximum_transitions >= std::numeric_limits<std::uint32_t>::max()) {
         throw std::runtime_error("maximum transitions must be below 2^32-1");
+    }
+    if (maximum_chunk_transitions == 0 ||
+        maximum_chunk_transitions > maximum_transitions ||
+        maximum_chunk_transitions >= std::numeric_limits<std::uint32_t>::max()) {
+        throw std::runtime_error(
+            "EHRGPU_CHUNK_TRANSITIONS must lie in 1..maximum transitions");
     }
     scale(outer, dilation);
     scale(inner, dilation);
@@ -1084,7 +1258,8 @@ int main(int argc, char** argv) try {
         AdvanceResult next = advance_layer(
             states, shape, level_bounds, weight[label], row_lo, row_hi,
             forbidden_masks[label], strict_lower_masks[label],
-            strict_diagonal_masks[label], maximum_transitions, moduli);
+            strict_diagonal_masks[label], maximum_transitions,
+            maximum_chunk_transitions, moduli);
         states = std::move(next.states);
         peak_states = std::max(peak_states, states.size);
         peak_transitions = std::max(peak_transitions, next.transitions);
@@ -1096,6 +1271,8 @@ int main(int argc, char** argv) try {
                   << "{\"label\":" << label + 1
                   << ",\"source_states\":" << source_states
                   << ",\"transitions\":" << next.transitions
+                  << ",\"chunks\":" << next.chunks
+                  << ",\"largest_chunk\":" << next.largest_chunk
                   << ",\"states\":" << states.size
                   << ",\"count_ms\":" << timing.count_ms
                   << ",\"scan_ms\":" << timing.scan_ms
@@ -1108,6 +1285,9 @@ int main(int argc, char** argv) try {
                   << ",\"memory_required_bytes\":"
                   << next.memory_required_bytes
                   << ",\"memory_reserve_bytes\":" << kGpuMemoryReserveBytes
+                  << ",\"maximum_transitions\":" << maximum_transitions
+                  << ",\"maximum_chunk_transitions\":"
+                  << maximum_chunk_transitions
                   << "}\n";
         if (states.size == 0) {
             break;

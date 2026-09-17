@@ -44,6 +44,8 @@ run_case() {
     local forbidden=${9:--}
     local strict_lower=${10:--}
     local strict_diagonal=${11:--}
+    local maximum_transitions=${12:-150000000}
+    local chunk_transitions=${13:-$maximum_transitions}
     local cpu_output
     local gpu_output
     local cpu_residue
@@ -59,10 +61,11 @@ run_case() {
         docker run --rm \
             --device=/dev/kfd --device=/dev/dri \
             --group-add video --security-opt seccomp=unconfined \
+            -e EHRGPU_CHUNK_TRANSITIONS="$chunk_transitions" \
             -v "$build_dir:/build" \
             "$image_name" /build/packed-flagged-kostka-gpu-resident \
             "$dilation" "$outer" "$inner" \
-            "$weight" "$upper" "$lower" 150000000 "$modulus" \
+            "$weight" "$upper" "$lower" "$maximum_transitions" "$modulus" \
             "$forbidden" "$strict_lower" "$strict_diagonal" \
             2>"$build_dir/smoke-$name-$modulus.log"
     )
@@ -82,5 +85,8 @@ for modulus in 2147483647 2147483629; do
     run_case strict-forced-diagonal 1 2,1 - 1,1,1 2,2,1 - "$modulus" \
         0,0,0 0,0,0 0,0,2
 done
+
+run_case forced-chunk-mod2 1 3,2 - 1,1,1,1,1 - - 2 - - - 100 2
+run_case forced-chunk-mod3 1 3,2 - 1,1,1,1,1 - - 3 - - - 100 2
 
 echo "GPU-resident smoke suite passed"
