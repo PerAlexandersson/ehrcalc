@@ -1,5 +1,25 @@
 # Ehrcalc Handoff
 
+## Specialized GPU strip ceiling 640 verified — 2026-09-17 12:14 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  Commit `d9a4472` is pushed to `origin/main`; it raises only
+the exact GPU wrapper and compile-time specialization ceiling from 512 to 640.
+The resident kernel is still compiled with each request's actual maximum strip
+size, so ordinary requests retain their existing smaller per-thread work
+array.  Bash syntax and the new 641 rejection boundary pass.
+
+Euler provided the end-to-end above-old-ceiling check.  Exact strict request
+`20260917T121024-b97f9cd34af6` compiled the new source at strip size 513 and
+returned `1476444870459318592332500` in 12.816 seconds with six-prime CRT
+provenance, source SHA
+`992e488cb979381428f5b670392231d21c2437d47c04d79a6ace355b36b2a40c`,
+and confirmed container cleanup.  Combined with the already audited d27 KTT
+samples 1--26, this gave an exact-positive polynomial matching a separately
+computed presentation in every coefficient.  See the reduced-Kogan mutation
+handoff, v684/v685, for candidate identity and audit hashes.  No MariaDB write
+or R211 work occurred, and every generated `runs/` artifact remains untracked.
+
 ## GPU strict-path bounds and linear counter verified — 2026-09-17 08:45 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
