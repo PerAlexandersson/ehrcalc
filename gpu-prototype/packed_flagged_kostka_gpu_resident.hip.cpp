@@ -37,7 +37,7 @@ constexpr std::size_t kMaximumRows = 32;
 #define EHRGPU_MAX_STRIP_SIZE 128
 #endif
 constexpr std::uint32_t kMaximumStripSize = EHRGPU_MAX_STRIP_SIZE;
-static_assert(kMaximumStripSize >= 1 && kMaximumStripSize <= 512);
+static_assert(kMaximumStripSize >= 1 && kMaximumStripSize <= 640);
 constexpr std::size_t kDefaultMaximumTransitions = 150'000'000;
 constexpr std::size_t kGpuMemoryReserveBytes = std::size_t{2} << 30;
 #ifndef EHRGPU_BLOCK_SIZE

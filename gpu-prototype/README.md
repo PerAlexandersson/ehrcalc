@@ -72,6 +72,9 @@ sorted state map is merged modularly into the accumulated layer. This changes
 only peak memory, not the transition work bound or the resulting state map.
 The default modulus is 2,147,483,647. The modulus must be in `2..2^31`; exact integer answers require
 enough pairwise-coprime residue runs to exceed a separately certified bound.
+The exact wrapper accepts a scaled horizontal-strip size of at most 640.  Each
+binary is specialized to the requested maximum, so smaller requests retain
+their smaller per-thread work array.
 Numeric arguments are parsed strictly: suffixes, empty list entries, overflow,
 and non-coprime modulus lists are rejected. A mathematically valid empty DP
 frontier returns zero rather than being treated as a runtime failure.

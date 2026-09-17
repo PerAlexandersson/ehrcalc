@@ -83,8 +83,8 @@ if not weight_text or any(not re.fullmatch(r"[0-9]+", part) for part in weight_t
     raise SystemExit("weight must be a nonempty comma-separated unsigned integer list")
 dilation = int(dilation_text)
 maximum = dilation * max(map(int, weight_text.split(",")))
-if maximum > 512:
-    raise SystemExit("scaled weight part exceeds GPU strip-size limit 512")
+if maximum > 640:
+    raise SystemExit("scaled weight part exceeds GPU strip-size limit 640")
 print(max(1, maximum))
 PY
 )
