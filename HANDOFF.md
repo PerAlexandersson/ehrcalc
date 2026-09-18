@@ -1,5 +1,34 @@
 # Ehrcalc Handoff
 
+## Unstrengthened zero-edge closures promoted — 2026-09-18 18:11 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+Audit of the random-family generator showed that every prior random child used
+at least two additional flag-strengthening operations after absorbing the sole
+bad edge.  V877 therefore enumerated the strictly closer atomic mutation:
+general shape move plus sole-hole absorption, with no additional flag
+strengthening.  From 329 presentations it found 117 nonempty candidates; 23
+overlap prior untracked random families, leaving 94 ledger-fresh zero-edge
+cases across 72 outer shapes.  They range from d32 to d106, with 11 in
+d100--d106.  Structural report SHA is
+`da2cd894957fa9854742bb92a06fae4c8b76d7b89b48083279dbfa3b3e7606e7`.
+
+Because these are closer to the verified-negative parents than the random
+pilot, queued v876 `20260918T180615-d998a578834b` was cancelled before start,
+unambiguously and without computation.  V878 preflight selected the 11
+unstrengthened d100--d106 cases (11 distinct outer shapes; histogram d100:1,
+d101:1, d102:2, d103:2, d104:3, d105:1, d106:1).  Every parent was freshly
+rechecked exact-negative and every key was absent from all 16 MariaDB ledger
+tables.  Preflight SHA is
+`e3ec29c6f85df0bdc70bde3247465e664708cf75b1166aa5518636c3a1464df6`.
+
+Abacus v878 `20260918T181107-6df25a5264ba` is queued directly behind still-
+running v868, using six lanes, 600 seconds/12 million states per case, and a
+2,400-second envelope.  Manifest SHAs are `1377a55a...`, `7e55ecdc...`,
+`86ed97bc...`, `9d7b89ad...`, `18f29fe4...`, and `5aa3fc8e...`.
+R211 r5 `L(41)` remains running.  No result was fetched and no database write
+occurred.
+
 ## Top-nearest zero-edge pilot isolated — 2026-09-18 18:06 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
