@@ -1,5 +1,30 @@
 # Ehrcalc Handoff
 
+## R5 L41 isolated retry live — 2026-09-18 16:37 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+After the unrelated Lean builds became terminal and Euler cgroup use stabilized
+near 12.5 GB of 24 GiB, Euler v859 began the unambiguous retry of ordinary
+`L(41)` alone.  Unified exec session `41240`, runner PID 167624, and child PID
+167628 use CPUs 0--3, four Rayon threads, and nice 10; no strict count runs
+concurrently.  The untracked runner and immutable exact formula binary SHAs
+are
+`b6d6f95b9147bb939100fc909c7f5e15e2263e98aced5f5fb73196be6d6ddd1a`
+and
+`a336cbe618d83847189647c9e413e1d23f4429165e8769b367594963393cada1`.
+Its distinct pending report is
+`runs/euler-v859-r5-l41-formula-par4-retry-20260918.json`.
+
+Immediately before launch, a read-only schema audit checked all 16 current
+MariaDB tables containing `candidate_key`; each had zero rows for r5 key
+`14de890ac958f9aad12059092ae3a69b6bb312a612c81b75b35ceb3ed8533b5e`.
+No local KTT process or v859 report existed, Abacus v852
+`20260918T132234-e962967c4dc0` remained authoritatively running only strict 23,
+Laplace remained unreachable, and the Euler GPU bridge was ready/idle.  At the
+first post-launch check Euler used about 12.8 GB and OOM counters remained
+`oom=21`, `oom_kill=5`.  Do not duplicate `L(41)` or strict 23 and do not retry
+strict 24 concurrently.  No database write occurred.
+
 ## R5 Euler OOM receipts preserved; Abacus strict 23 still live — 2026-09-18 16:29 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
