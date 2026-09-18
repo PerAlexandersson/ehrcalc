@@ -1,5 +1,28 @@
 # Ehrcalc Handoff
 
+## R5 decisive samples split across Abacus and R211 — 2026-09-18 17:11 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+Candidate r5 (`14de890ac958f9aad12059092ae3a69b6bb312a612c81b75b35ceb3ed8533b5e`)
+is still unresolved at exact interpolation rank 54/56: it is affine dimension
+64, weight-active, retains a nontrivial flag, and has zero effective nonflag
+edges.  Existing exact samples determine neither its sign nor the two remaining
+h* unknowns, so it must not yet be used as a mutation parent.
+
+After the user made R211 available, the never-started Abacus v860 `L(41)` job
+`20260918T164702-80293e83b882` was authoritatively cancelled in state `queued`.
+Abacus v852 `20260918T132234-e962967c4dc0` remains running only strict 23 with
+six threads, a 30-million-state guard, a 14,400-second envelope, and binary SHA
+`12362529adefd756aeb12edd5ffa9e35e5401cde7b2d9b27bfe441b3dcef63cf`.
+R211 v861 `20260918T171130-f7dbbbf7e74a` is now running only ordinary `L(41)`
+with `/usr/bin/env RAYON_NUM_THREADS=4 ./retained_flag_formula 41 41`, four
+assigned CPUs, the 9 GiB machine cap, a 14,400-second envelope, and binary SHA
+`a336cbe618d83847189647c9e413e1d23f4429165e8769b367594963393cada1`.
+There is no overlapping sample.  Fetch each terminal job exactly once; either
+sample raises the rank to 55, and both exact results give full rank 56.  The
+fresh read-only audit still found zero r5 rows in all 16 MariaDB tables having a
+`candidate_key` column.  No database write occurred.
+
 ## R5 L41 moved to isolated Abacus queue — 2026-09-18 16:47 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
