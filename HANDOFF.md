@@ -1,5 +1,50 @@
 # Ehrcalc Handoff
 
+## Fast exact random zero-edge search through d60 — 2026-09-18 17:38 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+The current optimized Ehrcalc binary SHA
+`4b56f84fc0fa0840e0fc6f7efae90c2fa888f425217353fdb7df195b990c79d7`
+resolved both low-dimensional batches completely; no heuristic early abort was
+used.  Abacus v862 `20260918T172457-fc5ba1809aac` produced exact full
+polynomials for all 61 formerly unresolved corrected-v354 cases in d24--d30.
+All are coefficient-nonnegative.  Combined with the prior 88 exact-positive
+cases, the complete 149-case v354 d21--d30 unit-weight zero-edge slice is now
+nonnegative.  Audit SHA is
+`aa2657e871578b4075cd9c9834c13191fc38d4555186d3a1550e47a42da42452`;
+nine controls matched, all Hibi--Stanley and h*-to-power checks passed, target
+time totaled 20.151569520006888 seconds, and the maximum was
+1.0425316579639912 seconds.
+
+V864 then generated a genuinely new deterministic random family directly from
+the four independently replayed, ledger-exact-negative d103--d109 one-hole
+parents: move to a general shape, absorb the sole hole into an ordinary flag,
+and add further random monotone flags in the same atomic mutation.  Its 129
+selected candidates span every dimension 18--30, 50 outer shapes, weights
+`1^19` or `1^20`, active fixed content, and zero nonflag edges; structural SHA
+is `fec3ce7be7d83fc3191a69e5778b267044a7f8839109e46b7db6252cf0cab39d`.
+Abacus v865 `20260918T173403-068bf3db98c3` computed all 129 full polynomials
+exactly; all are nonnegative.  Independent audit SHA is
+`705f53c8fe3310e6564bc3fedcff8cc37870a37e095f0813008de1a9b27c8c80`;
+six controls and all Hibi--Stanley, reconstruction, and integer-sample checks
+passed.  Aggregate target time was 54.6531078160624 seconds, maximum
+3.780913342954591 seconds.  These positive children are terminal and must not
+be mutated.
+
+The same construction was widened to d31--d60.  Structural v867 SHA
+`46c8e0c34db554577d7b6b67d7022fd1e05a278cae34b1dad98eae7eddbecd0f`
+contains 240 ledger-fresh cases, exactly eight per dimension, across 63 outer
+shapes; all retain unit weights and zero nonflag edges and all parent rows were
+freshly rechecked exact-negative.  Abacus v868
+`20260918T173820-f8735c915e76` is running those 240 cases in two six-lane waves
+under a 7,200-second envelope.  Preflight SHA is
+`c38cf9c668a2e8b2d3b71796747bff9d77d270ce5381e8c253b20d1ac3ca5705`;
+runner SHA is
+`8f464f6cb75eb7339e651dbcd24d8ec203b20e5cfa7f26c00cad371798964abf`.
+Fetch v868 exactly once at terminal and independently audit every result before
+classification.  R211 v861 remains the sole owner of r5 `L(41)`; r5 is still
+rank 54/56 because Abacus strict 23 timed out.  No database write occurred.
+
 ## Broad unit-weight d24--d30 zero-edge retry live — 2026-09-18 17:25 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
