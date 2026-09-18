@@ -1,5 +1,28 @@
 # Ehrcalc Handoff
 
+## R5 reaches rank 50; strict 20 retry and strict 22 live — 2026-09-18 10:55 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  R211 remains idle, generated `runs/` evidence remains
+untracked, and no MariaDB write occurred.
+
+Abacus v829 `20260918T085601-ec68644077c2` was fetched exactly once to suffix
+`tg6bkob3`.  Its strict-19 child returned exact
+`1145091589338639694794994347714408480`, independently reported dimension 64,
+peak frontier 2,629,575, empty stderr, and exit 0 in 3,307.859 seconds.  Its
+strict-20 child reached its clean 7,000-second timeout with empty stdout and
+stderr; strict 20 remains unresolved and is not a zero.  Job/output/result
+SHAs are `3879aa4c5066...`, `cb1bc7c5f4ff...`, and `81868a6e94ff...`;
+runner/binary SHAs remain `12edb74cf32b...` and `c7d390a237d7...`.
+
+R5 therefore has exact rank 50 of 56.  A fresh exact rational row audit
+confirms that the six missing independent samples are strict dilations 20 and
+22--26, with strict 27 reserved for validation.  Euler v840 exclusively owns
+strict 22.  After confirming Abacus idle and no overlap, Abacus v841
+`20260918T105437-3bf0f2a44efa` began only strict 20 with the six-thread
+split-192 binary SHA `3d329123...`, a 20-million-state cap, and a 7,200-second
+envelope.  Do not duplicate either live point.
+
 ## R5 strict 21 exact with checked inline counter — 2026-09-18 10:42 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
