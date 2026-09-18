@@ -42,6 +42,20 @@ pub struct ModularKostkaStats {
     pub level_transitions: Vec<u64>,
 }
 
+/// Exact Kostka count and layer statistics from the packed-key CPU backend.
+///
+/// Unlike [`ModularKostkaStats`], multiplicities remain arbitrary-precision
+/// integers. Packing only changes the representation of intermediate
+/// partitions, avoiding a heap allocation and `Partition` clone for every
+/// emitted transition.
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub struct PackedExactKostkaStats {
+    pub value: BigUint,
+    pub peak_states: usize,
+    pub level_states: Vec<usize>,
+    pub level_transitions: Vec<u64>,
+}
+
 /// One contribution emitted while advancing a packed modular DP layer.
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct PackedModularRecord {
@@ -193,8 +207,13 @@ fn avalanche(mut value: u64) -> u64 {
 
 pub(crate) type PackedBuildHasher = BuildHasherDefault<PackedHasher>;
 type StateMap = HashMap<u128, Residues, PackedBuildHasher>;
+type ExactStateMap = HashMap<u128, BigUint, PackedBuildHasher>;
 
 fn state_map_with_capacity(capacity: usize) -> StateMap {
+    HashMap::with_capacity_and_hasher(capacity, PackedBuildHasher::default())
+}
+
+fn exact_state_map_with_capacity(capacity: usize) -> ExactStateMap {
     HashMap::with_capacity_and_hasher(capacity, PackedBuildHasher::default())
 }
 
@@ -383,6 +402,197 @@ fn validate_constraint_masks(
         ));
     }
     Ok(())
+}
+
+/// Count a constrained skew Kostka coefficient exactly with packed state keys.
+///
+/// This has the same constraint semantics as
+/// [`crate::kostka_dp::try_masked_flagged_skew_kostka`]. Intermediate
+/// multiplicities remain `BigUint`; only the partition keys and transition
+/// generator use the allocation-free packed representation.
+#[allow(clippy::too_many_arguments)]
+pub fn try_masked_flagged_skew_kostka_packed_exact_stats(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+    strict_lower_masks: Option<&[u32]>,
+    strict_diagonal_masks: Option<&[u32]>,
+    max_states: Option<usize>,
+) -> Result<PackedExactKostkaStats, String> {
+    if !mu.partition_less_equal(lambda) {
+        return Ok(zero_exact_stats());
+    }
+    let skew_size = partition_size_u64(lambda) - partition_size_u64(mu);
+    let weight_size = weight_size_u64(weight)?;
+    if skew_size != weight_size {
+        return Ok(zero_exact_stats());
+    }
+
+    let packer = PackedPartitions::new(lambda)?;
+    if upper_flags.is_some_and(|flags| flags.len() != weight.len())
+        || lower_flags.is_some_and(|flags| flags.len() != weight.len())
+    {
+        return Err("flag lengths must match the weight length".to_string());
+    }
+    validate_constraint_masks(
+        "forbidden-row mask",
+        forbidden_row_masks,
+        weight.len(),
+        packer.rows,
+    )?;
+    validate_constraint_masks(
+        "strict-lower mask",
+        strict_lower_masks,
+        weight.len(),
+        packer.rows,
+    )?;
+    validate_constraint_masks(
+        "strict-diagonal mask",
+        strict_diagonal_masks,
+        weight.len(),
+        packer.rows,
+    )?;
+    if strict_diagonal_masks.is_some_and(|masks| masks.iter().any(|mask| mask & 1 != 0)) {
+        return Err("strict-diagonal masks cannot contain the first-row bit".to_string());
+    }
+
+    let lambda_key = packer.pack_partition(lambda)?;
+    let mu_key = packer.pack_partition(mu)?;
+    let mut lambda_parts = [0_u32; MAX_PACKED_ROWS];
+    lambda_parts[..lambda.num_parts()].copy_from_slice(lambda.parts());
+    let Some((_, level_lower_bounds, level_upper_bounds)) =
+        crate::gt_dim::gt_polytope_bounds_masked(
+            lambda.parts(),
+            mu.parts(),
+            weight,
+            upper_flags,
+            lower_flags,
+            forbidden_row_masks,
+        )
+    else {
+        return Ok(zero_exact_stats());
+    };
+
+    let mut states = exact_state_map_with_capacity(1);
+    states.insert(mu_key, BigUint::one());
+    let mut peak_states = 1;
+    let mut level_states = vec![1];
+    let mut level_transitions = Vec::with_capacity(weight.len());
+
+    for (label, &strip_size) in weight.iter().enumerate() {
+        if strip_size == 0 {
+            if strict_lower_masks.is_some_and(|masks| masks[label] != 0)
+                || strict_diagonal_masks.is_some_and(|masks| masks[label] != 0)
+            {
+                return Err("zero-weight labels must have zero strictness masks".to_string());
+            }
+            level_states.push(states.len());
+            level_transitions.push(states.len() as u64);
+            continue;
+        }
+
+        let row_lo = lower_flags
+            .and_then(|flags| flags.get(label))
+            .map(|&flag| (flag as usize).saturating_sub(1).min(packer.rows))
+            .unwrap_or(0);
+        let row_hi = upper_flags
+            .and_then(|flags| flags.get(label))
+            .map(|&flag| (flag as usize).min(packer.rows))
+            .unwrap_or(packer.rows);
+        let (level_lower, level_upper) = if label + 1 == weight.len() {
+            (&lambda_parts[..packer.rows], &lambda_parts[..packer.rows])
+        } else {
+            (
+                level_lower_bounds[label].as_slice(),
+                level_upper_bounds[label].as_slice(),
+            )
+        };
+        let context = ExtensionContext {
+            packer,
+            lambda: &lambda_parts,
+            level_lower,
+            level_upper,
+            row_lo,
+            row_hi,
+            forbidden_mask: forbidden_row_masks.map_or(0, |masks| masks[label]),
+            strict_lower_mask: strict_lower_masks.map_or(0, |masks| masks[label]),
+            strict_diagonal_mask: strict_diagonal_masks.map_or(0, |masks| masks[label]),
+        };
+        let mut next = exact_state_map_with_capacity(states.len().saturating_mul(2));
+        let mut transitions = 0_u64;
+        for (&key, count) in &states {
+            let alpha = packer.unpack(key);
+            context.visit_extensions(&alpha, strip_size, |target| {
+                transitions = transitions
+                    .checked_add(1)
+                    .ok_or_else(|| "transition count exceeds u64".to_string())?;
+                *next.entry(target).or_insert_with(BigUint::zero) += count;
+                if let Some(limit) = max_states {
+                    if next.len() > limit {
+                        return Err(format!(
+                            "DP state count {} exceeds --max-states {}.",
+                            next.len(),
+                            limit
+                        ));
+                    }
+                }
+                Ok(())
+            })?;
+        }
+        peak_states = peak_states.max(next.len());
+        level_states.push(next.len());
+        level_transitions.push(transitions);
+        states = next;
+    }
+
+    Ok(PackedExactKostkaStats {
+        value: states.remove(&lambda_key).unwrap_or_else(BigUint::zero),
+        peak_states,
+        level_states,
+        level_transitions,
+    })
+}
+
+/// Count relative-interior lattice points exactly with packed state keys.
+///
+/// The affine-hull masks are derived by the maintained dimension engine, then
+/// passed to [`try_masked_flagged_skew_kostka_packed_exact_stats`].
+#[allow(clippy::too_many_arguments)]
+pub fn try_strict_masked_flagged_skew_kostka_packed_exact_stats(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+    max_states: Option<usize>,
+) -> Result<Option<(usize, PackedExactKostkaStats)>, String> {
+    let Some(masks) = crate::kostka_dp::masked_relative_interior_masks(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+    )?
+    else {
+        return Ok(None);
+    };
+    let stats = try_masked_flagged_skew_kostka_packed_exact_stats(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+        Some(&masks.strict_lower_masks),
+        Some(&masks.strict_diagonal_masks),
+        max_states,
+    )?;
+    Ok(Some((masks.dimension, stats)))
 }
 
 /// Count a constrained skew Kostka coefficient modulo several moduli.
@@ -831,6 +1041,15 @@ fn zero_stats(moduli: &[u32]) -> ModularKostkaStats {
     }
 }
 
+fn zero_exact_stats() -> PackedExactKostkaStats {
+    PackedExactKostkaStats {
+        value: BigUint::zero(),
+        peak_states: 0,
+        level_states: Vec::new(),
+        level_transitions: Vec::new(),
+    }
+}
+
 fn validate_moduli(moduli: &[u32]) -> Result<(), String> {
     validate_moduli_with_limit(moduli, MAX_MODULI)
 }
@@ -937,7 +1156,10 @@ pub(crate) fn inverse_mod(value: u32, modulus: u32) -> Option<u32> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::kostka_dp::{skew_kostka, try_flagged_skew_kostka, try_masked_flagged_skew_kostka};
+    use crate::kostka_dp::{
+        skew_kostka, try_flagged_skew_kostka, try_masked_flagged_skew_kostka,
+        try_strict_masked_flagged_skew_kostka,
+    };
 
     fn compositions(total: u32, parts: usize) -> Vec<Vec<u32>> {
         fn visit(total: u32, parts: usize, prefix: &mut Vec<u32>, output: &mut Vec<Vec<u32>>) {
@@ -1100,6 +1322,61 @@ mod tests {
         )
         .unwrap();
         assert_eq!(actual.reconstruct_bounded(&expected).unwrap(), expected);
+    }
+
+    #[test]
+    fn packed_exact_matches_constrained_counter() {
+        let lambda = Partition::from_sorted(vec![4, 3, 1]);
+        let mu = Partition::from_sorted(vec![1]);
+        let weight = [2, 3, 2];
+        let forbidden = [0, 0, 0];
+        let strict_lower = [0, 0, 0];
+        let strict_diagonal = [0, 0, 0];
+        let expected = try_masked_flagged_skew_kostka(
+            &lambda,
+            &mu,
+            &weight,
+            None,
+            None,
+            Some(&forbidden),
+            Some(&strict_lower),
+            Some(&strict_diagonal),
+            None,
+        )
+        .unwrap();
+        let actual = try_masked_flagged_skew_kostka_packed_exact_stats(
+            &lambda,
+            &mu,
+            &weight,
+            None,
+            None,
+            Some(&forbidden),
+            Some(&strict_lower),
+            Some(&strict_diagonal),
+            None,
+        )
+        .unwrap();
+        assert_eq!(actual.value, expected);
+        assert_eq!(actual.level_states.len(), weight.len() + 1);
+        assert_eq!(actual.level_transitions.len(), weight.len());
+    }
+
+    #[test]
+    fn packed_exact_derives_same_relative_interior_as_generic_counter() {
+        let lambda = Partition::from_sorted(vec![9, 3]);
+        let mu = Partition::empty();
+        let weight = [3, 3, 3, 3];
+        let expected =
+            try_strict_masked_flagged_skew_kostka(&lambda, &mu, &weight, None, None, None, None)
+                .unwrap();
+        let (dimension, actual) = try_strict_masked_flagged_skew_kostka_packed_exact_stats(
+            &lambda, &mu, &weight, None, None, None, None,
+        )
+        .unwrap()
+        .unwrap();
+        assert_eq!(dimension, 2);
+        assert_eq!(actual.value, BigUint::one());
+        assert_eq!(actual.value, expected);
     }
 
     #[test]

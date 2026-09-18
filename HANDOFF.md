@@ -1,5 +1,43 @@
 # Ehrcalc Handoff
 
+## Packed-key exact strict counter verified on r5 — 2026-09-18 08:22 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  R211 is intentionally idle, all generated `runs/` evidence
+remains untracked, and no MariaDB write occurred.
+
+The Kostka engine now exposes an exact packed-key masked counter and a strict
+wrapper that derives the maintained affine-hull masks once.  Multiplicities
+remain `BigUint`; only intermediate partitions change from heap-backed
+`Partition` keys to packed `u128` keys, with the existing allocation-free
+transition generator, propagated level bounds, immediate state-limit checks,
+and per-layer state/transition statistics.  The thin research binary is
+`strict_masked_count_packed`.
+
+All 71 Kostka-engine library tests pass, including direct comparisons with the
+generic masked and derived-relative-interior counters.  Focused Clippy passes
+with only the two documented pre-existing warnings allowed.  Release binary
+SHA is
+`c7d390a237d70485de14cc18f5fe05f8c3bd38343119a0c3d2f80d0876d4b05f`.
+
+On audited d64 zero-effective-nonflag-edge candidate
+`14de890ac958f9aad12059092ae3a69b6bb312a612c81b75b35ceb3ed8533b5e`,
+generic exact Euler v823 returned strict dilation 16
+`271573406324281585598785085375` in 336.65 wall seconds.  Its preserved log
+SHA is
+`5750b7e662e7ea195f1e8edabda5a45a247947e6e5ac193beec19a972b5a270b`.
+Packed replay v825 reproduced that exact value in 196.676 wall seconds, a
+41.6% reduction, with peak frontier 480,700; its log SHA is
+`7b0e6257259145ad259af930d7cc505d8ee458efe7c35914fe95a21abab3ae02`.
+The failed v824 launcher attempted unavailable `/usr/bin/time`; its preserved
+diagnostic log SHA is
+`8316a64b8e872acb245084d5dddfbcdb929506eb71e50dd5ac8e0e3ea1c2d50c`
+and it performed no count.
+
+Strict 16 raises r5's interpolation rank to 46 of 56.  Abacus v821
+`20260918T075001-5349ff421d0d` still owns ordinary `L(39)`, while Euler v822
+still owns `L(40)`; both were re-polled live and must not be duplicated.
+
 ## Retained-flag exact formula integrated and remotely checked — 2026-09-18 07:27 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
