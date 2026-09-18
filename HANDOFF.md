@@ -1,5 +1,30 @@
 # Ehrcalc Handoff
 
+## R5 strict 21 exact with checked inline counter — 2026-09-18 10:42 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  R211 remains idle, generated `runs/` evidence remains
+untracked, and no MariaDB write occurred.
+
+Euler v835 completed exact strict dilation 21 for audited d64/e0 candidate
+`14de890ac958f9aad12059092ae3a69b6bb312a612c81b75b35ceb3ed8533b5e` as
+`5155997019040693916150926023820016257760`.  The pushed checked-inline-192
+binary SHA `3a9c0303...` returned directly without overflow or `BigUint`
+fallback, independently reported dimension 64, and reached peak frontier
+6,724,520.  The run exited zero after 2,992.409 wall seconds; its preserved
+log SHA is
+`eb3105a8db64253509ba34c522afe759d4ebc76e45d585c8fddd5f94cac53ef3`.
+Only the owned wall-time supervisor was briefly stopped near its deadline
+during unrelated shared compiler contention; the exact child remained live
+and was neither restarted nor duplicated, and the resumed supervisor reaped
+exit 0.
+
+The r5 interpolation rank is now 49 of 56.  Abacus v829 still owns strict
+dilations 19 and 20.  The uncommitted split-192 prototype remains an
+optimization experiment only: its 75 library tests and focused Clippy pass,
+but the strict-18 performance benchmark must run in isolation after shared
+CPU/memory pressure subsides before it can replace the pushed inline backend.
+
 ## Checked inline strict counter verified; r5 strict 21 retry live — 2026-09-18 09:53 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
