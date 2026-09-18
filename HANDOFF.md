@@ -1,5 +1,42 @@
 # Ehrcalc Handoff
 
+## Broad unit-weight d24--d30 zero-edge retry live — 2026-09-18 17:25 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+Abacus v852 strict 23 `20260918T132234-e962967c4dc0` reached its clean
+14,400-second timeout with systemd `Result=timeout`, status 15, and no output.
+It was fetched exactly once to suffix `timr4erp`; `job.json` SHA is
+`933d63c7511d971e299481d39b9b6b84a8d8b1efc498ed69255656684d589b3e`
+and the empty `output.log` SHA is
+`e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+There is no result file and no strict-23 value.  R211 v861
+`20260918T171130-f7dbbbf7e74a` remains running ordinary r5 `L(41)`; r5 remains
+rank 54/56 and unresolved.
+
+Abacus v862 `20260918T172457-fc5ba1809aac` is now running the complete 61-case
+unresolved slice of the corrected v354 family in dimensions 24--30.  These are
+direct atomic children of freshly rechecked ledger-exact-negative parents,
+have 27 distinct general outer shapes, weights exactly `1^19` or `1^20`,
+active fixed-content certificates, ordinary flags only, and zero effective
+nonflag edges.  Earlier evidence classifies the other 88 of the 149 d21--d30
+cases exact-positive; none is negative.  Fresh preflight found all 61 absent
+from every one of the 16 MariaDB tables containing `candidate_key`.
+
+The v862 preflight report SHA is
+`3305b08f38142ae642b26f2a58ad924a3a2b5c66e7252872606f0897f0178257`.
+Its current optimized Ehrcalc binary SHA is
+`4b56f84fc0fa0840e0fc6f7efae90c2fa888f425217353fdb7df195b990c79d7`;
+runner SHA is
+`5a145d8d48ceb27cdce3fd19b2f73d12dc38837fd633cd05a063d136483eeb0e`.
+Nine manifest SHAs, in lane order, are `a6713505...`, `ae2131c9...`,
+`dc884834...`, `37f9ee2a...`, `45c1fc02...`, `266b077c...`, `a56a0bc9...`,
+`ffc26160...`, and `e4307216...`.  Six lanes run first and three second, with
+900 seconds and 12 million states per case inside Abacus's six-CPU/20-GiB
+profile and a 14,400-second job envelope.  Fetch v862 exactly once at terminal,
+validate all controls/provenance and exact h*-to-power signs, and mutate only
+an independently validated exact-negative result.  Laplace remains unreachable
+and the Euler GPU bridge was ready/idle.  No database write occurred.
+
 ## R5 decisive samples split across Abacus and R211 — 2026-09-18 17:11 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
