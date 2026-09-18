@@ -47,6 +47,16 @@ result when shared CPU contention made their timing invalid; their log SHAs
 are `e8a5e821...` and the empty-file SHA `e3b0c442...`, respectively, and no
 mathematical inference is attached to either.
 
+After a fresh queue and read-only ledger audit, Euler v840 now exclusively
+owns r5 strict dilation 22 on CPUs 4--9, nice level 10, with a 20-million-state
+cap and 7,200-second envelope.  It uses the immutable split-192 release binary
+SHA above and writes only untracked
+`runs/euler-v840-r5-strict22-split192-par6-local-20260918.log`; do not
+duplicate this point.  At submission Abacus v829 still exclusively owned
+strict 19/20, Laplace remained unreachable, Euler's GPU bridge was ready and
+idle, no other local KTT process existed, and the r5 key had count zero in all
+six relevant MariaDB tables.  No database write occurred.
+
 ## Checked inline strict counter verified; r5 strict 21 retry live — 2026-09-18 09:53 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
