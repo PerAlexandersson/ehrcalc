@@ -364,14 +364,11 @@ fn for_each_large_strip(
     visit(bottom, &mut current, &suffix_capacity, cap, 0, 0, callback);
 }
 
-fn large_strip_round(states: &StateMap, dilation: u32) -> Result<StateMap, String> {
+fn large_strip_round(states: StateMap, dilation: u32) -> Result<StateMap, String> {
     if states.is_empty() {
         return Ok(HashMap::with_hasher(PackedBuildHasher::default()));
     }
-    let entries: Vec<(u64, u128)> = states
-        .iter()
-        .map(|(&packed, &multiplicity)| (packed, multiplicity))
-        .collect();
+    let entries: Vec<(u64, u128)> = states.into_iter().collect();
     let workers = rayon::current_num_threads().min(entries.len());
     let chunk_size = entries.len().div_ceil(workers);
     let mut partials: Vec<(StateMap, bool)> = entries
@@ -527,7 +524,7 @@ pub fn count_retained_flag_five_singletons(
             };
         }
         if selected + 1 != BINOMIAL_FIVE.len() {
-            states = large_strip_round(&states, dilation)?;
+            states = large_strip_round(states, dilation)?;
             state_counts.push(states.len());
         }
     }

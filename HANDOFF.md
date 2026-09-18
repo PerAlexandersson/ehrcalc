@@ -1,5 +1,23 @@
 # Ehrcalc Handoff
 
+## Retained-flag source-map copy removed — 2026-09-18 13:31 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  The retained-flag strip round now consumes its source state
+map when materializing the parallel entry vector, rather than retaining the
+full source map beside that copy for the duration of the round.  This is an
+exact private ownership change that reduces peak memory for future `L(40)`.
+
+Owned-file rustfmt, all four focused formula tests, and focused Clippy pass
+with allowances only for the two pre-existing unrelated crate lints.  Rebuilt
+release binary SHA is
+`a336cbe618d83847189647c9e413e1d23f4429165e8769b367594963393cada1`;
+its `L(1)..L(7)` output remains byte-identical to remote control v816, SHA
+`ba61a5ef22093885a27cdfae09d4ca425411454dd644936e1d2aa327eeb180d2`.
+The live v851 `L(39)` process retains immutable prior binary SHA `a6352123...`;
+v849 strict 24 and Abacus v852 strict 23 also remain live.  No database write
+occurred.
+
 ## Strict 23 longer retry live; strict 24/L39 continue — 2026-09-18 13:22 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
