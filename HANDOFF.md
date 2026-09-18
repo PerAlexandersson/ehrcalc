@@ -1,5 +1,25 @@
 # Ehrcalc Handoff
 
+## Strict 23 longer retry live; strict 24/L39 continue — 2026-09-18 13:22 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  Abacus v844 `20260918T112151-f50d0dc678c6` reached its clean
+7,200-second service timeout with no stdout, so strict 23 remains unresolved
+and is not zero.  It was fetched exactly once to suffix `gt961ev0`; job and
+empty-output SHAs are
+`44b0e87a5b92396dc5cb02ffb73cddca3467055c6851e9f46f78386bcde1ec1a`
+and `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+The failed receipt contains no `result.json`.
+
+Fresh queue and six-table ledger preflight found Abacus idle and returned
+`0 0 0 0 0 0`.  Abacus v852 `20260918T132234-e962967c4dc0` now retries only
+strict 23 with the independently exact-controlled, 8.4%-faster binary SHA
+`12362529adefd756aeb12edd5ffa9e35e5401cde7b2d9b27bfe441b3dcef63cf`,
+six threads, the same 30-million-state guard, and a 14,400-second envelope.
+It is confirmed running.  Euler v849 strict 24 and v851 `L(39)` remain live
+and disjoint.  No database write occurred; do not duplicate any of the three
+points.
+
 ## R5 L39 joins strict 23/24 live — 2026-09-18 13:03 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
