@@ -1,5 +1,32 @@
 # Ehrcalc Handoff
 
+## R5 Euler OOM receipts preserved; Abacus strict 23 still live — 2026-09-18 16:29 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+Euler v849 strict 24 and v858 ordinary `L(41)` both ended unambiguously by
+`SIGKILL` (`returncode=-9`) during their overlap.  Their immutable untracked
+reports have SHAs
+`cedfd5ec664ea79b4365aac3ac71c6c658c5640e18cb4064ef1ce875fb080033`
+and
+`1caa37e77bf121d63f5adc99b541248521dc90d8e7f9eaf0d8a8a12e909e7dc2`,
+with wall times 14,197.751945858996 and 3,059.2154511199915 seconds,
+respectively.  Both reports have empty stdout/stderr and null results.  Euler's
+cgroup counters increased to `oom=21`, `oom_kill=5`, proving two OOM kills;
+neither point is zero or otherwise resolved.
+
+No KTT process remains on Euler.  A fresh authoritative inspection found
+Abacus v852 job `20260918T132234-e962967c4dc0` still running strict 23 with
+binary SHA
+`12362529adefd756aeb12edd5ffa9e35e5401cde7b2d9b27bfe441b3dcef63cf`,
+six threads, a 30-million-state guard, and its 14,400-second envelope.  Laplace
+still times out and the Euler GPU bridge is ready/idle.  Euler currently has a
+large unrelated serialized Lean build, so no `L(41)` retry has been launched
+into the 24 GiB cgroup.  The exact interpolation rank remains 54/56; preserve
+all evidence, fetch v852 exactly once when terminal, and retry only `L(41)`
+alone after Euler memory becomes safe.  Do not concurrently retry strict 24,
+and do not generate an r5 descendant before the exact sign is known.  No
+database write occurred.
+
 ## R5 L41 independent rank-55 hedge live — 2026-09-18 15:35 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
