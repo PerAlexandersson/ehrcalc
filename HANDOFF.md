@@ -20,10 +20,32 @@ and was neither restarted nor duplicated, and the resumed supervisor reaped
 exit 0.
 
 The r5 interpolation rank is now 49 of 56.  Abacus v829 still owns strict
-dilations 19 and 20.  The uncommitted split-192 prototype remains an
-optimization experiment only: its 75 library tests and focused Clippy pass,
-but the strict-18 performance benchmark must run in isolation after shared
-CPU/memory pressure subsides before it can replace the pushed inline backend.
+dilations 19 and 20.  Exact rational rank audit v838 confirms rank 49 from
+precisely the admitted rows, rank 51 if that Abacus pair succeeds, and full
+rank 56 after strict dilations 22--26; reserve strict 27 for validation.  Its
+untracked script/report SHAs are `35742d17594d...` and `48b00c62485c...`.
+
+Commit `637feb64b7c5a719dd50b779a7605699d12bbf6c` (pushed to `origin/main`)
+adds the checked split-192 backend: the hot map stores only a `u128` low limb,
+while a sparse side map stores nonzero 64-bit high limbs.  Carries and the
+192-bit ceiling remain checked exactly, state limits count primary keys, and
+the existing `BigUint` fallback remains authoritative on overflow.  All 75
+library tests pass, including carry, high-only, merge-order, overflow,
+state-cap, and r5 equality checks; focused Clippy and owned-file rustfmt pass.
+Workspace-wide rustfmt still reports pre-existing drift only in unrelated
+`masked_count.rs` and `strict_masked_count.rs`, which this lane did not edit.
+
+Isolated Euler v839 reproduced the audited strict-18 value, all 22 frontiers,
+and all 21 transition totals exactly.  Every per-level high-limb occupancy was
+zero.  Its output interval was 125.565 seconds versus inline-192 v834's
+130.946 seconds, and its preserved log SHA is
+`a941c547aa3763255d90aca81658b37526a0f2dc2cf47588851b57b900a2e1c9`.
+The release binary SHA is
+`3d329123d66db124e819ecd58ab35bcfb10c29eba86b78e6fe9127d45a899450`.
+Earlier v836 and v837 diagnostics were intentionally terminated without a
+result when shared CPU contention made their timing invalid; their log SHAs
+are `e8a5e821...` and the empty-file SHA `e3b0c442...`, respectively, and no
+mathematical inference is attached to either.
 
 ## Checked inline strict counter verified; r5 strict 21 retry live — 2026-09-18 09:53 UTC
 
