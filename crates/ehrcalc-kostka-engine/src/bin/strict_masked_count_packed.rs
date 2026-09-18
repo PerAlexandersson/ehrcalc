@@ -3,7 +3,7 @@
 use ehrcalc_kostka_engine::packed_modular::{
     try_strict_masked_flagged_skew_kostka_packed_exact_parallel_stats,
     try_strict_masked_flagged_skew_kostka_packed_exact_stats,
-    try_strict_masked_flagged_skew_kostka_packed_u192_parallel_stats,
+    try_strict_masked_flagged_skew_kostka_packed_split192_parallel_stats,
 };
 use ehrcalc_kostka_engine::Partition;
 use serde_json::json;
@@ -76,7 +76,7 @@ fn main() -> Result<(), String> {
     let upper = (!upper.is_empty()).then_some(upper.as_slice());
     let lower = (!lower.is_empty()).then_some(lower.as_slice());
     let forbidden = (!forbidden.is_empty()).then_some(forbidden.as_slice());
-    let u192_result = try_strict_masked_flagged_skew_kostka_packed_u192_parallel_stats(
+    let split_result = try_strict_masked_flagged_skew_kostka_packed_split192_parallel_stats(
         &lambda,
         &mu,
         &weight,
@@ -86,8 +86,8 @@ fn main() -> Result<(), String> {
         Some(max_states),
         threads,
     );
-    let (result, counter) = match u192_result {
-        Ok(result) => (result, "u192"),
+    let (result, counter) = match split_result {
+        Ok(result) => (result, "split192"),
         Err(error) if error == "packed exact count exceeds 192 bits" => {
             let result = if threads == 1 {
                 try_strict_masked_flagged_skew_kostka_packed_exact_stats(
@@ -136,6 +136,7 @@ fn main() -> Result<(), String> {
             "strict": stats.value.to_string(),
             "peak_states": stats.peak_states,
             "level_states": stats.level_states,
+            "level_wide_states": stats.level_wide_states,
             "level_transitions": stats.level_transitions,
         })
     );

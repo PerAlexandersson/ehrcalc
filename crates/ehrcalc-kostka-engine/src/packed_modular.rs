@@ -55,6 +55,7 @@ pub struct PackedExactKostkaStats {
     pub value: BigUint,
     pub peak_states: usize,
     pub level_states: Vec<usize>,
+    pub level_wide_states: Vec<usize>,
     pub level_transitions: Vec<u64>,
 }
 
@@ -210,12 +211,15 @@ fn avalanche(mut value: u64) -> u64 {
 pub(crate) type PackedBuildHasher = BuildHasherDefault<PackedHasher>;
 type StateMap = HashMap<u128, Residues, PackedBuildHasher>;
 type ExactStateMap<C = BigUint> = HashMap<u128, C, PackedBuildHasher>;
+type LowStateMap = HashMap<u128, u128, PackedBuildHasher>;
+type HighStateMap = HashMap<u128, u64, PackedBuildHasher>;
 
 trait ExactCount: Clone + Send + Sync {
     fn count_zero() -> Self;
     fn count_one() -> Self;
     fn checked_add_assign(&mut self, other: &Self) -> Result<(), String>;
     fn into_biguint(self) -> BigUint;
+    fn exceeds_u128(&self) -> bool;
 }
 
 impl ExactCount for BigUint {
@@ -234,6 +238,10 @@ impl ExactCount for BigUint {
 
     fn into_biguint(self) -> BigUint {
         self
+    }
+
+    fn exceeds_u128(&self) -> bool {
+        self.bits() > 128
     }
 }
 
@@ -272,6 +280,90 @@ impl ExactCount for Count192 {
             bytes[index * 8..(index + 1) * 8].copy_from_slice(&limb.to_le_bytes());
         }
         BigUint::from_bytes_le(&bytes)
+    }
+
+    fn exceeds_u128(&self) -> bool {
+        self.0[2] != 0
+    }
+}
+
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+struct SplitCount<'a> {
+    low: &'a u128,
+    high: u64,
+}
+
+#[derive(Clone, Debug)]
+struct Split192StateMap {
+    low: LowStateMap,
+    high: HighStateMap,
+}
+
+impl Split192StateMap {
+    fn with_capacity(capacity: usize) -> Self {
+        Self {
+            low: HashMap::with_capacity_and_hasher(capacity, PackedBuildHasher::default()),
+            high: HashMap::with_hasher(PackedBuildHasher::default()),
+        }
+    }
+
+    fn singleton(key: u128) -> Self {
+        let mut states = Self::with_capacity(1);
+        states.low.insert(key, 1);
+        states
+    }
+
+    fn len(&self) -> usize {
+        self.low.len()
+    }
+
+    fn entries(&self) -> Vec<(u128, SplitCount<'_>)> {
+        self.low
+            .iter()
+            .map(|(&key, low)| {
+                (
+                    key,
+                    SplitCount {
+                        low,
+                        high: self.high.get(&key).copied().unwrap_or(0),
+                    },
+                )
+            })
+            .collect()
+    }
+
+    fn insert_contribution(
+        &mut self,
+        target: u128,
+        count: SplitCount<'_>,
+        max_states: Option<usize>,
+    ) -> Result<(), String> {
+        let low = self.low.entry(target).or_insert(0);
+        let (sum, carry) = low.overflowing_add(*count.low);
+        *low = sum;
+        if count.high != 0 || carry {
+            let high = self.high.entry(target).or_insert(0);
+            *high = high
+                .checked_add(count.high)
+                .and_then(|value| value.checked_add(u64::from(carry)))
+                .ok_or_else(|| "packed exact count exceeds 192 bits".to_string())?;
+        }
+        if let Some(limit) = max_states {
+            if self.low.len() > limit {
+                return Err(format!(
+                    "DP state count {} exceeds --max-states {}.",
+                    self.low.len(),
+                    limit
+                ));
+            }
+        }
+        Ok(())
+    }
+
+    fn remove_biguint(&mut self, key: u128) -> BigUint {
+        let low = self.low.remove(&key).unwrap_or(0);
+        let high = self.high.remove(&key).unwrap_or(0);
+        (BigUint::from(high) << 128_u32) + BigUint::from(low)
     }
 }
 
@@ -523,6 +615,79 @@ fn advance_exact_layer_parallel<C: ExactCount>(
         )
 }
 
+fn advance_split_layer_serial(
+    states: &Split192StateMap,
+    context: &ExtensionContext<'_>,
+    strip_size: u32,
+    max_states: Option<usize>,
+) -> Result<(Split192StateMap, u64), String> {
+    let mut next = Split192StateMap::with_capacity(states.len().saturating_mul(2));
+    let mut transitions = 0_u64;
+    for (key, count) in states.entries() {
+        let alpha = context.packer.unpack(key);
+        context.visit_extensions(&alpha, strip_size, |target| {
+            transitions = transitions
+                .checked_add(1)
+                .ok_or_else(|| "transition count exceeds u64".to_string())?;
+            next.insert_contribution(target, count, max_states)
+        })?;
+    }
+    Ok((next, transitions))
+}
+
+fn merge_split_layers(
+    mut left: (Split192StateMap, u64),
+    mut right: (Split192StateMap, u64),
+    max_states: Option<usize>,
+) -> Result<(Split192StateMap, u64), String> {
+    if left.0.len() < right.0.len() {
+        std::mem::swap(&mut left, &mut right);
+    }
+    for (target, count) in right.0.entries() {
+        left.0.insert_contribution(target, count, max_states)?;
+    }
+    left.1 = left
+        .1
+        .checked_add(right.1)
+        .ok_or_else(|| "transition count exceeds u64".to_string())?;
+    Ok(left)
+}
+
+fn advance_split_layer_parallel(
+    states: &Split192StateMap,
+    context: &ExtensionContext<'_>,
+    strip_size: u32,
+    max_states: Option<usize>,
+    threads: usize,
+) -> Result<(Split192StateMap, u64), String> {
+    if threads <= 1 || states.len() < 1_024 {
+        return advance_split_layer_serial(states, context, strip_size, max_states);
+    }
+    let entries = states.entries();
+    let chunks = threads.saturating_mul(4).min(entries.len());
+    let chunk_size = entries.len().div_ceil(chunks);
+    entries
+        .par_chunks(chunk_size)
+        .map(|chunk| {
+            let mut local = Split192StateMap::with_capacity(chunk.len().saturating_mul(2));
+            let mut transitions = 0_u64;
+            for &(key, count) in chunk {
+                let alpha = context.packer.unpack(key);
+                context.visit_extensions(&alpha, strip_size, |target| {
+                    transitions = transitions
+                        .checked_add(1)
+                        .ok_or_else(|| "transition count exceeds u64".to_string())?;
+                    local.insert_contribution(target, count, max_states)
+                })?;
+            }
+            Ok((local, transitions))
+        })
+        .try_reduce(
+            || (Split192StateMap::with_capacity(0), 0),
+            |left, right| merge_split_layers(left, right, max_states),
+        )
+}
+
 fn partition_size_u64(partition: &Partition) -> u64 {
     partition.parts().iter().map(|&part| u64::from(part)).sum()
 }
@@ -650,6 +815,7 @@ fn try_masked_flagged_skew_kostka_packed_exact_stats_with_threads<C: ExactCount>
     states.insert(mu_key, C::count_one());
     let mut peak_states = 1;
     let mut level_states = vec![1];
+    let mut level_wide_states = vec![0];
     let mut level_transitions = Vec::with_capacity(weight.len());
 
     for (label, &strip_size) in weight.iter().enumerate() {
@@ -660,6 +826,7 @@ fn try_masked_flagged_skew_kostka_packed_exact_stats_with_threads<C: ExactCount>
                 return Err("zero-weight labels must have zero strictness masks".to_string());
             }
             level_states.push(states.len());
+            level_wide_states.push(states.values().filter(|count| count.exceeds_u128()).count());
             level_transitions.push(states.len() as u64);
             continue;
         }
@@ -699,6 +866,7 @@ fn try_masked_flagged_skew_kostka_packed_exact_stats_with_threads<C: ExactCount>
         };
         peak_states = peak_states.max(next.len());
         level_states.push(next.len());
+        level_wide_states.push(next.values().filter(|count| count.exceeds_u128()).count());
         level_transitions.push(transitions);
         states = next;
     }
@@ -710,6 +878,153 @@ fn try_masked_flagged_skew_kostka_packed_exact_stats_with_threads<C: ExactCount>
             .into_biguint(),
         peak_states,
         level_states,
+        level_wide_states,
+        level_transitions,
+    })
+}
+
+#[allow(clippy::too_many_arguments)]
+fn try_masked_flagged_skew_kostka_packed_split_stats_with_threads(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+    strict_lower_masks: Option<&[u32]>,
+    strict_diagonal_masks: Option<&[u32]>,
+    max_states: Option<usize>,
+    threads: usize,
+) -> Result<PackedExactKostkaStats, String> {
+    if threads == 0 {
+        return Err("packed exact thread count must be positive".to_string());
+    }
+    let pool = (threads > 1)
+        .then(|| {
+            ThreadPoolBuilder::new()
+                .num_threads(threads)
+                .build()
+                .map_err(|error| format!("failed to build packed exact thread pool: {error}"))
+        })
+        .transpose()?;
+    if !mu.partition_less_equal(lambda) {
+        return Ok(zero_exact_stats());
+    }
+    let skew_size = partition_size_u64(lambda) - partition_size_u64(mu);
+    let weight_size = weight_size_u64(weight)?;
+    if skew_size != weight_size {
+        return Ok(zero_exact_stats());
+    }
+
+    let packer = PackedPartitions::new(lambda)?;
+    if upper_flags.is_some_and(|flags| flags.len() != weight.len())
+        || lower_flags.is_some_and(|flags| flags.len() != weight.len())
+    {
+        return Err("flag lengths must match the weight length".to_string());
+    }
+    validate_constraint_masks(
+        "forbidden-row mask",
+        forbidden_row_masks,
+        weight.len(),
+        packer.rows,
+    )?;
+    validate_constraint_masks(
+        "strict-lower mask",
+        strict_lower_masks,
+        weight.len(),
+        packer.rows,
+    )?;
+    validate_constraint_masks(
+        "strict-diagonal mask",
+        strict_diagonal_masks,
+        weight.len(),
+        packer.rows,
+    )?;
+    if strict_diagonal_masks.is_some_and(|masks| masks.iter().any(|mask| mask & 1 != 0)) {
+        return Err("strict-diagonal masks cannot contain the first-row bit".to_string());
+    }
+
+    let lambda_key = packer.pack_partition(lambda)?;
+    let mu_key = packer.pack_partition(mu)?;
+    let mut lambda_parts = [0_u32; MAX_PACKED_ROWS];
+    lambda_parts[..lambda.num_parts()].copy_from_slice(lambda.parts());
+    let Some((_, level_lower_bounds, level_upper_bounds)) =
+        crate::gt_dim::gt_polytope_bounds_masked(
+            lambda.parts(),
+            mu.parts(),
+            weight,
+            upper_flags,
+            lower_flags,
+            forbidden_row_masks,
+        )
+    else {
+        return Ok(zero_exact_stats());
+    };
+
+    let mut states = Split192StateMap::singleton(mu_key);
+    let mut peak_states = 1;
+    let mut level_states = vec![1];
+    let mut level_wide_states = vec![0];
+    let mut level_transitions = Vec::with_capacity(weight.len());
+
+    for (label, &strip_size) in weight.iter().enumerate() {
+        if strip_size == 0 {
+            if strict_lower_masks.is_some_and(|masks| masks[label] != 0)
+                || strict_diagonal_masks.is_some_and(|masks| masks[label] != 0)
+            {
+                return Err("zero-weight labels must have zero strictness masks".to_string());
+            }
+            level_states.push(states.len());
+            level_wide_states.push(states.high.len());
+            level_transitions.push(states.len() as u64);
+            continue;
+        }
+
+        let row_lo = lower_flags
+            .and_then(|flags| flags.get(label))
+            .map(|&flag| (flag as usize).saturating_sub(1).min(packer.rows))
+            .unwrap_or(0);
+        let row_hi = upper_flags
+            .and_then(|flags| flags.get(label))
+            .map(|&flag| (flag as usize).min(packer.rows))
+            .unwrap_or(packer.rows);
+        let (level_lower, level_upper) = if label + 1 == weight.len() {
+            (&lambda_parts[..packer.rows], &lambda_parts[..packer.rows])
+        } else {
+            (
+                level_lower_bounds[label].as_slice(),
+                level_upper_bounds[label].as_slice(),
+            )
+        };
+        let context = ExtensionContext {
+            packer,
+            lambda: &lambda_parts,
+            level_lower,
+            level_upper,
+            row_lo,
+            row_hi,
+            forbidden_mask: forbidden_row_masks.map_or(0, |masks| masks[label]),
+            strict_lower_mask: strict_lower_masks.map_or(0, |masks| masks[label]),
+            strict_diagonal_mask: strict_diagonal_masks.map_or(0, |masks| masks[label]),
+        };
+        let (next, transitions) = match &pool {
+            Some(pool) => pool.install(|| {
+                advance_split_layer_parallel(&states, &context, strip_size, max_states, threads)
+            })?,
+            None => advance_split_layer_serial(&states, &context, strip_size, max_states)?,
+        };
+        peak_states = peak_states.max(next.len());
+        level_states.push(next.len());
+        level_wide_states.push(next.high.len());
+        level_transitions.push(transitions);
+        states = next;
+    }
+
+    Ok(PackedExactKostkaStats {
+        value: states.remove_biguint(lambda_key),
+        peak_states,
+        level_states,
+        level_wide_states,
         level_transitions,
     })
 }
@@ -797,6 +1112,38 @@ pub fn try_masked_flagged_skew_kostka_packed_u192_parallel_stats(
     threads: usize,
 ) -> Result<PackedExactKostkaStats, String> {
     try_masked_flagged_skew_kostka_packed_exact_stats_with_threads::<Count192>(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+        strict_lower_masks,
+        strict_diagonal_masks,
+        max_states,
+        threads,
+    )
+}
+
+/// Checked exact counter with a hot `u128` map and sparse 64-bit high limbs.
+///
+/// Every primary state exists in the low map. The side map is touched only
+/// when a source count or a low-limb carry has nonzero bits above bit 127.
+/// Both limbs are checked, so success proves an exact result below `2^192`.
+#[allow(clippy::too_many_arguments)]
+pub fn try_masked_flagged_skew_kostka_packed_split192_parallel_stats(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+    strict_lower_masks: Option<&[u32]>,
+    strict_diagonal_masks: Option<&[u32]>,
+    max_states: Option<usize>,
+    threads: usize,
+) -> Result<PackedExactKostkaStats, String> {
+    try_masked_flagged_skew_kostka_packed_split_stats_with_threads(
         lambda,
         mu,
         weight,
@@ -912,6 +1259,45 @@ pub fn try_strict_masked_flagged_skew_kostka_packed_u192_parallel_stats(
         return Ok(None);
     };
     let stats = try_masked_flagged_skew_kostka_packed_u192_parallel_stats(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+        Some(&masks.strict_lower_masks),
+        Some(&masks.strict_diagonal_masks),
+        max_states,
+        threads,
+    )?;
+    Ok(Some((masks.dimension, stats)))
+}
+
+/// Parallel relative-interior counter with split checked 192-bit state
+/// multiplicities.
+#[allow(clippy::too_many_arguments)]
+pub fn try_strict_masked_flagged_skew_kostka_packed_split192_parallel_stats(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+    max_states: Option<usize>,
+    threads: usize,
+) -> Result<Option<(usize, PackedExactKostkaStats)>, String> {
+    let Some(masks) = crate::kostka_dp::masked_relative_interior_masks(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+    )?
+    else {
+        return Ok(None);
+    };
+    let stats = try_masked_flagged_skew_kostka_packed_split192_parallel_stats(
         lambda,
         mu,
         weight,
@@ -1377,6 +1763,7 @@ fn zero_exact_stats() -> PackedExactKostkaStats {
         value: BigUint::zero(),
         peak_states: 0,
         level_states: Vec::new(),
+        level_wide_states: Vec::new(),
         level_transitions: Vec::new(),
     }
 }
@@ -1759,6 +2146,19 @@ mod tests {
         .unwrap()
         .unwrap();
         assert_eq!(inline, parallel);
+        let (_, split) = try_strict_masked_flagged_skew_kostka_packed_split192_parallel_stats(
+            &lambda,
+            &mu,
+            &weight,
+            None,
+            None,
+            Some(&forbidden),
+            None,
+            2,
+        )
+        .unwrap()
+        .unwrap();
+        assert_eq!(split, parallel);
     }
 
     #[test]
@@ -1774,6 +2174,98 @@ mod tests {
                 .checked_add_assign(&Count192::count_one())
                 .unwrap_err(),
             "packed exact count exceeds 192 bits"
+        );
+    }
+
+    #[test]
+    fn split_192_counter_preserves_carries_and_merge_overflow() {
+        let mut states = Split192StateMap::with_capacity(1);
+        let maximum = u128::MAX;
+        states
+            .insert_contribution(
+                7,
+                SplitCount {
+                    low: &maximum,
+                    high: 0,
+                },
+                None,
+            )
+            .unwrap();
+        let one = 1_u128;
+        states
+            .insert_contribution(7, SplitCount { low: &one, high: 0 }, None)
+            .unwrap();
+        assert_eq!(states.low[&7], 0);
+        assert_eq!(states.high[&7], 1);
+        assert_eq!(states.remove_biguint(7), BigUint::one() << 128_u32);
+
+        let mut left = Split192StateMap::with_capacity(1);
+        let zero = 0_u128;
+        left.insert_contribution(
+            9,
+            SplitCount {
+                low: &zero,
+                high: u64::MAX,
+            },
+            None,
+        )
+        .unwrap();
+        let mut right = Split192StateMap::with_capacity(1);
+        right
+            .insert_contribution(
+                9,
+                SplitCount {
+                    low: &maximum,
+                    high: 0,
+                },
+                None,
+            )
+            .unwrap();
+        right
+            .insert_contribution(9, SplitCount { low: &one, high: 0 }, None)
+            .unwrap();
+        assert_eq!(
+            merge_split_layers((left, 0), (right, 0), None).unwrap_err(),
+            "packed exact count exceeds 192 bits"
+        );
+    }
+
+    #[test]
+    fn split_192_merge_is_order_independent_and_counts_primary_states() {
+        fn add(states: &mut Split192StateMap, key: u128, low: u128, high: u64) {
+            states
+                .insert_contribution(key, SplitCount { low: &low, high }, None)
+                .unwrap();
+        }
+
+        let mut left = Split192StateMap::with_capacity(2);
+        add(&mut left, 1, u128::MAX, 5);
+        add(&mut left, 2, 3, 0);
+        let mut right = Split192StateMap::with_capacity(2);
+        add(&mut right, 1, 2, 7);
+        add(&mut right, 3, 0, 9);
+
+        let forward = merge_split_layers((left.clone(), 11), (right.clone(), 13), None)
+            .unwrap()
+            .0;
+        let reverse = merge_split_layers((right, 13), (left, 11), None).unwrap().0;
+        assert_eq!(forward.low, reverse.low);
+        assert_eq!(forward.high, reverse.high);
+        assert_eq!(forward.low[&1], 1);
+        assert_eq!(forward.high[&1], 13);
+        assert_eq!(forward.low[&2], 3);
+        assert!(!forward.high.contains_key(&2));
+        assert_eq!(forward.low[&3], 0);
+        assert_eq!(forward.high[&3], 9);
+
+        let mut limited = Split192StateMap::with_capacity(2);
+        add(&mut limited, 1, 1, 0);
+        let one = 1_u128;
+        assert_eq!(
+            limited
+                .insert_contribution(2, SplitCount { low: &one, high: 0 }, Some(1),)
+                .unwrap_err(),
+            "DP state count 2 exceeds --max-states 1."
         );
     }
 
