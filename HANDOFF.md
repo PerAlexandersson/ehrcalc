@@ -1,5 +1,28 @@
 # Ehrcalc Handoff
 
+## Top-nearest zero-edge pilot isolated — 2026-09-18 18:06 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+Abacus v868 `20260918T173820-f8735c915e76` remains authoritatively running and
+was not interrupted.  To shorten time-to-signal after it finishes, queued v875
+`20260918T180234-9d4cbc644254` was cancelled before start, unambiguously and
+without computation.  Its candidates and evidence remain preserved.
+
+V876 isolates the 13 closest zero-edge children in d104--d107 (histogram
+d104:5, d105:1, d106:5, d107:2), ordered by descending dimension across six
+lanes.  They span seven outer shapes, have active unit weights, are direct
+atomic children of freshly rechecked exact-negative parents, and have zero
+hits in all 16 MariaDB `candidate_key` tables.  Preflight SHA is
+`c76378e385909a0ca89e04455e4028c66cd118aa17afdc0e4280c15d2c5e2f02`;
+manifest SHAs are `4d816a77...`, `cbe15cb0...`, `47784537...`,
+`6fd654bd...`, `de414b75...`, and `d38efaa4...`.
+
+Abacus v876 `20260918T180615-d998a578834b` is queued directly behind v868
+with 600 seconds/12 million states per case and a 3,600-second job envelope.
+The remaining v872 candidates and lower bands remain prepared but intentionally
+unqueued until this top-nearest pilot is classified.  R211 r5 `L(41)` remains
+running.  No result was fetched and no database write occurred.
+
 ## Nearest-parent pilot moved to front — 2026-09-18 18:02 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
