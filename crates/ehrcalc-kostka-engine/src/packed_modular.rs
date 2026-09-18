@@ -317,7 +317,7 @@ impl Split192StateMap {
         self.low.len()
     }
 
-    fn entries(&self) -> Vec<(u128, SplitCount<'_>)> {
+    fn parallel_entries(&self) -> Vec<(u128, SplitCount<'_>)> {
         self.low
             .iter()
             .map(|(&key, low)| {
@@ -623,7 +623,11 @@ fn advance_split_layer_serial(
 ) -> Result<(Split192StateMap, u64), String> {
     let mut next = Split192StateMap::with_capacity(states.len().saturating_mul(2));
     let mut transitions = 0_u64;
-    for (key, count) in states.entries() {
+    for (&key, low) in &states.low {
+        let count = SplitCount {
+            low,
+            high: states.high.get(&key).copied().unwrap_or(0),
+        };
         let alpha = context.packer.unpack(key);
         context.visit_extensions(&alpha, strip_size, |target| {
             transitions = transitions
@@ -643,9 +647,14 @@ fn merge_split_layers(
     if left.0.len() < right.0.len() {
         std::mem::swap(&mut left, &mut right);
     }
-    for (target, count) in right.0.entries() {
+    for (target, low) in right.0.low {
+        let count = SplitCount {
+            low: &low,
+            high: right.0.high.remove(&target).unwrap_or(0),
+        };
         left.0.insert_contribution(target, count, max_states)?;
     }
+    debug_assert!(right.0.high.is_empty());
     left.1 = left
         .1
         .checked_add(right.1)
@@ -663,7 +672,7 @@ fn advance_split_layer_parallel(
     if threads <= 1 || states.len() < 1_024 {
         return advance_split_layer_serial(states, context, strip_size, max_states);
     }
-    let entries = states.entries();
+    let entries = states.parallel_entries();
     let chunks = threads.saturating_mul(4).min(entries.len());
     let chunk_size = entries.len().div_ceil(chunks);
     entries
