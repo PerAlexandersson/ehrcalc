@@ -152,7 +152,7 @@ impl Residues {
 }
 
 #[derive(Clone, Copy, Debug)]
-struct PackedHasher(u64);
+pub(crate) struct PackedHasher(u64);
 
 impl Default for PackedHasher {
     fn default() -> Self {
@@ -191,7 +191,7 @@ fn avalanche(mut value: u64) -> u64 {
     value ^ (value >> 31)
 }
 
-type PackedBuildHasher = BuildHasherDefault<PackedHasher>;
+pub(crate) type PackedBuildHasher = BuildHasherDefault<PackedHasher>;
 type StateMap = HashMap<u128, Residues, PackedBuildHasher>;
 
 fn state_map_with_capacity(capacity: usize) -> StateMap {
@@ -835,7 +835,7 @@ fn validate_moduli(moduli: &[u32]) -> Result<(), String> {
     validate_moduli_with_limit(moduli, MAX_MODULI)
 }
 
-fn validate_crt_moduli(moduli: &[u32]) -> Result<(), String> {
+pub(crate) fn validate_crt_moduli(moduli: &[u32]) -> Result<(), String> {
     validate_moduli_with_limit(moduli, MAX_CRT_MODULI)
 }
 
@@ -920,7 +920,7 @@ pub fn crt_reconstruct_bounded(
     Ok(value)
 }
 
-fn inverse_mod(value: u32, modulus: u32) -> Option<u32> {
+pub(crate) fn inverse_mod(value: u32, modulus: u32) -> Option<u32> {
     let (mut old_r, mut r) = (i64::from(value), i64::from(modulus));
     let (mut old_s, mut s) = (1_i64, 0_i64);
     while r != 0 {

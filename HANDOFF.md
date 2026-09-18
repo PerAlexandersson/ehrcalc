@@ -1,5 +1,54 @@
 # Ehrcalc Handoff
 
+## Retained-flag exact formula integrated and remotely checked — 2026-09-18 07:27 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  R211 is intentionally idle at the user's request; generated
+`runs/` evidence remains untracked and no MariaDB write occurred.
+
+The Kostka engine now contains a documented and tested exact generator for the
+five-singleton retained-flag family used by audited d64 candidate
+`14de890ac958f9aad12059092ae3a69b6bb312a612c81b75b35ceb3ed8533b5e`.
+It reuses Ehrcalc's packed hasher and bounded CRT reconstruction, keeps strip
+multiplicities in overflow-checked `u128`, evaluates the block-reduced
+Jacobi--Trudi determinant over machine-word primes, uses division-free 5-by-5
+determinants with reciprocal modular reduction, and certifies CRT uniqueness
+against the unrestricted rectangular Schur count.  The research binary is
+`retained_flag_formula`; the final release binary SHA is
+`f86e7ea5aca5e8dd03b4b8e62775980fa203927eb1c574e592baa7cbf38c9498`.
+
+Before the user's subsequent direct authorization of Euler CPU work, no local
+KTT count was run.  Abacus final-binary control v816
+`20260918T071159-10c45f159e60` reproduced exact `L(1)..L(7)`, every residue,
+and every state frontier; it was fetched once to suffix `1maqzi1l`, with
+job/output SHAs
+`e79b8497dc4b3dfb6cfb49a1d76762937360445be0838b3167955b57b5b6e584`
+and `ba61a5ef22093885a27cdfae09d4ca425411454dd644936e1d2aa327eeb180d2`.
+The pre-format-equivalent fixed-worker build also reproduced exact `L(31)` and
+all frontiers in 503.9 seconds under v815
+`20260918T070905-ebbc3e2b3209`; job/output SHAs are
+`5dde57e4d8df4271d8c51d02f9fedef7281db4d4f4b57b3d87824f2543fad8d2`
+and `d68d3f888c32f396d025eb3010c9676e7232c0c3486bb7ab73d0db92feddd219`.
+This is exact and useful as an independent Rust/CRT cross-check, but slower
+than direct GMP in the current roughly 200-bit regime.
+
+The precomputed-row GMP evaluator binary SHA
+`3b20e0a51f98cbaa57fea31e6c196db37e64db0542015774e697140410d135ee`
+won the same d31 benchmark in 454.1 seconds.  Abacus v817
+`20260918T071832-2fea5ababa84` matched exact `L(31)` and all frontiers, was
+fetched once to suffix `3_tpewyy`, and has job/output SHAs
+`7a5299f33ec054b70b946d86adbd8627725b4c5d5cf7933d987464111ee7aea4`
+and `80065cf75f4bf1279c1f2ffea53e9f90b3fd2cadf8514715d574b5ddc5d608c1`.
+After a fresh idle-queue check, only missing r5 sample `L(35)` is running on
+Abacus as v818 `20260918T072633-cc3df284d7fd`, using that immutable binary,
+six CPUs, and a 3,600-second envelope.  Do not duplicate it; fetch exactly
+once after terminal.  After the user explicitly reopened unrestricted Euler
+CPU/GPU use, disjoint `L(37)` began locally as v819 on CPUs 4--9 with the same
+immutable binary and a 3,600-second envelope; its output is preserved at
+`runs/euler-v819-r5-l37-local-20260918.log` in the mutation project.  Euler's
+GPU bridge remains ready/idle.  R211 must remain unused until the user releases
+that constraint.
+
 ## Specialized GPU strip ceiling 640 verified — 2026-09-17 12:14 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole

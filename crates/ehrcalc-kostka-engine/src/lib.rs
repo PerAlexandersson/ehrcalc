@@ -4,6 +4,7 @@
 //! `../PROVENANCE.md` for migration scope and compatibility policy.
 
 pub mod ehrhart;
+pub mod flagged_formula;
 pub mod flow;
 pub mod gt_dim;
 pub mod kostka_dp;
