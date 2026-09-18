@@ -1,5 +1,34 @@
 # Ehrcalc Handoff
 
+## Zero-edge flagged descent extended through d90 — 2026-09-18 17:47 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+Abacus v868 `20260918T173820-f8735c915e76` remains the only running Abacus
+job, computing 240 ledger-fresh direct children in d31--d60.  No result has
+been fetched and no classification or database write has occurred.
+
+While v868 runs, v869 generated the adjacent d61--d90 band by the same single
+atomic mutation from the four freshly rechecked exact-negative d103--d109
+one-hole parents: general shape move, close the sole hole, and add monotone
+flags.  Its 180 selected candidates comprise six in every dimension 61--90,
+59 distinct outer shapes, unit weights with active fixed content, and zero
+effective nonflag edges.  All are absent from all 16 MariaDB tables containing
+`candidate_key`.  Structural report SHA is
+`fb874fea3fc8f57e3ba0c10497e755154e7a34a25d8b8818e73ce0bf6d21ca16`;
+preflight v870 SHA is
+`d98d2baaaf1c57a30a4ea56e766f16b2542cf001d96b01c5c6a919d52c9dd773`.
+
+After checking the remote state (Abacus: only v868; Laplace: unreachable;
+Euler GPU bridge: ready/idle; R211: only the distinct r5 `L(41)` job), v870
+was queued on Abacus as `20260918T174751-9cf8e2501dd9`.  It uses exact engine
+SHA `4b56f84fc0fa0840e0fc6f7efae90c2fa888f425217353fdb7df195b990c79d7`,
+runner SHA `8f464f6cb75eb7339e651dbcd24d8ec203b20e5cfa7f26c00cad371798964abf`,
+12 lanes of 15 targets plus a known control, 300 seconds/12 million states per
+case, and a 14,400-second envelope.  It is queued behind v868.  Fetch each job
+exactly once at terminal; independently audit exact signs, provenance,
+Hibi--Stanley, reconstruction, and integer samples.  Only a validated exact
+negative may seed further mutations.
+
 ## Fast exact random zero-edge search through d60 — 2026-09-18 17:38 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
