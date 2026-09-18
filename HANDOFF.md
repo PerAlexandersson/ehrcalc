@@ -1,5 +1,31 @@
 # Ehrcalc Handoff
 
+## Nearest-parent pilot moved to front — 2026-09-18 18:02 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+Inspection of v873's manifests showed that its 114 d91--d107 candidates were
+ordered from lower to higher dimension, delaying the cases closest to the
+verified-negative parents.  Since neither queued v873
+`20260918T175828-2f5c2abe5d26` nor queued v874
+`20260918T175849-e87b8a84f1c1` had started, both were cancelled
+authoritatively without computation or ambiguous output.
+
+Preflight v875 isolates all 42 v872 candidates in d100--d107, ordered by
+descending dimension and spread across six simultaneous lanes.  They span 17
+outer shapes, retain active unit weights, have zero effective nonflag edges,
+remain absent from all 16 `candidate_key` ledger tables, and are direct atomic
+children of freshly rechecked exact-negative parents.  Preflight SHA is
+`6963706561f63af0de3d62c203d7f14192608287b58e91a9581f57d5a9495567`;
+the six manifest SHAs are `73cf5000...`, `7642d111...`, `35db5274...`,
+`5546a782...`, `178211ee...`, and `5dc157a8...`.
+
+Abacus v875 `20260918T180234-9d4cbc644254` is queued directly behind still-
+running v868.  It uses the unchanged exact engine and runner, 600 seconds/12
+million states per case, and a 7,200-second job envelope.  The d91--d99
+remainder and d61--d90 band are prepared but intentionally not requeued until
+the nearest-parent pilot is classified.  R211 r5 `L(41)` remains running.  No
+result was fetched and no database write occurred.
+
 ## Near-parent zero-edge band prioritized — 2026-09-18 17:58 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
