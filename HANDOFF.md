@@ -1,5 +1,27 @@
 # Ehrcalc Handoff
 
+## Retained-flag formula merge memory reduced — 2026-09-18 12:57 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  The retained-flag formula now consumes its largest parallel
+partial map as the final merge accumulator instead of allocating a new empty
+full map and copying every partial into it.  This removes one full-map
+allocation and one full partial merge without changing arithmetic, overflow
+checks, state identity, or CRT reconstruction.  The change is intended for
+ordinary `L(39)`/`L(40)`, which can determine `h*[39]`/`h*[40]` after the live
+strict 23/24 jobs determine `h*[42]`/`h*[41]`.
+
+Owned-file rustfmt, all four focused formula tests, and focused Clippy pass;
+Clippy used allowances only for the crate's two pre-existing unrelated
+`type_complexity`/`too_many_arguments` warnings.  Workspace-wide rustfmt is
+still blocked by pre-existing drift in `masked_count.rs` and
+`strict_masked_count.rs`, which remain untouched.  Rebuilt release binary SHA
+is `a6352123b580acc5e35cdcff0f321d8cea2d020bb79690531621b510dcae9252`.
+Its `L(1)..L(7)` output is byte-identical to remote control v816, SHA
+`ba61a5ef22093885a27cdfae09d4ca425411454dd644936e1d2aa327eeb180d2`.
+No new count or database write occurred.  Abacus v844 still owns strict 23;
+Euler v849 still owns strict 24.
+
 ## R5 partial sign ambiguity certified; strict 23/24 live — 2026-09-18 12:46 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole

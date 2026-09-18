@@ -374,7 +374,7 @@ fn large_strip_round(states: &StateMap, dilation: u32) -> Result<StateMap, Strin
         .collect();
     let workers = rayon::current_num_threads().min(entries.len());
     let chunk_size = entries.len().div_ceil(workers);
-    let partials: Vec<(StateMap, bool)> = entries
+    let mut partials: Vec<(StateMap, bool)> = entries
         .par_chunks(chunk_size)
         .map(|chunk| {
             let mut following = HashMap::with_hasher(PackedBuildHasher::default());
@@ -393,8 +393,13 @@ fn large_strip_round(states: &StateMap, dilation: u32) -> Result<StateMap, Strin
             (following, overflow)
         })
         .collect();
-    let mut following = HashMap::with_hasher(PackedBuildHasher::default());
-    let mut overflow = false;
+    let largest = partials
+        .iter()
+        .enumerate()
+        .max_by_key(|(_, (partial, _))| partial.len())
+        .map(|(index, _)| index)
+        .expect("a nonempty state map produces at least one partial map");
+    let (mut following, mut overflow) = partials.swap_remove(largest);
     for (partial, partial_overflow) in partials {
         overflow |= partial_overflow;
         for (partition, multiplicity) in partial {
