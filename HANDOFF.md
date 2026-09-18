@@ -1,5 +1,31 @@
 # Ehrcalc Handoff
 
+## Minimal shape moves now first — 2026-09-18 18:13 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+Further analysis of v877 ranked candidates by the actual number of shape cells
+moved, rather than dimension alone.  Exactly three fresh unstrengthened
+zero-edge closures use at most two moved cells: key
+`486edf0b68b928f4ccb230cdc968c2db921fd00931b2375c8b297476ed2f4b44`
+is the unique move-one case at d84; keys
+`7c5ac90b49f1cc223373ae69d302801a01df63d5730a17ca899d2843d75a5989`
+and `faebf5885b4fb1b646082304e39f9450d8a22d15d3fcb74e8475147f694d52c4`
+are move-two cases at d91 and d84.  Each only moves shape cells and absorbs
+the sole bad edge, has active unit weight, and has zero nonflag edges.
+
+Preflight v879 rechecked the exact-negative parent and all 16 ledger tables;
+its SHA is
+`84505cc0d78d255b3e75756834480256824faba12342e87c7ce18443f229139b`.
+Its three one-target manifest SHAs are `7fc11a7a...`, `88dda625...`, and
+`d3e7bb36...`.  Queued v878 `20260918T181107-6df25a5264ba` was cancelled
+before start without computation, then the minimal-move pilot was queued as
+v879 `20260918T181324-99d2b717d720` directly behind still-running v868.  It
+uses three lanes, 900 seconds/12 million states per target, and a 1,800-second
+envelope.  The unchanged d100--d106 unstrengthened batch was safely requeued
+behind it as v880 `20260918T181338-bb1993486cd1`; cancelled v878 never started,
+so no ambiguous duplicate exists.  R211 r5 `L(41)` remains running.  No result
+was fetched and no database write occurred.
+
 ## Unstrengthened zero-edge closures promoted — 2026-09-18 18:11 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
