@@ -1,5 +1,35 @@
 # Ehrcalc Handoff
 
+## Parallel packed exact strict counter verified — 2026-09-18 09:06 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  R211 is idle, generated
+`runs/` evidence remains untracked, and no MariaDB write occurred.
+
+The packed exact backend now has an opt-in fixed-size local Rayon pool.  Each
+large layer partitions source states into bounded chunks, builds thread-local
+exact `BigUint` maps, and combines them by exact tree reduction.  New keys are
+checked against the global state cap during every merge; transition totals use
+checked `u64` addition.  Small frontiers remain serial.  The research binary
+accepts an optional final `THREADS` argument, while the existing API and
+default remain single-threaded.
+
+All 72 Kostka-engine library tests pass, including a two-thread r5 fixture
+whose exact value, every state frontier, and every transition total equal the
+serial backend.  Focused Clippy passes with only the two documented
+pre-existing warnings allowed.  Release binary SHA is
+`6277e6fba65f3d0a9aee5cd01675c2eddf2f5a6e3eecd94dee7dd45c94feace0`.
+
+Euler v831 replayed audited strict dilation 18 on six CPUs and reproduced
+`10665122144265206106039569061356391`, all 22 state frontiers, and all 21
+transition totals exactly.  Wall time fell from the single-threaded v827's
+1,560.640 seconds to 137.223 seconds, an 11.4-fold speedup; RSS stabilized at
+about 1 GiB.  The v831 log SHA is
+`7b18062683cc805da20a6344d6fa3b7c39f558bd76ca812a1c8bf8d7ba82ee85`.
+V830 supplied 23 forbidden masks for 21 labels, failed validation in 0.004
+seconds, and performed no count; its preserved diagnostic log SHA is
+`814b331ff7ebf0a39d11199d24f1f9bd5aabf25245c016d040abd17d3f339981`.
+
 ## Packed-key exact strict counter verified on r5 — 2026-09-18 08:22 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole

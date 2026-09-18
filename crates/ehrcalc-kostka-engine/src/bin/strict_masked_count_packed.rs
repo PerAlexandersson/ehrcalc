@@ -1,6 +1,9 @@
 //! Exact packed-key CPU counter for relative interiors of masked tableau faces.
 
-use ehrcalc_kostka_engine::packed_modular::try_strict_masked_flagged_skew_kostka_packed_exact_stats;
+use ehrcalc_kostka_engine::packed_modular::{
+    try_strict_masked_flagged_skew_kostka_packed_exact_parallel_stats,
+    try_strict_masked_flagged_skew_kostka_packed_exact_stats,
+};
 use ehrcalc_kostka_engine::Partition;
 use serde_json::json;
 use std::env;
@@ -30,9 +33,9 @@ fn scale(values: &[u32], dilation: u32, name: &str) -> Result<Vec<u32>, String> 
 
 fn main() -> Result<(), String> {
     let arguments = env::args().collect::<Vec<_>>();
-    if arguments.len() != 9 {
+    if !(9..=10).contains(&arguments.len()) {
         return Err(format!(
-            "usage: {} DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS FORBIDDEN_MASKS MAX_STATES",
+            "usage: {} DILATION OUTER INNER WEIGHT UPPER_FLAGS LOWER_FLAGS FORBIDDEN_MASKS MAX_STATES [THREADS]",
             arguments
                 .first()
                 .map(String::as_str)
@@ -59,17 +62,42 @@ fn main() -> Result<(), String> {
     let max_states = arguments[8]
         .parse::<usize>()
         .map_err(|error| format!("invalid max states: {error}"))?;
+    let threads = arguments
+        .get(9)
+        .map(|value| {
+            value
+                .parse::<usize>()
+                .map_err(|error| format!("invalid thread count: {error}"))
+        })
+        .transpose()?
+        .unwrap_or(1);
 
-    let Some((dimension, stats)) = try_strict_masked_flagged_skew_kostka_packed_exact_stats(
-        &lambda,
-        &mu,
-        &weight,
-        (!upper.is_empty()).then_some(upper.as_slice()),
-        (!lower.is_empty()).then_some(lower.as_slice()),
-        (!forbidden.is_empty()).then_some(forbidden.as_slice()),
-        Some(max_states),
-    )?
-    else {
+    let upper = (!upper.is_empty()).then_some(upper.as_slice());
+    let lower = (!lower.is_empty()).then_some(lower.as_slice());
+    let forbidden = (!forbidden.is_empty()).then_some(forbidden.as_slice());
+    let result = if threads == 1 {
+        try_strict_masked_flagged_skew_kostka_packed_exact_stats(
+            &lambda,
+            &mu,
+            &weight,
+            upper,
+            lower,
+            forbidden,
+            Some(max_states),
+        )
+    } else {
+        try_strict_masked_flagged_skew_kostka_packed_exact_parallel_stats(
+            &lambda,
+            &mu,
+            &weight,
+            upper,
+            lower,
+            forbidden,
+            Some(max_states),
+            threads,
+        )
+    }?;
+    let Some((dimension, stats)) = result else {
         println!(
             "{}",
             json!({
@@ -85,6 +113,7 @@ fn main() -> Result<(), String> {
         json!({
             "dilation": dilation,
             "dimension": dimension,
+            "threads": threads,
             "strict": stats.value.to_string(),
             "peak_states": stats.peak_states,
             "level_states": stats.level_states,

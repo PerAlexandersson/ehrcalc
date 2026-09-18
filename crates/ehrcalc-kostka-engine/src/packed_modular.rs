@@ -7,6 +7,8 @@
 use crate::Partition;
 use num_bigint::BigUint;
 use num_traits::{One, ToPrimitive, Zero};
+use rayon::prelude::*;
+use rayon::ThreadPoolBuilder;
 use std::collections::HashMap;
 use std::hash::{BuildHasherDefault, Hasher};
 
@@ -217,6 +219,25 @@ fn exact_state_map_with_capacity(capacity: usize) -> ExactStateMap {
     HashMap::with_capacity_and_hasher(capacity, PackedBuildHasher::default())
 }
 
+fn insert_exact_contribution(
+    states: &mut ExactStateMap,
+    target: u128,
+    count: &BigUint,
+    max_states: Option<usize>,
+) -> Result<(), String> {
+    *states.entry(target).or_insert_with(BigUint::zero) += count;
+    if let Some(limit) = max_states {
+        if states.len() > limit {
+            return Err(format!(
+                "DP state count {} exceeds --max-states {}.",
+                states.len(),
+                limit
+            ));
+        }
+    }
+    Ok(())
+}
+
 struct ExtensionContext<'a> {
     packer: PackedPartitions,
     lambda: &'a [u32; MAX_PACKED_ROWS],
@@ -359,6 +380,82 @@ impl ExtensionContext<'_> {
     }
 }
 
+fn advance_exact_layer_serial(
+    states: &ExactStateMap,
+    context: &ExtensionContext<'_>,
+    strip_size: u32,
+    max_states: Option<usize>,
+) -> Result<(ExactStateMap, u64), String> {
+    let mut next = exact_state_map_with_capacity(states.len().saturating_mul(2));
+    let mut transitions = 0_u64;
+    for (&key, count) in states {
+        let alpha = context.packer.unpack(key);
+        context.visit_extensions(&alpha, strip_size, |target| {
+            transitions = transitions
+                .checked_add(1)
+                .ok_or_else(|| "transition count exceeds u64".to_string())?;
+            insert_exact_contribution(&mut next, target, count, max_states)
+        })?;
+    }
+    Ok((next, transitions))
+}
+
+fn merge_exact_layers(
+    mut left: (ExactStateMap, u64),
+    mut right: (ExactStateMap, u64),
+    max_states: Option<usize>,
+) -> Result<(ExactStateMap, u64), String> {
+    if left.0.len() < right.0.len() {
+        std::mem::swap(&mut left, &mut right);
+    }
+    for (target, count) in right.0 {
+        insert_exact_contribution(&mut left.0, target, &count, max_states)?;
+    }
+    left.1 = left
+        .1
+        .checked_add(right.1)
+        .ok_or_else(|| "transition count exceeds u64".to_string())?;
+    Ok(left)
+}
+
+fn advance_exact_layer_parallel(
+    states: &ExactStateMap,
+    context: &ExtensionContext<'_>,
+    strip_size: u32,
+    max_states: Option<usize>,
+    threads: usize,
+) -> Result<(ExactStateMap, u64), String> {
+    if threads <= 1 || states.len() < 1_024 {
+        return advance_exact_layer_serial(states, context, strip_size, max_states);
+    }
+    let entries = states
+        .iter()
+        .map(|(&key, count)| (key, count))
+        .collect::<Vec<_>>();
+    let chunks = threads.saturating_mul(4).min(entries.len());
+    let chunk_size = entries.len().div_ceil(chunks);
+    entries
+        .par_chunks(chunk_size)
+        .map(|chunk| {
+            let mut local = exact_state_map_with_capacity(chunk.len().saturating_mul(2));
+            let mut transitions = 0_u64;
+            for &(key, count) in chunk {
+                let alpha = context.packer.unpack(key);
+                context.visit_extensions(&alpha, strip_size, |target| {
+                    transitions = transitions
+                        .checked_add(1)
+                        .ok_or_else(|| "transition count exceeds u64".to_string())?;
+                    insert_exact_contribution(&mut local, target, count, max_states)
+                })?;
+            }
+            Ok((local, transitions))
+        })
+        .try_reduce(
+            || (exact_state_map_with_capacity(0), 0),
+            |left, right| merge_exact_layers(left, right, max_states),
+        )
+}
+
 fn partition_size_u64(partition: &Partition) -> u64 {
     partition.parts().iter().map(|&part| u64::from(part)).sum()
 }
@@ -404,14 +501,8 @@ fn validate_constraint_masks(
     Ok(())
 }
 
-/// Count a constrained skew Kostka coefficient exactly with packed state keys.
-///
-/// This has the same constraint semantics as
-/// [`crate::kostka_dp::try_masked_flagged_skew_kostka`]. Intermediate
-/// multiplicities remain `BigUint`; only the partition keys and transition
-/// generator use the allocation-free packed representation.
 #[allow(clippy::too_many_arguments)]
-pub fn try_masked_flagged_skew_kostka_packed_exact_stats(
+fn try_masked_flagged_skew_kostka_packed_exact_stats_with_threads(
     lambda: &Partition,
     mu: &Partition,
     weight: &[u32],
@@ -421,7 +512,19 @@ pub fn try_masked_flagged_skew_kostka_packed_exact_stats(
     strict_lower_masks: Option<&[u32]>,
     strict_diagonal_masks: Option<&[u32]>,
     max_states: Option<usize>,
+    threads: usize,
 ) -> Result<PackedExactKostkaStats, String> {
+    if threads == 0 {
+        return Err("packed exact thread count must be positive".to_string());
+    }
+    let pool = (threads > 1)
+        .then(|| {
+            ThreadPoolBuilder::new()
+                .num_threads(threads)
+                .build()
+                .map_err(|error| format!("failed to build packed exact thread pool: {error}"))
+        })
+        .transpose()?;
     if !mu.partition_less_equal(lambda) {
         return Ok(zero_exact_stats());
     }
@@ -521,27 +624,12 @@ pub fn try_masked_flagged_skew_kostka_packed_exact_stats(
             strict_lower_mask: strict_lower_masks.map_or(0, |masks| masks[label]),
             strict_diagonal_mask: strict_diagonal_masks.map_or(0, |masks| masks[label]),
         };
-        let mut next = exact_state_map_with_capacity(states.len().saturating_mul(2));
-        let mut transitions = 0_u64;
-        for (&key, count) in &states {
-            let alpha = packer.unpack(key);
-            context.visit_extensions(&alpha, strip_size, |target| {
-                transitions = transitions
-                    .checked_add(1)
-                    .ok_or_else(|| "transition count exceeds u64".to_string())?;
-                *next.entry(target).or_insert_with(BigUint::zero) += count;
-                if let Some(limit) = max_states {
-                    if next.len() > limit {
-                        return Err(format!(
-                            "DP state count {} exceeds --max-states {}.",
-                            next.len(),
-                            limit
-                        ));
-                    }
-                }
-                Ok(())
-            })?;
-        }
+        let (next, transitions) = match &pool {
+            Some(pool) => pool.install(|| {
+                advance_exact_layer_parallel(&states, &context, strip_size, max_states, threads)
+            })?,
+            None => advance_exact_layer_serial(&states, &context, strip_size, max_states)?,
+        };
         peak_states = peak_states.max(next.len());
         level_states.push(next.len());
         level_transitions.push(transitions);
@@ -554,6 +642,70 @@ pub fn try_masked_flagged_skew_kostka_packed_exact_stats(
         level_states,
         level_transitions,
     })
+}
+
+/// Count a constrained skew Kostka coefficient exactly with packed state keys.
+///
+/// This has the same constraint semantics as
+/// [`crate::kostka_dp::try_masked_flagged_skew_kostka`]. Intermediate
+/// multiplicities remain `BigUint`; only the partition keys and transition
+/// generator use the allocation-free packed representation.
+#[allow(clippy::too_many_arguments)]
+pub fn try_masked_flagged_skew_kostka_packed_exact_stats(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+    strict_lower_masks: Option<&[u32]>,
+    strict_diagonal_masks: Option<&[u32]>,
+    max_states: Option<usize>,
+) -> Result<PackedExactKostkaStats, String> {
+    try_masked_flagged_skew_kostka_packed_exact_stats_with_threads(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+        strict_lower_masks,
+        strict_diagonal_masks,
+        max_states,
+        1,
+    )
+}
+
+/// Parallel packed-key exact counter with a fixed local Rayon pool.
+///
+/// Each layer partitions its source states among `threads` workers. Worker
+/// maps are merged exactly, checking the global state limit as new keys enter
+/// the merged map. Small frontiers stay serial to avoid parallel overhead.
+#[allow(clippy::too_many_arguments)]
+pub fn try_masked_flagged_skew_kostka_packed_exact_parallel_stats(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+    strict_lower_masks: Option<&[u32]>,
+    strict_diagonal_masks: Option<&[u32]>,
+    max_states: Option<usize>,
+    threads: usize,
+) -> Result<PackedExactKostkaStats, String> {
+    try_masked_flagged_skew_kostka_packed_exact_stats_with_threads(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+        strict_lower_masks,
+        strict_diagonal_masks,
+        max_states,
+        threads,
+    )
 }
 
 /// Count relative-interior lattice points exactly with packed state keys.
@@ -591,6 +743,44 @@ pub fn try_strict_masked_flagged_skew_kostka_packed_exact_stats(
         Some(&masks.strict_lower_masks),
         Some(&masks.strict_diagonal_masks),
         max_states,
+    )?;
+    Ok(Some((masks.dimension, stats)))
+}
+
+/// Parallel packed-key exact relative-interior counter.
+#[allow(clippy::too_many_arguments)]
+pub fn try_strict_masked_flagged_skew_kostka_packed_exact_parallel_stats(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+    max_states: Option<usize>,
+    threads: usize,
+) -> Result<Option<(usize, PackedExactKostkaStats)>, String> {
+    let Some(masks) = crate::kostka_dp::masked_relative_interior_masks(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+    )?
+    else {
+        return Ok(None);
+    };
+    let stats = try_masked_flagged_skew_kostka_packed_exact_parallel_stats(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+        Some(&masks.strict_lower_masks),
+        Some(&masks.strict_diagonal_masks),
+        max_states,
+        threads,
     )?;
     Ok(Some((masks.dimension, stats)))
 }
@@ -1377,6 +1567,44 @@ mod tests {
         assert_eq!(dimension, 2);
         assert_eq!(actual.value, BigUint::one());
         assert_eq!(actual.value, expected);
+    }
+
+    #[test]
+    fn packed_exact_parallel_matches_serial_strict_r5_fixture() {
+        let lambda = Partition::from_sorted(vec![240, 20, 20, 20, 20, 20, 20, 20, 20, 20, 20]);
+        let mu = Partition::from_sorted(vec![20]);
+        let weight = [
+            20, 0, 20, 0, 0, 0, 20, 20, 20, 20, 20, 20, 20, 20, 20, 10, 10, 10, 10, 10, 150,
+        ];
+        let forbidden = [
+            0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        ];
+        let (_, serial) = try_strict_masked_flagged_skew_kostka_packed_exact_stats(
+            &lambda,
+            &mu,
+            &weight,
+            None,
+            None,
+            Some(&forbidden),
+            None,
+        )
+        .unwrap()
+        .unwrap();
+        let (_, parallel) = try_strict_masked_flagged_skew_kostka_packed_exact_parallel_stats(
+            &lambda,
+            &mu,
+            &weight,
+            None,
+            None,
+            Some(&forbidden),
+            None,
+            2,
+        )
+        .unwrap()
+        .unwrap();
+        assert_eq!(serial, parallel);
+        assert_eq!(parallel.value, BigUint::from(962_962_u32));
+        assert!(parallel.peak_states >= 1_024);
     }
 
     #[test]
