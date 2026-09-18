@@ -1,5 +1,23 @@
 # Ehrcalc Handoff
 
+## R5 partial sign ambiguity certified; strict 23/24 live — 2026-09-18 12:46 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  Exact audit v850 derives the rank-52 h* data directly from
+the hash-checked v847 bundle.  It proves that the only unknown entries are
+`h*[39]` through `h*[42]` and supplies two exact integer completions.  Both
+reproduce every admitted ordinary and strict sample, have nonnegative h*, and
+pass all implemented Hibi--Stanley inequalities.  One completion has every
+Ehrhart coefficient strictly positive; the other has 27 negative coefficients.
+Thus neither sign can be inferred early, even with integrality and these
+inequalities: exact strict dilations 23--26 are genuinely necessary.
+
+The untracked v850 script/report SHAs are
+`b66d51886c874e26af05e4f7d7fec647a977dd91dbc8e7cc7921ba8bfb7344c4`
+and `a1da966556a5035d8fada29ead554bf8190499a34cef6339a4c8fdd2973d5709`.
+No database write occurred.  Abacus v844 remains the sole owner of strict 23;
+Euler v849 remains healthy on strict 24.  Do not duplicate either point.
+
 ## R5 reaches rank 52; strict 23/24 live — 2026-09-18 12:25 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
