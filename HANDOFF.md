@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## R5 L41 moved to isolated Abacus queue — 2026-09-18 16:47 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+Recurring unrelated Euler Production builds drove the shared 24 GiB cgroup to
+23.65 GB and active max-pressure events while v859 itself remained stable at
+about 4.5 GB RSS.  To prevent another cgroup OOM, only the owned v859 child was
+terminated cleanly after 559.158426886017 seconds.  Its immutable untracked
+report SHA is
+`b9ff82fa06d6f9b99b25f1fb00e8d59481267e75629056e731fc674180a640ae`;
+it records `returncode=-15`, empty stdout/stderr, and null result.  Thus
+`L(41)` remained unresolved, not zero, and no ambiguous result exists.  Euler
+memory immediately fell by about 5 GB and OOM counters remained
+`oom=21`, `oom_kill=5`.
+
+Fresh preflight found no local KTT process, all 16 current MariaDB tables with
+a `candidate_key` column still empty for r5 key
+`14de890ac958f9aad12059092ae3a69b6bb312a612c81b75b35ceb3ed8533b5e`,
+Abacus v852 `20260918T132234-e962967c4dc0` authoritatively running strict 23
+with no other queued job, Laplace unreachable, and the Euler GPU bridge
+ready/idle.  Abacus v860 job `20260918T164702-80293e83b882` is now queued
+behind v852 to compute only ordinary `L(41)` in Abacus's isolated 20 GiB
+cgroup.  It uses `/usr/bin/env RAYON_NUM_THREADS=4 ./retained_flag_formula 41
+41`, a 14,400-second envelope, and exact binary SHA
+`a336cbe618d83847189647c9e413e1d23f4429165e8769b367594963393cada1`.
+Do not duplicate strict 23 or `L(41)`; fetch each terminal job exactly once.
+Together they give full rank 56, so strict 24 need not be retried if both
+succeed.  No database write occurred.
+
 ## R5 L41 isolated retry live — 2026-09-18 16:37 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
