@@ -22,6 +22,14 @@ five missing independent rows.  Script/report SHAs are `021d1329055e...` and
 binary SHA `c49fc73a...`, six threads, a 30-million-state cap, and a
 7,200-second envelope.  Do not duplicate either point.
 
+Commit `7a235683cbaa7d74f0373af92ea683ba9dd3dd2a` is pushed and skips the
+per-state high-map lookup when a split layer has no wide values, as every
+audited level through strict 20 does.  All 75 tests, focused Clippy, and
+owned-file rustfmt pass.  Rebuilt release binary SHA is
+`12362529adefd756aeb12edd5ffa9e35e5401cde7b2d9b27bfe441b3dcef63cf`;
+Euler v846 reproduced exact strict-10 output and telemetry byte-for-byte, log
+SHA `ac08c18a...`.  Live v840/v844 retain their prior immutable binaries.
+
 ## R5 reaches rank 50; strict 20 retry and strict 22 live — 2026-09-18 10:55 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
