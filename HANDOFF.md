@@ -1,5 +1,23 @@
 # Ehrcalc Handoff
 
+## R5 L39 joins strict 23/24 live — 2026-09-18 13:03 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  A fresh preflight returned `0 0 0 0 0 0` for the r5 key in
+the six relevant ledger tables, found no local formula process, confirmed
+Abacus v844 still owns only strict 23, Euler v849 still owns only strict 24,
+Laplace remains unreachable, and the Euler GPU bridge is ready/idle.
+
+Euler v851 now exclusively owns ordinary `L(39)` using optimized formula
+binary SHA `a6352123b580acc5e35cdcff0f321d8cea2d020bb79690531621b510dcae9252`.
+Its untracked runner SHA is
+`20d4bc4b3243fd4c5d669aa7b5b3f541af6d95d9f4c7bdd6b2591441efd8f506`;
+session `5013` runs PID 31002 on CPUs 8--9 at nice 10 with two Rayon threads
+and a six-hour envelope.  This is disjoint from strict 23/24 and directly
+determines `h*[39]`.  At launch the combined cgroup remained below 18 GB of
+24 GiB, most non-anonymous usage was reclaimable file cache, and strict 24
+retained priority.  Do not duplicate strict 23, strict 24, or `L(39)`.
+
 ## Retained-flag formula merge memory reduced — 2026-09-18 12:57 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
