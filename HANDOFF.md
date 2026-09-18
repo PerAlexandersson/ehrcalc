@@ -1,5 +1,42 @@
 # Ehrcalc Handoff
 
+## R5 reaches rank 52; strict 23/24 live — 2026-09-18 12:25 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  R211 remains idle and receives no KTT work, generated
+`runs/` evidence remains untracked, and no MariaDB write occurred.
+
+Euler v840 completed exact strict dilation 22 as
+`234231652795738958144982930631537186754960`.  The split-192 counter returned
+directly with dimension 64, six threads, peak frontier 10,295,472, and wide
+occupancy only in the final three levels (`171,21,1`).  It exited zero after
+5,594.616 seconds.  Its complete log SHA is
+`8f8b78b5f2c007b70aeff40b89dbb1a8dd13ac7a255ae7683c803f23786b3545`
+and its immutable launch binary SHA is
+`3d329123d66db124e819ecd58ab35bcfb10c29eba86b78e6fe9127d45a899450`.
+
+R5 now has exact rank 52 of 56.  Consolidation audit v847 hash-checks the v845
+bundle and v840 log, admits strict 22, and independently verifies that strict
+23--26 are the four missing independent rows.  Its script/report SHAs are
+`52cf032f3daf48ac65cf9fef9ab57812f8499cae112624d6add7101222f227cc`
+and `6c4e221609f983535bbb690fb9dfe94ae7df20903c102c6f7e60644620d9e64c`.
+Strict 27 remains reserved for out-of-sample validation.
+
+Euler v848 then reproduced audited strict 18 exactly with the current
+empty-high fast-path binary SHA
+`12362529adefd756aeb12edd5ffa9e35e5401cde7b2d9b27bfe441b3dcef63cf`,
+including every frontier,
+transition total, and zero wide occupancy.  It took 115.036 seconds versus
+v839's 125.565 seconds, about 8.4% faster; report SHA is
+`750428c6ad34fd18fa202ed1ac509e4cecb647c4b566e5749e46a4af8610db8f`.
+After a fresh six-table ledger audit returned `0 0 0 0 0 0`, Laplace again
+timed out, the Euler GPU bridge was ready/idle, and Abacus v844 remained the
+sole owner of strict 23, Euler v849 began only strict 24.  Its untracked runner
+SHA is `e5fe23a488b1baa021aed41027bc1776bba35d33fcca88dedc704dc88348bbfb`;
+session `15534` runs PID 22222 on CPUs 4--7 at nice 10 with four threads, a
+30-million-state guard, and an eight-hour envelope.  Four threads preserve
+memory headroom under Euler's 24 GiB cgroup.  Do not duplicate strict 23 or 24.
+
 ## R5 reaches rank 51; strict 22/23 live — 2026-09-18 11:23 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
