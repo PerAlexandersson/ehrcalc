@@ -1,5 +1,39 @@
 # Ehrcalc Handoff
 
+## Exact L39 admitted; r5 rank 53/56 — 2026-09-18 14:05 UTC
+
+Euler v851 completed ordinary `L(39)` exactly in 3,869.857917813002 wall
+seconds:
+`4627330530943583454852986218403584606658440110697541634237450782930`.
+Its six state frontiers were
+`[1,39,1521,40661,823862,13551573]`; all eight CRT residues match the
+reconstructed integer below the certified unrestricted upper bound.  Candidate
+key, CPUs 8--9, two Rayon threads, nice 10, empty stderr, exit 0, runner SHA
+`20d4bc4b3243fd4c5d669aa7b5b3f541af6d95d9f4c7bdd6b2591441efd8f506`,
+binary SHA
+`a6352123b580acc5e35cdcff0f321d8cea2d020bb79690531621b510dcae9252`,
+and report SHA
+`51b1882ab216f11020208b928fb1840929f7332256c0c1668fd1e379c25e349c`
+all validate.
+
+Immutable consolidation v854 has script/report SHAs
+`1d5748466dfc941098f7e9b17c6efd609a9e450e850abd4154d904ed55196bad` /
+`662964fec65cd5e52cc8fb1da8d52b5637a7cbe6fc16cb07da39fc119f54dee0`.
+The exact interpolation rank is now 53/56 and
+`h*[39]=1844337484106709697850271712699218432010614210`; the only remaining
+coordinates are supplied independently by ordinary `L(40)`, strict 23, and
+strict 24.  Exact ambiguity audit v855 (script/report SHAs
+`9d4ae2ad2bb32c555e492c460d65db0c5afc6f706e13c55e83f37f5bdeaaa64c` /
+`b08540d61883407e750946014cfc095a9ada70df77f27e69901f564a38d6b0e4`)
+constructs two integer, nonnegative-h*, Hibi--Stanley-valid completions matching
+every admitted sample: one has all positive Ehrhart coefficients and one has
+27 negative coefficients.  Hence sign remains genuinely unresolved.
+
+Euler v853 `L(40)`, Euler v849 strict 24, and Abacus v852 strict 23 remain
+live and disjoint.  The current Codex worker remains sole KTT researcher and
+sole MariaDB writer; no database write occurred and no descendant may be
+generated until the sign is exact.
+
 ## R5 L40 completes the live four-coordinate schedule — 2026-09-18 13:38 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
