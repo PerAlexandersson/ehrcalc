@@ -1,5 +1,28 @@
 # Ehrcalc Handoff
 
+## D31--d60 partial exact audit; minimal moves live — 2026-09-18 18:34 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+Abacus v868 `20260918T173820-f8735c915e76` completed with exit code 0 and was
+fetched exactly once to suffix `4jawdk9h`.  Of its 240 zero-edge targets, 120
+completed exact interpolation and all 120 are coefficient-nonnegative; the
+other 120 reached the explicit 120-second per-case limit and remain unresolved,
+not positive.  Exact completions cover all eight cases in d31--d37 and partial
+coverage through d53; every d54--d60 case timed out.  All 12 controls matched,
+and every exact result passed Hibi--Stanley, h*-to-power reconstruction, and
+integer-sample checks.  Audit SHA is
+`572f31b0e2ab5a5e4b4348f1d072e4580a2a506caa83b878fba934849332b0c6`.
+Job/result/output SHAs are respectively
+`d14c23e0e776c1f2d5607305722125c8472622961a504c9e78ce182f72692cd4`,
+`81868a6e94ffc0178bf833deb1c9013d9fab4ee95ddb876a5e8ec4f1d26376d2`,
+and `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+
+The queued minimal-move job v879 `20260918T181324-99d2b717d720` started
+immediately at 18:31:48 UTC and is authoritatively running its two d84 and one
+d91 targets.  V880 remains queued behind it.  R211 r5 `L(41)` remains running.
+No database write occurred, and none of the v868 positive children may be
+mutated.
+
 ## Minimal shape moves now first — 2026-09-18 18:13 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
