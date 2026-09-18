@@ -23,6 +23,14 @@ strict 22.  After confirming Abacus idle and no overlap, Abacus v841
 split-192 binary SHA `3d329123...`, a 20-million-state cap, and a 7,200-second
 envelope.  Do not duplicate either live point.
 
+Untracked consolidation audit v843 now reads and hash-checks the 18 exact
+ordinary/strict source logs and reports directly, reconstructs ordinary
+`L(0)..L(38)` plus admitted strict dilations `1..19,21`, and independently
+verifies rank 50 and the missing schedule `20,22..26`.  Its script/report SHAs
+are `7185cfeeff940a20b136d3e50757c04c4e4b542200d74c6984c073f0c953ea77`
+and `4b736c179559a6348426c96ed20ec4115c8d9e92ec1008d57683102c419dae42`.
+Use this report rather than hand-transcribing counts when finalizing.
+
 Commit `bc8d62d0c4d92373013ebec8e205c98563b9d805` is pushed and removes a
 full-state snapshot from each split-map merge by consuming the smaller primary
 map directly.  All 75 library tests, focused Clippy, and owned-file rustfmt
