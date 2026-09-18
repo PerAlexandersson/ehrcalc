@@ -318,6 +318,13 @@ impl Split192StateMap {
     }
 
     fn parallel_entries(&self) -> Vec<(u128, SplitCount<'_>)> {
+        if self.high.is_empty() {
+            return self
+                .low
+                .iter()
+                .map(|(&key, low)| (key, SplitCount { low, high: 0 }))
+                .collect();
+        }
         self.low
             .iter()
             .map(|(&key, low)| {
