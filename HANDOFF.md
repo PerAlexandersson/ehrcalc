@@ -1,6 +1,6 @@
 # Ehrcalc Handoff
 
-## R5 L40 completes the live four-coordinate schedule — 2026-09-18 14:09 UTC
+## R5 L40 completes the live four-coordinate schedule — 2026-09-18 13:38 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
 MariaDB writer.  Euler v853 now exclusively owns ordinary `L(40)` for r5 key
