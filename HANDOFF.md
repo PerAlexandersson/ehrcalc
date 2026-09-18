@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## Near-parent zero-edge band prioritized — 2026-09-18 17:58 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+Abacus v868 `20260918T173820-f8735c915e76` remains authoritatively running the
+240 d31--d60 exact cases.  V872 independently generated a more promising
+lightly flagged band directly from the same four freshly rechecked
+exact-negative d103--d109 one-hole parents.  It contains 114 ledger-fresh
+active-unit-weight candidates in d91--d107, across 35 outer shapes, all with
+the sole hole absorbed and zero effective nonflag edges.  Its structural
+report SHA is
+`4f06395a4de44dcea178aaca9715db6ca5a05a9e719911e0b3c11ab9fc5e515a`;
+preflight v873 SHA is
+`838ab2581d6743904ea4c2f703984307e9380cc42d5d5980b8ced1e92ededad0`.
+
+To prioritize the band closest to known negatives, queued v870
+`20260918T174751-9cf8e2501dd9` was cancelled before start, unambiguously and
+without computation.  V873 `20260918T175828-2f5c2abe5d26` is now first in the
+Abacus queue behind v868.  It has 12 lanes in two six-lane waves, 600 seconds
+and 12 million states per case, and a 14,400-second envelope.  The unchanged
+d61--d90 manifests were then requeued behind it as v874
+`20260918T175849-e87b8a84f1c1`; this is not an ambiguous duplicate because
+v870 never started.  Before submission, Laplace remained unreachable, the
+Euler GPU bridge was ready/idle, and R211 had only the non-overlapping r5
+`L(41)` job.  Exact engine and runner SHAs remain
+`4b56f84fc0fa0840e0fc6f7efae90c2fa888f425217353fdb7df195b990c79d7`
+and `8f464f6cb75eb7339e651dbcd24d8ec203b20e5cfa7f26c00cad371798964abf`.
+No result was fetched and no database write occurred.
+
 ## Zero-edge flagged descent extended through d90 — 2026-09-18 17:47 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
