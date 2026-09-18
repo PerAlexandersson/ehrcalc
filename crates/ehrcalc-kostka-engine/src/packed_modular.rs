@@ -209,23 +209,90 @@ fn avalanche(mut value: u64) -> u64 {
 
 pub(crate) type PackedBuildHasher = BuildHasherDefault<PackedHasher>;
 type StateMap = HashMap<u128, Residues, PackedBuildHasher>;
-type ExactStateMap = HashMap<u128, BigUint, PackedBuildHasher>;
+type ExactStateMap<C = BigUint> = HashMap<u128, C, PackedBuildHasher>;
+
+trait ExactCount: Clone + Send + Sync {
+    fn count_zero() -> Self;
+    fn count_one() -> Self;
+    fn checked_add_assign(&mut self, other: &Self) -> Result<(), String>;
+    fn into_biguint(self) -> BigUint;
+}
+
+impl ExactCount for BigUint {
+    fn count_zero() -> Self {
+        BigUint::zero()
+    }
+
+    fn count_one() -> Self {
+        BigUint::one()
+    }
+
+    fn checked_add_assign(&mut self, other: &Self) -> Result<(), String> {
+        *self += other;
+        Ok(())
+    }
+
+    fn into_biguint(self) -> BigUint {
+        self
+    }
+}
+
+/// Inline checked counter for the medium-size exact frontiers used by KTT
+/// reciprocity samples. This avoids one heap allocation per state while still
+/// failing explicitly instead of wrapping if 192 bits are insufficient.
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
+struct Count192([u64; 3]);
+
+impl ExactCount for Count192 {
+    fn count_zero() -> Self {
+        Self([0; 3])
+    }
+
+    fn count_one() -> Self {
+        Self([1, 0, 0])
+    }
+
+    fn checked_add_assign(&mut self, other: &Self) -> Result<(), String> {
+        let mut carry = false;
+        for (left, &right) in self.0.iter_mut().zip(&other.0) {
+            let (sum, first_carry) = left.overflowing_add(right);
+            let (sum, second_carry) = sum.overflowing_add(u64::from(carry));
+            *left = sum;
+            carry = first_carry || second_carry;
+        }
+        if carry {
+            return Err("packed exact count exceeds 192 bits".to_string());
+        }
+        Ok(())
+    }
+
+    fn into_biguint(self) -> BigUint {
+        let mut bytes = [0_u8; 24];
+        for (index, limb) in self.0.into_iter().enumerate() {
+            bytes[index * 8..(index + 1) * 8].copy_from_slice(&limb.to_le_bytes());
+        }
+        BigUint::from_bytes_le(&bytes)
+    }
+}
 
 fn state_map_with_capacity(capacity: usize) -> StateMap {
     HashMap::with_capacity_and_hasher(capacity, PackedBuildHasher::default())
 }
 
-fn exact_state_map_with_capacity(capacity: usize) -> ExactStateMap {
+fn exact_state_map_with_capacity<C>(capacity: usize) -> ExactStateMap<C> {
     HashMap::with_capacity_and_hasher(capacity, PackedBuildHasher::default())
 }
 
-fn insert_exact_contribution(
-    states: &mut ExactStateMap,
+fn insert_exact_contribution<C: ExactCount>(
+    states: &mut ExactStateMap<C>,
     target: u128,
-    count: &BigUint,
+    count: &C,
     max_states: Option<usize>,
 ) -> Result<(), String> {
-    *states.entry(target).or_insert_with(BigUint::zero) += count;
+    states
+        .entry(target)
+        .or_insert_with(C::count_zero)
+        .checked_add_assign(count)?;
     if let Some(limit) = max_states {
         if states.len() > limit {
             return Err(format!(
@@ -380,12 +447,12 @@ impl ExtensionContext<'_> {
     }
 }
 
-fn advance_exact_layer_serial(
-    states: &ExactStateMap,
+fn advance_exact_layer_serial<C: ExactCount>(
+    states: &ExactStateMap<C>,
     context: &ExtensionContext<'_>,
     strip_size: u32,
     max_states: Option<usize>,
-) -> Result<(ExactStateMap, u64), String> {
+) -> Result<(ExactStateMap<C>, u64), String> {
     let mut next = exact_state_map_with_capacity(states.len().saturating_mul(2));
     let mut transitions = 0_u64;
     for (&key, count) in states {
@@ -400,11 +467,11 @@ fn advance_exact_layer_serial(
     Ok((next, transitions))
 }
 
-fn merge_exact_layers(
-    mut left: (ExactStateMap, u64),
-    mut right: (ExactStateMap, u64),
+fn merge_exact_layers<C: ExactCount>(
+    mut left: (ExactStateMap<C>, u64),
+    mut right: (ExactStateMap<C>, u64),
     max_states: Option<usize>,
-) -> Result<(ExactStateMap, u64), String> {
+) -> Result<(ExactStateMap<C>, u64), String> {
     if left.0.len() < right.0.len() {
         std::mem::swap(&mut left, &mut right);
     }
@@ -418,13 +485,13 @@ fn merge_exact_layers(
     Ok(left)
 }
 
-fn advance_exact_layer_parallel(
-    states: &ExactStateMap,
+fn advance_exact_layer_parallel<C: ExactCount>(
+    states: &ExactStateMap<C>,
     context: &ExtensionContext<'_>,
     strip_size: u32,
     max_states: Option<usize>,
     threads: usize,
-) -> Result<(ExactStateMap, u64), String> {
+) -> Result<(ExactStateMap<C>, u64), String> {
     if threads <= 1 || states.len() < 1_024 {
         return advance_exact_layer_serial(states, context, strip_size, max_states);
     }
@@ -502,7 +569,7 @@ fn validate_constraint_masks(
 }
 
 #[allow(clippy::too_many_arguments)]
-fn try_masked_flagged_skew_kostka_packed_exact_stats_with_threads(
+fn try_masked_flagged_skew_kostka_packed_exact_stats_with_threads<C: ExactCount>(
     lambda: &Partition,
     mu: &Partition,
     weight: &[u32],
@@ -580,7 +647,7 @@ fn try_masked_flagged_skew_kostka_packed_exact_stats_with_threads(
     };
 
     let mut states = exact_state_map_with_capacity(1);
-    states.insert(mu_key, BigUint::one());
+    states.insert(mu_key, C::count_one());
     let mut peak_states = 1;
     let mut level_states = vec![1];
     let mut level_transitions = Vec::with_capacity(weight.len());
@@ -637,7 +704,10 @@ fn try_masked_flagged_skew_kostka_packed_exact_stats_with_threads(
     }
 
     Ok(PackedExactKostkaStats {
-        value: states.remove(&lambda_key).unwrap_or_else(BigUint::zero),
+        value: states
+            .remove(&lambda_key)
+            .unwrap_or_else(C::count_zero)
+            .into_biguint(),
         peak_states,
         level_states,
         level_transitions,
@@ -662,7 +732,7 @@ pub fn try_masked_flagged_skew_kostka_packed_exact_stats(
     strict_diagonal_masks: Option<&[u32]>,
     max_states: Option<usize>,
 ) -> Result<PackedExactKostkaStats, String> {
-    try_masked_flagged_skew_kostka_packed_exact_stats_with_threads(
+    try_masked_flagged_skew_kostka_packed_exact_stats_with_threads::<BigUint>(
         lambda,
         mu,
         weight,
@@ -694,7 +764,39 @@ pub fn try_masked_flagged_skew_kostka_packed_exact_parallel_stats(
     max_states: Option<usize>,
     threads: usize,
 ) -> Result<PackedExactKostkaStats, String> {
-    try_masked_flagged_skew_kostka_packed_exact_stats_with_threads(
+    try_masked_flagged_skew_kostka_packed_exact_stats_with_threads::<BigUint>(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+        strict_lower_masks,
+        strict_diagonal_masks,
+        max_states,
+        threads,
+    )
+}
+
+/// Checked inline-192 variant of the parallel packed-key exact counter.
+///
+/// This is exact whenever it succeeds. It returns an error as soon as any
+/// intermediate state multiplicity exceeds 192 bits, so callers can safely
+/// fall back to the arbitrary-precision backend without accepting truncation.
+#[allow(clippy::too_many_arguments)]
+pub fn try_masked_flagged_skew_kostka_packed_u192_parallel_stats(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+    strict_lower_masks: Option<&[u32]>,
+    strict_diagonal_masks: Option<&[u32]>,
+    max_states: Option<usize>,
+    threads: usize,
+) -> Result<PackedExactKostkaStats, String> {
+    try_masked_flagged_skew_kostka_packed_exact_stats_with_threads::<Count192>(
         lambda,
         mu,
         weight,
@@ -771,6 +873,45 @@ pub fn try_strict_masked_flagged_skew_kostka_packed_exact_parallel_stats(
         return Ok(None);
     };
     let stats = try_masked_flagged_skew_kostka_packed_exact_parallel_stats(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+        Some(&masks.strict_lower_masks),
+        Some(&masks.strict_diagonal_masks),
+        max_states,
+        threads,
+    )?;
+    Ok(Some((masks.dimension, stats)))
+}
+
+/// Parallel relative-interior counter with checked inline 192-bit state
+/// multiplicities.
+#[allow(clippy::too_many_arguments)]
+pub fn try_strict_masked_flagged_skew_kostka_packed_u192_parallel_stats(
+    lambda: &Partition,
+    mu: &Partition,
+    weight: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+    max_states: Option<usize>,
+    threads: usize,
+) -> Result<Option<(usize, PackedExactKostkaStats)>, String> {
+    let Some(masks) = crate::kostka_dp::masked_relative_interior_masks(
+        lambda,
+        mu,
+        weight,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+    )?
+    else {
+        return Ok(None);
+    };
+    let stats = try_masked_flagged_skew_kostka_packed_u192_parallel_stats(
         lambda,
         mu,
         weight,
@@ -1605,6 +1746,35 @@ mod tests {
         assert_eq!(serial, parallel);
         assert_eq!(parallel.value, BigUint::from(962_962_u32));
         assert!(parallel.peak_states >= 1_024);
+        let (_, inline) = try_strict_masked_flagged_skew_kostka_packed_u192_parallel_stats(
+            &lambda,
+            &mu,
+            &weight,
+            None,
+            None,
+            Some(&forbidden),
+            None,
+            2,
+        )
+        .unwrap()
+        .unwrap();
+        assert_eq!(inline, parallel);
+    }
+
+    #[test]
+    fn inline_192_counter_detects_overflow() {
+        let mut carry = Count192([u64::MAX, 0, 0]);
+        carry.checked_add_assign(&Count192::count_one()).unwrap();
+        assert_eq!(carry, Count192([0, 1, 0]));
+        assert_eq!(carry.into_biguint(), BigUint::one() << 64_u32);
+
+        let mut value = Count192([u64::MAX; 3]);
+        assert_eq!(
+            value
+                .checked_add_assign(&Count192::count_one())
+                .unwrap_err(),
+            "packed exact count exceeds 192 bits"
+        );
     }
 
     #[test]

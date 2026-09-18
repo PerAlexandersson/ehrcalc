@@ -1,5 +1,40 @@
 # Ehrcalc Handoff
 
+## Checked inline strict counter verified; r5 strict 21 retry live — 2026-09-18 09:53 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  R211 remains idle, generated `runs/` evidence remains
+untracked, and no MariaDB write occurred.
+
+The packed exact backend now supports a checked inline 192-bit multiplicity
+type through the same serial/parallel transition and merge machinery.  Every
+addition detects overflow; the research binary automatically restarts with
+arbitrary-precision `BigUint` rather than accepting a wrapped result.  The
+public `BigUint` APIs remain unchanged.  All 73 Kostka-engine library tests
+pass, including exact equality of the inline, serial `BigUint`, and parallel
+`BigUint` r5 fixtures and a carry/overflow regression.  Focused Clippy passes
+with only the two documented pre-existing warnings allowed.  Release binary
+SHA is
+`3a9c0303c212c5bffaaae306e3bced17ae510edd4885f58a086f46af963e45b0`.
+
+Euler v834 replayed audited strict dilation 18 as
+`10665122144265206106039569061356391`, with every frontier and transition
+total identical to v831, in 130.946 wall seconds.  This is 4.6% faster than
+parallel `BigUint` v831's 137.223 seconds; its log SHA is
+`20d86449c0a46845ea58f5d34b8bd6970c86671fd4468349651d311f3377dcf7`.
+The discarded wider inline-256 benchmark v833 was also exact but took 134.154
+seconds; its preserved log SHA is
+`d11fc2deebf2ae332e8a279d5884d5178c38f3efa5cc0efb7b90845a265c09f3`.
+
+The older `BigUint` Euler v832 strict-21 attempt reached its clean 2,400-second
+timeout after its peak frontier phase but emitted no count.  It remains
+unresolved and its log SHA is
+`2a34f69c4c73ffccc73deaffc66fa07c51a4e1b68dc93a655a7349c1341d635a`.
+Euler v835 now owns only strict dilation 21 on CPUs 4--9, using the inline-192
+binary above, a 16-million-state cap, and a 3,000-second envelope; do not
+duplicate it.  Abacus v829 `20260918T085601-ec68644077c2` remains live and
+exclusively owns strict dilations 19 and 20.
+
 ## Parallel packed exact strict counter verified — 2026-09-18 09:06 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole

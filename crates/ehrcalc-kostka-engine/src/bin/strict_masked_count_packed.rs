@@ -3,6 +3,7 @@
 use ehrcalc_kostka_engine::packed_modular::{
     try_strict_masked_flagged_skew_kostka_packed_exact_parallel_stats,
     try_strict_masked_flagged_skew_kostka_packed_exact_stats,
+    try_strict_masked_flagged_skew_kostka_packed_u192_parallel_stats,
 };
 use ehrcalc_kostka_engine::Partition;
 use serde_json::json;
@@ -75,28 +76,45 @@ fn main() -> Result<(), String> {
     let upper = (!upper.is_empty()).then_some(upper.as_slice());
     let lower = (!lower.is_empty()).then_some(lower.as_slice());
     let forbidden = (!forbidden.is_empty()).then_some(forbidden.as_slice());
-    let result = if threads == 1 {
-        try_strict_masked_flagged_skew_kostka_packed_exact_stats(
-            &lambda,
-            &mu,
-            &weight,
-            upper,
-            lower,
-            forbidden,
-            Some(max_states),
-        )
-    } else {
-        try_strict_masked_flagged_skew_kostka_packed_exact_parallel_stats(
-            &lambda,
-            &mu,
-            &weight,
-            upper,
-            lower,
-            forbidden,
-            Some(max_states),
-            threads,
-        )
-    }?;
+    let u192_result = try_strict_masked_flagged_skew_kostka_packed_u192_parallel_stats(
+        &lambda,
+        &mu,
+        &weight,
+        upper,
+        lower,
+        forbidden,
+        Some(max_states),
+        threads,
+    );
+    let (result, counter) = match u192_result {
+        Ok(result) => (result, "u192"),
+        Err(error) if error == "packed exact count exceeds 192 bits" => {
+            let result = if threads == 1 {
+                try_strict_masked_flagged_skew_kostka_packed_exact_stats(
+                    &lambda,
+                    &mu,
+                    &weight,
+                    upper,
+                    lower,
+                    forbidden,
+                    Some(max_states),
+                )
+            } else {
+                try_strict_masked_flagged_skew_kostka_packed_exact_parallel_stats(
+                    &lambda,
+                    &mu,
+                    &weight,
+                    upper,
+                    lower,
+                    forbidden,
+                    Some(max_states),
+                    threads,
+                )
+            }?;
+            (result, "biguint_fallback")
+        }
+        Err(error) => return Err(error),
+    };
     let Some((dimension, stats)) = result else {
         println!(
             "{}",
@@ -113,6 +131,7 @@ fn main() -> Result<(), String> {
         json!({
             "dilation": dilation,
             "dimension": dimension,
+            "counter": counter,
             "threads": threads,
             "strict": stats.value.to_string(),
             "peak_states": stats.peak_states,
