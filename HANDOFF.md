@@ -23,6 +23,13 @@ strict 22.  After confirming Abacus idle and no overlap, Abacus v841
 split-192 binary SHA `3d329123...`, a 20-million-state cap, and a 7,200-second
 envelope.  Do not duplicate either live point.
 
+Commit `bc8d62d0c4d92373013ebec8e205c98563b9d805` is pushed and removes a
+full-state snapshot from each split-map merge by consuming the smaller primary
+map directly.  All 75 library tests, focused Clippy, and owned-file rustfmt
+pass.  The live v840/v841 jobs deliberately retain immutable pre-change binary
+SHA `3d329123...`; benchmark and hash the new release build before assigning it
+to a later dilation.
+
 ## R5 strict 21 exact with checked inline counter — 2026-09-18 10:42 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
