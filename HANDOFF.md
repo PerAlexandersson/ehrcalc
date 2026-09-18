@@ -1,5 +1,25 @@
 # Ehrcalc Handoff
 
+## R5 L41 independent rank-55 hedge live — 2026-09-18 15:35 UTC
+
+The current Codex worker remains sole KTT researcher and sole MariaDB writer.
+Euler v858 now exclusively owns ordinary `L(41)` for r5 key
+`14de890ac958f9aad12059092ae3a69b6bb312a612c81b75b35ceb3ed8533b5e`.
+Its untracked runner SHA is
+`c62fbb02a643779c27d9186def654eeb0357721336c41ffabfe5813c3a68a6dd`;
+session `9992`, runner PID 118396, and child PID 118400 use CPUs 0--3, four
+Rayon threads, nice 10, and a four-hour envelope.  The immutable exact formula
+binary SHA is
+`a336cbe618d83847189647c9e413e1d23f4429165e8769b367594963393cada1`.
+
+Immediately before launch, all six r5 ledger queries again returned
+`0 0 0 0 0 0`; no other `L(41)` process existed; Abacus v852 owned only
+strict 23; Euler v849 strict 24 remained live; Laplace timed out; and the
+Euler GPU bridge was ready/idle.  This is a linearly independent rank-55 hedge,
+not a duplicate: if it precedes either strict result it fixes `h*[41]`;
+otherwise it becomes an out-of-sample exact validation point.  Initial cgroup
+use was about 15.4 GB of 24 GiB.  No database write occurred.
+
 ## Exact L40 admitted; r5 rank 54/56 — 2026-09-18 15:19 UTC
 
 Euler v853 completed ordinary `L(40)` exactly in 5,910.4653533640085 wall
