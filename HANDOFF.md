@@ -1,5 +1,25 @@
 # Ehrcalc Handoff
 
+## R5 L40 completes the live four-coordinate schedule — 2026-09-18 14:09 UTC
+
+The current Codex worker remains the sole active KTT researcher and sole
+MariaDB writer.  Euler v853 now exclusively owns ordinary `L(40)` for r5 key
+`14de890ac958f9aad12059092ae3a69b6bb312a612c81b75b35ceb3ed8533b5e`.
+Its untracked runner SHA is
+`1e067a5a523c844f6a8f38993150804cce9ff34732095fdc1a4d6aeb1c2867cf`;
+session `81632`, runner PID 45250, and child PID 45254 use CPUs 0--1, two
+Rayon threads, nice 10, and an eight-hour envelope.  The immutable exact
+formula binary SHA is
+`a336cbe618d83847189647c9e413e1d23f4429165e8769b367594963393cada1`.
+
+Immediately before launch, all six r5 ledger queries again returned
+`0 0 0 0 0 0`; no other `L(40)` process existed; Abacus owned only v852
+strict 23; Euler v849 strict 24 and v851 `L(39)` remained live; Laplace timed
+out; and the Euler GPU bridge was ready/idle.  Initial combined cgroup use was
+about 20.1 GB of 24 GiB, including about 5.1 GB reclaimable inactive file
+cache.  Do not duplicate strict 23, strict 24, `L(39)`, or `L(40)`.  No
+database write occurred.
+
 ## Retained-flag source-map copy removed — 2026-09-18 13:31 UTC
 
 The current Codex worker remains the sole active KTT researcher and sole
