@@ -1,5 +1,45 @@
 # KTT Search Handoff
 
+## Reconciled current state — 2026-09-20 13:34 UTC
+
+This opening supersedes the older 2026-09-15 active-state narrative below.
+The academic Codex worker `agent-ehrcalc-ktt-re-a-437d1197` (gpt-5.6-sol,
+medium reasoning, standard service tier) now has sole KTT researcher and sole
+MariaDB-writer ownership.  It replaces the explicitly user-closed private
+worker `agent-ehrcalc-ktt-gp-p-09960004`, whose exact Codex session ID was
+`01a0a122-be80-71b3-aee5-2c93a2f6e02e`.  No other local KTT computation or
+owner was found; the predecessor's polling loop was already interrupted.
+Untracked `runs/` evidence remains preserved.  No remote job was submitted,
+cancelled, or restarted and no MariaDB write occurred during the transfer.
+Leo is now using Abacus, so no new Abacus work is allowed without fresh user
+direction and a queue audit.
+
+Abacus and R211 are active but idle, Euler's GPU bridge is ready/idle, and
+Laplace is unreachable.  The previously running work is now fetched and
+audited exactly once: Abacus v879 `20260918T181324-99d2b717d720` had three
+research targets (d84, d91, d84), all time-limited after 900 seconds; Abacus
+v880 `20260918T181338-bb1993486cd1` had 11 d100--d106 targets, all time-limited
+after 600 seconds.  Their 3 and 6 respective known controls matched exactly,
+so the runs are valid, but all 14 research targets remain unresolved rather
+than positive or negative.  Fetch suffixes are `bttlf6d_` and `c_7sdbwv`;
+job SHAs are `a0155413...` and `cd7969f3...`; both result SHAs are
+`81868a6e...` and both output logs are empty (`e3b0c442...`).  Inputs, runner
+`8f464f6c...`, and exact engine `4b56f84f...` match the submitted provenance.
+
+R211 v861 `20260918T171130-f7dbbbf7e74a` completed exact r5 ordinary `L(41)`
+under its four-CPU/9-GiB/14,400-second profile.  Its exact value is
+`83246293146982619123560545637085095838829135491139913073729969711710`;
+all nine CRT residues, the certified upper bound, state counts
+`[1,41,1681,47181,1003170,17303824]`, and binary SHA `a336cbe6...` verify.
+Fetch suffix is `_94e7av1`; job/result/output SHAs are `586dda3d...`,
+`81868a6e...`, and `39115632...`.  The new sample raises r5 to exact rank
+55/56 but does not determine its Ehrhart sign; strict 23 timed out and strict
+24 was OOM-killed.  R5 remains unresolved and is not a valid mutation parent.
+
+No counterexample or proof follows from these finite computations.  Preserve
+known-positive children without mutation, and wait for explicit user direction
+before any new job, database write, or indefinite search.
+
 ## Current state — 2026-09-15 (active)
 
 Codex is the sole KTT worker and local MariaDB writer. No counterexample is

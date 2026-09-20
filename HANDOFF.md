@@ -1,5 +1,53 @@
 # Ehrcalc Handoff
 
+## Academic takeover; terminal remote work audited — 2026-09-20 13:34 UTC
+
+The academic Codex worker `agent-ehrcalc-ktt-re-a-437d1197` (gpt-5.6-sol,
+medium reasoning, standard service tier) has taken sole KTT researcher and sole
+MariaDB-writer ownership from the explicitly user-closed private worker
+`agent-ehrcalc-ktt-gp-p-09960004`.  The predecessor's exact Codex session ID is
+`01a0a122-be80-71b3-aee5-2c93a2f6e02e`.  Process inspection found no other
+local KTT worker or computation; its bash/sleep polling loop had already been
+interrupted.  Checkout `main` remains at `e1fd4c5`, and the untracked `runs/`
+tree is preserved.  No remote job was submitted, cancelled, or restarted and
+no MariaDB write occurred during the transfer.  Leo is now using Abacus, so do
+not submit new Abacus work without fresh user direction and a queue audit.
+
+Fresh queue inspection found Abacus and R211 active but idle, Euler's GPU
+bridge ready/idle, and Laplace unreachable by SSH.  The three terminal jobs
+were absent from the local result stores and were fetched exactly once:
+
+- Abacus v879 `20260918T181324-99d2b717d720` used three lanes, a 20-GiB/no-swap
+  cap, 900 seconds per target, and a 1,800-second envelope.  All three known
+  controls matched exactly.  Both d84 targets and the d91 target reached their
+  per-case time limits, so all three remain unresolved.  The fetched suffix is
+  `bttlf6d_`; job/result/output SHAs are `a0155413...`, `81868a6e...`, and the
+  empty-file SHA `e3b0c442...`.  Lane SHAs are `8fc0c5af...`, `51d10daa...`,
+  and `ce86e1d7...`.
+- Abacus v880 `20260918T181338-bb1993486cd1` used six lanes, the same 20-GiB
+  profile, 600 seconds per target, and a 2,400-second envelope.  All six known
+  controls matched exactly.  Every one of its 11 d100--d106 targets reached the
+  per-case time limit, so all 11 remain unresolved.  The fetched suffix is
+  `c_7sdbwv`; job/result/output SHAs are `cd7969f3...`, `81868a6e...`, and
+  `e3b0c442...`.  Lane SHAs are `32c83c89...`, `c1a36e15...`, `ea82ccc...`,
+  `f9bed6c0...`, `f5be7796...`, and `2c347360...`.
+- R211 v861 `20260918T171130-f7dbbbf7e74a` used CPUs 4,5,10,11, four Rayon
+  threads, the 9-GiB cap, and a 14,400-second envelope.  It returned exact r5
+  ordinary `L(41) =
+  83246293146982619123560545637085095838829135491139913073729969711710`.
+  All nine CRT residues, the certified upper bound, the exact binary SHA
+  `a336cbe6...`, and state counts `[1,41,1681,47181,1003170,17303824]` were
+  verified.  Fetch suffix is `_94e7av1`; job/result/output SHAs are
+  `586dda3d...`, `81868a6e...`, and `39115632...`.  This raises r5 from exact
+  rank 54 to rank 55 of 56; it does not determine the Ehrhart sign.  Strict 23
+  previously timed out cleanly and strict 24 was OOM-killed, so r5 remains
+  unresolved and must not seed descendants.
+
+The correct status is therefore process-complete but mathematically unresolved
+for all 15 newly collected targets/samples.  Known-positive children remain
+terminal and immutable.  Do not resume an indefinite search, submit work, or
+write mathematical results to MariaDB until the user chooses the next step.
+
 ## D31--d60 partial exact audit; minimal moves live — 2026-09-18 18:34 UTC
 
 The current Codex worker remains sole KTT researcher and sole MariaDB writer.
