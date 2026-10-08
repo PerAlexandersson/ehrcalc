@@ -20,6 +20,16 @@ Pushes and merges wait for independent parent verification.
 - KTT rows whose stored dimension differs from the repaired dimension now fail
   cached validation; no database access occurred.  See `docs/KTT_SEARCH.md`.
 
+Commits: `cfd63df` (interpolation), `b4e267a` (dilation), `7dfaa96` (flow),
+`b62459a` (pre-existing rustfmt drift in two bins), `0fef751` (GT affine
+hull and regressions).  Verified on 2026-10-08: `cargo test --workspace
+--locked` (all pass, including MCP and CLI-reference tests), release runs of
+the new regression tests, `cargo fmt --all --check`, and `cargo clippy
+--workspace --all-targets` with only the two pre-existing warnings.  The
+research audit consumer's seven tests and all six bounded grids pass with
+zero failures against this branch.  Full report:
+`projects/key-schubert-kostka/rust-correctness-fixes-2026-10-08.md`.
+
 ## Academic takeover; terminal remote work audited — 2026-09-20 13:34 UTC
 
 The academic Codex worker `agent-ehrcalc-ktt-re-a-437d1197` (gpt-5.6-sol,
