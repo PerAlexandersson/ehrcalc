@@ -544,7 +544,8 @@ fn scale_partition(lambda: &Partition, n: usize, k: u32) -> Partition {
                 } else {
                     0
                 };
-                p * k
+                p.checked_mul(k)
+                    .expect("dilated key-polynomial coordinate exceeds u32")
             })
             .collect(),
     )

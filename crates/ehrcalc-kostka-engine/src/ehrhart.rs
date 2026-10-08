@@ -620,9 +620,9 @@ fn compute_ehrhart_impl(
     use_legacy_dp: bool,
 ) -> Result<EhrhartPoly, String> {
     // Early exit: sizes must be compatible for a non-empty polytope.
-    let skew_size = lambda.size().saturating_sub(mu.size());
-    let w_size: u32 = w.iter().sum();
-    if skew_size != w_size {
+    let total = |parts: &[u32]| parts.iter().map(|&part| u64::from(part)).sum::<u64>();
+    let skew_size = total(lambda.parts()).saturating_sub(total(mu.parts()));
+    if skew_size != total(w) {
         return Ok(EhrhartPoly {
             coeffs: vec![BigRational::zero()],
             degree: 0,
@@ -759,10 +759,12 @@ fn compute_ehrhart_impl(
         }
     }
 
+    // Every sample dilation is checked before a partition is built.  A wrapped
+    // coordinate would silently describe a different polytope.
     let eval_positive = |t: u64| -> Result<BigUint, String> {
-        let tl = scale_partition(lambda, t);
-        let tm_p = scale_partition(mu, t);
-        let tw: Vec<u32> = w.iter().map(|&x| x * t as u32).collect();
+        let tl = scale_partition(lambda, t)?;
+        let tm_p = scale_partition(mu, t)?;
+        let tw = scale_parts(w, t)?;
         if use_legacy_dp {
             Ok(if upper_flags.is_some() || lower_flags.is_some() {
                 flagged_skew_kostka_legacy(&tl, &tm_p, &tw, upper_flags, lower_flags, max_states)
@@ -777,9 +779,9 @@ fn compute_ehrhart_impl(
     };
 
     let eval_strict = |t: u64| -> Result<BigUint, String> {
-        let tl = scale_partition(lambda, t);
-        let tm_p = scale_partition(mu, t);
-        let tw: Vec<u32> = w.iter().map(|&x| x * t as u32).collect();
+        let tl = scale_partition(lambda, t)?;
+        let tm_p = scale_partition(mu, t)?;
+        let tw = scale_parts(w, t)?;
         if upper_flags.is_some() || lower_flags.is_some() {
             try_strict_flagged_skew_kostka(&tl, &tm_p, &tw, upper_flags, lower_flags, max_states)
         } else if use_legacy_dp {
@@ -982,8 +984,25 @@ fn compute_ehrhart_impl(
     }
 }
 
-fn scale_partition(p: &Partition, n: u64) -> Partition {
-    Partition::from_sorted(p.parts().iter().map(|&x| x * n as u32).collect())
+/// Multiply every coordinate by `dilation`, rejecting values beyond `u32`.
+pub fn scale_parts(parts: &[u32], dilation: u64) -> Result<Vec<u32>, String> {
+    parts
+        .iter()
+        .map(|&part| {
+            u64::from(part)
+                .checked_mul(dilation)
+                .and_then(|value| u32::try_from(value).ok())
+                .ok_or_else(|| {
+                    format!(
+                        "dilation {dilation} of coordinate {part} exceeds the supported u32 range"
+                    )
+                })
+        })
+        .collect()
+}
+
+fn scale_partition(p: &Partition, dilation: u64) -> Result<Partition, String> {
+    Ok(Partition::from_sorted(scale_parts(p.parts(), dilation)?))
 }
 
 /// Interpolate a polynomial from d+1 arbitrary (x, y) sample points.
@@ -1072,9 +1091,17 @@ pub fn verify_reciprocity(
 
     let mut all_ok = true;
     for t in 1..=n_checks {
-        let tl = scale_partition(lambda, t);
-        let tm = scale_partition(mu, t);
-        let tw: Vec<u32> = w.iter().map(|&x| x * t as u32).collect();
+        let (tl, tm, tw) = match (
+            scale_partition(lambda, t),
+            scale_partition(mu, t),
+            scale_parts(w, t),
+        ) {
+            (Ok(tl), Ok(tm), Ok(tw)) => (tl, tm, tw),
+            (Err(error), _, _) | (_, Err(error), _) | (_, _, Err(error)) => {
+                println!("  FAIL t={t}: {error}");
+                return false;
+            }
+        };
 
         let interior = strict_skew_kostka(&tl, &tm, &tw, max_states, sort_weight);
         let interior_r = BigRational::from(interior.to_bigint().unwrap());
