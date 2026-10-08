@@ -1,5 +1,25 @@
 # Ehrcalc Handoff
 
+## Correctness repair lane — 2026-10-08
+
+Claude Opus 5.5 owns source repair branch `fix/correctness-audit-2026-10-08`
+in worktree `/workspace/rust/.worktrees/ehrcalc-correctness-repair`, created
+from `main` at `5ca635d`.  It repairs the Ehrcalc defects from
+`projects/key-schubert-kostka/rust-correctness-audit-2026-10-08.md`.  The
+canonical `main` checkout and its untracked `runs/` tree were not edited.
+Pushes and merges wait for independent parent verification.
+
+- GT dimension, emptiness, and interior masks: new certified exact
+  `affine_hull` module (one homogenized LP, primal point and dual certificate
+  checked exactly).  Interval propagation is now only a presolve and a cheap
+  pruning API, `gt_polytope_propagated_bounds_masked`, used by counting DPs.
+  The legacy strict counter uses the exact masks.
+- Flow support: max flow plus residual strongly connected components.
+- Dilation: checked `u32` scaling in GT Ehrhart sampling and key dilation.
+- Exact interpolation subtracts abscissae in `BigInt`.
+- KTT rows whose stored dimension differs from the repaired dimension now fail
+  cached validation; no database access occurred.  See `docs/KTT_SEARCH.md`.
+
 ## Academic takeover; terminal remote work audited — 2026-09-20 13:34 UTC
 
 The academic Codex worker `agent-ehrcalc-ktt-re-a-437d1197` (gpt-5.6-sol,

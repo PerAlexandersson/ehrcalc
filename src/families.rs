@@ -277,6 +277,55 @@ mod tests {
     }
 
     #[test]
+    fn gt_and_flow_adapters_report_exact_dimensions_and_hstar() {
+        // Audit witness: the polytope is a segment with N + 1 points.
+        for use_reciprocity in [false, true] {
+            for lower_flags in [None, Some(vec![1, 1, 1, 2])] {
+                let gt = gt_ehrhart(&GtInput {
+                    lambda: vec![3, 2, 1],
+                    mu: vec![],
+                    weight: vec![1, 1, 3, 1],
+                    upper_flags: None,
+                    lower_flags,
+                    max_states: None,
+                    use_reciprocity,
+                })
+                .expect("GT Ehrhart data");
+                assert_eq!(gt.ehrhart.dimension(), 1);
+                assert_eq!(gt.hstar.coeffs(), &[BigInt::one(), BigInt::zero()]);
+                assert_eq!(
+                    gt.ehrhart.evaluate(9),
+                    num_rational::BigRational::from(BigInt::from(10))
+                );
+            }
+        }
+        let empty = gt_ehrhart(&GtInput {
+            lambda: vec![3, 3, 2, 1],
+            mu: vec![],
+            weight: vec![1, 1, 2, 4, 1],
+            upper_flags: None,
+            lower_flags: None,
+            max_states: None,
+            use_reciprocity: true,
+        });
+        assert!(empty.is_err());
+
+        // Balance at vertices 0 and 1 forces x02 = x13 = 0: one point.
+        for use_reciprocity in [false, true] {
+            let flow = flow_ehrhart(&FlowInput {
+                vertices: 4,
+                edges: vec![(0, 1), (0, 2), (1, 3), (2, 3)],
+                netflow: vec![1, -1, 1, -1],
+                max_states: None,
+                use_reciprocity,
+            })
+            .expect("flow-polytope data");
+            assert_eq!(flow.ehrhart.dimension(), 0);
+            assert_eq!(flow.hstar.coeffs(), &[BigInt::one()]);
+        }
+    }
+
+    #[test]
     fn order_rejects_cyclic_covers() {
         let result = order_ehrhart(&OrderInput::Covers {
             vertices: 2,

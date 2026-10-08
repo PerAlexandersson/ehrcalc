@@ -3,6 +3,7 @@
 //! The implementation was migrated from the legacy `kostka` project.  See
 //! `../PROVENANCE.md` for migration scope and compatibility policy.
 
+pub mod affine_hull;
 pub mod ehrhart;
 pub mod flagged_formula;
 pub mod flow;

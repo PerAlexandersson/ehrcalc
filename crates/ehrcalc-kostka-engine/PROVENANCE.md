@@ -13,3 +13,9 @@ maintained command-line and MCP interface for these algorithms.
 
 The source is MIT licensed.  Fixes and new supported behavior belong here;
 the legacy repository remains a frozen compatibility and research reference.
+
+The 2026-10-08 correctness repair added `affine_hull`, which is new Ehrcalc
+code rather than a migrated module, and replaced the migrated GT
+interval-propagation dimension and flow reachability support by exact
+methods.  The frozen legacy `kostka` copy still contains the superseded
+algorithms; it is provenance only and was intentionally not patched.

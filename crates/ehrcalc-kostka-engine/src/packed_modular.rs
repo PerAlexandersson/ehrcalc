@@ -814,8 +814,8 @@ fn try_masked_flagged_skew_kostka_packed_exact_stats_with_threads<C: ExactCount>
     let mu_key = packer.pack_partition(mu)?;
     let mut lambda_parts = [0_u32; MAX_PACKED_ROWS];
     lambda_parts[..lambda.num_parts()].copy_from_slice(lambda.parts());
-    let Some((_, level_lower_bounds, level_upper_bounds)) =
-        crate::gt_dim::gt_polytope_bounds_masked(
+    let Some((level_lower_bounds, level_upper_bounds)) =
+        crate::gt_dim::gt_polytope_propagated_bounds_masked(
             lambda.parts(),
             mu.parts(),
             weight,
@@ -964,8 +964,8 @@ fn try_masked_flagged_skew_kostka_packed_split_stats_with_threads(
     let mu_key = packer.pack_partition(mu)?;
     let mut lambda_parts = [0_u32; MAX_PACKED_ROWS];
     lambda_parts[..lambda.num_parts()].copy_from_slice(lambda.parts());
-    let Some((_, level_lower_bounds, level_upper_bounds)) =
-        crate::gt_dim::gt_polytope_bounds_masked(
+    let Some((level_lower_bounds, level_upper_bounds)) =
+        crate::gt_dim::gt_polytope_propagated_bounds_masked(
             lambda.parts(),
             mu.parts(),
             weight,
@@ -1409,8 +1409,8 @@ pub fn try_masked_flagged_skew_kostka_modular_stats(
     } else {
         weight
     };
-    let Some((_, level_lower_bounds, level_upper_bounds)) =
-        crate::gt_dim::gt_polytope_bounds_masked(
+    let Some((level_lower_bounds, level_upper_bounds)) =
+        crate::gt_dim::gt_polytope_propagated_bounds_masked(
             lambda.parts(),
             mu.parts(),
             effective_weight,
@@ -1622,15 +1622,16 @@ pub fn try_masked_flagged_skew_kostka_modular_layer_trace(
     let mu_key = packer.pack_partition(mu)?;
     let mut lambda_parts = [0_u32; MAX_PACKED_ROWS];
     lambda_parts[..lambda.num_parts()].copy_from_slice(lambda.parts());
-    let (_, level_lower_bounds, level_upper_bounds) = crate::gt_dim::gt_polytope_bounds_masked(
-        lambda.parts(),
-        mu.parts(),
-        weight,
-        upper_flags,
-        lower_flags,
-        forbidden_row_masks,
-    )
-    .ok_or_else(|| "shape and constraints define an empty DP".to_string())?;
+    let (level_lower_bounds, level_upper_bounds) =
+        crate::gt_dim::gt_polytope_propagated_bounds_masked(
+            lambda.parts(),
+            mu.parts(),
+            weight,
+            upper_flags,
+            lower_flags,
+            forbidden_row_masks,
+        )
+        .ok_or_else(|| "shape and constraints define an empty DP".to_string())?;
     let moduli = [modulus];
     let mut states = state_map_with_capacity(1);
     states.insert(mu_key, Residues::one(1));

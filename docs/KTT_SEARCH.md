@@ -36,6 +36,15 @@ polynomial, Kostka value, and h* vector, checks integral sample values, recomput
 and reruns coefficient and Hibi–Stanley checks. Invalid rows increment
 `cached_unverified`, populate `first_unverified`, and make the report incomplete.
 
+The 2026-10-08 correctness repair replaced GT interval-propagation dimensions by
+exact affine hulls.  Before it, some GT dimensions were overestimated and some
+empty fibers were treated as nonempty, which corrupted reciprocity-interpolated
+polynomials.  Cached rows whose stored dimension differs from the repaired
+dimension now fail validation as `cached_unverified`; fibers now proved empty
+are skipped before any cache lookup.  Such stored rows require revalidation
+before mathematical use.  The repair did not read, modify, or delete database
+rows.
+
 Generated JSON, JSONL, and log files under `ktt-search/` are ignored working data. Do
 not commit them. Reports produced before the 2026-09-06 validation fixes are not
 reliable no-failure certificates and should be rerun when their conclusions matter.

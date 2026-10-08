@@ -30,9 +30,19 @@ When available, they also provide relative-interior counts for
 Ehrhart-Macdonald reciprocity.  The generic service owns the decision to use
 positive samples, reciprocal samples, or both.
 
-For flagged fixed-content GT polytopes, relative-interior counting uses the
-propagated structural bounds of the rational polytope.  It must not infer the
-affine hull from the dilation-one lattice points, which need not span it.
+GT dimensions, emptiness, and relative-interior masks come from the exact
+affine hull of the rational polytope (`ehrcalc-kostka-engine::affine_hull`).
+Interval propagation is used only as a sound presolve and as cheap pruning
+bounds for counting recursions; it is incomplete, because a level-weight
+equation can force several interlacing inequalities to equality jointly.
+The affine hull is computed by one homogenized linear program (Freund,
+Roundy and Todd, 1985) whose answer is checked by an exact relative-interior
+point and an exact dual certificate.  It must not be inferred from lattice
+points at any fixed dilation, which need not span the rational polytope.
+
+Flow-polytope support is the set of edges that are positive for some
+feasible flow.  It is computed from one maximum flow and the strongly
+connected components of its residual graph, not from reachability alone.
 
 The public workspace owns two focused internal engines:
 

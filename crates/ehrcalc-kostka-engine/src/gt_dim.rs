@@ -1,3 +1,6 @@
+use crate::affine_hull::{AffineHull, RationalPolyhedron};
+use num_traits::Zero;
+
 /// Fast computation of the dimension of GT polytopes via the chain model.
 ///
 /// The GT polytope for shape λ/μ with weight w is parameterized by a chain:
@@ -26,10 +29,17 @@
 /// label ℓ+1.  This is the constraint form produced by complement-row lifts
 /// of individual Kogan faces.
 ///
-/// The dimension is the number of free equality components minus the exact
-/// rank of the surviving level-weight equations. This agrees with the usual
-/// per-level free-entry formula when no constraints couple adjacent levels,
-/// and remains correct for masked faces where such coupling is essential.
+/// Interval propagation is sound but incomplete: it never derives a false
+/// equality, but several interlacing inequalities can be forced to equality
+/// jointly by a level-weight equation while every coordinate interval stays
+/// open, and a polytope can be empty although every interval is nonempty.
+/// Propagation is therefore only a presolve.  After contracting its fixed
+/// coordinates and merged components, [`crate::affine_hull`] decides
+/// emptiness and every remaining implicit equality with a certified exact
+/// linear program.  The dimension and the tight interlacing masks come from
+/// that exact affine hull; lattice points at one dilation are never used.
+/// Counting recursions that only need pruning bounds should call
+/// [`gt_polytope_propagated_bounds_masked`], which skips the linear program.
 /// Dimension of the GT polytope GT(λ/μ, w), optionally with row flags.
 /// Returns `None` if the polytope is empty (infeasible constraints),
 /// or `Some(d)` where d = 0 means a single lattice point.
@@ -71,70 +81,6 @@ impl EqualityComponents {
             self.rank[left_root] += 1;
         }
     }
-}
-
-fn exact_row_basis(
-    mut matrix: Vec<Vec<num_rational::BigRational>>,
-) -> Vec<Vec<num_rational::BigRational>> {
-    use num_traits::Zero;
-
-    if matrix.is_empty() || matrix[0].is_empty() {
-        return Vec::new();
-    }
-    let rows = matrix.len();
-    let columns = matrix[0].len();
-    let mut rank = 0;
-    for column in 0..columns {
-        let Some(pivot) = (rank..rows).find(|&row| !matrix[row][column].is_zero()) else {
-            continue;
-        };
-        matrix.swap(rank, pivot);
-        let pivot_value = matrix[rank][column].clone();
-        for entry in &mut matrix[rank][column..] {
-            *entry /= &pivot_value;
-        }
-        let pivot_row = matrix[rank].clone();
-        for (row, entries) in matrix.iter_mut().enumerate() {
-            if row == rank || entries[column].is_zero() {
-                continue;
-            }
-            let factor = entries[column].clone();
-            for entry_column in column..columns {
-                entries[entry_column] -= &factor * &pivot_row[entry_column];
-            }
-        }
-        rank += 1;
-        if rank == rows {
-            break;
-        }
-    }
-    matrix.truncate(rank);
-    matrix
-}
-
-fn exact_integer_matrix_rank(matrix: Vec<Vec<num_rational::BigRational>>) -> usize {
-    exact_row_basis(matrix).len()
-}
-
-fn exact_row_space_contains(
-    basis: &[Vec<num_rational::BigRational>],
-    mut vector: Vec<num_rational::BigRational>,
-) -> bool {
-    use num_traits::Zero;
-
-    for row in basis {
-        let Some(pivot) = row.iter().position(|entry| !entry.is_zero()) else {
-            continue;
-        };
-        if vector[pivot].is_zero() {
-            continue;
-        }
-        let factor = vector[pivot].clone() / &row[pivot];
-        for column in pivot..vector.len() {
-            vector[column] -= &factor * &row[column];
-        }
-    }
-    vector.iter().all(num_traits::Zero::is_zero)
 }
 
 fn finish_order(node: usize, graph: &[Vec<usize>], visited: &mut [bool], order: &mut Vec<usize>) {
@@ -428,6 +374,12 @@ fn affine_structure_from_equalities(
         }
     }
 
+    // Interval propagation only derives valid consequences, so its fixed
+    // components and merged equalities are true equalities of the polytope.
+    // They are used to shrink the exact problem.  Propagation is not complete:
+    // several inequalities can be forced jointly by a level equation without
+    // any single interval collapsing.  The exact affine hull below decides
+    // every remaining inequality with a certified linear program.
     let mut component_columns = vec![usize::MAX; node_count];
     let mut free_components = 0;
     for level in 1..levels {
@@ -439,55 +391,83 @@ fn affine_structure_from_equalities(
             }
         }
     }
+    let fixed_value = |root: usize| -> Option<&num_rational::BigRational> {
+        (component_columns[root] == usize::MAX).then(|| root_lower[root].as_ref().expect("bound"))
+    };
 
-    let mut affine_equations = Vec::with_capacity(interior_levels);
+    let mut system = RationalPolyhedron::new(free_components);
     for (coefficients, target) in level_coefficients.iter().zip(&level_targets) {
-        let mut equation =
-            vec![num_rational::BigRational::from_integer(0.into()); free_components + 1];
-        equation[free_components] = target.clone();
+        let mut rhs = target.clone();
+        let mut terms = Vec::new();
         for (root, &coefficient) in coefficients.iter().enumerate() {
             if coefficient == 0 {
                 continue;
             }
             let coefficient = num_rational::BigRational::from_integer(coefficient.into());
-            if root_lower[root] == root_upper[root] {
-                equation[free_components] -= &coefficient * root_lower[root].as_ref()?;
-            } else {
-                equation[component_columns[root]] += coefficient;
+            match fixed_value(root) {
+                Some(value) => rhs -= &coefficient * value,
+                None => terms.push((component_columns[root], coefficient)),
             }
         }
-        affine_equations.push(equation);
+        if terms.is_empty() {
+            if !rhs.is_zero() {
+                return None;
+            }
+            continue;
+        }
+        system.add_equality(terms, rhs);
     }
-    let coefficient_matrix = affine_equations
-        .iter()
-        .map(|row| row[..free_components].to_vec())
-        .collect::<Vec<_>>();
-    let dimension = free_components - exact_integer_matrix_rank(coefficient_matrix);
-    let affine_basis = exact_row_basis(affine_equations);
 
+    // Order edge `(source, destination)` means value(source) <= value(destination).
+    let mut edge_inequality = std::collections::HashMap::new();
+    for &(source, destination) in &order_edges {
+        if source == destination || edge_inequality.contains_key(&(source, destination)) {
+            continue;
+        }
+        let one = num_rational::BigRational::from_integer(1.into());
+        let index = match (fixed_value(source), fixed_value(destination)) {
+            (Some(left), Some(right)) => {
+                if left > right {
+                    return None;
+                }
+                None
+            }
+            (Some(left), None) => {
+                Some(system.add_inequality([(component_columns[destination], -one)], -left.clone()))
+            }
+            (None, Some(right)) => {
+                Some(system.add_inequality([(component_columns[source], one)], right.clone()))
+            }
+            (None, None) => Some(system.add_inequality(
+                [
+                    (component_columns[source], one.clone()),
+                    (component_columns[destination], -one),
+                ],
+                num_rational::BigRational::zero(),
+            )),
+        };
+        edge_inequality.insert((source, destination), index);
+    }
+
+    let AffineHull::Nonempty(hull) = system.affine_hull() else {
+        return None;
+    };
+    let dimension = hull.dimension;
     let inequality_is_tight = |source: usize, destination: usize| {
         if source == destination {
             return true;
         }
-        let mut equation =
-            vec![num_rational::BigRational::from_integer(0.into()); free_components + 1];
-        let mut fixed_difference = num_rational::BigRational::from_integer(0.into());
-        for (root, sign) in [(destination, 1_i32), (source, -1_i32)] {
-            let sign = num_rational::BigRational::from_integer(sign.into());
-            if root_lower[root] == root_upper[root] {
-                fixed_difference += &sign * root_lower[root].as_ref().expect("root bound");
-            } else {
-                equation[component_columns[root]] += sign;
-            }
+        match edge_inequality[&(source, destination)] {
+            Some(index) => hull.implicit_equalities[index],
+            None => fixed_value(source) == fixed_value(destination),
         }
-        equation[free_components] = -fixed_difference;
-        exact_row_space_contains(&affine_basis, equation)
     };
 
     let mut tight_lower_masks = vec![0_u32; levels];
     let mut tight_diagonal_masks = vec![0_u32; levels];
+    // Row masks are defined for at most 32 rows; the dimension is not.
     for step in 0..levels {
-        for row in 0..rows {
+        for row in 0..rows.min(u32::BITS as usize) {
             let bit = 1_u32 << row;
             if inequality_is_tight(
                 final_roots[node(step, row)],
@@ -508,6 +488,8 @@ fn affine_structure_from_equalities(
     Some((dimension, tight_lower_masks, tight_diagonal_masks))
 }
 
+type PropagatedGtBounds = (Vec<u32>, Vec<Vec<u32>>, Vec<Vec<u32>>);
+
 fn gt_polytope_dim_impl(
     lambda: &[u32],
     mu: &[u32],
@@ -516,6 +498,33 @@ fn gt_polytope_dim_impl(
     lower_flags: Option<&[u32]>,
     forbidden_row_masks: Option<&[u32]>,
 ) -> Option<GtBounds> {
+    let (mu_pad, lb, ub) =
+        propagate_gt_bounds(lambda, mu, w, upper_flags, lower_flags, forbidden_row_masks)?;
+    let (dim, tight_lower, tight_diagonal) = affine_structure_from_equalities(
+        lambda,
+        &mu_pad,
+        w,
+        &lb,
+        &ub,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
+    )?;
+    Some((dim, lb, ub, tight_lower, tight_diagonal))
+}
+
+/// Validate the input and propagate sound coordinate intervals.
+///
+/// `None` proves emptiness.  `Some` does not prove nonemptiness: interval
+/// propagation is incomplete, and only the exact affine-hull step decides it.
+fn propagate_gt_bounds(
+    lambda: &[u32],
+    mu: &[u32],
+    w: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+) -> Option<PropagatedGtBounds> {
     let n = lambda.len();
     let k = w.len();
 
@@ -561,7 +570,7 @@ fn gt_polytope_dim_impl(
     }
 
     if k == 0 {
-        return (skew_size == 0).then(|| (0, vec![], vec![], vec![], vec![]));
+        return (skew_size == 0).then(|| (mu_pad, vec![], vec![]));
     }
     if k == 1 {
         let horizontal_strip = (1..n).all(|j| lambda[j] <= mu_pad[j - 1]);
@@ -576,17 +585,7 @@ fn gt_polytope_dim_impl(
         if !horizontal_strip || !flags_allow_strip {
             return None;
         }
-        let (dimension, tight_lower, tight_diagonal) = affine_structure_from_equalities(
-            lambda,
-            &mu_pad,
-            w,
-            &[],
-            &[],
-            upper_flags,
-            lower_flags,
-            forbidden_row_masks,
-        )?;
-        return Some((dimension, vec![], vec![], tight_lower, tight_diagonal));
+        return Some((mu_pad, vec![], vec![]));
     }
 
     let n_int = k - 1; // number of interior levels
@@ -838,21 +837,7 @@ fn gt_polytope_dim_impl(
         }
     }
 
-    // Quotient by all known affine equalities, then subtract the exact rank
-    // of the level-weight equations.  The earlier per-level free-count
-    // formula is equivalent without cross-level equalities, but over-counts
-    // masked faces whose forbidden cells identify adjacent-level variables.
-    let (dim, tight_lower, tight_diagonal) = affine_structure_from_equalities(
-        lambda,
-        &mu_pad,
-        w,
-        &lb,
-        &ub,
-        upper_flags,
-        lower_flags,
-        forbidden_row_masks,
-    )?;
-    Some((dim, lb, ub, tight_lower, tight_diagonal))
+    Some((mu_pad, lb, ub))
 }
 
 /// Dimension without flags (fast path, no flag overhead).
@@ -873,15 +858,17 @@ pub fn gt_polytope_dim_full(
     gt_polytope_dim_impl(lambda, mu, w, upper_flags, lower_flags, None).map(|(d, _, _, _, _)| d)
 }
 
-/// Dimension and propagated lb/ub bounds for each interior level.
+/// Exact dimension and propagated lb/ub bounds for each interior level.
 ///
 /// Returns `None` if the polytope is empty, or
 /// `Some((dim, lb, ub))` where:
-/// - `dim` is the polytope dimension
-/// - `lb[ell][j]`, `ub[ell][j]` are the tight bounds for `α^{ell+1}[j]`
+/// - `dim` is the exact affine dimension
+/// - `lb[ell][j]`, `ub[ell][j]` are sound propagated bounds for `α^{ell+1}[j]`
 ///   (interior levels `ell = 0..k-2`, columns `j = 0..n-1`).
 ///
-/// Used by `strict_skew_kostka` to identify globally-tight constraints.
+/// Equal bounds prove a fixed coordinate, but unequal bounds do not prove
+/// that an interlacing inequality is non-implicit; use
+/// [`gt_polytope_affine_masks_masked`] for relative-interior masks.
 #[allow(clippy::type_complexity)]
 pub fn gt_polytope_bounds(
     lambda: &[u32],
@@ -894,9 +881,7 @@ pub fn gt_polytope_bounds(
 
 /// Dimension and propagated bounds with optional row flags.
 ///
-/// This is the flagged counterpart of [`gt_polytope_bounds`].  The bounds
-/// identify constraints that are globally tight and are therefore required
-/// for exact relative-interior counting.
+/// This is the flagged counterpart of [`gt_polytope_bounds`].
 #[allow(clippy::type_complexity)]
 pub fn gt_polytope_bounds_full(
     lambda: &[u32],
@@ -929,13 +914,32 @@ pub fn gt_polytope_bounds_masked(
         .map(|(dimension, lower, upper, _, _)| (dimension, lower, upper))
 }
 
+/// Sound propagated coordinate bounds for pruning a counting recursion.
+///
+/// Every lattice point of the masked face satisfies
+/// `lower[ell][j] <= alpha^{ell+1}_j <= upper[ell][j]`.  `None` proves that the
+/// face is empty.  Unlike [`gt_polytope_bounds_masked`], this does not compute
+/// the affine hull and therefore costs no linear program; a `Some` result does
+/// not prove that the face is nonempty.
+#[allow(clippy::type_complexity)]
+pub fn gt_polytope_propagated_bounds_masked(
+    lambda: &[u32],
+    mu: &[u32],
+    w: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+) -> Option<(Vec<Vec<u32>>, Vec<Vec<u32>>)> {
+    propagate_gt_bounds(lambda, mu, w, upper_flags, lower_flags, forbidden_row_masks)
+        .map(|(_, lower, upper)| (lower, upper))
+}
+
 /// Affine dimension and globally tight interlacing masks for an individual
 /// masked tableau face.
 ///
 /// A set bit marks an inequality that is an equality throughout the face.
-/// The result includes equality closure through directed cycles in the GT
-/// order graph, which is essential when a forbidden Kogan cell forces other
-/// interlacing inequalities to become tight.
+/// The masks are the implicit equalities of the exact affine hull, including
+/// those forced jointly by forbidden Kogan cells and level-weight equations.
 pub fn gt_polytope_affine_masks_masked(
     lambda: &[u32],
     mu: &[u32],

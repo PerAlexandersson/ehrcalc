@@ -946,12 +946,13 @@ fn try_flagged_skew_kostka_oriented(
     // Propagated GT bounds contain information from both boundaries, all
     // remaining labels, and all row flags.  Enforcing them at every level
     // avoids retaining partial chains that can never reach `lambda`.
-    let Some((_, lower_bounds, upper_bounds)) = crate::gt_dim::gt_polytope_bounds_full(
+    let Some((lower_bounds, upper_bounds)) = crate::gt_dim::gt_polytope_propagated_bounds_masked(
         lambda.parts(),
         mu.parts(),
         w,
         upper_flags,
         lower_flags,
+        None,
     ) else {
         return Ok(BigUint::zero());
     };
@@ -1019,10 +1020,11 @@ fn try_flagged_skew_kostka_oriented(
 // of the polytope holds strictly.
 //
 // A constraint (between adjacent chain levels) is in the affine hull iff it is
-// always an equality over all feasible chains.  After full propagation by the
-// dimension algorithm (gt_polytope_bounds), this is equivalent to both
-// endpoints being frozen at the same value:
-//   globally_tight = (lb_src == ub_src) && (lb_dst == ub_dst) && (lb_src == lb_dst)
+// an equality at every rational point of the polytope.  Frozen interval
+// endpoints are not sufficient: a level sum can force several inequalities to
+// equality jointly while their endpoints still vary.  The exact masks come
+// from `gt_dim::gt_polytope_affine_masks_masked`, which certifies them by a
+// linear program; lattice points at one dilation are not used.
 //
 // The two constraints per step i (0-indexed), row j:
 //   lower[i][j]:   α^{i+1}[j] >= α^i[j]
@@ -1446,7 +1448,7 @@ pub fn try_masked_flagged_skew_kostka(
     // Include forbidden-row equalities in the same future-feasibility
     // filter.  Strict masks only remove chains, so the weak affine bounds
     // remain necessary for both weak and relative-interior counting.
-    let Some((_, lower_bounds, upper_bounds)) = crate::gt_dim::gt_polytope_bounds_masked(
+    let Some((lower_bounds, upper_bounds)) = crate::gt_dim::gt_polytope_propagated_bounds_masked(
         lambda.parts(),
         mu.parts(),
         weight,
@@ -1529,10 +1531,9 @@ pub fn try_masked_flagged_skew_kostka(
 
 /// Count interior lattice points of the GT-polytope GT(λ/μ, w).
 ///
-/// Uses the lb/ub bounds from `gt_polytope_bounds` to identify which interlacing
-/// constraints are globally tight (part of the affine hull) and only enforces
-/// strictness for the remaining ones.  This correctly implements the relative
-/// interior condition for all polytope dimensions.
+/// Uses the exact affine hull from `gt_polytope_affine_masks_masked` to
+/// identify which interlacing constraints are implicit equalities and only
+/// enforces strictness for the remaining ones.
 ///
 /// `sort_weight` is ignored: sorting would break the lb/ub correspondence.
 pub fn strict_skew_kostka_legacy(
@@ -1554,69 +1555,37 @@ pub fn strict_skew_kostka_legacy(
     let n = lambda.num_parts();
     let k = w.len();
 
-    // Obtain propagated bounds; None means the polytope is empty.
-    let (_, lb, ub) = match crate::gt_dim::gt_polytope_bounds(lambda.parts(), mu.parts(), w) {
+    // The exact affine hull decides which interlacing inequalities are
+    // implicit equalities.  Frozen interval endpoints alone miss equalities
+    // forced jointly by a level sum, so they cannot replace this step.
+    if n > u32::BITS as usize {
+        panic!("legacy strict Kostka supports at most 32 rows");
+    }
+    let (_, tight_lower, tight_diagonal) = match crate::gt_dim::gt_polytope_affine_masks_masked(
+        lambda.parts(),
+        mu.parts(),
+        w,
+        None,
+        None,
+        None,
+    ) {
         None => return BigUint::zero(),
         Some(data) => data,
     };
-
-    // Pad μ to length n.
-    let mut mu_pad = mu.parts().to_vec();
-    mu_pad.resize(n, 0);
-    let lambda_parts = lambda.parts();
-
-    // Tight bounds for α^i[j]:
-    //   i = 0      → boundary μ, both lb and ub equal μ_j
-    //   i = 1..k-1 → interior level ell = i-1: lb[i-1][j], ub[i-1][j]
-    //   i = k      → boundary λ, both equal λ_j
-    let src_lb = |i: usize, j: usize| -> u32 {
-        if i == 0 {
-            mu_pad[j]
-        } else {
-            lb[i - 1][j]
-        }
-    };
-    let src_ub = |i: usize, j: usize| -> u32 {
-        if i == 0 {
-            mu_pad[j]
-        } else {
-            ub[i - 1][j]
-        }
-    };
-    let dst_lb = |i: usize, j: usize| -> u32 {
-        if i + 1 == k {
-            lambda_parts[j]
-        } else {
-            lb[i][j]
-        }
-    };
-    let dst_ub = |i: usize, j: usize| -> u32 {
-        if i + 1 == k {
-            lambda_parts[j]
-        } else {
-            ub[i][j]
-        }
-    };
-
-    // Precompute strictness flags per step i and row j.
-    // A constraint is globally tight iff both sides are frozen at the same value.
-    let mut strict_lower = vec![vec![false; n]; k];
-    let mut strict_diag = vec![vec![false; n]; k];
-    for i in 0..k {
-        for j in 0..n {
-            // Lower constraint: α^{i+1}[j] >= α^i[j]
-            let (sl, su) = (src_lb(i, j), src_ub(i, j));
-            let (dl, du) = (dst_lb(i, j), dst_ub(i, j));
-            strict_lower[i][j] = !(sl == su && dl == du && sl == dl);
-
-            // Diagonal constraint (j≥1): α^{i+1}[j] <= α^i[j-1]
-            if j >= 1 {
-                let (sl2, su2) = (src_lb(i, j - 1), src_ub(i, j - 1));
-                // dst side is the same α^{i+1}[j]
-                strict_diag[i][j] = !(sl2 == su2 && dl == du && sl2 == dl);
-            }
-        }
-    }
+    let strict_lower = (0..k)
+        .map(|i| {
+            (0..n)
+                .map(|j| tight_lower[i] & (1_u32 << j) == 0)
+                .collect::<Vec<_>>()
+        })
+        .collect::<Vec<_>>();
+    let strict_diag = (0..k)
+        .map(|i| {
+            (0..n)
+                .map(|j| j > 0 && tight_diagonal[i] & (1_u32 << j) == 0)
+                .collect::<Vec<_>>()
+        })
+        .collect::<Vec<_>>();
 
     // Level-by-level DP with per-row strictness.
     let mut dp = partition_count_map();
