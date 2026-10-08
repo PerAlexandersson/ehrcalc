@@ -1,13 +1,18 @@
 # Ehrcalc Handoff
 
-## Correctness repair lane — 2026-10-08
+## Correctness repairs integrated — 2026-10-08
 
-Claude Opus 5.5 owns source repair branch `fix/correctness-audit-2026-10-08`
-in worktree `/workspace/rust/.worktrees/ehrcalc-correctness-repair`, created
-from `main` at `5ca635d`.  It repairs the Ehrcalc defects from
+Claude Opus 5.5 implemented source repair branch
+`fix/correctness-audit-2026-10-08` in worktree
+`/workspace/rust/.worktrees/ehrcalc-correctness-repair`, from `5ca635d` through
+`e84b257`. Parent `/root` independently checked all seven original regressions
+and two additional geometry tests in debug and release, and replayed every
+original audit grid with zero failures. The branch is now fast-forwarded into
+canonical `main`; the untracked `runs/` tree is unchanged. Repair ownership is
+released. No database access or revalidation occurred. The audit is
 `projects/key-schubert-kostka/rust-correctness-audit-2026-10-08.md`.  The
-canonical `main` checkout and its untracked `runs/` tree were not edited.
-Pushes and merges wait for independent parent verification.
+repair worktree is clean and retained as a verified source lane, not an active
+implementation worker.
 
 - GT dimension, emptiness, and interior masks: new certified exact
   `affine_hull` module (one homogenized LP, primal point and dual certificate
