@@ -79,16 +79,17 @@ impl FlowPolytope {
         &self.netflow
     }
 
-    /// Dimension of the smallest face containing `F_G(a)`.
+    /// Affine dimension of `F_G(a)`.
     ///
-    /// For an acyclic graph, every feasible integral flow decomposes into
-    /// source-to-sink paths.  Hence an edge can be positive in the relative
-    /// interior only if it is reachable from a positive-netflow vertex and can
-    /// reach a negative-netflow vertex.  The dimension is then
-    /// `|E_support| - rank(B_support)`.
+    /// The only inequalities are `x_e >= 0`, so the affine hull is cut out by
+    /// the balance equations and by `x_e = 0` for every edge that vanishes on
+    /// the whole polytope.  [`Self::supported_edges`] computes the remaining
+    /// support `S` exactly, and the dimension is `|S| - rank(B_S)`, where the
+    /// incidence rank is the number of touched vertices minus the number of
+    /// connected components of `S`.  An empty polytope is an error.
     pub fn dimension(&self) -> Result<usize, String> {
-        let graph = self.topological_data()?;
-        let supported = self.supported_edges(&graph);
+        self.topological_data()?;
+        let supported = self.supported_edges()?;
         let edge_count = supported.iter().filter(|&&x| x).count();
         if edge_count == 0 {
             return Ok(0);
@@ -170,8 +171,8 @@ impl FlowPolytope {
         dilation: u64,
         max_states: Option<usize>,
     ) -> Result<BigUint, String> {
-        let graph = self.topological_data()?;
-        let supported = self.supported_edges(&graph);
+        self.topological_data()?;
+        let supported = self.supported_edges()?;
 
         let mut support_edges = Vec::new();
         let mut support_balance = vec![0i64; self.vertices];
@@ -284,55 +285,128 @@ impl FlowPolytope {
         Ok(poly_from_points(&points))
     }
 
-    fn supported_edges(&self, graph: &TopologicalData) -> Vec<bool> {
-        let mut reachable_from_source = vec![false; self.vertices];
-        let mut queue = VecDeque::new();
-        for (v, &a_v) in self.netflow.iter().enumerate() {
-            if a_v > 0 {
-                reachable_from_source[v] = true;
-                queue.push_back(v);
+    /// Edges that are positive for some feasible flow.
+    ///
+    /// Graph reachability from supplies to demands is necessary but not
+    /// sufficient: balance constraints at several interacting vertices can
+    /// force an edge to zero.  We instead compute one feasible flow `f` by a
+    /// maximum flow.  An edge `u -> v` is positive in some feasible flow if
+    /// and only if it lies on a cycle of the residual graph of `f`, whose arcs
+    /// are every edge forwards and every edge with `f_e > 0` backwards.
+    /// Indeed, the difference of two feasible flows is a circulation that is
+    /// negative only where `f` is positive, so it decomposes into residual
+    /// cycles; conversely, pushing a small positive amount around a residual
+    /// cycle through `u -> v` stays feasible.  Hence the support consists of
+    /// the edges whose endpoints share a strongly connected residual
+    /// component.  Rational and integral feasibility agree because the
+    /// incidence matrix is totally unimodular.
+    fn supported_edges(&self) -> Result<Vec<bool>, String> {
+        let flow = self.feasible_flow()?;
+        let mut residual = vec![Vec::new(); self.vertices];
+        for (&(tail, head), &value) in self.edges.iter().zip(&flow) {
+            residual[tail].push(head);
+            if value > 0 {
+                residual[head].push(tail);
             }
         }
-        while let Some(v) = queue.pop_front() {
-            for &head in &graph.outgoing_heads[v] {
-                if !reachable_from_source[head] {
-                    reachable_from_source[head] = true;
-                    queue.push_back(head);
-                }
-            }
-        }
-
-        let mut reaches_sink = vec![false; self.vertices];
-        let mut queue = VecDeque::new();
-        for (v, &a_v) in self.netflow.iter().enumerate() {
-            if a_v < 0 {
-                reaches_sink[v] = true;
-                queue.push_back(v);
-            }
-        }
-        while let Some(v) = queue.pop_front() {
-            for &tail in &graph.incoming_tails[v] {
-                if !reaches_sink[tail] {
-                    reaches_sink[tail] = true;
-                    queue.push_back(tail);
-                }
-            }
-        }
-
-        self.edges
+        let component = strongly_connected_components(&residual);
+        Ok(self
+            .edges
             .iter()
-            .map(|&(tail, head)| reachable_from_source[tail] && reaches_sink[head])
-            .collect()
+            .map(|&(tail, head)| component[tail] == component[head])
+            .collect())
+    }
+
+    /// One feasible flow, or an error if the polytope is empty.
+    ///
+    /// This is the Edmonds--Karp maximum flow from a super-source joined to
+    /// every supply to a super-sink joined from every demand.  Original edges
+    /// have capacity equal to the total supply, which no feasible flow on an
+    /// acyclic graph exceeds.  The polytope is nonempty exactly when the
+    /// maximum flow saturates every supply.
+    fn feasible_flow(&self) -> Result<Vec<i128>, String> {
+        let source = self.vertices;
+        let sink = self.vertices + 1;
+        let supply = self
+            .netflow
+            .iter()
+            .filter(|&&value| value > 0)
+            .map(|&value| i128::from(value))
+            .sum::<i128>();
+
+        // Arcs are stored in pairs; arc `2k + 1` is the reverse of arc `2k`.
+        let mut heads = Vec::new();
+        let mut capacities = Vec::new();
+        let mut outgoing = vec![Vec::new(); self.vertices + 2];
+        let mut add_arc = |tail: usize, head: usize, capacity: i128| {
+            outgoing[tail].push(heads.len());
+            heads.push(head);
+            capacities.push(capacity);
+            outgoing[head].push(heads.len());
+            heads.push(tail);
+            capacities.push(0);
+        };
+        for &(tail, head) in &self.edges {
+            add_arc(tail, head, supply);
+        }
+        for (vertex, &value) in self.netflow.iter().enumerate() {
+            if value > 0 {
+                add_arc(source, vertex, i128::from(value));
+            } else if value < 0 {
+                add_arc(vertex, sink, -i128::from(value));
+            }
+        }
+
+        let mut total = 0_i128;
+        loop {
+            let mut previous_arc = vec![usize::MAX; self.vertices + 2];
+            let mut queue = VecDeque::from([source]);
+            let mut seen = vec![false; self.vertices + 2];
+            seen[source] = true;
+            while let Some(vertex) = queue.pop_front() {
+                for &arc in &outgoing[vertex] {
+                    let head = heads[arc];
+                    if !seen[head] && capacities[arc] > 0 {
+                        seen[head] = true;
+                        previous_arc[head] = arc;
+                        queue.push_back(head);
+                    }
+                }
+            }
+            if !seen[sink] {
+                break;
+            }
+            let mut bottleneck = i128::MAX;
+            let mut vertex = sink;
+            while vertex != source {
+                let arc = previous_arc[vertex];
+                bottleneck = bottleneck.min(capacities[arc]);
+                vertex = heads[arc ^ 1];
+            }
+            let mut vertex = sink;
+            while vertex != source {
+                let arc = previous_arc[vertex];
+                capacities[arc] -= bottleneck;
+                capacities[arc ^ 1] += bottleneck;
+                vertex = heads[arc ^ 1];
+            }
+            total += bottleneck;
+        }
+        if total != supply {
+            return Err("flow polytope is empty".to_string());
+        }
+        // The flow on original edge `k` is the capacity of its reverse arc.
+        Ok((0..self.edges.len())
+            .map(|edge| capacities[2 * edge + 1])
+            .collect())
     }
 
     fn topological_data(&self) -> Result<TopologicalData, String> {
         let mut indegree = vec![0usize; self.vertices];
         let mut outgoing_heads = vec![Vec::new(); self.vertices];
-        let mut incoming_tails = vec![Vec::new(); self.vertices];
         for &(tail, head) in &self.edges {
             indegree[head] += 1;
             outgoing_heads[tail].push(head);
-            incoming_tails[head].push(tail);
         }
 
         let mut queue = VecDeque::new();
@@ -360,16 +434,64 @@ impl FlowPolytope {
         Ok(TopologicalData {
             order,
             outgoing_heads,
-            incoming_tails,
         })
     }
+}
+
+/// Strongly connected component labels by Kosaraju's algorithm.
+fn strongly_connected_components(graph: &[Vec<usize>]) -> Vec<usize> {
+    let vertices = graph.len();
+    let mut reverse = vec![Vec::new(); vertices];
+    for (tail, heads) in graph.iter().enumerate() {
+        for &head in heads {
+            reverse[head].push(tail);
+        }
+    }
+    let mut order = Vec::with_capacity(vertices);
+    let mut visited = vec![false; vertices];
+    for start in 0..vertices {
+        if visited[start] {
+            continue;
+        }
+        visited[start] = true;
+        let mut stack = vec![(start, 0_usize)];
+        while let Some((vertex, next)) = stack.pop() {
+            if let Some(&head) = graph[vertex].get(next) {
+                stack.push((vertex, next + 1));
+                if !visited[head] {
+                    visited[head] = true;
+                    stack.push((head, 0));
+                }
+            } else {
+                order.push(vertex);
+            }
+        }
+    }
+    let mut component = vec![usize::MAX; vertices];
+    let mut label = 0;
+    for &start in order.iter().rev() {
+        if component[start] != usize::MAX {
+            continue;
+        }
+        component[start] = label;
+        let mut stack = vec![start];
+        while let Some(vertex) = stack.pop() {
+            for &tail in &reverse[vertex] {
+                if component[tail] == usize::MAX {
+                    component[tail] = label;
+                    stack.push(tail);
+                }
+            }
+        }
+        label += 1;
+    }
+    component
 }
 
 #[derive(Debug)]
 struct TopologicalData {
     order: Vec<usize>,
     outgoing_heads: Vec<Vec<usize>>,
-    incoming_tails: Vec<Vec<usize>>,
 }
 
 struct CountContext {
