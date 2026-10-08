@@ -1,5 +1,27 @@
 # Ehrcalc Handoff
 
+## Broader corner-case review — 2026-10-08, complete
+
+`/root` completed the test-only lane `test/broad-corner-audit-2026-10-08`
+from c23e7ec. Source implementation ownership was not assumed; no algorithms,
+database state, remote jobs, or canonical runs/ changed. No agents launched.
+Review/test ownership is released after integration.
+
+Four unresolved issues: netflow-sum overflow (BCA-1), intermediate flow
+overflow (BCA-2), shape-total overflow reaching public LR and legacy Kostka
+(BCA-3), and implicit equalities missed by the key strict counter (BCA-4).
+See `docs/BROAD_CORNER_AUDIT.md` for exact witnesses and reproduction commands.
+The current positive-count key polynomial path passes the singleton witness.
+
+Added 19 test functions: 12 enabled passing checks and seven explicit ignored
+witnesses, each preserving the correct expected answer. Run the latter with
+`--ignored`; they are not fixed. Full workspace tests pass with these seven
+ignores; all new enabled tests pass in debug and release. Formatting passes;
+clippy has only the two pre-existing engine warnings. Raw pre-ignore failing
+output is preserved in the research project's
+`audit-evidence/2026-10-08-broad/`, alongside passing verification output.
+Next work requires a user-directed repair pass. Builds used external caches.
+
 ## Correctness repairs integrated — 2026-10-08
 
 Claude Opus 5.5 implemented source repair branch
