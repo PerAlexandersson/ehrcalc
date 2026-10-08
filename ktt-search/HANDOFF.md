@@ -1,5 +1,28 @@
 # KTT Search Handoff
 
+## Post-repair revalidation — 2026-10-08, first batch complete
+
+Eight smallest old order negatives (dimension 20) match repaired Ehrcalc and
+ordinary counts at all dilations 0..22. Two smallest genetic negatives (d82)
+reproduce via existing ideal DP with fresh reduced-word/quotient checks; each
+has two non-flag holes, so neither is a KTT counterexample. Evidence:
+projects/reduced-kogan-mutation-search/audit-evidence/2026-10-08-revalidation/.
+No database writes, remote jobs or source-algorithm edits. Ownership released.
+Unchecked old records remain unverified. Next priority is old zero-hole/flagged
+fixed-content reciprocal interpolation, not these unaffected order methods.
+R5 stays parked. New times alone are insufficient: audit records retain exact
+source/binary/input hashes and method. Normaliz pilot timed out, not verified.
+
+The user authorizes a bounded restart from the reconciled September 20 state:
+inventory historical negatives and recompute the smallest examples with the
+repaired engine. `/root` owns this opening entry and the audit work documented
+in projects/reduced-kogan-mutation-search/HANDOFF.md. No shared Rust source
+changes, agents, remote jobs or indefinite search. Preserve all old database
+rows and runs; initial database work is read-only. New verification must record
+source/binary/input hashes and fresh checks as well as timestamps. Legacy data
+is unverified, not automatically invalid; order-polytope and fixed-content GT
+methods need separate assessment. The unresolved r5 job remains parked.
+
 ## Reconciled current state — 2026-09-20 13:34 UTC
 
 This opening supersedes the older 2026-09-15 active-state narrative below.
