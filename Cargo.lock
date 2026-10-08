@@ -377,7 +377,7 @@ checksum = "d0881ea181b1df73ff77ffaaf9c7544ecc11e82fba9b5f27b262a3c73a332555"
 
 [[package]]
 name = "ehrcalc"
-version = "0.1.0"
+version = "0.1.0-rc.1"
 dependencies = [
  "clap",
  "ehrcalc-foundations",
@@ -392,7 +392,7 @@ dependencies = [
 
 [[package]]
 name = "ehrcalc-foundations"
-version = "0.1.0"
+version = "0.1.0-rc.1"
 dependencies = [
  "num-bigint",
  "num-integer",
@@ -402,7 +402,7 @@ dependencies = [
 
 [[package]]
 name = "ehrcalc-kostka-engine"
-version = "0.1.0"
+version = "0.1.0-rc.1"
 dependencies = [
  "flate2",
  "hashbrown 0.15.5",
@@ -416,7 +416,7 @@ dependencies = [
 
 [[package]]
 name = "ehrcalc-mcp"
-version = "0.1.0"
+version = "0.1.0-rc.1"
 dependencies = [
  "anyhow",
  "ehrcalc",
@@ -783,7 +783,7 @@ dependencies = [
 
 [[package]]
 name = "ktt-search"
-version = "0.1.0"
+version = "0.1.0-rc.1"
 dependencies = [
  "clap",
  "ehrcalc-foundations",

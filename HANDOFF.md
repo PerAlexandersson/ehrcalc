@@ -1,5 +1,14 @@
 # Ehrcalc Handoff
 
+## Release candidate — 2026-10-08, source ready
+
+All five workspace packages and Cargo.lock are aligned at 0.1.0-rc.1 on
+release/v0.1.0-rc.1 from 9c5715d. Full debug/release suites and CLI/MCP
+version checks pass. RELEASE_NOTES.md describes the GitHub source prerelease;
+no crates.io publication, binary assets or algorithm changes. Canonical
+runs/ preserved. Source ownership released; `/root` coordinates publication
+and records its verified URL in the key-schubert-kostka project HANDOFF.md.
+
 ## Boundary-defect repairs — 2026-10-08, complete
 
 `/root` repaired all four BCA defects on fix/broad-corner-defects-2026-10-08
