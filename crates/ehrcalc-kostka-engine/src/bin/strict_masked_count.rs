@@ -51,11 +51,7 @@ fn main() -> Result<(), String> {
         dilation,
         "inner",
     )?);
-    let weight = scale(
-        &parse_list(&arguments[4], "weight")?,
-        dilation,
-        "weight",
-    )?;
+    let weight = scale(&parse_list(&arguments[4], "weight")?, dilation, "weight")?;
     let upper = parse_list(&arguments[5], "upper flag")?;
     let lower = parse_list(&arguments[6], "lower flag")?;
     let forbidden = parse_list(&arguments[7], "forbidden-row mask")?;
