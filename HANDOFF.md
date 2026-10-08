@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Boundary-defect repairs — 2026-10-08, complete
+
+`/root` repaired all four BCA defects on fix/broad-corner-defects-2026-10-08
+from b8acce2. Flow validation/DP use wide arithmetic; LR and legacy Kostka
+totals are wide; key-face interiors use exact order-graph equalities and
+union reciprocity includes intersections. Supporting fixes cover GT weight
+totals, empty rank and explicit rejection of overflowing Kogan subset bounds.
+No agents, database work, historical-data certification or runs/ changes.
+
+All seven ignored witnesses are enabled. Full debug/release workspace tests
+pass, along with 272 exact-LP face comparisons and 192 key-family reciprocity
+checks. Formatting passes; clippy has only the two pre-existing warnings.
+CI now runs both profiles. Details and previous test gaps:
+`docs/BROAD_CORNER_FIXES.md`. Evidence is retained in the research project's
+audit-evidence/2026-10-08-broad-fixed/ (scratch /tmp/broad-corner-fixes-zwGqOX).
+Source/test ownership is released after integration; retain the clean lane.
+
 ## Broader corner-case review — 2026-10-08, complete
 
 `/root` completed the test-only lane `test/broad-corner-audit-2026-10-08`

@@ -40,7 +40,7 @@ impl FlowPolytope {
                 netflow.len()
             ));
         }
-        let netflow_sum: i64 = netflow.iter().sum();
+        let netflow_sum: i128 = netflow.iter().map(|&x| i128::from(x)).sum();
         if netflow_sum != 0 {
             return Err(format!(
                 "netflow entries must sum to zero, got {netflow_sum}"
@@ -144,6 +144,7 @@ impl FlowPolytope {
             .iter()
             .map(|&x| {
                 x.checked_mul(dilation_i64)
+                    .map(i128::from)
                     .ok_or_else(|| format!("netflow entry {x} overflows at dilation {dilation}"))
             })
             .collect::<Result<Vec<_>, _>>()?;
@@ -155,7 +156,7 @@ impl FlowPolytope {
             memo: HashMap::new(),
             max_states,
         };
-        let incoming = vec![0i64; self.vertices];
+        let incoming = vec![0i128; self.vertices];
         ctx.count_from(0, incoming)
     }
 
@@ -497,13 +498,15 @@ struct TopologicalData {
 struct CountContext {
     order: Vec<usize>,
     outgoing_heads: Vec<Vec<usize>>,
-    netflow: Vec<i64>,
-    memo: HashMap<(usize, Vec<i64>), BigUint>,
+    // A DAG edge can carry the sum of several positive netflow entries,
+    // even when each entry fits i64. Keep accumulated flows wide as well.
+    netflow: Vec<i128>,
+    memo: HashMap<(usize, Vec<i128>), BigUint>,
     max_states: Option<usize>,
 }
 
 impl CountContext {
-    fn count_from(&mut self, pos: usize, incoming: Vec<i64>) -> Result<BigUint, String> {
+    fn count_from(&mut self, pos: usize, incoming: Vec<i128>) -> Result<BigUint, String> {
         if pos == self.order.len() {
             return Ok(if incoming.iter().all(|&x| x == 0) {
                 BigUint::one()
@@ -524,7 +527,9 @@ impl CountContext {
         }
 
         let vertex = self.order[pos];
-        let total_out = incoming[vertex] + self.netflow[vertex];
+        let total_out = incoming[vertex]
+            .checked_add(self.netflow[vertex])
+            .ok_or("accumulated flow exceeds i128")?;
         let result = if total_out < 0 {
             BigUint::zero()
         } else {
@@ -553,13 +558,15 @@ impl CountContext {
         pos: usize,
         heads: &[usize],
         edge_pos: usize,
-        remaining: i64,
-        incoming: &mut Vec<i64>,
+        remaining: i128,
+        incoming: &mut Vec<i128>,
         total: &mut BigUint,
     ) -> Result<(), String> {
         if edge_pos + 1 == heads.len() {
             let head = heads[edge_pos];
-            incoming[head] += remaining;
+            incoming[head] = incoming[head]
+                .checked_add(remaining)
+                .ok_or("accumulated flow exceeds i128")?;
             *total += self.count_from(pos + 1, incoming.clone())?;
             incoming[head] -= remaining;
             return Ok(());
@@ -567,7 +574,9 @@ impl CountContext {
 
         let head = heads[edge_pos];
         for amount in 0..=remaining {
-            incoming[head] += amount;
+            incoming[head] = incoming[head]
+                .checked_add(amount)
+                .ok_or("accumulated flow exceeds i128")?;
             self.distribute_outflow(
                 pos,
                 heads,

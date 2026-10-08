@@ -133,9 +133,9 @@ pub fn try_lr_dp(
     max_states: Option<usize>,
 ) -> Result<BigUint, String> {
     let n = lambda.num_parts();
-    let skew_size = lambda.size().saturating_sub(mu.size());
+    let skew_size = lambda.size_wide().saturating_sub(mu.size_wide());
     let w: Vec<u32> = nu.parts().to_vec();
-    let w_size: u32 = w.iter().sum();
+    let w_size: u128 = w.iter().map(|&x| u128::from(x)).sum();
 
     if skew_size != w_size || !mu.partition_less_equal(lambda) {
         return Ok(BigUint::zero());
@@ -228,9 +228,9 @@ pub fn lr_kostka_inverse(
     nu: &Partition,
     max_states: Option<usize>,
 ) -> BigInt {
-    let n = lambda.size().saturating_sub(mu.size());
-    let nu_size = nu.size();
-    if n != nu_size {
+    let n = lambda.size_wide().saturating_sub(mu.size_wide());
+    let nu_size = nu.size_wide();
+    if n != nu_size || !mu.partition_less_equal(lambda) {
         return BigInt::zero();
     }
     if n == 0 {
@@ -242,7 +242,7 @@ pub fn lr_kostka_inverse(
     }
 
     // All partitions of n in reverse-lex order (dominance-compatible).
-    let parts = partitions_of(n);
+    let parts = partitions_of(u32::try_from(n).expect("Kostka inversion size exceeds u32"));
     let num_parts = parts.len();
 
     // Map partition → index.

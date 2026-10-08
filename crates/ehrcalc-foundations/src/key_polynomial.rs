@@ -26,7 +26,7 @@ use crate::permutation::{
 };
 use num_bigint::BigInt;
 use num_rational::BigRational;
-use num_traits::{One, Zero};
+use num_traits::{One, ToPrimitive, Zero};
 use std::collections::{BTreeMap, HashSet};
 
 /// A GT-pattern for shape λ with n = λ.num_parts().
@@ -48,10 +48,10 @@ impl GtPattern {
     pub fn weight(&self) -> Vec<u32> {
         let n = self.n();
         let mut w = vec![0u32; n];
-        let mut prev_sum = 0u32;
+        let mut prev_sum = 0u128;
         for (entry, row) in w.iter_mut().zip(&self.rows) {
-            let cur_sum: u32 = row.iter().sum();
-            *entry = cur_sum - prev_sum;
+            let cur_sum: u128 = row.iter().map(|&x| u128::from(x)).sum();
+            *entry = u32::try_from(cur_sum - prev_sum).expect("GT weight exceeds u32");
             prev_sum = cur_sum;
         }
         w
@@ -82,21 +82,81 @@ pub fn gt_patterns_with_equalities_n(
     gt_patterns_inner(lambda, n, equalities, false)
 }
 
-/// Like `gt_patterns_with_equalities_n`, but with STRICT interlacing
-/// at all non-forced positions.
-///
-/// At forced equality positions (Kogan face equalities), x_{i+1,j} = x_{i,j}.
-/// At all other positions, the interlacing is strict:
-///   x_{i+1,j} > x_{i,j} > x_{i+1,j+1}
-///
-/// This counts the "strictly interior" lattice points, used for
-/// Ehrhart-Macdonald reciprocity: P(-k) = (-1)^d · strict_count(k).
+/// Enumerate the relative-interior lattice points of one Kogan face.
+/// Both interlacing inequalities are strict unless they are equalities on
+/// the whole face, including equalities implied by the marked top row.
 pub fn strict_gt_patterns_with_equalities_n(
     lambda: &Partition,
     n: usize,
     equalities: &[(usize, usize)],
 ) -> Vec<GtPattern> {
     gt_patterns_inner(lambda, n, equalities, true)
+}
+
+struct FaceGeometry {
+    left_tight: Vec<Vec<bool>>,
+    right_tight: Vec<Vec<bool>>,
+    dimension: usize,
+}
+
+/// The face is a marked order polytope: edges encode x >= y. Add reverse
+/// edges for prescribed equalities and equal top-row marks. An inequality
+/// is an implicit equality exactly when its endpoints lie in a directed
+/// cycle. Every remaining component can vary independently in the affine
+/// hull, except components containing a fixed top-row mark.
+fn face_geometry(top: &[u32], eq_set: &[Vec<bool>]) -> FaceGeometry {
+    let n = top.len();
+    let index = |i: usize, j: usize| i * (i - 1) / 2 + j - 1;
+    let count = n * (n + 1) / 2;
+    let mut edges = vec![Vec::new(); count];
+    for (i, equalities) in eq_set.iter().enumerate().take(n).skip(1) {
+        for (j, &forced) in equalities.iter().enumerate().take(i + 1).skip(1) {
+            let (a, b, c) = (index(i + 1, j), index(i, j), index(i + 1, j + 1));
+            edges[a].push(b);
+            edges[b].push(c);
+            if forced {
+                edges[b].push(a);
+            }
+        }
+    }
+    for j in 1..n {
+        if top[j - 1] == top[j] {
+            edges[index(n, j + 1)].push(index(n, j));
+        }
+    }
+    let reachable: Vec<Vec<bool>> = (0..count)
+        .map(|start| {
+            let mut seen = vec![false; count];
+            seen[start] = true;
+            let mut stack = vec![start];
+            while let Some(v) = stack.pop() {
+                for &u in &edges[v] {
+                    if !seen[u] {
+                        seen[u] = true;
+                        stack.push(u);
+                    }
+                }
+            }
+            seen
+        })
+        .collect();
+    let same = |a: usize, b: usize| reachable[a][b] && reachable[b][a];
+    let dimension = (0..count)
+        .filter(|&v| !(0..v).any(|u| same(u, v)) && !(1..=n).any(|j| same(v, index(n, j))))
+        .count();
+    let mut left_tight = vec![vec![false; n + 1]; n + 1];
+    let mut right_tight = left_tight.clone();
+    for i in 1..n {
+        for j in 1..=i {
+            left_tight[i][j] = same(index(i + 1, j), index(i, j));
+            right_tight[i][j] = same(index(i, j), index(i + 1, j + 1));
+        }
+    }
+    FaceGeometry {
+        left_tight,
+        right_tight,
+        dimension,
+    }
 }
 
 fn gt_patterns_inner(
@@ -127,10 +187,18 @@ fn gt_patterns_inner(
         })
         .collect();
 
+    let geometry = strict.then(|| face_geometry(&top_row, &eq_set));
     let mut results = Vec::new();
     let mut rows_built: Vec<Vec<u32>> = vec![top_row];
 
-    enumerate_gt_rows(n, n - 1, &eq_set, strict, &mut rows_built, &mut results);
+    enumerate_gt_rows(
+        n,
+        n - 1,
+        &eq_set,
+        geometry.as_ref(),
+        &mut rows_built,
+        &mut results,
+    );
     results
 }
 
@@ -138,7 +206,7 @@ fn enumerate_gt_rows(
     n: usize,
     row_idx: usize,
     eq_set: &[Vec<bool>],
-    strict: bool,
+    geometry: Option<&FaceGeometry>,
     rows_built: &mut Vec<Vec<u32>>,
     results: &mut Vec<GtPattern>,
 ) {
@@ -160,7 +228,7 @@ fn enumerate_gt_rows(
         n,
         row_idx,
         eq_set,
-        strict,
+        geometry,
         &above,
         &mut current_row,
         0,
@@ -174,7 +242,7 @@ fn enumerate_gt_entries(
     n: usize,
     row_idx: usize,
     eq_set: &[Vec<bool>],
-    strict: bool,
+    geometry: Option<&FaceGeometry>,
     above: &[u32],
     current: &mut Vec<u32>,
     pos: usize,
@@ -183,7 +251,7 @@ fn enumerate_gt_entries(
 ) {
     if pos == current.len() {
         rows_built.push(current.clone());
-        enumerate_gt_rows(n, row_idx - 1, eq_set, strict, rows_built, results);
+        enumerate_gt_rows(n, row_idx - 1, eq_set, geometry, rows_built, results);
         rows_built.pop();
         return;
     }
@@ -196,14 +264,19 @@ fn enumerate_gt_entries(
     let mut upper = above[pos]; // x_{row_idx+1, j}
     let mut lower = above[pos + 1]; // x_{row_idx+1, j+1}
 
-    if strict && !is_forced {
-        // Strict left interlacing: x_{i+1,j} > x_{i,j} → upper = above[pos] - 1
-        if above[pos] == 0 {
-            return;
-        } // can't go below 0
-        upper = above[pos] - 1;
-        // Strict right interlacing: x_{i,j} > x_{i+1,j+1} → lower = above[pos+1] + 1
-        lower = above[pos + 1] + 1;
+    if let Some(geometry) = geometry {
+        if !geometry.left_tight[row_idx][j] {
+            let Some(bound) = upper.checked_sub(1) else {
+                return;
+            };
+            upper = bound;
+        }
+        if !geometry.right_tight[row_idx][j] {
+            let Some(bound) = lower.checked_add(1) else {
+                return;
+            };
+            lower = bound;
+        }
     }
 
     // Same-row monotonicity (weakly decreasing)
@@ -219,7 +292,7 @@ fn enumerate_gt_entries(
                 n,
                 row_idx,
                 eq_set,
-                strict,
+                geometry,
                 above,
                 current,
                 pos + 1,
@@ -240,7 +313,7 @@ fn enumerate_gt_entries(
             n,
             row_idx,
             eq_set,
-            strict,
+            geometry,
             above,
             current,
             pos + 1,
@@ -294,6 +367,8 @@ pub fn reduced_words(perm: &[usize]) -> Vec<Vec<usize>> {
 ///
 /// Returns a list of equality sets, each being a Vec<(usize, usize)> of (i, j) pairs
 /// (1-indexed, representing x_{i+1,j} = x_{i,j}).
+/// Panics if there are 64 or more possible equalities: this exhaustive
+/// implementation represents subsets by u64 and must not wrap its bound.
 pub fn reduced_kogan_faces(n: usize, sigma: &[usize]) -> Vec<Vec<(usize, usize)>> {
     // Build position list in reading order: bottom-to-top, left-to-right.
     // Level i (equalities between rows i+1 and i): positions (i, j) for j=1..i.
@@ -313,8 +388,11 @@ pub fn reduced_kogan_faces(n: usize, sigma: &[usize]) -> Vec<Vec<(usize, usize)>
     let m = wvec.len();
     let mut results = Vec::new();
 
-    // Enumerate all 2^m subsets
-    for mask in 0u64..(1u64 << m) {
+    let subset_count = 1u64
+        .checked_shl(u32::try_from(m).expect("too many Kogan positions"))
+        .expect("Kogan subset enumeration requires fewer than 64 positions");
+    // Enumerate all 2^m subsets.
+    for mask in 0u64..subset_count {
         // Extract the subword
         let subword: Vec<usize> = (0..m)
             .filter(|&k| (mask >> k) & 1 == 1)
@@ -512,11 +590,16 @@ pub fn key_lattice_point_count(lambda: &Partition, sigma: &[usize], dilation: u3
     weights.values().sum()
 }
 
-/// Count strictly interior lattice points in GT(kλ, σ).
-///
-/// Used for Ehrhart-Macdonald reciprocity:
-/// P(-k) = (-1)^d · strict_count(k).
+/// Compute the reciprocal count `(-1)^d P(-k)` for positive k, where P
+/// counts the union of reduced Kogan faces and d is its dimension.
+/// For a single face this is its relative-interior count. For a union we
+/// apply inclusion-exclusion and facewise reciprocity; simply taking the
+/// union of face interiors would omit shared interior strata.
+/// At dilation zero we return one, the count of the collapsed point.
 pub fn key_strict_lattice_point_count(lambda: &Partition, sigma: &[usize], dilation: u32) -> u64 {
+    if dilation == 0 {
+        return 1;
+    }
     let n = sigma.len();
     let kl = scale_partition(lambda, n, dilation);
 
@@ -525,14 +608,44 @@ pub fn key_strict_lattice_point_count(lambda: &Partition, sigma: &[usize], dilat
     let w0_sigma = compose_permutations(&sigma_inv, &w0);
     let faces = reduced_kogan_faces(n, &w0_sigma);
 
-    let mut all_patterns: HashSet<GtPattern> = HashSet::new();
-    for eqs in &faces {
-        let patterns = strict_gt_patterns_with_equalities_n(&kl, n, eqs);
-        for pat in patterns {
-            all_patterns.insert(pat);
+    // An intersection of faces is given by the union of their equalities.
+    // Combine duplicate intersections before enumerating any points.
+    let mut terms: BTreeMap<Vec<(usize, usize)>, BigInt> = BTreeMap::new();
+    for mut face in faces {
+        face.sort_unstable();
+        face.dedup();
+        let previous = terms.clone();
+        *terms.entry(face.clone()).or_default() += 1;
+        for (eqs, coefficient) in previous {
+            let mut intersection = eqs;
+            intersection.extend_from_slice(&face);
+            intersection.sort_unstable();
+            intersection.dedup();
+            *terms.entry(intersection).or_default() -= coefficient;
         }
+        terms.retain(|_, coefficient| !coefficient.is_zero());
     }
-    all_patterns.len() as u64
+    let top: Vec<u32> = (0..n).map(|j| kl.part(j)).collect();
+    let terms: Vec<_> = terms
+        .into_iter()
+        .map(|(eqs, coefficient)| {
+            let mut eq_set = vec![vec![false; n + 1]; n + 1];
+            for &(i, j) in &eqs {
+                eq_set[i][j] = true;
+            }
+            let dimension = face_geometry(&top, &eq_set).dimension;
+            let interior = strict_gt_patterns_with_equalities_n(&kl, n, &eqs).len();
+            (dimension, coefficient * BigInt::from(interior))
+        })
+        .collect();
+    let dimension = terms.iter().map(|(d, _)| *d).max().unwrap_or(0);
+    let count: BigInt = terms
+        .into_iter()
+        .map(|(d, c)| if (dimension - d) % 2 == 0 { c } else { -c })
+        .sum();
+    count
+        .to_u64()
+        .expect("reciprocal key count is negative or exceeds u64")
 }
 
 fn scale_partition(lambda: &Partition, n: usize, k: u32) -> Partition {
@@ -553,12 +666,8 @@ fn scale_partition(lambda: &Partition, n: usize, k: u32) -> Partition {
 
 /// Compute the Ehrhart polynomial P(k) = |GT(kλ, σ) ∩ Z^{n(n-1)/2}|.
 ///
-/// Compute the Ehrhart polynomial P(k) = |GT(kλ, σ) ∩ Z^{n(n-1)/2}|.
-///
-/// Uses Ehrhart-Macdonald reciprocity: evaluates both positive dilations
-/// and negative dilations (via strict GT-pattern counts), choosing whichever
-/// side is cheaper. Strict counts are often 0 for small k, making
-/// negative evaluations essentially free.
+/// Interpolate from nonnegative-dilation counts and check one extra sample.
+/// This routine does not call the reciprocal/strict counter.
 ///
 /// `max_degree` is an upper bound on the polynomial degree.
 /// If None, uses n(n-1)/2 (dimension of the full GT-polytope).
@@ -570,8 +679,8 @@ pub fn key_ehrhart_polynomial(
     key_ehrhart_polynomial_inner(lambda, sigma, max_degree, true)
 }
 
-/// Like `key_ehrhart_polynomial` but uses only positive dilations
-/// (no reciprocity). Simpler but slower for large polytopes.
+/// Like `key_ehrhart_polynomial`, but omit its extra verification sample.
+/// Both routines use only nonnegative dilations.
 pub fn key_ehrhart_polynomial_positive_only(
     lambda: &Partition,
     sigma: &[usize],
@@ -584,12 +693,12 @@ fn key_ehrhart_polynomial_inner(
     lambda: &Partition,
     sigma: &[usize],
     max_degree: Option<usize>,
-    use_reciprocity: bool,
+    verify_extra_sample: bool,
 ) -> KeyEhrhartPoly {
     let n = sigma.len();
-    let d = max_degree.unwrap_or(n * (n - 1) / 2);
+    let d = max_degree.unwrap_or(n * n.saturating_sub(1) / 2);
 
-    if !use_reciprocity {
+    if !verify_extra_sample {
         // Plain method: evaluate at k = 0, 1, ..., d
         let points: Vec<(i64, BigRational)> = (0..=(d as u32))
             .map(|k| {
@@ -612,9 +721,7 @@ fn key_ehrhart_polynomial_inner(
         };
     }
 
-    // Reciprocity method: first determine the actual degree by
-    // evaluating positive points until the polynomial stabilizes.
-    // Then use reciprocity for remaining points.
+    // Interpolate at nonnegative points, then check one additional point.
 
     // Start with P(0) = 1 (trivial GT-pattern at dilation 0).
     let mut pos_values: Vec<u64> = vec![1]; // pos_values[k] = P(k)

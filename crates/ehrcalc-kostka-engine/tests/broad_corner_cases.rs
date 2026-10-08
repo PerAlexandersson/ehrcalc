@@ -103,7 +103,6 @@ fn large_horizontal_translation_preserves_small_skew_fiber() {
 }
 
 #[test]
-#[ignore = "BCA-3: unchecked u32 shape totals; see docs/BROAD_CORNER_AUDIT.md"]
 fn legacy_translation_does_not_overflow_total_shape_size() {
     let shift = u32::MAX / 3;
     let outer = p(&[shift + 3, shift + 2, shift + 1]);
@@ -112,49 +111,108 @@ fn legacy_translation_does_not_overflow_total_shape_size() {
         skew_kostka_legacy(&outer, &inner, &[1, 1, 3, 1], Some(100), false),
         2u32.into()
     );
+    assert_eq!(
+        ehrcalc_kostka_engine::kostka_dp::flagged_skew_kostka_legacy(
+            &outer,
+            &inner,
+            &[1, 1, 3, 1],
+            Some(&[3; 4]),
+            Some(&[1; 4]),
+            Some(100)
+        ),
+        2u32.into()
+    );
+    assert_eq!(
+        strict_skew_kostka_legacy(&outer, &inner, &[1, 1, 3, 1], Some(100), false),
+        0u32.into()
+    );
+    assert_eq!(
+        strict_skew_kostka_legacy(
+            &p(&[shift + 1, shift, shift]),
+            &inner,
+            &[1],
+            Some(100),
+            false
+        ),
+        1u32.into()
+    );
 }
 
 #[test]
-#[ignore = "BCA-3: unchecked u32 shape totals; see docs/BROAD_CORNER_AUDIT.md"]
 fn public_lr_counter_handles_a_large_translated_single_box() {
     let shift = u32::MAX / 3;
     let outer = p(&[shift + 1, shift, shift]);
     let inner = p(&[shift; 3]);
-    if let Ok(count) = ehrcalc_kostka_engine::lr::try_lr_dp(&outer, &inner, &p(&[1]), Some(100)) {
-        assert_eq!(count, BigUint::from(1u32));
-    }
+    assert_eq!(
+        ehrcalc_kostka_engine::lr::try_lr_dp(&outer, &inner, &p(&[1]), Some(100)).unwrap(),
+        BigUint::from(1u32)
+    );
+    assert_eq!(
+        ehrcalc_kostka_engine::lr::lr_kostka_inverse(&outer, &inner, &p(&[1]), Some(100)),
+        1.into()
+    );
 }
 
 #[test]
-#[ignore = "BCA-1: unchecked i64 netflow sum; see docs/BROAD_CORNER_AUDIT.md"]
+fn incompatible_large_content_totals_are_rejected_without_overflow() {
+    use ehrcalc_kostka_engine::{kostka_dp::flagged_skew_kostka_legacy, lr::try_lr_dp};
+    let outer = p(&[1]);
+    let inner = p(&[]);
+    let weight = [u32::MAX, u32::MAX];
+    assert_eq!(
+        skew_kostka_legacy(&outer, &inner, &weight, None, false),
+        0u32.into()
+    );
+    assert_eq!(
+        flagged_skew_kostka_legacy(&outer, &inner, &weight, None, None, None),
+        0u32.into()
+    );
+    assert_eq!(
+        strict_skew_kostka_legacy(&outer, &inner, &weight, None, false),
+        0u32.into()
+    );
+    assert_eq!(
+        try_lr_dp(&outer, &inner, &p(&weight), None).unwrap(),
+        0u32.into()
+    );
+    assert_eq!(p(&weight).size_wide(), 2 * u128::from(u32::MAX));
+}
+
+#[test]
 fn flow_constructor_rejects_nonzero_sum_without_wrapping() {
     assert!(FlowPolytope::new(2, vec![], vec![i64::MIN, i64::MIN]).is_err());
 }
 
 #[test]
-#[ignore = "BCA-1: unchecked i64 netflow sum; see docs/BROAD_CORNER_AUDIT.md"]
 fn flow_constructor_accepts_balanced_extreme_entries_without_panicking() {
     let flow = FlowPolytope::new(3, vec![(0, 1), (1, 2)], vec![i64::MAX, 1, i64::MIN]);
-    // An explicit supported-range error is acceptable; a panic is not.
-    if let Ok(flow) = flow {
-        assert_eq!(flow.dimension().unwrap(), 0);
-    }
+    let flow = flow.unwrap();
+    assert_eq!(flow.dimension().unwrap(), 0);
+    assert_eq!(flow.count_lattice_points(1, None).unwrap(), 1u32.into());
 }
 
 #[test]
-#[ignore = "BCA-2: unchecked i64 flow accumulation; see docs/BROAD_CORNER_AUDIT.md"]
 fn flow_counter_does_not_report_zero_when_an_intermediate_flow_overflows() {
     // The node order keeps constructor partial sums within i64. The unique
     // flow carries 2^63 along 2->1, which the counting DP cannot store in i64.
     let flow = FlowPolytope::new(3, vec![(0, 2), (2, 1)], vec![i64::MAX, i64::MIN, 1]).unwrap();
     assert_eq!(flow.dimension().unwrap(), 0);
-    if let Ok(count) = flow.count_lattice_points(1, None) {
-        assert_eq!(
-            count,
-            BigUint::from(1u32),
-            "return an error if the representation is too narrow"
-        );
-    }
+    assert_eq!(
+        flow.count_lattice_points(1, None).unwrap(),
+        BigUint::from(1u32)
+    );
+    assert_eq!(
+        flow.count_interior_lattice_points(1, None).unwrap(),
+        1u32.into()
+    );
+    // Accumulation at a merge, not only inflow + local supply.
+    let merged = FlowPolytope::new(
+        4,
+        vec![(0, 2), (1, 2), (2, 3)],
+        vec![i64::MAX, 1, 0, i64::MIN],
+    )
+    .unwrap();
+    assert_eq!(merged.count_lattice_points(1, None).unwrap(), 1u32.into());
 }
 
 #[test]

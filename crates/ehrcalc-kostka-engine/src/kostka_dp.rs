@@ -360,8 +360,8 @@ pub fn skew_kostka_legacy(
     sort_weight: bool,
 ) -> BigUint {
     // Validate.
-    let skew_size: u32 = lambda.size().saturating_sub(mu.size());
-    let w_size: u32 = w.iter().sum();
+    let skew_size = lambda.size_wide().saturating_sub(mu.size_wide());
+    let w_size: u128 = w.iter().map(|&x| u128::from(x)).sum();
     if skew_size != w_size {
         return BigUint::zero();
     }
@@ -762,8 +762,8 @@ pub fn flagged_skew_kostka_legacy(
     lower_flags: Option<&[u32]>,
     max_states: Option<usize>,
 ) -> BigUint {
-    let skew_size: u32 = lambda.size().saturating_sub(mu.size());
-    let w_size: u32 = w.iter().sum();
+    let skew_size = lambda.size_wide().saturating_sub(mu.size_wide());
+    let w_size: u128 = w.iter().map(|&x| u128::from(x)).sum();
     if skew_size != w_size {
         return BigUint::zero();
     }
@@ -1545,8 +1545,8 @@ pub fn strict_skew_kostka_legacy(
     max_states: Option<usize>,
     _sort_weight: bool,
 ) -> BigUint {
-    let skew_size: u32 = lambda.size().saturating_sub(mu.size());
-    let w_size: u32 = w.iter().sum();
+    let skew_size = lambda.size_wide().saturating_sub(mu.size_wide());
+    let w_size: u128 = w.iter().map(|&x| u128::from(x)).sum();
     if skew_size != w_size {
         return BigUint::zero();
     }

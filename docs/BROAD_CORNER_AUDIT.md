@@ -1,10 +1,9 @@
 # Broader corner-case review, 2026-10-08
 
-Reviewed baseline: c23e7ec. This checkpoint adds tests, not algorithm fixes.
-Four unresolved issues were reproduced in both debug and release builds.
-The seven witness tests are explicitly ignored pending repairs; their
-assertions retain the mathematically correct answers. A passing default
-suite does **not** mean these issues are resolved.
+Reviewed baseline: c23e7ec. The test checkpoint b8acce2 reproduced the four
+issues below. The subsequent user-authorized repair fixes all four and
+enables all seven witnesses. See [repair notes](BROAD_CORNER_FIXES.md).
+The descriptions below record the pre-repair behavior.
 
 ## BCA-1: netflow validation overflows
 
@@ -91,15 +90,12 @@ From this repository, with an external `CARGO_TARGET_DIR`:
 cargo test --locked -p ehrcalc-kostka-engine --test broad_corner_cases
 cargo test --locked --test broad_adapter_corners
 
-# Unresolved witnesses: expected to fail until the implementations are fixed.
-cargo test --locked -p ehrcalc-kostka-engine --test broad_corner_cases -- --ignored
-cargo test --locked --test broad_adapter_corners -- --ignored
+cargo test --locked --test key_interior_geometry
 ```
 
-Repeat with `--release` before `--`. In debug the ignored engine group has
-five failures; in release it has four failures and one pass (the balanced
-constructor case). Both adapter witnesses fail in both modes. Remove the
-relevant ignore attributes only after a fix passes in both modes.
+Repeat with `--release`. At b8acce2 the ignored engine group had five debug
+failures and four release failures; both adapter witnesses failed in both
+modes. Those ignores have now been removed; all regression tests run normally.
 
 No historical database results were revalidated by this review. Larger
 state spaces, every public API, and the C ABI were not exhaustively checked.

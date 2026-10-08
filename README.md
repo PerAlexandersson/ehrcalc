@@ -36,6 +36,10 @@ is pinned to a public Git revision.
 
 ## Scope
 
+Boundary arithmetic and relative-interior semantics are documented in
+[the correctness repair notes](docs/BROAD_CORNER_FIXES.md), with executable
+regressions. CI runs the workspace suite in both debug and release.
+
 Supported families are:
 
 - Gelfand-Tsetlin, Kostka, skew Kostka, and flagged Kostka data;

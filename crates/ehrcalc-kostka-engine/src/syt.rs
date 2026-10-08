@@ -26,7 +26,7 @@ pub fn hook_lengths(lambda: &Partition) -> Vec<Vec<u32>> {
 
 /// Count SYT of shape lambda using the hook-length formula.
 pub fn count_syt(lambda: &Partition) -> BigUint {
-    let n = lambda.size() as u64;
+    let n = lambda.size_wide();
     // n!
     let mut numerator = BigUint::one();
     for i in 2..=n {

@@ -47,9 +47,15 @@ impl Partition {
         }
     }
 
-    /// The size |lambda| = sum of all parts.
+    /// The size |lambda| = sum of all parts, when it fits in u32.
+    /// Panics explicitly on overflow; use `size_wide` for size comparisons.
     pub fn size(&self) -> u32 {
-        self.0.iter().sum()
+        u32::try_from(self.size_wide()).expect("partition size exceeds u32")
+    }
+
+    /// Sum of all parts without truncating at the coordinate width.
+    pub fn size_wide(&self) -> u128 {
+        self.0.iter().map(|&part| u128::from(part)).sum()
     }
 
     /// Whether this is the empty partition.
@@ -85,7 +91,7 @@ impl Partition {
 
     /// Count standard Young tableaux of shape lambda via the hook-length formula.
     pub fn count_syt(&self) -> BigUint {
-        let n = self.size() as u64;
+        let n = self.size_wide();
         let mut numerator = BigUint::one();
         for i in 2..=n {
             numerator *= i;

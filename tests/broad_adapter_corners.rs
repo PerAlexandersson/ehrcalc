@@ -88,7 +88,6 @@ fn key_identity_longest_and_repeated_top_rows() {
 }
 
 #[test]
-#[ignore = "BCA-4: key interior misses implicit equalities; see docs/BROAD_CORNER_AUDIT.md"]
 fn key_strict_counter_counts_the_relative_interior_of_a_point() {
     // GT(1,1) is one point; every interlacing inequality is implicit.
     for n in 1..=3 {
@@ -100,7 +99,6 @@ fn key_strict_counter_counts_the_relative_interior_of_a_point() {
 }
 
 #[test]
-#[ignore = "BCA-3: unchecked u32 shape totals; see docs/BROAD_CORNER_AUDIT.md"]
 fn lr_adapter_does_not_silently_drop_a_translated_box() {
     let shift = u32::MAX / 3;
     let result = lr_count(&LrInput {
@@ -109,9 +107,7 @@ fn lr_adapter_does_not_silently_drop_a_translated_box() {
         nu: vec![1],
         max_states: Some(100),
     });
-    if let Ok(count) = result {
-        assert_eq!(count, BigInt::from(1));
-    }
+    assert_eq!(result.unwrap(), BigInt::from(1));
 }
 
 #[test]
