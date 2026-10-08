@@ -78,7 +78,7 @@ impl EhrhartPolynomial {
                     continue;
                 }
                 basis = multiply_by_linear(&basis, -BigInt::from(*x_j));
-                denominator *= BigRational::from(BigInt::from(*x_i - *x_j));
+                denominator *= BigRational::from(BigInt::from(*x_i) - BigInt::from(*x_j));
             }
             let scale = y_i.clone() / denominator;
             for (degree, coefficient) in basis.into_iter().enumerate() {
@@ -408,6 +408,22 @@ mod tests {
 
     fn integer(value: i64) -> BigRational {
         BigRational::from(BigInt::from(value))
+    }
+
+    #[test]
+    fn interpolation_subtracts_extreme_abscissae_exactly() {
+        // `i64::MAX - i64::MIN` does not fit in i64; it must be formed in BigInt.
+        let constant =
+            EhrhartPolynomial::interpolate(1, &[(i64::MIN, integer(1)), (i64::MAX, integer(1))])
+                .unwrap();
+        assert_eq!(constant.power_coeffs(), &[integer(1)]);
+        let identity = EhrhartPolynomial::interpolate(
+            1,
+            &[(i64::MIN, integer(i64::MIN)), (i64::MAX, integer(i64::MAX))],
+        )
+        .unwrap();
+        assert_eq!(identity.power_coeffs(), &[integer(0), integer(1)]);
+        assert_eq!(identity.evaluate(-7), integer(-7));
     }
 
     #[test]
