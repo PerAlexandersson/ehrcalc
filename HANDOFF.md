@@ -18,7 +18,16 @@ Pushes and merges wait for independent parent verification.
 - Dilation: checked `u32` scaling in GT Ehrhart sampling and key dilation.
 - Exact interpolation subtracts abscissae in `BigInt`.
 - KTT rows whose stored dimension differs from the repaired dimension now fail
-  cached validation; no database access occurred.  See `docs/KTT_SEARCH.md`.
+  cached validation.  A matching dimension is necessary but does not validate
+  an old reciprocity-derived polynomial; historical rows stay unaudited until
+  checked against fresh positive counts.  No database access occurred.  See
+  `docs/KTT_SEARCH.md`.
+
+Review follow-up: generic GT dimensions and the legacy strict counter
+accept more than 32 rows (`gt_polytope_tight_inequalities_masked` gives
+row-unlimited tightness); the `u32` mask API panics above 32 rows instead of
+truncating; both presolve propagation loops are capped; a zero-dimensional
+GT polytope is checked to be a lattice point before interpolation.
 
 Commits: `cfd63df` (interpolation), `b4e267a` (dilation), `7dfaa96` (flow),
 `b62459a` (pre-existing rustfmt drift in two bins), `0fef751` (GT affine

@@ -793,15 +793,24 @@ fn compute_ehrhart_impl(
         }
     };
 
+    // Dimension zero means one rational point.  Its counts are the constant
+    // one exactly when that point is a lattice point, which one count checks.
+    if d == 0 {
+        let count = eval_positive(1)?;
+        if !count.is_one() {
+            return Err(format!(
+                "the zero-dimensional polytope is a non-integral point (count {count} at \
+                 dilation 1), so its counting function is not a polynomial"
+            ));
+        }
+        return Ok(EhrhartPoly {
+            coeffs: vec![BigRational::one()],
+            degree: 0,
+        });
+    }
+
     if mode == EhrhartInterpolation::AdaptiveReciprocity {
         // P(0) = 1 always (the trivial chain μ=μ is the unique point at dilation 0).
-        if d == 0 {
-            // Constant polynomial.  No DP evaluation needed.
-            return Ok(EhrhartPoly {
-                coeffs: vec![BigRational::one()],
-                degree: 0,
-            });
-        }
 
         // Sequential adaptive reciprocity strategy:
         //

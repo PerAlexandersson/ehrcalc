@@ -59,8 +59,9 @@
 //! variables that cheap sound propagation has already identified, and should
 //! not recompute an affine hull merely to prune a counting recursion.
 //!
-//! Related Rust: lrcalc-rs keeps an identical standalone copy in
-//! `src/affine_hull.rs`, because the two libraries have no shared dependency.
+//! Related Rust: lrcalc-rs keeps a standalone copy in `src/affine_hull.rs`
+//! that differs only in this provenance note, because the two libraries
+//! have no shared dependency.  Keep the two copies synchronized.
 
 use num_bigint::BigInt;
 use num_rational::BigRational;
@@ -933,6 +934,28 @@ mod tests {
         // x2 is free and x0 + x1 = 2 with x0 >= 0.
         assert_eq!(hull.dimension, 2);
         assert_eq!(hull.implicit_equalities, vec![false]);
+    }
+
+    #[test]
+    fn large_coefficients_fall_back_to_big_rationals() {
+        // A segment translated by 2^130 exceeds the small-rational fast path.
+        let offset = BigInt::from(1) << 130usize;
+        let mut segment = RationalPolyhedron::new(1);
+        segment.add_inequality([(0, r(-1))], -rational(offset.clone()));
+        segment.add_inequality([(0, r(1))], rational(offset.clone() + 1));
+        let hull = data(segment.affine_hull());
+        assert_eq!(hull.dimension, 1);
+        assert_eq!(hull.implicit_equalities, vec![false, false]);
+        let mut point = RationalPolyhedron::new(2);
+        point.add_equality([(0, r(1)), (1, r(1))], rational(offset.clone() * 2));
+        point.add_inequality([(0, r(-1)), (1, r(1))], r(0));
+        point.add_inequality([(0, r(1)), (1, r(-1))], r(0));
+        let hull = data(point.affine_hull());
+        assert_eq!(hull.dimension, 0);
+        assert_eq!(
+            hull.relative_interior_point,
+            vec![rational(offset.clone()), rational(offset)]
+        );
     }
 
     #[test]

@@ -1,50 +1,91 @@
+//! Exact dimension and affine structure of GT polytopes via the chain model.
+//!
+//! The GT polytope for shape λ/μ with weight w is parameterized by a chain:
+//!   μ = α⁰ ⊂ α¹ ⊂ … ⊂ αᵏ = λ
+//! where each α^{i-1} ⊂ α^i is a horizontal strip of size w_i, and k = len(w).
+//!
+//! Interior levels: α¹, …, α^{k-1}  (k-1 levels, each a partition with ≤ n parts).
+//! Total interior entries = (k-1) × n, where n = len(λ).
+//!
+//! Presolve.  For each interior entry α^i_j, the boundary values give the bounds:
+//!   lb = max(μ_j,  λ_{j+k-i})     [vertical from bottom, diagonal from top]
+//!   ub = min(λ_j,  μ_{j-i})       [vertical from top, diagonal from bottom]
+//! where out-of-range indices give lb contribution 0 and ub contribution +∞.
+//!
+//! An entry is frozen (lb == ub).  Weight constraints can force additional entries
+//! (when a level has exactly 1 free entry), and forced values propagate via
+//! interlacing to tighten bounds at neighboring levels.
+//!
+//! Flags and forbidden-row masks (optional, length k = w.len()):
+//!   `upper_flags[ℓ] = f`  →  label ℓ+1 appears only in rows 1..=f  (1-indexed)
+//!                         ⟺  α^{ℓ+1}_j = α^ℓ_j for j (0-indexed) ≥ f
+//!   `lower_flags[ℓ] = g`  →  label ℓ+1 appears only in rows g..=n
+//!                         ⟺  α^{ℓ+1}_j = α^ℓ_j for j (0-indexed) < g-1
+//! The presolve enforces them as bidirectional bound coupling between adjacent levels.
+//! Bit j of `forbidden_row_masks[ℓ]` imposes the same equality for row j at
+//! label ℓ+1.  This is the constraint form produced by complement-row lifts
+//! of individual Kogan faces.
+//!
+//! Interval propagation is sound but incomplete: it never derives a false
+//! equality, but several interlacing inequalities can be forced to equality
+//! jointly by a level-weight equation while every coordinate interval stays
+//! open, and a polytope can be empty although every interval is nonempty.
+//! Propagation is therefore only a presolve.  After contracting its fixed
+//! coordinates and merged components, [`crate::affine_hull`] decides
+//! emptiness and every remaining implicit equality with a certified exact
+//! linear program.  The dimension and the tight interlacing masks come from
+//! that exact affine hull; lattice points at one dilation are never used.
+//! Counting recursions that only need pruning bounds should call
+//! [`gt_polytope_propagated_bounds_masked`], which skips the linear program.
+//!
+//! Both propagation loops stop after a bounded number of sweeps.  Rational
+//! interval propagation need not stabilize after finitely many steps in
+//! general, and integer propagation can take a number of sweeps proportional
+//! to the coordinate sizes.  Stopping early only leaves valid but looser
+//! intervals, so exactness is unaffected: the exact affine hull decides.
+//!
+//! The dimension routines accept any number of rows.  Forbidden-row masks
+//! and the `u32` tight-inequality masks are bitmasks, so they address rows
+//! `0..32` only; see [`gt_polytope_tight_inequalities_masked`] for tightness
+//! without a row limit.
+//!
+//! The public functions return `None` if the polytope is empty, or `Some(d)`
+//! for its affine dimension `d`.  Dimension zero means a single rational
+//! point; this module does not claim that the point is integral, and the
+//! Ehrhart interpolation checks that separately.
+
 use crate::affine_hull::{AffineHull, RationalPolyhedron};
 use num_traits::Zero;
 
-/// Fast computation of the dimension of GT polytopes via the chain model.
+type GtBounds = (usize, Vec<Vec<u32>>, Vec<Vec<u32>>, TightRows, TightRows);
+
+/// `tight[step][row]` for every step and row; see [`GtTightInequalities`].
+type TightRows = Vec<Vec<bool>>;
+
+/// Maximum number of sweeps of either presolve propagation loop.
 ///
-/// The GT polytope for shape λ/μ with weight w is parameterized by a chain:
-///   μ = α⁰ ⊂ α¹ ⊂ … ⊂ αᵏ = λ
-/// where each α^{i-1} ⊂ α^i is a horizontal strip of size w_i, and k = len(w).
-///
-/// Interior levels: α¹, …, α^{k-1}  (k-1 levels, each a partition with ≤ n parts).
-/// Total interior entries = (k-1) × n, where n = len(λ).
-///
-/// For each interior entry α^i_j, the tightest bounds from the boundary values are:
-///   lb = max(μ_j,  λ_{j+k-i})     [vertical from bottom, diagonal from top]
-///   ub = min(λ_j,  μ_{j-i})       [vertical from top, diagonal from bottom]
-/// where out-of-range indices give lb contribution 0 and ub contribution +∞.
-///
-/// An entry is frozen (lb == ub).  Weight constraints can force additional entries
-/// (when a level has exactly 1 free entry), and forced values propagate via
-/// interlacing to tighten bounds at neighboring levels.
-///
-/// Flags and forbidden-row masks (optional, length k = w.len()):
-///   upper_flags[ℓ] = f  →  label ℓ+1 appears only in rows 1..=f  (1-indexed)
-///                         ⟺  α^{ℓ+1}_j = α^ℓ_j for j (0-indexed) ≥ f
-///   lower_flags[ℓ] = g  →  label ℓ+1 appears only in rows g..=n
-///                         ⟺  α^{ℓ+1}_j = α^ℓ_j for j (0-indexed) < g-1
-/// These are enforced in Pass 3 as bidirectional bound-coupling between adjacent levels.
-/// Bit j of forbidden_row_masks[ℓ] imposes the same equality for row j at
-/// label ℓ+1.  This is the constraint form produced by complement-row lifts
-/// of individual Kogan faces.
-///
-/// Interval propagation is sound but incomplete: it never derives a false
-/// equality, but several interlacing inequalities can be forced to equality
-/// jointly by a level-weight equation while every coordinate interval stays
-/// open, and a polytope can be empty although every interval is nonempty.
-/// Propagation is therefore only a presolve.  After contracting its fixed
-/// coordinates and merged components, [`crate::affine_hull`] decides
-/// emptiness and every remaining implicit equality with a certified exact
-/// linear program.  The dimension and the tight interlacing masks come from
-/// that exact affine hull; lattice points at one dilation are never used.
-/// Counting recursions that only need pruning bounds should call
-/// [`gt_polytope_propagated_bounds_masked`], which skips the linear program.
-/// Dimension of the GT polytope GT(λ/μ, w), optionally with row flags.
-/// Returns `None` if the polytope is empty (infeasible constraints),
-/// or `Some(d)` where d = 0 means a single lattice point.
-/// Core implementation shared by the public functions below.
-type GtBounds = (usize, Vec<Vec<u32>>, Vec<Vec<u32>>, Vec<u32>, Vec<u32>);
+/// Propagation is only a presolve, so this bound trades pruning strength for
+/// guaranteed termination; it never affects the exact results.
+fn presolve_sweep_limit(variables: usize) -> usize {
+    #[cfg(test)]
+    if let Some(limit) = PRESOLVE_SWEEP_OVERRIDE.with(std::cell::Cell::get) {
+        return limit;
+    }
+    2 * variables + 64
+}
+
+#[cfg(test)]
+thread_local! {
+    /// Test-only override showing that the presolve cap cannot change results.
+    static PRESOLVE_SWEEP_OVERRIDE: std::cell::Cell<Option<usize>> =
+        const { std::cell::Cell::new(None) };
+}
+
+/// Whether bit `row` of a forbidden-row bitmask is set.  Bitmasks address
+/// rows `0..32`; later rows are never masked.
+fn mask_has_row(mask: u32, row: usize) -> bool {
+    row < u32::BITS as usize && mask & (1_u32 << row) != 0
+}
 
 #[derive(Debug)]
 struct EqualityComponents {
@@ -119,11 +160,15 @@ fn affine_structure_from_equalities(
     upper_flags: Option<&[u32]>,
     lower_flags: Option<&[u32]>,
     forbidden_row_masks: Option<&[u32]>,
-) -> Option<(usize, Vec<u32>, Vec<u32>)> {
+) -> Option<(usize, TightRows, TightRows)> {
     let rows = lambda.len();
     let levels = weight.len();
     if rows == 0 || levels == 0 {
-        return Some((0, vec![0; levels], vec![0; levels]));
+        return Some((
+            0,
+            vec![vec![true; rows]; levels],
+            vec![vec![true; rows]; levels],
+        ));
     }
 
     let interior_levels = levels - 1;
@@ -169,7 +214,7 @@ fn affine_structure_from_equalities(
             if weight[step] != 0
                 && row >= lower_row
                 && row < upper_row
-                && forbidden & (1_u32 << row) == 0
+                && !mask_has_row(forbidden, row)
             {
                 continue;
             }
@@ -299,9 +344,10 @@ fn affine_structure_from_equalities(
         .collect::<Vec<_>>();
 
     // Propagate exact component intervals through the order edges and level
-    // sums. This finds equalities created jointly by a face equality, a
-    // boundary inequality, and a weight equation.
-    loop {
+    // sums. This finds many equalities created jointly by a face equality, a
+    // boundary inequality, and a weight equation.  The sweep count is capped
+    // because rational propagation can converge without stabilizing.
+    for _ in 0..presolve_sweep_limit(node_count) {
         let mut changed = false;
         for &(source, destination) in &order_edges {
             if source == destination {
@@ -463,29 +509,32 @@ fn affine_structure_from_equalities(
         }
     };
 
-    let mut tight_lower_masks = vec![0_u32; levels];
-    let mut tight_diagonal_masks = vec![0_u32; levels];
-    // Row masks are defined for at most 32 rows; the dimension is not.
-    for step in 0..levels {
-        for row in 0..rows.min(u32::BITS as usize) {
-            let bit = 1_u32 << row;
-            if inequality_is_tight(
-                final_roots[node(step, row)],
-                final_roots[node(step + 1, row)],
-            ) {
-                tight_lower_masks[step] |= bit;
-            }
-            if row > 0
-                && inequality_is_tight(
-                    final_roots[node(step + 1, row)],
-                    final_roots[node(step, row - 1)],
-                )
-            {
-                tight_diagonal_masks[step] |= bit;
-            }
-        }
-    }
-    Some((dimension, tight_lower_masks, tight_diagonal_masks))
+    let tight_lower = (0..levels)
+        .map(|step| {
+            (0..rows)
+                .map(|row| {
+                    inequality_is_tight(
+                        final_roots[node(step, row)],
+                        final_roots[node(step + 1, row)],
+                    )
+                })
+                .collect()
+        })
+        .collect();
+    let tight_diagonal = (0..levels)
+        .map(|step| {
+            (0..rows)
+                .map(|row| {
+                    row == 0
+                        || inequality_is_tight(
+                            final_roots[node(step + 1, row)],
+                            final_roots[node(step, row - 1)],
+                        )
+                })
+                .collect()
+        })
+        .collect();
+    Some((dimension, tight_lower, tight_diagonal))
 }
 
 type PropagatedGtBounds = (Vec<u32>, Vec<Vec<u32>>, Vec<Vec<u32>>);
@@ -556,15 +605,8 @@ fn propagate_gt_bounds(
         return None;
     }
     if let Some(masks) = forbidden_row_masks {
-        if n > u32::BITS as usize {
-            return None;
-        }
-        let allowed = if n == u32::BITS as usize {
-            u32::MAX
-        } else {
-            (1_u32 << n) - 1
-        };
-        if masks.iter().any(|&mask| mask & !allowed != 0) {
+        // Bits must name existing rows; with 32 or more rows every bit does.
+        if n < u32::BITS as usize && masks.iter().any(|&mask| mask >> n != 0) {
             return None;
         }
     }
@@ -580,7 +622,7 @@ fn propagate_gt_bounds(
             }
             upper_flags.is_none_or(|flags| j < flags[0] as usize)
                 && lower_flags.is_none_or(|flags| j >= flags[0].saturating_sub(1) as usize)
-                && forbidden_row_masks.is_none_or(|masks| masks[0] & (1_u32 << j) == 0)
+                && forbidden_row_masks.is_none_or(|masks| !mask_has_row(masks[0], j))
         });
         if !horizontal_strip || !flags_allow_strip {
             return None;
@@ -634,8 +676,12 @@ fn propagate_gt_bounds(
     }
 
     // Propagation: iterate until no bounds change.
+    // Integer propagation terminates, but possibly only after a number of
+    // sweeps proportional to the coordinates; cap it as a presolve.
     let mut changed = true;
-    while changed {
+    let mut sweeps = 0;
+    while changed && sweeps < presolve_sweep_limit(n_int * n) {
+        sweeps += 1;
         changed = false;
 
         // Propagate forced entries to neighbors via interlacing.
@@ -820,7 +866,7 @@ fn propagate_gt_bounds(
         if let Some(masks) = forbidden_row_masks {
             for (ell, &mask) in masks.iter().enumerate() {
                 for j in 0..n {
-                    if mask & (1_u32 << j) != 0 {
+                    if mask_has_row(mask, j) {
                         apply_flag!(ell, j);
                     }
                 }
@@ -934,12 +980,55 @@ pub fn gt_polytope_propagated_bounds_masked(
         .map(|(_, lower, upper)| (lower, upper))
 }
 
+/// Exact affine dimension and implicit interlacing equalities of a face.
+///
+/// `lower[step][row]` is true when `alpha^{step+1}_row >= alpha^step_row` is
+/// an equality on the whole face, and `diagonal[step][row]` when
+/// `alpha^{step+1}_row <= alpha^step_{row-1}` is.  There is no diagonal
+/// inequality in row zero, so `diagonal[step][0]` is always true.  Here
+/// `alpha^0 = mu` and `alpha^k = lambda`.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct GtTightInequalities {
+    pub dimension: usize,
+    pub lower: Vec<Vec<bool>>,
+    pub diagonal: Vec<Vec<bool>>,
+}
+
+/// Exact affine dimension and implicit interlacing equalities of an
+/// individual masked tableau face, for any number of rows.
+///
+/// Forbidden-row masks address rows `0..32`.  Returns `None` if the face is
+/// empty or the masks name rows that do not exist.
+pub fn gt_polytope_tight_inequalities_masked(
+    lambda: &[u32],
+    mu: &[u32],
+    w: &[u32],
+    upper_flags: Option<&[u32]>,
+    lower_flags: Option<&[u32]>,
+    forbidden_row_masks: Option<&[u32]>,
+) -> Option<GtTightInequalities> {
+    gt_polytope_dim_impl(lambda, mu, w, upper_flags, lower_flags, forbidden_row_masks).map(
+        |(dimension, _, _, lower, diagonal)| GtTightInequalities {
+            dimension,
+            lower,
+            diagonal,
+        },
+    )
+}
+
 /// Affine dimension and globally tight interlacing masks for an individual
 /// masked tableau face.
 ///
 /// A set bit marks an inequality that is an equality throughout the face.
 /// The masks are the implicit equalities of the exact affine hull, including
 /// those forced jointly by forbidden Kogan cells and level-weight equations.
+/// Bit `row` of a diagonal mask is never set for row zero.
+///
+/// # Panics
+///
+/// Panics if `lambda` has more than 32 rows, since the masks could not
+/// represent every row.  Use [`gt_polytope_tight_inequalities_masked`] or
+/// [`gt_polytope_dim_full`] for larger shapes.
 pub fn gt_polytope_affine_masks_masked(
     lambda: &[u32],
     mu: &[u32],
@@ -948,9 +1037,40 @@ pub fn gt_polytope_affine_masks_masked(
     lower_flags: Option<&[u32]>,
     forbidden_row_masks: Option<&[u32]>,
 ) -> Option<(usize, Vec<u32>, Vec<u32>)> {
-    gt_polytope_dim_impl(lambda, mu, w, upper_flags, lower_flags, forbidden_row_masks).map(
-        |(dimension, _, _, tight_lower, tight_diagonal)| (dimension, tight_lower, tight_diagonal),
+    assert!(
+        lambda.len() <= u32::BITS as usize,
+        "GT tight-inequality bitmasks support at most 32 rows, got {}",
+        lambda.len()
+    );
+    let to_mask = |rows: &[bool], skip_first: bool| {
+        rows.iter()
+            .enumerate()
+            .filter(|&(row, &tight)| tight && !(skip_first && row == 0))
+            .fold(0_u32, |mask, (row, _)| mask | (1_u32 << row))
+    };
+    gt_polytope_tight_inequalities_masked(
+        lambda,
+        mu,
+        w,
+        upper_flags,
+        lower_flags,
+        forbidden_row_masks,
     )
+    .map(|tight| {
+        (
+            tight.dimension,
+            tight
+                .lower
+                .iter()
+                .map(|rows| to_mask(rows, false))
+                .collect(),
+            tight
+                .diagonal
+                .iter()
+                .map(|rows| to_mask(rows, true))
+                .collect(),
+        )
+    })
 }
 
 #[cfg(test)]
@@ -1279,5 +1399,61 @@ mod tests {
                 expected
             );
         }
+    }
+
+    #[test]
+    fn stopping_presolve_early_does_not_change_exact_results() {
+        fn compositions(total: u32, parts: usize) -> Vec<Vec<u32>> {
+            if total == 0 {
+                return vec![Vec::new()];
+            }
+            if parts == 0 {
+                return Vec::new();
+            }
+            (1..=total)
+                .flat_map(|first| {
+                    compositions(total - first, parts - 1)
+                        .into_iter()
+                        .map(move |mut rest| {
+                            rest.insert(0, first);
+                            rest
+                        })
+                })
+                .collect()
+        }
+        let structure =
+            |lambda: &[u32], w: &[u32], lower: Option<&[u32]>, masks: Option<&[u32]>| {
+                gt_polytope_dim_impl(lambda, &[], w, None, lower, masks).map(
+                    |(dimension, _, _, tight_lower, tight_diagonal)| {
+                        (dimension, tight_lower, tight_diagonal)
+                    },
+                )
+            };
+        let mut checked = 0;
+        for size in 1..=6_u32 {
+            for lambda in Partition::all_of_size_bounded(size, 4, size) {
+                for w in compositions(size, 5) {
+                    let lower = (0..w.len())
+                        .map(|label| (label as u32 % lambda.num_parts() as u32) + 1)
+                        .collect::<Vec<_>>();
+                    let masks = (0..w.len())
+                        .map(|label| (label as u32) & 2)
+                        .collect::<Vec<_>>();
+                    for (lower, masks) in [
+                        (None, None),
+                        (Some(&lower[..]), None),
+                        (None, Some(&masks[..])),
+                    ] {
+                        let full = structure(lambda.parts(), &w, lower, masks);
+                        PRESOLVE_SWEEP_OVERRIDE.with(|limit| limit.set(Some(0)));
+                        let unpropagated = structure(lambda.parts(), &w, lower, masks);
+                        PRESOLVE_SWEEP_OVERRIDE.with(|limit| limit.set(None));
+                        assert_eq!(full, unpropagated, "{lambda:?} {w:?} {lower:?} {masks:?}");
+                        checked += 1;
+                    }
+                }
+            }
+        }
+        assert!(checked > 1000);
     }
 }

@@ -9,10 +9,13 @@
 use ehrcalc_kostka_engine::{
     ehrhart::{scale_parts, try_compute_ehrhart, EhrhartPoly},
     flow::FlowPolytope,
-    gt_dim::{gt_polytope_affine_masks_masked, gt_polytope_dim_full},
+    gt_dim::{
+        gt_polytope_affine_masks_masked, gt_polytope_dim, gt_polytope_dim_full,
+        gt_polytope_tight_inequalities_masked,
+    },
     kostka_dp::{
         masked_relative_interior_masks, strict_skew_kostka_legacy, try_flagged_skew_kostka,
-        try_strict_flagged_skew_kostka,
+        try_strict_flagged_skew_kostka, try_strict_skew_kostka,
     },
     packed_modular::try_strict_masked_flagged_skew_kostka_packed_exact_stats,
     Partition,
@@ -438,4 +441,124 @@ fn gt_dilation_does_not_wrap_u32_coordinates() {
 fn helper_counts_match_a_known_stretching_polynomial() {
     // K((2N, N), (N, N, N)) = N + 1.
     assert_eq!(full_count(&[2, 1], &[1, 1, 1], None, 5).to_u64(), Some(6));
+}
+
+/// The generic dimension routines have no 32-row limit.  A column of 33 boxes
+/// with content `1^33` has one tableau, and the hook `(2, 1^32)` with standard
+/// content has `binom(N + 32, 32)` points at dilation `N`.
+#[test]
+fn generic_gt_dimension_accepts_more_than_thirty_two_rows() {
+    assert_eq!(gt_polytope_dim(&[1; 33], &[], &[1; 33]), Some(0));
+    assert_eq!(gt_polytope_dim(&[1; 40], &[], &[1; 40]), Some(0));
+    assert_eq!(
+        gt_polytope_dim_full(&[1; 33], &[], &[1; 33], Some(&[33; 33]), Some(&[1; 33])),
+        Some(0)
+    );
+    for reciprocity in [false, true] {
+        let polynomial = try_compute_ehrhart(
+            &p(&[1; 33]),
+            &Partition::empty(),
+            &[1; 33],
+            None,
+            None,
+            false,
+            None,
+            reciprocity,
+        )
+        .unwrap();
+        assert_eq!(polynomial.coeffs, vec![BigRational::from_integer(1.into())]);
+    }
+
+    let mut hook = vec![2];
+    hook.extend([1; 32]);
+    let weight = [1; 34];
+    assert_eq!(gt_polytope_dim(&hook, &[], &weight), Some(32));
+    for (dilation, expected) in [(1_u32, 33_u32), (2, 561), (3, 6545)] {
+        assert_eq!(
+            full_count(&hook, &weight, None, dilation),
+            BigUint::from(expected)
+        );
+    }
+
+    // Forbidding label 32 in row 32 (bit 31) empties the column.
+    let mut forbidden = vec![0_u32; 33];
+    forbidden[31] = 1 << 31;
+    assert_eq!(
+        gt_polytope_tight_inequalities_masked(
+            &[1; 33],
+            &[],
+            &[1; 33],
+            None,
+            None,
+            Some(&forbidden)
+        ),
+        None
+    );
+    // With 40 rows bit 31 still names row 32; bit 30 names a row that label
+    // 32 never occupies, so that mask leaves the single point.
+    for (bit, nonempty) in [(31, false), (30, true)] {
+        let mut forbidden = vec![0_u32; 40];
+        forbidden[31] = 1 << bit;
+        let tight = gt_polytope_tight_inequalities_masked(
+            &[1; 40],
+            &[],
+            &[1; 40],
+            None,
+            None,
+            Some(&forbidden),
+        );
+        assert_eq!(tight.map(|tight| tight.dimension), nonempty.then_some(0));
+    }
+}
+
+/// The audit's segment witness translated into a 33-row skew shape: rows 3
+/// to 32 are empty, so the polytope is still a segment with `N + 1` points.
+/// Boolean tightness and the legacy strict counter have no row limit, while
+/// the documented bitmask interfaces refuse the shape instead of truncating.
+#[test]
+fn thirty_three_row_segment_keeps_exact_interiors() {
+    let mut outer = vec![4, 3, 2];
+    outer.extend([1; 30]);
+    let inner = [1; 33];
+    let weight = [1, 1, 3, 1];
+    assert_eq!(gt_polytope_dim(&outer, &inner, &weight), Some(1));
+    let tight =
+        gt_polytope_tight_inequalities_masked(&outer, &inner, &weight, None, None, None).unwrap();
+    assert_eq!(tight.dimension, 1);
+    assert!(tight
+        .lower
+        .iter()
+        .chain(&tight.diagonal)
+        .all(|rows| rows.len() == 33));
+    // Empty rows force every inequality below row 3 to equality.
+    assert!(tight
+        .lower
+        .iter()
+        .all(|rows| rows[3..].iter().all(|&is_tight| is_tight)));
+    for dilation in 1..=4 {
+        let scaled_outer = p(&scaled(&outer, dilation));
+        let scaled_inner = p(&scaled(&inner, dilation));
+        let scaled_weight = scaled(&weight, dilation);
+        let full = try_flagged_skew_kostka(
+            &scaled_outer,
+            &scaled_inner,
+            &scaled_weight,
+            None,
+            None,
+            None,
+        )
+        .unwrap();
+        assert_eq!(full, BigUint::from(dilation + 1));
+        let interior =
+            strict_skew_kostka_legacy(&scaled_outer, &scaled_inner, &scaled_weight, None, false);
+        assert_eq!(interior, BigUint::from(dilation - 1));
+    }
+    let error = try_strict_skew_kostka(&p(&outer), &p(&inner), &weight, None, false).unwrap_err();
+    assert!(error.contains("32 rows"), "{error}");
+}
+
+#[test]
+#[should_panic(expected = "at most 32 rows")]
+fn tight_inequality_bitmasks_refuse_more_than_thirty_two_rows() {
+    gt_polytope_affine_masks_masked(&[1; 33], &[], &[1; 33], None, None, None);
 }

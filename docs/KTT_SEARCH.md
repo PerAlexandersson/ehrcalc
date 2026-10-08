@@ -40,10 +40,16 @@ The 2026-10-08 correctness repair replaced GT interval-propagation dimensions by
 exact affine hulls.  Before it, some GT dimensions were overestimated and some
 empty fibers were treated as nonempty, which corrupted reciprocity-interpolated
 polynomials.  Cached rows whose stored dimension differs from the repaired
-dimension now fail validation as `cached_unverified`; fibers now proved empty
-are skipped before any cache lookup.  Such stored rows require revalidation
-before mathematical use.  The repair did not read, modify, or delete database
-rows.
+dimension now fail validation as `cached_unverified`, and fibers now proved
+empty are skipped before any cache lookup.
+
+Agreement with the repaired dimension is only a necessary check.  It does not
+validate an old reciprocity-derived polynomial: the scanner's cached-row checks
+compare stored data with itself (degree, `L(0)`, integrality, stored Kostka
+value, recomputed h*) and do not count fresh lattice points.  Every historical
+row therefore remains unaudited until its polynomial is checked against fresh
+direct positive counts beyond its interpolation samples.  The repair did not
+read, modify, or delete database rows.
 
 Generated JSON, JSONL, and log files under `ktt-search/` are ignored working data. Do
 not commit them. Reports produced before the 2026-09-06 validation fixes are not

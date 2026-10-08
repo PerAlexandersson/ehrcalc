@@ -83,7 +83,7 @@ impl FlowPolytope {
     ///
     /// The only inequalities are `x_e >= 0`, so the affine hull is cut out by
     /// the balance equations and by `x_e = 0` for every edge that vanishes on
-    /// the whole polytope.  [`Self::supported_edges`] computes the remaining
+    /// the whole polytope.  The private support routine computes the remaining
     /// support `S` exactly, and the dimension is `|S| - rank(B_S)`, where the
     /// incidence rank is the number of touched vertices minus the number of
     /// connected components of `S`.  An empty polytope is an error.

@@ -1095,7 +1095,9 @@ fn constrained_horizontal_strip_row_bounds(
     row_hi: usize,
     forbidden_mask: u32,
 ) -> Option<(u32, u32)> {
-    let forced_zero = row < row_lo || row >= row_hi || forbidden_mask & (1_u32 << row) != 0;
+    let forced_zero = row < row_lo
+        || row >= row_hi
+        || (row < u32::BITS as usize && forbidden_mask & (1_u32 << row) != 0);
     let need_strict_lower = row < strict_lower.len() && strict_lower[row];
     let need_strict_diag = row > 0 && row < strict_diag.len() && strict_diag[row];
 
@@ -1531,9 +1533,9 @@ pub fn try_masked_flagged_skew_kostka(
 
 /// Count interior lattice points of the GT-polytope GT(λ/μ, w).
 ///
-/// Uses the exact affine hull from `gt_polytope_affine_masks_masked` to
+/// Uses the exact affine hull from `gt_polytope_tight_inequalities_masked` to
 /// identify which interlacing constraints are implicit equalities and only
-/// enforces strictness for the remaining ones.
+/// enforces strictness for the remaining ones.  There is no row limit.
 ///
 /// `sort_weight` is ignored: sorting would break the lb/ub correspondence.
 pub fn strict_skew_kostka_legacy(
@@ -1558,31 +1560,24 @@ pub fn strict_skew_kostka_legacy(
     // The exact affine hull decides which interlacing inequalities are
     // implicit equalities.  Frozen interval endpoints alone miss equalities
     // forced jointly by a level sum, so they cannot replace this step.
-    if n > u32::BITS as usize {
-        panic!("legacy strict Kostka supports at most 32 rows");
-    }
-    let (_, tight_lower, tight_diagonal) = match crate::gt_dim::gt_polytope_affine_masks_masked(
+    // Boolean tightness has no row limit, unlike the u32 masks.
+    let Some(tight) = crate::gt_dim::gt_polytope_tight_inequalities_masked(
         lambda.parts(),
         mu.parts(),
         w,
         None,
         None,
         None,
-    ) {
-        None => return BigUint::zero(),
-        Some(data) => data,
+    ) else {
+        return BigUint::zero();
     };
     let strict_lower = (0..k)
-        .map(|i| {
-            (0..n)
-                .map(|j| tight_lower[i] & (1_u32 << j) == 0)
-                .collect::<Vec<_>>()
-        })
+        .map(|i| (0..n).map(|j| !tight.lower[i][j]).collect::<Vec<_>>())
         .collect::<Vec<_>>();
     let strict_diag = (0..k)
         .map(|i| {
             (0..n)
-                .map(|j| j > 0 && tight_diagonal[i] & (1_u32 << j) == 0)
+                .map(|j| j > 0 && !tight.diagonal[i][j])
                 .collect::<Vec<_>>()
         })
         .collect::<Vec<_>>();
@@ -1641,8 +1636,10 @@ pub fn strict_skew_kostka(
 
 /// Fallible variant of [`strict_skew_kostka`] that reports a state-limit breach.
 ///
-/// `sort_weight` is ignored because reordering the weight would invalidate the
-/// propagated bounds used to recognize relatively interior lattice points.
+/// `sort_weight` is ignored because the relative-interior masks depend on the
+/// label order.  Shapes with more than 32 rows are reported as an error by
+/// the bitmask interior counter; [`strict_skew_kostka_legacy`] has no row
+/// limit.
 pub fn try_strict_skew_kostka(
     lambda: &Partition,
     mu: &Partition,
@@ -1655,7 +1652,7 @@ pub fn try_strict_skew_kostka(
 
 /// Per-label masks describing the relative interior of a masked tableau face.
 ///
-/// `dimension` is the propagated chain-model dimension.  Bit `r` in a lower
+/// `dimension` is the exact affine dimension.  Bit `r` in a lower
 /// or diagonal mask says that the corresponding inequality must be strict;
 /// inequalities belonging to the affine hull are omitted.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -1783,9 +1780,10 @@ pub fn try_strict_masked_flagged_skew_kostka(
 
 /// Count relative-interior lattice points with optional row flags.
 ///
-/// The structural flagged bounds determine which interlacing constraints lie
-/// in the affine hull.  This remains valid when the scale-one lattice points
-/// do not affinely span the fixed-content polytope.
+/// The exact affine hull determines which interlacing constraints are
+/// implicit equalities.  This remains valid when the lattice points at any
+/// fixed dilation do not affinely span the fixed-content polytope.  This
+/// bitmask counter supports at most 32 rows and returns an error otherwise.
 pub fn try_strict_flagged_skew_kostka(
     lambda: &Partition,
     mu: &Partition,
