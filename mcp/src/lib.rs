@@ -5,11 +5,11 @@ use ehrcalc::exact::{
     EhrhartPolynomial, HStarPolynomial,
 };
 use ehrcalc::families::{
-    flow_ehrhart, gt_ehrhart, key_ehrhart, kostka_count, lr_count, order_ehrhart, FlowInput,
-    GtInput, KeyInput, KostkaInput, LrInput, OrderInput,
+    flow_ehrhart, gt_ehrhart, key_ehrhart, kostka_count, lr_count, order_ehrhart_with, FlowInput,
+    GtInput, KeyInput, KostkaInput, LrInput, OrderInput, OrderMethod, OrderOptions,
 };
 use ehrcalc::key_scan::{run_key_scan, KeyPacketMode, KeyScanInput};
-use ehrcalc::render::{ehrhart_json, OutputFormat};
+use ehrcalc::render::{ehrhart_json, ehrhart_json_with_method, OutputFormat};
 use num_rational::BigRational;
 use rmcp::{
     handler::server::{router::tool::ToolRouter, wrapper::Parameters},
@@ -113,18 +113,28 @@ pub enum FamilyRequest {
     OrderCovers {
         vertices: usize,
         covers: Vec<CoverInput>,
+        method: Option<OrderMethodRequest>,
+        max_states: Option<usize>,
     },
     OrderChain {
         elements: usize,
+        method: Option<OrderMethodRequest>,
+        max_states: Option<usize>,
     },
     OrderAntichain {
         elements: usize,
+        method: Option<OrderMethodRequest>,
+        max_states: Option<usize>,
     },
     OrderFence {
         elements: usize,
+        method: Option<OrderMethodRequest>,
+        max_states: Option<usize>,
     },
     OrderShape {
         lambda: Vec<u32>,
+        method: Option<OrderMethodRequest>,
+        max_states: Option<usize>,
     },
     Flow {
         vertices: usize,
@@ -143,6 +153,42 @@ pub enum KeyScanPacketRequest {
     None,
     HChecks,
     DRoute,
+}
+
+/// Algorithm for the h* numerator of an order-polytope request.
+///
+/// `auto` (the default) tries the order-ideal method within its state budget
+/// and otherwise uses the frontier method; `ideals` and `frontier` force one
+/// method. `max_states` bounds the stored (order ideal, last element) rows of
+/// the ideals method and is rejected with `frontier`.
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "snake_case")]
+pub enum OrderMethodRequest {
+    Auto,
+    Ideals,
+    Frontier,
+}
+
+fn order_options(method: &Option<OrderMethodRequest>, max_states: &Option<usize>) -> OrderOptions {
+    OrderOptions {
+        method: match method {
+            None | Some(OrderMethodRequest::Auto) => OrderMethod::Auto,
+            Some(OrderMethodRequest::Ideals) => OrderMethod::Ideals,
+            Some(OrderMethodRequest::Frontier) => OrderMethod::Frontier,
+        },
+        max_states: *max_states,
+    }
+}
+
+fn order_family_json(
+    family: &str,
+    input: &OrderInput,
+    options: &OrderOptions,
+) -> Result<Value, String> {
+    let computation = order_ehrhart_with(input, options)?;
+    let mut result = ehrhart_json_with_method(&computation.data, computation.method.as_str());
+    result["family"] = json!(family);
+    Ok(result)
 }
 
 /// One zero-based cover relation.
@@ -378,39 +424,65 @@ pub fn family_json(request: &FamilyRequest) -> Result<Value, String> {
             serde_json::from_str(&output)
                 .map_err(|error| format!("internal error: key scan JSON did not parse: {error}"))
         }
-        FamilyRequest::OrderCovers { vertices, covers } => ehrhart_family_json(
+        FamilyRequest::OrderCovers {
+            vertices,
+            covers,
+            method,
+            max_states,
+        } => order_family_json(
             "order_covers",
-            order_ehrhart(&OrderInput::Covers {
+            &OrderInput::Covers {
                 vertices: *vertices,
                 covers: covers
                     .iter()
                     .map(|cover| (cover.lower, cover.upper))
                     .collect(),
-            })?,
+            },
+            &order_options(method, max_states),
         ),
-        FamilyRequest::OrderChain { elements } => ehrhart_family_json(
+        FamilyRequest::OrderChain {
+            elements,
+            method,
+            max_states,
+        } => order_family_json(
             "order_chain",
-            order_ehrhart(&OrderInput::Chain {
+            &OrderInput::Chain {
                 elements: *elements,
-            })?,
+            },
+            &order_options(method, max_states),
         ),
-        FamilyRequest::OrderAntichain { elements } => ehrhart_family_json(
+        FamilyRequest::OrderAntichain {
+            elements,
+            method,
+            max_states,
+        } => order_family_json(
             "order_antichain",
-            order_ehrhart(&OrderInput::Antichain {
+            &OrderInput::Antichain {
                 elements: *elements,
-            })?,
+            },
+            &order_options(method, max_states),
         ),
-        FamilyRequest::OrderFence { elements } => ehrhart_family_json(
+        FamilyRequest::OrderFence {
+            elements,
+            method,
+            max_states,
+        } => order_family_json(
             "order_fence",
-            order_ehrhart(&OrderInput::Fence {
+            &OrderInput::Fence {
                 elements: *elements,
-            })?,
+            },
+            &order_options(method, max_states),
         ),
-        FamilyRequest::OrderShape { lambda } => ehrhart_family_json(
+        FamilyRequest::OrderShape {
+            lambda,
+            method,
+            max_states,
+        } => order_family_json(
             "order_shape",
-            order_ehrhart(&OrderInput::Shape {
+            &OrderInput::Shape {
                 lambda: lambda.clone(),
-            })?,
+            },
+            &order_options(method, max_states),
         ),
         FamilyRequest::Flow {
             vertices,
@@ -547,8 +619,12 @@ mod tests {
 
     #[test]
     fn family_json_routes_order_and_flow_requests() {
-        let order =
-            family_json(&FamilyRequest::OrderChain { elements: 2 }).expect("order MCP request");
+        let order = family_json(&FamilyRequest::OrderChain {
+            elements: 2,
+            method: None,
+            max_states: None,
+        })
+        .expect("order MCP request");
         assert_eq!(order["family"], "order_chain");
         assert_eq!(order["dimension"], 2);
 
@@ -606,5 +682,94 @@ mod tests {
         })
         .expect_err("interpolation without points must fail");
         assert!(error.contains("requires points"));
+    }
+
+    fn order_request(value: Value) -> Result<Value, String> {
+        let request: FamilyRequest =
+            serde_json::from_value(value).map_err(|error| error.to_string())?;
+        family_json(&request)
+    }
+
+    #[test]
+    fn order_requests_default_to_auto_and_report_the_method() {
+        let auto = order_request(json!({"family": "order_shape", "lambda": [3, 3]}))
+            .expect("default order request");
+        assert_eq!(auto["family"], "order_shape");
+        assert_eq!(auto["method"], "ideals");
+        assert_eq!(auto["dimension"], 6);
+        assert_eq!(auto["hstar"], json!(["1", "3", "1", "0", "0", "0", "0"]));
+
+        let explicit =
+            order_request(json!({"family": "order_shape", "lambda": [3, 3], "method": "auto"}))
+                .unwrap();
+        assert_eq!(explicit, auto);
+
+        let frontier =
+            order_request(json!({"family": "order_shape", "lambda": [3, 3], "method": "frontier"}))
+                .unwrap();
+        assert_eq!(frontier["method"], "frontier");
+        let mut same = frontier.clone();
+        same["method"] = json!("ideals");
+        assert_eq!(same, auto);
+    }
+
+    #[test]
+    fn order_requests_support_every_constructor_with_method_and_budget() {
+        let requests = [
+            json!({"family": "order_chain", "elements": 4}),
+            json!({"family": "order_antichain", "elements": 5}),
+            json!({"family": "order_fence", "elements": 6}),
+            json!({"family": "order_shape", "lambda": [3, 2, 1]}),
+            json!({"family": "order_covers", "vertices": 4,
+                   "covers": [{"lower": 3, "upper": 2}, {"lower": 3, "upper": 1},
+                              {"lower": 2, "upper": 0}, {"lower": 1, "upper": 0}]}),
+        ];
+        for request in requests {
+            let mut ideals = request.clone();
+            ideals["method"] = json!("ideals");
+            ideals["max_states"] = json!(100_000);
+            let mut frontier = request.clone();
+            frontier["method"] = json!("frontier");
+            let ideals = order_request(ideals).expect("ideals request");
+            let frontier = order_request(frontier).expect("frontier request");
+            assert_eq!(ideals["method"], "ideals");
+            assert_eq!(frontier["method"], "frontier");
+            for key in [
+                "dimension",
+                "hstar",
+                "ehrhart_power",
+                "binomial_basis",
+                "family",
+            ] {
+                assert_eq!(ideals[key], frontier[key], "{request}: {key}");
+            }
+        }
+    }
+
+    #[test]
+    fn order_request_budget_errors_for_ideals_and_falls_back_for_auto() {
+        let error = order_request(json!({
+            "family": "order_antichain", "elements": 8, "method": "ideals", "max_states": 10
+        }))
+        .expect_err("budget exceeded");
+        assert!(error.contains("exceeded the limit of 10"), "{error}");
+        let auto = order_request(json!({
+            "family": "order_antichain", "elements": 8, "max_states": 10
+        }))
+        .expect("auto falls back");
+        assert_eq!(auto["method"], "frontier");
+        let error = order_request(json!({
+            "family": "order_chain", "elements": 3, "method": "frontier", "max_states": 10
+        }))
+        .expect_err("frontier has no budget");
+        assert!(error.contains("max_states"), "{error}");
+    }
+
+    #[test]
+    fn order_requests_reject_unknown_methods() {
+        assert!(
+            order_request(json!({"family": "order_chain", "elements": 3, "method": "fast"}))
+                .is_err()
+        );
     }
 }

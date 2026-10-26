@@ -14,4 +14,8 @@ Initial tools:
   discrete summation, and binomial conversion.
 - `compute_family`: GT, Kostka, LR, key, order, and acyclic flow requests.
 
+The order requests of `compute_family` take optional `method` (`auto`,
+`ideals`, `frontier`; default `auto`) and `max_states` fields and report the
+method used in the response field `method`.
+
 All arbitrary-size integer and rational inputs use strings in JSON.

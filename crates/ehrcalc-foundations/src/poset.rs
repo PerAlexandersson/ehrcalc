@@ -21,6 +21,11 @@
 //! O(P) using the frontier DP and Stanley reciprocity (strict maps give negative
 //! evaluation points for free). Uses `BigRational` for exact arithmetic — no overflow.
 //!
+//! `p_eulerian_polynomial_ideal_dp()` computes the same h*-vector directly by
+//! Stanley's theorem with a dynamic program over order ideals. It is fast when
+//! the poset has moderately many order ideals (long narrow posets) and takes a
+//! state budget so that wide posets fail fast instead of exhausting memory.
+//!
 //! `order_polytope_hstar()` returns the h*-vector. By Stanley's theorem, for
 //! naturally labeled posets this equals the P-Eulerian polynomial.
 //!
@@ -971,6 +976,78 @@ impl Poset {
         }
     }
 
+    /// The P-Eulerian polynomial `W_P(t)` of a natural relabeling of the
+    /// poset (so the result does not depend on the given labels) by a dynamic
+    /// program over order ideals, returned with exact [`BigInt`] coefficients
+    /// and trailing zero coefficients trimmed (so a nonempty poset has degree
+    /// at most `n - 1`).
+    ///
+    /// The program stores, for every order ideal `I` reached so far and every
+    /// element `x` that can be the last one appended, the descent-generating
+    /// polynomial of the linear extensions of `I` ending in `x`.  Appending
+    /// `y` after `x` creates a descent exactly when `y < x` in a natural
+    /// labeling, so the labels only have to be compared, never enumerated.
+    /// For one ideal all appended elements are served from running prefix
+    /// sums over the last elements, so the cost per ideal is linear in its
+    /// number of stored rows plus its number of addable elements.
+    ///
+    /// By Stanley's theorem this is the h*-polynomial of the order polytope
+    /// (see [`Poset::order_polytope_hstar`]), but this route never evaluates
+    /// order polynomials.  It is fast when the number of order ideals is
+    /// moderate, for example for long narrow posets such as `k x m`
+    /// rectangles, and it is exponential for wide posets (an antichain on `n`
+    /// elements has `2^n` ideals).
+    ///
+    /// `max_states` bounds the total number of stored `(ideal, last element)`
+    /// rows over the whole run; `None` removes the bound.  Exceeding it
+    /// returns [`IdealDpError::StateLimitExceeded`].  Posets with more than
+    /// [`IDEAL_DP_MAX_ELEMENTS`] elements are rejected with
+    /// [`IdealDpError::TooManyElements`].
+    ///
+    /// Every table entry is at most `n!`, so `u128` arithmetic is exact (and
+    /// used) for `n <= 34`; larger posets use [`BigInt`].
+    ///
+    /// ```
+    /// use ehrcalc_foundations::poset::Poset;
+    /// use num_bigint::BigInt;
+    ///
+    /// let diamond = Poset::new(4, &[(0, 1), (0, 2), (1, 3), (2, 3)]);
+    /// let w = diamond.p_eulerian_polynomial_ideal_dp(None).unwrap();
+    /// assert_eq!(w, vec![BigInt::from(1), BigInt::from(1)]);
+    /// ```
+    pub fn p_eulerian_polynomial_ideal_dp(
+        &self,
+        max_states: Option<usize>,
+    ) -> Result<Vec<BigInt>, IdealDpError> {
+        if self.n == 0 {
+            return Ok(vec![BigInt::one()]);
+        }
+        if self.n > IDEAL_DP_MAX_ELEMENTS {
+            return Err(IdealDpError::TooManyElements {
+                elements: self.n,
+                max: IDEAL_DP_MAX_ELEMENTS,
+            });
+        }
+        let natural = self.natural_relabeling();
+        let limit = max_states.unwrap_or(usize::MAX);
+        match self.n.div_ceil(64) {
+            1 => natural.ideal_dp_dispatch::<1>(limit),
+            2 => natural.ideal_dp_dispatch::<2>(limit),
+            3..=4 => natural.ideal_dp_dispatch::<4>(limit),
+            5..=8 => natural.ideal_dp_dispatch::<8>(limit),
+            _ => natural.ideal_dp_dispatch::<16>(limit),
+        }
+    }
+
+    /// Pick the coefficient type: `u128` is exact while `n! < 2^128`.
+    fn ideal_dp_dispatch<const W: usize>(&self, limit: usize) -> Result<Vec<BigInt>, IdealDpError> {
+        if self.n <= IDEAL_DP_U128_MAX_ELEMENTS {
+            ideal_dp::<W, u128>(&self.parents, self.n, limit)
+        } else {
+            ideal_dp::<W, BigInt>(&self.parents, self.n, limit)
+        }
+    }
+
     // -- Order polytope Ehrhart theory ----------------------------------------
 
     /// Compute the Ehrhart polynomial of the order polytope O(P).
@@ -1263,6 +1340,200 @@ fn binomial_big(n: usize, k: usize) -> BigInt {
         result = result * BigInt::from(n - i) / BigInt::from(i + 1);
     }
     result
+}
+
+// ---------------------------------------------------------------------------
+// Order-ideal dynamic program for the P-Eulerian polynomial
+// ---------------------------------------------------------------------------
+
+/// Largest poset size accepted by [`Poset::p_eulerian_polynomial_ideal_dp`].
+pub const IDEAL_DP_MAX_ELEMENTS: usize = 1024;
+
+/// `34! < 2^128 < 35!`, so `u128` table entries (each at most `n!`) are exact
+/// up to this many elements.
+const IDEAL_DP_U128_MAX_ELEMENTS: usize = 34;
+
+/// Failure of the order-ideal dynamic program.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum IdealDpError {
+    /// More than `max_states` `(ideal, last element)` rows were needed.
+    StateLimitExceeded { max_states: usize },
+    /// The poset has more than `max` elements.
+    TooManyElements { elements: usize, max: usize },
+}
+
+impl std::fmt::Display for IdealDpError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::StateLimitExceeded { max_states } => write!(
+                f,
+                "order-ideal dynamic program exceeded the limit of {max_states} states"
+            ),
+            Self::TooManyElements { elements, max } => write!(
+                f,
+                "order-ideal dynamic program supports at most {max} elements, got {elements}"
+            ),
+        }
+    }
+}
+
+impl std::error::Error for IdealDpError {}
+
+/// Cheap multiplicative hasher for bitset keys (the keys are not adversarial).
+#[derive(Default)]
+struct MaskHasher(u64);
+
+impl std::hash::Hasher for MaskHasher {
+    fn finish(&self) -> u64 {
+        self.0 ^ (self.0 >> 29)
+    }
+
+    fn write(&mut self, bytes: &[u8]) {
+        for chunk in bytes.chunks(8) {
+            let mut word = [0u8; 8];
+            word[..chunk.len()].copy_from_slice(chunk);
+            self.write_u64(u64::from_le_bytes(word));
+        }
+    }
+
+    fn write_u64(&mut self, value: u64) {
+        self.0 = (self.0.rotate_left(5) ^ value).wrapping_mul(0x517c_c1b7_2722_0a95);
+    }
+
+    fn write_usize(&mut self, value: usize) {
+        self.write_u64(value as u64);
+    }
+}
+
+/// Descent-generating polynomial of the linear extensions of one ideal that
+/// end in `last` (coefficient `d` counts extensions with `d` descents).
+struct IdealRow<C> {
+    last: usize,
+    counts: Vec<C>,
+}
+
+type IdealLayer<const W: usize, C> = std::collections::HashMap<
+    [u64; W],
+    Vec<IdealRow<C>>,
+    std::hash::BuildHasherDefault<MaskHasher>,
+>;
+
+fn mask_contains<const W: usize>(mask: &[u64; W], element: usize) -> bool {
+    mask[element / 64] >> (element % 64) & 1 == 1
+}
+
+fn mask_insert<const W: usize>(mask: &mut [u64; W], element: usize) {
+    mask[element / 64] |= 1 << (element % 64);
+}
+
+fn mask_is_subset<const W: usize>(small: &[u64; W], large: &[u64; W]) -> bool {
+    small.iter().zip(large).all(|(s, l)| s & !l == 0)
+}
+
+/// Layer-by-layer DP over order ideals of a naturally labeled poset given by
+/// its parent lists.  Layer `k` holds the ideals with `k` elements.
+fn ideal_dp<const W: usize, C>(
+    parents: &[Vec<usize>],
+    n: usize,
+    limit: usize,
+) -> Result<Vec<BigInt>, IdealDpError>
+where
+    C: Clone
+        + Zero
+        + One
+        + Into<BigInt>
+        + for<'a> std::ops::AddAssign<&'a C>
+        + for<'a> std::ops::SubAssign<&'a C>,
+{
+    let mut below = vec![[0u64; W]; n];
+    for (element, lower) in parents.iter().enumerate() {
+        for &p in lower {
+            mask_insert(&mut below[element], p);
+        }
+    }
+
+    let mut states = 0usize;
+    let charge = |states: &mut usize| -> Result<(), IdealDpError> {
+        *states += 1;
+        if *states > limit {
+            Err(IdealDpError::StateLimitExceeded { max_states: limit })
+        } else {
+            Ok(())
+        }
+    };
+
+    // Ideals with one element: the minimal elements, with no descent yet.
+    let mut layer: IdealLayer<W, C> = IdealLayer::default();
+    for (element, lower) in below.iter().enumerate() {
+        if lower.iter().all(|&word| word == 0) {
+            charge(&mut states)?;
+            let mut mask = [0u64; W];
+            mask_insert(&mut mask, element);
+            layer.insert(
+                mask,
+                vec![IdealRow {
+                    last: element,
+                    counts: vec![C::one()],
+                }],
+            );
+        }
+    }
+
+    for _ in 1..n {
+        let mut next: IdealLayer<W, C> = IdealLayer::default();
+        for (mask, mut rows) in layer {
+            rows.sort_unstable_by_key(|row| row.last);
+            let len = rows[0].counts.len();
+            let mut total = vec![C::zero(); len];
+            for row in &rows {
+                for (sum, value) in total.iter_mut().zip(&row.counts) {
+                    *sum += value;
+                }
+            }
+            // `lower` sums the rows whose last element is below the new one;
+            // the other rows create one more descent.
+            let mut lower = vec![C::zero(); len];
+            let mut consumed = 0;
+            for (y, below_y) in below.iter().enumerate() {
+                if mask_contains(&mask, y) || !mask_is_subset(below_y, &mask) {
+                    continue;
+                }
+                while consumed < rows.len() && rows[consumed].last < y {
+                    for (sum, value) in lower.iter_mut().zip(&rows[consumed].counts) {
+                        *sum += value;
+                    }
+                    consumed += 1;
+                }
+                let mut counts = Vec::with_capacity(len + 1);
+                for d in 0..=len {
+                    let mut value = if d < len { lower[d].clone() } else { C::zero() };
+                    if d > 0 {
+                        value += &total[d - 1];
+                        value -= &lower[d - 1];
+                    }
+                    counts.push(value);
+                }
+                charge(&mut states)?;
+                let mut target = mask;
+                mask_insert(&mut target, y);
+                next.entry(target)
+                    .or_default()
+                    .push(IdealRow { last: y, counts });
+            }
+        }
+        layer = next;
+    }
+
+    let mut result = vec![BigInt::zero(); n];
+    for row in layer.into_values().flatten() {
+        for (sum, value) in result.iter_mut().zip(row.counts) {
+            *sum += value.into();
+        }
+    }
+    while result.len() > 1 && result.last().is_some_and(Zero::is_zero) {
+        result.pop();
+    }
+    Ok(result)
 }
 
 // ---------------------------------------------------------------------------
@@ -1915,5 +2186,184 @@ mod tests {
                 "negative Ehrhart reciprocity mismatch at k={k}"
             );
         }
+    }
+
+    // -- Order-ideal DP for the P-Eulerian polynomial ----------------------
+
+    fn big(values: &[i64]) -> Vec<BigInt> {
+        values.iter().map(|&v| BigInt::from(v)).collect()
+    }
+
+    fn ideal_hstar(p: &Poset) -> Vec<BigInt> {
+        p.p_eulerian_polynomial_ideal_dp(None)
+            .expect("unbounded ideal DP")
+    }
+
+    /// Narayana numbers: the h*-vector of the order polytope of `2 x m`.
+    fn narayana_row(m: usize) -> Vec<BigInt> {
+        (0..m)
+            .map(|k| binomial_big(m, k) * binomial_big(m, k + 1) / BigInt::from(m))
+            .collect()
+    }
+
+    fn rectangle(rows: usize, cols: usize) -> Poset {
+        Poset::from_shape(&Partition::new(vec![cols as u32; rows]))
+    }
+
+    #[test]
+    fn test_ideal_dp_known_values() {
+        assert_eq!(ideal_hstar(&Poset::new(0, &[])), big(&[1]));
+        assert_eq!(ideal_hstar(&Poset::chain(1)), big(&[1]));
+        assert_eq!(ideal_hstar(&Poset::chain(7)), big(&[1]));
+        // Eulerian numbers A(4, k).
+        assert_eq!(ideal_hstar(&Poset::antichain(4)), big(&[1, 11, 11, 1]));
+        assert_eq!(ideal_hstar(&Poset::antichain(1)), big(&[1]));
+        assert_eq!(ideal_hstar(&rectangle(2, 2)), big(&[1, 1]));
+        assert_eq!(ideal_hstar(&rectangle(2, 3)), big(&[1, 3, 1]));
+        assert_eq!(
+            ideal_hstar(&Poset::new(4, &[(0, 1), (0, 2), (1, 3), (2, 3)])),
+            big(&[1, 1])
+        );
+        for m in 1..=8 {
+            assert_eq!(ideal_hstar(&rectangle(2, m)), narayana_row(m), "2 x {m}");
+        }
+    }
+
+    #[test]
+    fn test_ideal_dp_matches_frontier_on_standard_families() {
+        let mut posets = vec![
+            Poset::chain(5),
+            Poset::antichain(6),
+            Poset::fence(2),
+            Poset::fence(7),
+            Poset::fence(10),
+            rectangle(3, 3),
+            rectangle(3, 4),
+            Poset::from_shape(&Partition::new(vec![4, 3, 2, 1])),
+            Poset::from_shape(&Partition::new(vec![3, 3, 1])),
+            Poset::new(6, &[(0, 1), (0, 2), (1, 3), (2, 3), (3, 4), (3, 5)]),
+        ];
+        // Product of two chains with a disjoint chain adjoined.
+        posets.push(Poset::new(6, &[(0, 1), (2, 3), (3, 4), (4, 5)]));
+        for p in posets {
+            let frontier: Vec<BigInt> = p
+                .order_polytope_hstar()
+                .into_iter()
+                .map(BigInt::from)
+                .collect();
+            assert_eq!(ideal_hstar(&p), frontier, "{p:?}");
+        }
+    }
+
+    /// Deterministic random posets, including non-natural labelings.
+    fn random_poset(seed: u64, n: usize) -> Poset {
+        let mut state = seed
+            .wrapping_mul(6364136223846793005)
+            .wrapping_add(1442695040888963407);
+        let mut next = move || {
+            state = state
+                .wrapping_mul(6364136223846793005)
+                .wrapping_add(1442695040888963407);
+            state >> 33
+        };
+        let density = 1 + next() % 4;
+        let mut covers = Vec::new();
+        for a in 0..n {
+            for b in a + 1..n {
+                if next() % 8 < density {
+                    covers.push((a, b));
+                }
+            }
+        }
+        // Fisher-Yates relabeling, so the labeling is usually not natural.
+        let mut label: Vec<usize> = (0..n).collect();
+        for i in (1..n).rev() {
+            label.swap(i, (next() % (i as u64 + 1)) as usize);
+        }
+        let covers: Vec<_> = covers
+            .into_iter()
+            .map(|(a, b)| (label[a], label[b]))
+            .collect();
+        Poset::new(n, &covers)
+    }
+
+    #[test]
+    fn test_ideal_dp_matches_frontier_on_random_posets() {
+        let mut non_natural = 0;
+        for seed in 0..120u64 {
+            let n = 1 + (seed % 10) as usize;
+            let p = random_poset(seed, n);
+            if !p.is_naturally_labeled() {
+                non_natural += 1;
+            }
+            let frontier: Vec<BigInt> = p
+                .order_polytope_hstar()
+                .into_iter()
+                .map(BigInt::from)
+                .collect();
+            assert_eq!(ideal_hstar(&p), frontier, "seed {seed}: {p:?}");
+        }
+        assert!(non_natural > 30, "random sample must exercise relabeling");
+    }
+
+    #[test]
+    fn test_ideal_dp_is_independent_of_the_labeling() {
+        let natural = Poset::new(5, &[(0, 1), (0, 2), (1, 3), (2, 3), (3, 4)]);
+        let reversed = Poset::new(5, &[(4, 3), (4, 2), (3, 1), (2, 1), (1, 0)]);
+        assert!(!reversed.is_naturally_labeled());
+        assert_eq!(ideal_hstar(&natural), ideal_hstar(&reversed));
+    }
+
+    #[test]
+    fn test_ideal_dp_coefficient_and_key_widths_agree() {
+        for seed in 0..40u64 {
+            let n = 1 + (seed % 9) as usize;
+            let p = random_poset(seed, n).natural_relabeling();
+            let small = ideal_dp::<1, u128>(&p.parents, n, usize::MAX).expect("u128 DP");
+            assert_eq!(
+                small,
+                ideal_dp::<1, BigInt>(&p.parents, n, usize::MAX).unwrap()
+            );
+            assert_eq!(
+                small,
+                ideal_dp::<2, u128>(&p.parents, n, usize::MAX).unwrap()
+            );
+            assert_eq!(
+                small,
+                ideal_dp::<16, BigInt>(&p.parents, n, usize::MAX).unwrap()
+            );
+        }
+    }
+
+    #[test]
+    fn test_ideal_dp_handles_more_than_128_elements() {
+        // 2 x 20 (n = 40, BigInt coefficients), 2 x 35 (two key words) and
+        // 2 x 65 (n = 130, three key words): Narayana rows.
+        for m in [20usize, 35, 65] {
+            assert_eq!(ideal_hstar(&rectangle(2, m)), narayana_row(m), "2 x {m}");
+        }
+        // A chain on 200 elements needs four key words and has h* = 1.
+        assert_eq!(ideal_hstar(&Poset::chain(200)), big(&[1]));
+    }
+
+    #[test]
+    fn test_ideal_dp_state_limit_and_size_errors() {
+        let p = Poset::antichain(12);
+        assert_eq!(
+            p.p_eulerian_polynomial_ideal_dp(Some(100)),
+            Err(IdealDpError::StateLimitExceeded { max_states: 100 })
+        );
+        assert!(p.p_eulerian_polynomial_ideal_dp(Some(12 * 2048)).is_ok());
+        // The limit counts stored rows: a chain on n elements needs exactly n.
+        let chain = Poset::chain(9);
+        assert!(chain.p_eulerian_polynomial_ideal_dp(Some(9)).is_ok());
+        assert_eq!(
+            chain.p_eulerian_polynomial_ideal_dp(Some(8)),
+            Err(IdealDpError::StateLimitExceeded { max_states: 8 })
+        );
+        assert!(matches!(
+            Poset::chain(IDEAL_DP_MAX_ELEMENTS + 1).p_eulerian_polynomial_ideal_dp(None),
+            Err(IdealDpError::TooManyElements { .. })
+        ));
     }
 }

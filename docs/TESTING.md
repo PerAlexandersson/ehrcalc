@@ -30,6 +30,13 @@ Each family must include:
 - reciprocity validation when an interior-count model is available; and
 - dimension tests, including degenerate and empty inputs where meaningful.
 
+The two order-polytope h* methods (`ideals` and `frontier`) are cross-checked
+for exact equality of the full `EhrhartData` on chains, antichains, fences,
+shapes, products of chains, covers given in non-natural labelings and
+deterministic random posets, against known Eulerian and Narayana values, and
+against the order-ideal count `L(1)`.  Budget behavior is tested at the exact
+boundary: error for `ideals`, fallback for `auto`, rejection for `frontier`.
+
 GT and flagged examples must match the frozen `kostka` reference fixtures.
 Order-polytope examples must match direct order-preserving-map counts.  Flow
 examples must match small enumerated flows.  Key examples must match checked

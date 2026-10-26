@@ -12,6 +12,9 @@ It retains only the modules needed by Ehrcalc:
 - `key_polynomial.rs`; and
 - `poset.rs`, without its unrelated comparability-graph API.
 
+`Poset::p_eulerian_polynomial_ideal_dp` (the order-ideal dynamic program) was
+written in Ehrcalc and has no counterpart in the extracted source.
+
 The source is MIT licensed.  Subsequent maintenance for these extracted
 algorithms belongs in the Ehrcalc repository; the broader `combinatoric-core`
 crate remains a separate general-purpose project.

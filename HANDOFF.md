@@ -1,5 +1,15 @@
 # Ehrcalc Handoff
 
+## Order-ideal h* for order polytopes — 2026-10-26, complete
+
+Branch feat/order-ideal-dp from 793264d. `ehrcalc order` gains
+`--method auto|ideals|frontier` and `--max-states` (MCP `method`,
+`max_states`; additive JSON `method`). Auto runs
+`Poset::p_eulerian_polynomial_ideal_dp` (states: ideal x last element, budget
+2,000,000) and falls back to the frontier + reciprocity route. 6x6 rectangle:
+about 80 s frontier, under 0.05 s ideals; 10x10 in 3.5 s. Release tests,
+fmt and clippy (two pre-existing warnings) pass. Ownership released.
+
 ## Release candidate — 2026-10-08, source ready
 
 All five workspace packages and Cargo.lock are aligned at 0.1.0-rc.1 on

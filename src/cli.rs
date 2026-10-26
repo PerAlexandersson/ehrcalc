@@ -5,11 +5,13 @@ use crate::exact::{
     BinomialBasisPolynomial, EhrhartData, EhrhartPolynomial, HStarPolynomial,
 };
 use crate::families::{
-    flow_ehrhart, gt_ehrhart, key_ehrhart, kostka_count, lr_count, order_ehrhart, FlowInput,
-    GtInput, KeyInput, KostkaInput, LrInput, OrderInput,
+    flow_ehrhart, gt_ehrhart, key_ehrhart, kostka_count, lr_count, order_ehrhart_with, FlowInput,
+    GtInput, KeyInput, KostkaInput, LrInput, OrderInput, OrderMethod, OrderOptions,
 };
 use crate::key_scan::{run_key_scan, KeyPacketMode, KeyScanInput};
-use crate::render::{render_count, render_ehrhart, render_polynomial, OutputFormat};
+use crate::render::{
+    render_count, render_ehrhart, render_ehrhart_with_method, render_polynomial, OutputFormat,
+};
 use clap::{Args, CommandFactory, Parser, Subcommand};
 use num_rational::BigRational;
 use serde_json::json;
@@ -263,6 +265,17 @@ pub struct OrderArgs {
     /// Comma-separated zero-based covers, for example `0<1,0<2,1<3,2<3`.
     #[arg(long, requires = "vertices")]
     covers: Option<String>,
+    /// Algorithm for the h* numerator: `ideals` (Stanley's descent generating
+    /// function by a DP over order ideals), `frontier` (order-preserving map
+    /// counts, reciprocity, interpolation), or `auto` (ideals within the state
+    /// budget, otherwise frontier).
+    #[arg(long, value_enum, default_value_t = OrderMethod::Auto)]
+    method: OrderMethod,
+    /// Abort the ideals method if it stores more than this many
+    /// (order ideal, last element) rows. Defaults to 2000000; with
+    /// `--method auto` an exceeded budget falls back to the frontier method.
+    #[arg(long)]
+    max_states: Option<usize>,
     #[command(flatten)]
     output: OutputArgs,
 }
@@ -483,8 +496,18 @@ pub fn run(cli: Cli) -> Result<Option<String>, String> {
             format: args.output.format,
         })?,
         Command::Order(args) => {
-            let data = order_ehrhart(&parse_order_input(&args)?)?;
-            render_ehrhart(&data, args.output.format)
+            let computation = order_ehrhart_with(
+                &parse_order_input(&args)?,
+                &OrderOptions {
+                    method: args.method,
+                    max_states: args.max_states,
+                },
+            )?;
+            render_ehrhart_with_method(
+                &computation.data,
+                computation.method.as_str(),
+                args.output.format,
+            )
         }
         Command::Flow(args) => {
             let data = flow_ehrhart(&FlowInput {
@@ -944,6 +967,8 @@ mod tests {
                 shape: None,
                 vertices: Some(2),
                 covers: Some("0<1".to_string()),
+                method: OrderMethod::Auto,
+                max_states: None,
                 output: OutputArgs {
                     format: OutputFormat::Json,
                 },
@@ -1039,5 +1064,92 @@ mod tests {
         assert!(reference.contains("--upper-flags"));
         assert!(reference.contains("ehrcalc docs cli"));
         assert_eq!(reference, include_str!("../docs/cli.md"));
+    }
+
+    fn order_json(arguments: &[&str]) -> Result<serde_json::Value, String> {
+        let mut argv = vec!["ehrcalc", "order", "--format", "json"];
+        argv.extend_from_slice(arguments);
+        let cli = Cli::try_parse_from(argv).map_err(|error| error.to_string())?;
+        let output = run(cli)?.expect("order output");
+        Ok(serde_json::from_str(&output).expect("order JSON"))
+    }
+
+    #[test]
+    fn order_method_flag_selects_the_algorithm_and_reports_it() {
+        let shape = ["--shape", "3,3,3"];
+        let with = |extra: &[&str]| {
+            let mut arguments = shape.to_vec();
+            arguments.extend_from_slice(extra);
+            order_json(&arguments).expect("order command")
+        };
+        let default = with(&[]);
+        let auto = with(&["--method", "auto"]);
+        let ideals = with(&["--method", "ideals"]);
+        let frontier = with(&["--method", "frontier"]);
+        assert_eq!(default["method"], "ideals");
+        assert_eq!(auto, default);
+        assert_eq!(ideals, default);
+        assert_eq!(frontier["method"], "frontier");
+
+        // Everything except the provenance field is identical.
+        let strip = |mut value: serde_json::Value| {
+            value.as_object_mut().unwrap().remove("method");
+            value
+        };
+        assert_eq!(strip(ideals.clone()), strip(frontier));
+        assert_eq!(ideals["dimension"], 9);
+        assert_eq!(ideals["hstar"].as_array().unwrap().len(), 10);
+        assert_eq!(ideals["hstar"][0], "1");
+    }
+
+    #[test]
+    fn order_max_states_budget_errors_for_ideals_and_falls_back_for_auto() {
+        let error = order_json(&[
+            "--antichain",
+            "10",
+            "--method",
+            "ideals",
+            "--max-states",
+            "50",
+        ])
+        .expect_err("budget exceeded");
+        assert!(error.contains("exceeded the limit of 50"), "{error}");
+        let auto = order_json(&["--antichain", "10", "--max-states", "50"]).expect("fallback");
+        assert_eq!(auto["method"], "frontier");
+        let roomy = order_json(&["--antichain", "10", "--max-states", "100000"]).expect("roomy");
+        assert_eq!(roomy["method"], "ideals");
+        assert_eq!(roomy["hstar"], auto["hstar"]);
+        let error = order_json(&[
+            "--antichain",
+            "4",
+            "--method",
+            "frontier",
+            "--max-states",
+            "9",
+        ])
+        .expect_err("frontier has no budget");
+        assert!(error.contains("max_states"), "{error}");
+    }
+
+    #[test]
+    fn order_method_flag_rejects_unknown_values_and_keeps_text_output() {
+        assert!(order_json(&["--chain", "3", "--method", "fast"]).is_err());
+        let cli = Cli::try_parse_from(["ehrcalc", "order", "--chain", "2", "--format", "text"])
+            .expect("parse");
+        let text = run(cli).expect("text").expect("output");
+        assert_eq!(
+            text,
+            "dimension: 2\nEhrhart(n): 1/2 n^2 + 3/2 n + 1\nhstar(t): [1, 0, 0]\nbinomial_basis: [1, 2, 1]\n"
+        );
+    }
+
+    #[test]
+    fn order_help_documents_the_default_state_budget() {
+        let reference = cli_reference_markdown();
+        assert!(reference.contains("--method <METHOD>"));
+        assert!(reference.contains(&format!(
+            "{}",
+            crate::families::DEFAULT_ORDER_IDEAL_MAX_STATES
+        )));
     }
 }

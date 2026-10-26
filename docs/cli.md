@@ -285,6 +285,19 @@ Options:
       --covers <COVERS>
           Comma-separated zero-based covers, for example `0<1,0<2,1<3,2<3`
 
+      --method <METHOD>
+          Algorithm for the h* numerator: `ideals` (Stanley's descent generating function by a DP over order ideals), `frontier` (order-preserving map counts, reciprocity, interpolation), or `auto` (ideals within the state budget, otherwise frontier)
+
+          Possible values:
+          - auto:     Try the order-ideal method within its state budget; otherwise use the frontier method
+          - ideals:   Stanley's theorem: h* is the descent generating function of the linear extensions of a naturally labeled poset, computed by a dynamic program over order ideals.  Fails when the state budget is exceeded
+          - frontier: Count (strict) order-preserving maps by a frontier dynamic program, use Stanley-Macdonald reciprocity for negative dilations, and interpolate
+
+          [default: auto]
+
+      --max-states <MAX_STATES>
+          Abort the ideals method if it stores more than this many (order ideal, last element) rows. Defaults to 2000000; with `--method auto` an exceeded budget falls back to the frontier method
+
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
 
@@ -292,7 +305,7 @@ Options:
           [possible values: text, json, latex]
 
   -h, --help
-          Print help
+          Print help (see a summary with '-h')
 ```
 
 ### `ehrcalc flow`
