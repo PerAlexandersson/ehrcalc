@@ -26,6 +26,22 @@ pub fn render_ehrhart(data: &EhrhartData, format: OutputFormat) -> String {
     }
 }
 
+/// Render an Ehrhart calculation and record the algorithm that produced it.
+///
+/// JSON output gains the additive string field `method`; text and LaTeX are
+/// identical to [`render_ehrhart`].
+pub fn render_ehrhart_with_method(
+    data: &EhrhartData,
+    method: &str,
+    format: OutputFormat,
+) -> String {
+    match format {
+        OutputFormat::Json => serde_json::to_string_pretty(&ehrhart_json_with_method(data, method))
+            .expect("Ehrhart JSON values are serializable"),
+        _ => render_ehrhart(data, format),
+    }
+}
+
 /// Render an exact nonnegative count with a stable JSON form.
 pub fn render_count(name: &str, value: &BigInt, format: OutputFormat) -> String {
     match format {
@@ -92,6 +108,13 @@ pub fn ehrhart_json(data: &EhrhartData) -> Value {
         "hstar": bigint_strings(data.hstar.coeffs()),
         "binomial_basis": data.ehrhart.to_binomial_basis().ok().map(|basis| bigint_strings(basis.coeffs())),
     })
+}
+
+/// [`ehrhart_json`] plus the additive string field `method`.
+pub fn ehrhart_json_with_method(data: &EhrhartData, method: &str) -> Value {
+    let mut result = ehrhart_json(data);
+    result["method"] = json!(method);
+    result
 }
 
 fn render_ehrhart_text(data: &EhrhartData) -> String {

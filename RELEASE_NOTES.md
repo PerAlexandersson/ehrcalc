@@ -1,3 +1,17 @@
+# Unreleased
+
+- `ehrcalc order` computes h* by a dynamic program over order ideals
+  (Stanley's descent generating function) when the poset has a moderate
+  number of order ideals, and otherwise falls back to the previous frontier
+  method.  The `6 x 6` rectangle drops from about a minute to a few milliseconds, and
+  the `8 x 8` rectangle takes about 0.1 s.
+  New options: `--method auto|ideals|frontier` and `--max-states`; matching
+  optional MCP fields `method` and `max_states` on the order requests.
+  JSON results gain the additive field `method`.  Results are identical for
+  both methods.
+- `HStarPolynomial::to_ehrhart` accumulates integer numerators and divides by
+  `d!` once per coefficient, which speeds up large h* conversions.
+
 # Ehrcalc 0.1.0-rc.1
 
 First release candidate for the exact Ehrhart library, CLI and MCP server.

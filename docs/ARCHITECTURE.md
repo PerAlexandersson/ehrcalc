@@ -44,6 +44,15 @@ Flow-polytope support is the set of edges that are positive for some
 feasible flow.  It is computed from one maximum flow and the strongly
 connected components of its residual graph, not from reachability alone.
 
+Order polytopes have two interchangeable exact routes in
+`ehrcalc-foundations`: a dynamic program over order ideals that yields h*
+directly (Stanley's descent generating function for a naturally labeled
+poset), and a frontier dynamic program for order-preserving map counts with
+reciprocity and interpolation.  The `order` adapter selects between them
+(`OrderMethod`, `Auto` by default, with a state budget for the ideal program)
+and feeds both through the same `EhrhartData` constructors, so declared
+dimension and trailing h* zeros do not depend on the method.
+
 The public workspace owns two focused internal engines:
 
 - `ehrcalc-kostka-engine` for GT, Kostka, flagged Kostka, LR, flow, Ehrhart,

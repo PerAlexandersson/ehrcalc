@@ -16,6 +16,31 @@ record includes:
 JSON is the canonical external representation.  Integer and rational values
 are strings in JSON when they may exceed safe JSON numeric precision.
 
+### Order-polytope methods
+
+The `order` family can compute h* in two exact ways, which return identical
+results (same dimension, power coefficients, h* with its trailing zeros, and
+binomial coordinates):
+
+- `ideals`: Stanley's theorem, h*(O(P)) is the descent generating function of
+  the linear extensions of a naturally labeled poset, computed by a dynamic
+  program over order ideals keyed by (ideal, last element).  Its cost is the
+  number of stored (ideal, last element) rows, so it suits long narrow posets
+  and is exponential for wide ones (an antichain on `n` elements has `2^n`
+  ideals).  It accepts posets with up to 1024 elements.
+- `frontier`: counts (strict) order-preserving maps by a frontier dynamic
+  program, uses Stanley-Macdonald reciprocity for negative dilations, and
+  interpolates the Ehrhart polynomial.
+- `auto` (default): `ideals` within the state budget, otherwise `frontier`.
+
+`--max-states` (CLI) and `max_states` (MCP) bound the number of stored rows
+of the ideals method; the default is 2,000,000 rows, which keeps one attempt
+to well under a second and a few hundred megabytes.  An exceeded budget is an
+error for `ideals`, a silent fallback for `auto`, and an invalid request for
+`frontier`.  JSON results of the order family carry the additive string field
+`method` with the method that actually ran (`ideals` or `frontier`, never
+`auto`); text and LaTeX output are unchanged.
+
 ## Formats
 
 Each public calculation supports:
@@ -51,6 +76,11 @@ Its first tools are `ehrhart_transform` for exact conversion and transform
 operations, and `compute_family` for GT, Kostka, LR, key, staircase
 `key_scan`, order, and flow requests.  Each tool calls the same Ehrcalc
 library adapter as the CLI.
+The order requests (`order_covers`, `order_chain`, `order_antichain`,
+`order_fence`, `order_shape`) accept the optional fields `method` (`auto`,
+`ideals`, or `frontier`; default `auto`) and `max_states`, matching the CLI
+flags `--method` and `--max-states`, and report the method used in the
+response field `method`.
 The `KeyScan` family request also exposes the block-constant scan controls
 `block_summary` and `block_representatives`, matching the CLI flags.  It also
 accepts `sigma` to compute one selected permutation through the fast

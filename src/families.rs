@@ -1,8 +1,9 @@
 //! Adapters for exact counting families already implemented in the workspace.
 
-use crate::exact::{EhrhartData, EhrhartPolynomial, ExactResult};
+use crate::exact::{EhrhartData, EhrhartPolynomial, ExactResult, HStarPolynomial};
+use clap::ValueEnum;
 use ehrcalc_foundations::key_polynomial::key_ehrhart_polynomial;
-use ehrcalc_foundations::poset::Poset;
+use ehrcalc_foundations::poset::{IdealDpError, Poset};
 use ehrcalc_foundations::Partition as CorePartition;
 use ehrcalc_kostka_engine::ehrhart::try_compute_ehrhart;
 use ehrcalc_kostka_engine::flow::FlowPolytope;
@@ -11,6 +12,7 @@ use ehrcalc_kostka_engine::kostka_dp::{try_flagged_skew_kostka, try_skew_kostka}
 use ehrcalc_kostka_engine::lr::try_lr_dp;
 use ehrcalc_kostka_engine::Partition as KostkaPartition;
 use num_bigint::{BigInt, BigUint, ToBigInt};
+use num_traits::Zero;
 
 /// Input for a GT/Kostka Ehrhart calculation.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -63,6 +65,67 @@ pub enum OrderInput {
     Shape {
         lambda: Vec<u32>,
     },
+}
+
+/// Default budget of stored `(order ideal, last element)` rows for the
+/// order-ideal method.
+///
+/// Each row holds a descent-count vector of at most `|P|` entries, so the
+/// budget bounds both the work and the peak memory of one attempt.  Two
+/// million rows keep an attempt to a few seconds and a few hundred megabytes
+/// for posets of up to a few dozen elements, while every long narrow poset of
+/// practical interest (for example the `8 x 8` rectangle, which needs fewer
+/// than `10^5` rows) fits many times over.  Wider posets, such as antichains
+/// with more than about 18 elements, exceed it and are handed to the
+/// frontier method by [`OrderMethod::Auto`].
+pub const DEFAULT_ORDER_IDEAL_MAX_STATES: usize = 2_000_000;
+
+/// Algorithm used to obtain the h* numerator of an order polytope.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, ValueEnum)]
+#[value(rename_all = "lower")]
+pub enum OrderMethod {
+    /// Try the order-ideal method within its state budget; otherwise use the
+    /// frontier method.
+    #[default]
+    Auto,
+    /// Stanley's theorem: h* is the descent generating function of the
+    /// linear extensions of a naturally labeled poset, computed by a dynamic
+    /// program over order ideals.  Fails when the state budget is exceeded.
+    Ideals,
+    /// Count (strict) order-preserving maps by a frontier dynamic program,
+    /// use Stanley-Macdonald reciprocity for negative dilations, and
+    /// interpolate.
+    Frontier,
+}
+
+impl OrderMethod {
+    /// Stable lowercase name used in CLI flags and JSON provenance.
+    pub fn as_str(self) -> &'static str {
+        match self {
+            Self::Auto => "auto",
+            Self::Ideals => "ideals",
+            Self::Frontier => "frontier",
+        }
+    }
+}
+
+/// Method controls for an order-polytope calculation.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub struct OrderOptions {
+    pub method: OrderMethod,
+    /// Budget of stored `(ideal, last element)` rows for the order-ideal
+    /// method; `None` selects [`DEFAULT_ORDER_IDEAL_MAX_STATES`].  It is
+    /// rejected together with [`OrderMethod::Frontier`], which has no such
+    /// budget.
+    pub max_states: Option<usize>,
+}
+
+/// An order-polytope result together with the method that produced it.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct OrderComputation {
+    pub data: EhrhartData,
+    /// Never [`OrderMethod::Auto`]: the method that actually ran.
+    pub method: OrderMethod,
 }
 
 /// Input for an acyclic flow-polytope calculation.
@@ -137,11 +200,70 @@ pub fn lr_count(input: &LrInput) -> ExactResult<BigInt> {
     biguint_to_bigint(try_lr_dp(&lambda, &mu, &nu, input.max_states)?)
 }
 
-/// Compute exact Ehrhart and h* data for an order polytope.
+/// Compute exact Ehrhart and h* data for an order polytope with the default
+/// method selection ([`OrderMethod::Auto`]).
 pub fn order_ehrhart(input: &OrderInput) -> ExactResult<EhrhartData> {
+    Ok(order_ehrhart_with(input, &OrderOptions::default())?.data)
+}
+
+/// Compute exact Ehrhart and h* data for an order polytope, reporting which
+/// method produced it.
+///
+/// Both methods return the same [`EhrhartData`]: the dimension is the number
+/// of poset elements and the h* numerator keeps its trailing zeros.
+pub fn order_ehrhart_with(
+    input: &OrderInput,
+    options: &OrderOptions,
+) -> ExactResult<OrderComputation> {
     let poset = build_poset(input)?;
+    match options.method {
+        OrderMethod::Frontier => {
+            if options.max_states.is_some() {
+                return Err(
+                    "max_states applies only to the ideals method, not to frontier".to_string(),
+                );
+            }
+            order_by_frontier(&poset)
+        }
+        OrderMethod::Ideals => {
+            let hstar =
+                ideal_hstar(&poset, options.max_states).map_err(|error| error.to_string())?;
+            order_from_hstar(&poset, hstar)
+        }
+        OrderMethod::Auto => match ideal_hstar(&poset, options.max_states) {
+            Ok(hstar) => order_from_hstar(&poset, hstar),
+            // Too many states (or elements for the bitset keys): the frontier
+            // method does not depend on the number of order ideals.
+            Err(IdealDpError::StateLimitExceeded { .. } | IdealDpError::TooManyElements { .. }) => {
+                order_by_frontier(&poset)
+            }
+        },
+    }
+}
+
+fn order_by_frontier(poset: &Poset) -> ExactResult<OrderComputation> {
     let polynomial = poset.order_polytope_ehrhart();
-    EhrhartData::new(EhrhartPolynomial::new(poset.num_elements(), polynomial)?)
+    Ok(OrderComputation {
+        data: EhrhartData::new(EhrhartPolynomial::new(poset.num_elements(), polynomial)?)?,
+        method: OrderMethod::Frontier,
+    })
+}
+
+/// Stanley: for a naturally labeled poset `h*(O(P), t)` is the P-Eulerian
+/// polynomial, whose coefficients the order-ideal DP computes directly.
+fn ideal_hstar(poset: &Poset, max_states: Option<usize>) -> Result<Vec<BigInt>, IdealDpError> {
+    poset.p_eulerian_polynomial_ideal_dp(Some(max_states.unwrap_or(DEFAULT_ORDER_IDEAL_MAX_STATES)))
+}
+
+/// Declare the full numerator (`dimension + 1` entries, trailing zeros
+/// included) and recover the Ehrhart polynomial from it.
+fn order_from_hstar(poset: &Poset, mut coeffs: Vec<BigInt>) -> ExactResult<OrderComputation> {
+    let dimension = poset.num_elements();
+    coeffs.resize(dimension + 1, BigInt::zero());
+    Ok(OrderComputation {
+        data: EhrhartData::from_hstar(HStarPolynomial::new(dimension, coeffs)?)?,
+        method: OrderMethod::Ideals,
+    })
 }
 
 /// Compute exact Ehrhart and h* data for an acyclic flow polytope.
@@ -399,5 +521,222 @@ mod tests {
         })
         .expect_err("invalid permutation must be rejected");
         assert!(error.contains("exactly once"));
+    }
+
+    fn order_with(
+        input: &OrderInput,
+        method: OrderMethod,
+        max_states: Option<usize>,
+    ) -> ExactResult<OrderComputation> {
+        order_ehrhart_with(input, &OrderOptions { method, max_states })
+    }
+
+    fn hstar_strings(data: &EhrhartData) -> Vec<String> {
+        data.hstar
+            .coeffs()
+            .iter()
+            .map(ToString::to_string)
+            .collect()
+    }
+
+    /// Deterministic random poset given by covers in a non-natural labeling.
+    fn random_covers(seed: u64, n: usize) -> OrderInput {
+        let mut state = seed
+            .wrapping_mul(6364136223846793005)
+            .wrapping_add(1442695040888963407);
+        let mut next = move || {
+            state = state
+                .wrapping_mul(6364136223846793005)
+                .wrapping_add(1442695040888963407);
+            state >> 33
+        };
+        let density = 1 + next() % 4;
+        let mut covers = Vec::new();
+        for a in 0..n {
+            for b in a + 1..n {
+                if next() % 8 < density {
+                    covers.push((a, b));
+                }
+            }
+        }
+        let mut label: Vec<usize> = (0..n).collect();
+        for i in (1..n).rev() {
+            label.swap(i, (next() % (i as u64 + 1)) as usize);
+        }
+        OrderInput::Covers {
+            vertices: n,
+            covers: covers
+                .into_iter()
+                .map(|(a, b)| (label[a], label[b]))
+                .collect(),
+        }
+    }
+
+    #[test]
+    fn order_ideals_and_frontier_give_identical_data() {
+        let mut inputs = vec![
+            OrderInput::Chain { elements: 0 },
+            OrderInput::Chain { elements: 1 },
+            OrderInput::Chain { elements: 6 },
+            OrderInput::Antichain { elements: 1 },
+            OrderInput::Antichain { elements: 7 },
+            OrderInput::Fence { elements: 2 },
+            OrderInput::Fence { elements: 9 },
+            OrderInput::Shape { lambda: vec![] },
+            OrderInput::Shape {
+                lambda: vec![3, 3, 3],
+            },
+            OrderInput::Shape {
+                lambda: vec![4, 3, 1],
+            },
+            OrderInput::Shape { lambda: vec![5, 5] },
+            // Product of chains 3 x 4, and a poset with a non-natural labeling.
+            OrderInput::Shape {
+                lambda: vec![4, 4, 4],
+            },
+            OrderInput::Covers {
+                vertices: 5,
+                covers: vec![(4, 3), (4, 2), (3, 1), (2, 1), (1, 0)],
+            },
+        ];
+        for seed in 0..60 {
+            inputs.push(random_covers(seed, 1 + (seed % 10) as usize));
+        }
+        for input in inputs {
+            let ideals = order_with(&input, OrderMethod::Ideals, None).expect("ideals");
+            let frontier = order_with(&input, OrderMethod::Frontier, None).expect("frontier");
+            assert_eq!(ideals.method, OrderMethod::Ideals);
+            assert_eq!(frontier.method, OrderMethod::Frontier);
+            // Same dimension, power coefficients, h* (with trailing zeros).
+            assert_eq!(ideals.data, frontier.data, "{input:?}");
+            let dimension = ideals.data.ehrhart.dimension();
+            assert_eq!(ideals.data.hstar.coeffs().len(), dimension + 1);
+            assert_eq!(
+                crate::render::ehrhart_json(&ideals.data),
+                crate::render::ehrhart_json(&frontier.data)
+            );
+        }
+    }
+
+    #[test]
+    fn order_ideals_method_matches_known_values() {
+        let hstar = |input: OrderInput| {
+            hstar_strings(&order_with(&input, OrderMethod::Ideals, None).unwrap().data)
+        };
+        assert_eq!(
+            hstar(OrderInput::Chain { elements: 3 }),
+            ["1", "0", "0", "0"]
+        );
+        // Antichain: Eulerian numbers A(4, k), padded to dimension + 1.
+        assert_eq!(
+            hstar(OrderInput::Antichain { elements: 4 }),
+            ["1", "11", "11", "1", "0"]
+        );
+        assert_eq!(
+            hstar(OrderInput::Shape { lambda: vec![2, 2] }),
+            ["1", "1", "0", "0", "0"]
+        );
+        // 2 x 4 rectangle: Narayana numbers 1, 6, 6, 1.
+        assert_eq!(
+            hstar(OrderInput::Shape { lambda: vec![4, 4] }),
+            ["1", "6", "6", "1", "0", "0", "0", "0", "0"]
+        );
+        let empty = order_with(
+            &OrderInput::Chain { elements: 0 },
+            OrderMethod::Ideals,
+            None,
+        )
+        .unwrap();
+        assert_eq!(empty.data.ehrhart.dimension(), 0);
+        assert_eq!(hstar_strings(&empty.data), ["1"]);
+    }
+
+    #[test]
+    fn order_ideals_data_evaluates_to_the_order_ideal_count() {
+        // L(1) is the number of lattice points of O(P), i.e. of order ideals.
+        let covers = vec![(0, 1), (0, 2), (1, 3), (2, 3), (3, 4)];
+        let ideals = Poset::new(5, &covers).order_ideals().len();
+        let data = order_with(
+            &OrderInput::Covers {
+                vertices: 5,
+                covers,
+            },
+            OrderMethod::Ideals,
+            None,
+        )
+        .unwrap()
+        .data;
+        assert_eq!(
+            data.ehrhart.evaluate(1),
+            num_rational::BigRational::from(BigInt::from(ideals))
+        );
+    }
+
+    #[test]
+    fn order_auto_uses_ideals_within_budget_and_frontier_beyond_it() {
+        let input = OrderInput::Antichain { elements: 8 };
+        let auto = order_with(&input, OrderMethod::Auto, None).unwrap();
+        assert_eq!(auto.method, OrderMethod::Ideals);
+        assert_eq!(order_ehrhart(&input).unwrap(), auto.data);
+
+        // Exactly 8 * 2^7 = 1024 rows are needed.
+        assert_eq!(
+            order_with(&input, OrderMethod::Auto, Some(1024))
+                .unwrap()
+                .method,
+            OrderMethod::Ideals
+        );
+        let fallback = order_with(&input, OrderMethod::Auto, Some(1023)).unwrap();
+        assert_eq!(fallback.method, OrderMethod::Frontier);
+        assert_eq!(fallback.data, auto.data);
+
+        let error = order_with(&input, OrderMethod::Ideals, Some(1023)).expect_err("budget");
+        assert!(error.contains("exceeded the limit of 1023"), "{error}");
+    }
+
+    #[test]
+    fn order_frontier_rejects_a_state_budget_and_cycles_are_rejected_by_all_methods() {
+        let error = order_with(
+            &OrderInput::Chain { elements: 3 },
+            OrderMethod::Frontier,
+            Some(10),
+        )
+        .expect_err("frontier has no state budget");
+        assert!(error.contains("max_states"), "{error}");
+        let cyclic = OrderInput::Covers {
+            vertices: 2,
+            covers: vec![(0, 1), (1, 0)],
+        };
+        for method in [
+            OrderMethod::Auto,
+            OrderMethod::Ideals,
+            OrderMethod::Frontier,
+        ] {
+            assert!(order_with(&cyclic, method, None).is_err());
+        }
+    }
+
+    #[test]
+    fn order_method_names_are_stable() {
+        assert_eq!(OrderMethod::default(), OrderMethod::Auto);
+        assert_eq!(OrderMethod::Auto.as_str(), "auto");
+        assert_eq!(OrderMethod::Ideals.as_str(), "ideals");
+        assert_eq!(OrderMethod::Frontier.as_str(), "frontier");
+    }
+
+    #[test]
+    fn order_ideals_handles_large_narrow_posets_quickly() {
+        // 5 x 5 rectangle: 25 elements, 252 ideals.
+        let data = order_with(
+            &OrderInput::Shape { lambda: vec![5; 5] },
+            OrderMethod::Ideals,
+            None,
+        )
+        .unwrap()
+        .data;
+        assert_eq!(data.ehrhart.dimension(), 25);
+        // The h* entries sum to the number of standard Young tableaux of 5^5.
+        let total: BigInt = data.hstar.coeffs().iter().sum();
+        assert_eq!(total, BigInt::from(701_149_020u64));
     }
 }

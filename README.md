@@ -85,6 +85,22 @@ ehrcalc hstar ...
 ehrcalc verify ...
 ```
 
+For order polytopes, `ehrcalc order` computes h* by Stanley's theorem: for a
+naturally labeled poset it is the descent generating function of the linear
+extensions, obtained by a dynamic program over order ideals.  This is fast for
+long narrow posets, for example the `8 x 8` rectangle in about a tenth of a
+second, and it is the default whenever the number of order ideals is moderate.
+`--method frontier` selects the older route (order-preserving map counts,
+reciprocity, interpolation), which does not depend on the number of ideals and
+is preferable for wide posets; `--method auto` (the default) tries the ideal
+method within `--max-states` stored states and otherwise falls back.
+
+```text
+ehrcalc order --shape 8,8,8,8,8,8,8,8
+ehrcalc order --shape 6,6,6 --method frontier --format json
+ehrcalc order --antichain 25 --max-states 1000000
+```
+
 Every command supports plain text and JSON.  Commands producing mathematical
 expressions also support LaTeX.  JSON is the stable
 machine-readable contract, with large integers and rationals encoded as

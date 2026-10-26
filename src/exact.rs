@@ -249,24 +249,49 @@ impl HStarPolynomial {
     }
 
     /// Convert from the shifted Ehrhart binomial basis to power coefficients.
+    ///
+    /// Uses `L(n) = sum_i h_i binom(n + d - i, d)`.  The numerators
+    /// `prod_{j=1-i}^{d-i} (n + j)` and their sum are accumulated in integers,
+    /// so the only rational normalization is one division by `d!` per
+    /// coefficient.
     pub fn to_ehrhart(&self) -> ExactResult<EhrhartPolynomial> {
-        let mut result = vec![BigRational::zero(); self.dimension + 1];
-        let factorial = factorial_bigint(self.dimension);
+        let mut numerator = vec![BigInt::zero(); self.dimension + 1];
+        let mut basis = Vec::with_capacity(self.dimension + 1);
         for (index, hstar) in self.coeffs.iter().enumerate() {
             if hstar.is_zero() {
                 continue;
             }
             let shift = (self.dimension - index) as i64;
-            let mut basis = vec![BigRational::one()];
+            basis.clear();
+            basis.push(BigInt::one());
             for offset in 0..self.dimension {
-                basis = multiply_by_linear(&basis, BigInt::from(shift - offset as i64));
+                // basis *= (n + shift - offset), in place from the top degree.
+                let constant = BigInt::from(shift - offset as i64);
+                basis.push(BigInt::zero());
+                for degree in (0..basis.len()).rev() {
+                    let mut value = if degree == 0 {
+                        BigInt::zero()
+                    } else {
+                        basis[degree - 1].clone()
+                    };
+                    if degree + 1 < basis.len() {
+                        value += &constant * &basis[degree];
+                    }
+                    basis[degree] = value;
+                }
             }
-            let scale = BigRational::from(hstar.clone()) / BigRational::from(factorial.clone());
-            for (degree, coefficient) in basis.into_iter().enumerate() {
-                result[degree] += scale.clone() * coefficient;
+            for (degree, coefficient) in basis.iter().enumerate() {
+                numerator[degree] += hstar * coefficient;
             }
         }
-        EhrhartPolynomial::new(self.dimension, result)
+        let factorial = factorial_bigint(self.dimension);
+        EhrhartPolynomial::new(
+            self.dimension,
+            numerator
+                .into_iter()
+                .map(|value| BigRational::new(value, factorial.clone()))
+                .collect(),
+        )
     }
 }
 
@@ -314,6 +339,16 @@ impl EhrhartData {
     /// Build a complete result and verify integral h* coefficients.
     pub fn new(ehrhart: EhrhartPolynomial) -> ExactResult<Self> {
         let hstar = ehrhart.to_hstar()?;
+        Ok(Self { ehrhart, hstar })
+    }
+
+    /// Build a complete result from a known h* numerator.
+    ///
+    /// The Ehrhart polynomial is recovered exactly from `hstar`, and the
+    /// supplied numerator (including its trailing zeros) is kept as given, so
+    /// the result equals `EhrhartData::new` applied to the same polynomial.
+    pub fn from_hstar(hstar: HStarPolynomial) -> ExactResult<Self> {
+        let ehrhart = hstar.to_ehrhart()?;
         Ok(Self { ehrhart, hstar })
     }
 }
