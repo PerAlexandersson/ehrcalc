@@ -1,5 +1,33 @@
 # Ehrcalc Handoff
 
+## Leake--Zhang Table 1 missing values — 2026-11-11, complete
+
+Host supervisor ran existing release CLI, with no engine/source changes or
+database access. No source ownership retained; existing untracked `runs/`
+untouched. No Ehrcalc MCP tool is exposed in the runtime registry, so used
+the maintained CLI in Docker, `/cargo-target/ai-projects/release/ehrcalc`.
+Inputs checked against cached exact 2611.14322v1 `schur_capacity_table.tex`.
+
+Both missing counts obtained directly (arbitrary-size integer DP):
+
+```text
+ehrcalc kostka --lambda 35,28,21,14,7,0 --weight 18,18,18,17,17,17 --max-states 2000000 --format json
+=> 115119744 (0.037 s wall)
+ehrcalc kostka --lambda 50,40,30,20,10,0 --weight 25,25,25,25,25,25 --max-states 2000000 --format json
+=> 2792000101 (0.266 s wall)
+```
+
+All computations bounded by `timeout 60s nice -n 10`. Reversing the first
+weight gives the same count; the paper's preceding face-example count 5
+also reproduced. For the second case, compute the stretch family using
+`ehrcalc gt --lambda 10,8,6,4,2,0 --weight 5,5,5,5,5,5 --max-states 2000000 --format json`.
+Dimension/degree 10; ascending power coefficients:
+`1,80/7,11023/168,41443/168,442163/672,30691/24,87055/48,309097/168,855667/672,30365/56,6073/56`.
+CLI `verify` passes at 5:2792000101 and at the extra directly counted point
+6:14770983799 (beyond the interpolation range). These checks use the same
+maintained counting engine, not an independent implementation. No new
+polynomial generator: existing `gt_ehrhart` / `try_compute_ehrhart` used.
+
 ## Order-ideal h* for order polytopes — 2026-10-26, complete
 
 Branch feat/order-ideal-dp from 793264d. `ehrcalc order` gains
