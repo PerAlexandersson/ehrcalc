@@ -1,5 +1,20 @@
 # Ehrcalc Handoff
 
+## Bounded zero-hole audit — 2026-11-15, COMPLETE
+
+4/4 old zero-hole cases pass fresh ordinary-only interpolation and strict
+reciprocity checks through d+2, with repaired dimensions 9,10,11,12 and
+generic/packed agreement. Old power coefficients survive; old negative h*
+entries disappear with corrected dimension metadata. Old records unchanged.
+Evidence: `../../projects/reduced-kogan-mutation-search/audit-evidence/2026-11-15-changed-zero-hole/README.txt`.
+54 serial children: 1.6958s total, peak 15,596 KiB RSS, all exit 0, no OOM;
+d9 pilot passed resource gate before expansion. Bounds: 60s/3 GiB/200,000
+states per child, 300s total. Seven offline classifier tests passed.
+Existing consumer rebuilt (31.52s, one job) against 9d490bb under external
+/cargo-target/ai-projects. No library/consumer source changed; no DB access,
+remote jobs, broad searches, manuscripts, publishing or deployment. Runs
+preserved, R5 PARKED, all jobs ended. `/root` releases handoff ownership.
+
 ## Leake--Zhang Table 1 missing values — 2026-11-11, complete
 
 Host supervisor ran existing release CLI, with no engine/source changes or
