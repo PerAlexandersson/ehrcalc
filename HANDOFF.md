@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## KTT resume + DB saving — 2026-11-15, FIRST BATCH FINISHED
+
+Six old timed-out zero-hole cases (d6,17,18,19,20,20) are now freshly exact
+nonnegative with ordinary checks at 1,d+1,d+2. Four other old inputs empty;
+nine feasible d21--24 cases remain. No negative found. User authorized DB
+writes: four prior audits plus new search results/attempts saved in append-only
+`kogan_exact_verification_events`, preserving all historical rows/results.
+Future dedup must consult this new event table as well as old exact caches.
+Evidence: `../../projects/reduced-kogan-mutation-search/audit-evidence/2026-11-15-targeted-resume/README.txt`.
+62 serial jobs, all exit 0: 86.3732s total, 17,388 KiB peak RSS, no OOM;
+small pilot passed gate before expansion. Four persistence regression tests
+pass; all 131 search event hashes read back correctly. No algorithm/source
+changes here; library/CLI build external. All jobs ended, R5 PARKED, no
+broad/genetic restart, remote jobs, manuscripts or publication. `/root`
+releases handoff ownership; next bounded batch is recorded in research handoff.
+
 ## Bounded zero-hole audit — 2026-11-15, COMPLETE
 
 4/4 old zero-hole cases pass fresh ordinary-only interpolation and strict
