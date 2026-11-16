@@ -1,5 +1,26 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 19
+
+Research --alphabet-policy full-range implemented;default hashes unchanged.
+All512 inspected:176 NEW checked nonnegative,1priorchecked,231 LP-empty,
+12 incomplete,92dimskips. No contender/saturation stop. Totals:1681 checked
+inputs,1082 polynomials,112 incomplete,525 unique LP-empty.17 new checked
+k<=rows cases(8 strictly less).17 tests and NEW/OLD low-alphabet skew control
+passed(d2,L=binom(k+2,2));native APIs/binaries unchanged,no Rust edits/builds.
+
+All six runs terminal:111.5102s native,36508KiB peak,noOOM.9712 event/
+native-output hashes verified,all local checked/empty results saved in DB,
+exact polynomial samples agree. Old rows/results retained,caps unchanged.
+Evidence/plans:reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-full-alphabet/. /root releases opening;no library files owned.
+Old large basin/R5 PARKED;no agents,remote jobs,historical/genetic restart,
+manuscripts,push/publish/deploy. Goal ACTIVE. Next inspect GT shape bounds
+for sparse/skew low-alphabet proposals:82 two-label draws gave64empty and
+18dimskips;48had column height>2. Keep content independent,old snapshots,
+1s/state/memory bounds,emptiness/saturation guard;record source/test/pilot
+plan first. See research handoff;all112 old caps parked.
+
 ## Phone status — 2026-11-16, CHECKPOINT 18
 
 Independent-content cohort2:all512 inspected,270 NEW checked nonnegative,
