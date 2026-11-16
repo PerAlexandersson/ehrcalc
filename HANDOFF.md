@@ -1,5 +1,39 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 32
+
+Fresh independent cohort:191 NEW checked nonnegative inputs,229 exact-empty,
+26 theorem skips,12 incomplete(10unknown grids/2positive fits),50dimension
+skips,4prior checked overlaps(3skipped/1revalidated). All512 accounted for;
+NO negative coefficient or counterexample. Totals:2698checked inputs /
+1692distinct checked polynomials /187incomplete /1599unique exact-empty.
+All earlier175incomplete inputs untouched;R5/old negative basin PARKED.
+
+Seed2026111614,independent-content/full-range/column-compatible,max6rows/
+8labels,size3..28,d3..24. Fresh controls/pilots at0/282/290. Pilot282 capped:
+NO expansion there,despite internal >=2complete gate;fresh gates at290.
+Expansions at0/290 only followed ALLpilotfitschecked. No suffix at512.
+All8runs terminal/safe:3645native jobs,125.5313child seconds,peak29628KiB,
+12timeout attempts preserved,noOOM. Counts1s,geometry2s,200kstates,1thread,
+3GiB child;strict3sample<=16GiB+live launch gates,runtime18GiB under24GiB.
+No resource limit increase,source/kernel/test change or build.
+
+Read-only audit passed10823new event/native-output hashes,exact sample/sign/
+dimension/degree/h* and all completed checks,source/gate/cursor/pressure
+receipts. Both cached primary-text SHA256 hashes refreshed through paper-cache,
+zero network. Append-only DB events;all old rows/results/failures preserved.
+Evidence:audit-evidence/2026-11-16-independent5/{README.txt,manifest.json,
+audit.py,pending-cases.json,pressure-receipts.json,BOUNDED-PLANS.txt} in private
+project. Exact native runs remain external under/cargo-target/ktt-independent5-
+20261116-*. Unchanged sampler source previously passed23focused tests.
+
+/root releases both HANDOFF openings,researchREADME,new evidence at local
+checkpoint;no source files owned or KTT jobs live afterward. GoalACTIVE;
+this turn PROGRESS:191new inputs checked. NEXT:new bounded independent cohort
+or explicit small completion subset,with fresh controls/pilot/pressure gates.
+Never retry capped nodes at same budget without new evidence. No agents,
+remote/genetic restart,manuscripts,push/publish/deploy,symlinks or in-tree builds.
+
 ## Phone status — 2026-11-16, CHECKPOINT 31
 
 Previously untouched7bdab573 (skew,d16) is fully checked and nonnegative:
