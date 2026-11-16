@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 3
+
+Body-shape 128 screened:34 checked nonnegative,18 empty,76 above cutoff.
+All three d23 validations finished using one canonical counter and proved
+row-flag-preserving label bijections. Counts24/25 matched in94.5s/126.0s.
+Exact forced-column reduction documented; maintained split192 exact API
+with checked BigUint fallback reused by a thin research consumer. No
+library algorithm changes. MaxRSS69,564 KiB,no OOM; every job ended.
+
+All 2,835 new event hashes verified, append-only DB; old rows preserved.
+Evidence: reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-body-shape/README.txt. `/root` releases opening ownership.
+Research driver stop/cache/gate regressions covered. R5 PARKED; no agents,
+remote jobs, manuscripts or publication. Goal ACTIVE. Next one d26 input
+from the existing deferred set requires a new exact plan, dimension/control
+checks and small monitored pilot;16 proved groups cover 76 deferred inputs.
+
 ## Phone status — 2026-11-16, CHECKPOINT 2
 
 Original 20 frozen targets exhausted:16 checked nonnegative +4 empty.
