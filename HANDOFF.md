@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Nine cases validated; bounded genetic pilot — 2026-11-16, CHECKPOINT
+
+All nine d21--24 cases now ordinary-validated and nonnegative; five missing
+counts finished without repeating interpolation. Bounded genetic fallback
+calibrated Rust order ideals against the verified d82 two-hole negative
+seed (full h*/power match, 0.8887s). Local pilot had no fresh eligible
+case; coordinate transports produced seven new d94--97 TWO-HOLE cases.
+All seven capped at 500k states, then completed exactly NONNEGATIVE under
+a measured-safe 2m-state/8s profile. Peak 91,068 KiB, no OOMs; all jobs ended.
+Results/attempts and hash receipts saved append-only in MariaDB; old rows
+preserved. Evidence: reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-validation/ and 2026-11-16-genetic-pilot/transport/.
+Next: bounded actual-zero-hole closures from the verified negative seed,
+without breeding positive children. No new counterexample. Goal active;
+R5 PARKED. No algorithm/source edits here, remote jobs, agents, manuscripts
+or publication. `/root` releases handoff ownership at local checkpoint.
+
 ## Skew factorization + search — 2026-11-16, CHECKPOINT
 
 Implemented column-capacity Kostka factorization in the maintained engine,
