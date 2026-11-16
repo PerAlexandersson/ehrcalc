@@ -1,5 +1,27 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 4
+
+Research body128 now83 checked nonnegative,18 empty,27 deferred
+(six representative jobs). New d26 two-member class passes1,27,28.
+All47 d33 inputs reduce to ONE unflagged skew count. Canonical polynomial
+nonnegative and fresh ordinary1,14,15 match;34 exceeded500k states,
+35 unattempted. No claim of independent high-point counts for all47.
+Maintained generic/packed strict controls match,including nonzero-14.
+
+All522 new event hashes verified;append-only DB,old rows preserved.
+Both stages373.4846s child time,58,736 KiB peak,no OOM,all jobs ended.
+No library algorithm/source changes;existing strict packed CLI built with
+one job and external Cargo target. Research evidence:
+reduced-kogan-mutation-search/audit-evidence/2026-11-16-deferred-d26/
+and2026-11-16-unflagged-body/. Eleven focused Python tests pass.
+
+/root releases opening ONLY at focused local checkpoint;no source owned.
+R5 PARKED;no agents,remote work,manuscripts,push or publication/deployment.
+Goal ACTIVE. Next:one existing d26 representative6e60282c... requires a
+new ownership/plan entry,dimension/control checks and55s pilot. Read the
+research HANDOFF before edits or computation. No broad campaign restart.
+
 ## Phone status — 2026-11-16, CHECKPOINT 3
 
 Body-shape 128 screened:34 checked nonnegative,18 empty,76 above cutoff.
