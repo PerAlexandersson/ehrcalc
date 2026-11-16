@@ -9,6 +9,7 @@ pub mod flagged_formula;
 pub mod flow;
 pub mod gt_dim;
 pub mod kostka_dp;
+mod kostka_factorization;
 pub mod lr;
 pub mod packed_modular;
 pub mod partition;

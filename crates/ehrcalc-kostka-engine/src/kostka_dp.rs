@@ -1,3 +1,4 @@
+use crate::kostka_factorization::column_capacity_split;
 use crate::Partition;
 use num_bigint::BigUint;
 use num_traits::{One, Zero};
@@ -480,6 +481,30 @@ pub fn try_skew_kostka_stats(
         w
     };
 
+    if let Some(split) = column_capacity_split(lambda, mu, w_eff, None, None) {
+        let top = try_skew_kostka_stats(
+            &split.top.lambda,
+            &split.top.mu,
+            &split.top.weight,
+            max_states,
+            false,
+        )?;
+        let bottom = try_skew_kostka_stats(
+            &split.bottom.lambda,
+            &split.bottom.mu,
+            &split.bottom.weight,
+            max_states,
+            false,
+        )?;
+        let mut level_states = top.level_states;
+        level_states.extend_from_slice(&bottom.level_states[1..]);
+        return Ok(KostkaDpStats {
+            value: top.value * bottom.value,
+            peak_states: top.peak_states.max(bottom.peak_states),
+            level_states,
+        });
+    }
+
     let mut dp = partition_count_map();
     dp.insert(mu.clone(), BigUint::one());
     let mut peak_states = dp.len();
@@ -921,6 +946,25 @@ pub fn try_flagged_skew_kostka(
         return Err("flag lengths must match the weight length".to_string());
     }
 
+    if let Some(split) = column_capacity_split(lambda, mu, w, upper_flags, lower_flags) {
+        let top = try_flagged_skew_kostka(
+            &split.top.lambda,
+            &split.top.mu,
+            &split.top.weight,
+            split.top.upper_flags.as_deref(),
+            split.top.lower_flags.as_deref(),
+            max_states,
+        )?;
+        let bottom = try_flagged_skew_kostka(
+            &split.bottom.lambda,
+            &split.bottom.mu,
+            &split.bottom.weight,
+            split.bottom.upper_flags.as_deref(),
+            split.bottom.lower_flags.as_deref(),
+            max_states,
+        )?;
+        return Ok(top * bottom);
+    }
     if should_use_dual_flagged_orientation(w, upper_flags, lower_flags, lambda.num_parts()) {
         let dual = dual_flagged_problem(lambda, mu, w, upper_flags, lower_flags);
         return try_flagged_skew_kostka_oriented(
@@ -1801,6 +1845,25 @@ pub fn try_strict_flagged_skew_kostka(
         || partition_size_u64(lambda) - partition_size_u64(mu) != weight_size_u64(w)
     {
         return Ok(BigUint::zero());
+    }
+    if let Some(split) = column_capacity_split(lambda, mu, w, upper_flags, lower_flags) {
+        let top = try_strict_flagged_skew_kostka(
+            &split.top.lambda,
+            &split.top.mu,
+            &split.top.weight,
+            split.top.upper_flags.as_deref(),
+            split.top.lower_flags.as_deref(),
+            max_states,
+        )?;
+        let bottom = try_strict_flagged_skew_kostka(
+            &split.bottom.lambda,
+            &split.bottom.mu,
+            &split.bottom.weight,
+            split.bottom.upper_flags.as_deref(),
+            split.bottom.lower_flags.as_deref(),
+            max_states,
+        )?;
+        return Ok(top * bottom);
     }
     if should_use_dual_flagged_orientation(w, upper_flags, lower_flags, lambda.num_parts()) {
         let dual = dual_flagged_problem(lambda, mu, w, upper_flags, lower_flags);

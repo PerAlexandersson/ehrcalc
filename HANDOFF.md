@@ -1,5 +1,31 @@
 # Ehrcalc Handoff
 
+## Nine-case continuation — 2026-11-16, ACTIVE
+
+Implemented column-capacity Kostka factorization in the maintained engine,
+including skew shapes and flags. The forced intermediate partition cuts the
+content alphabet; row coordinates/flags stay fixed. Ordinary/strict counts,
+DP statistics and Ehrhart interpolation share the split. Legacy unsplit
+counters retained; no public command/JSON/API change. Six new test functions
+include all twelve saved skew product checks, flags/strict comparisons,
+small straight pairs through size eight, and false disconnected-piece cuts.
+All 319 workspace tests pass in debug AND release; fmt/diff checks pass.
+Clippy reports only the two prior warnings. Verification logs retained under
+`/cargo-target/kostka-factorization-20261116/`.
+
+Source: Nov13 Garber--Pak--Slonim paper (cached SHA 632ad97a...), plus Nov14
+`projects/stretched-lr-finiteness/PRIMITIVE-COMPRESSION.md` Section3 and
+`RESEARCH.md` region lemmas, located following user steering. These notes
+remain read-only under their existing owner. Library implementation/docs
+ownership is released at the focused local checkpoint; `/root` continues
+to own this opening and the research consumer/orchestration listed in
+reduced-kogan-mutation-search/HANDOFF.md. No search child launched yet.
+Nine remaining d21--24 inputs, adaptive negative evaluations with per-count
+DB checkpoints. Small <=60s pilot, 3 GiB /200,000 states /one thread; expand
+only after measured safety. Maintained APIs only, external build target.
+No old-row overwrites, remote jobs or manuscript edits.
+R5 PARKED; genetic restart deferred until targeted options are exhausted.
+
 ## KTT resume + DB saving — 2026-11-15, FIRST BATCH FINISHED
 
 Six old timed-out zero-hole cases (d6,17,18,19,20,20) are now freshly exact

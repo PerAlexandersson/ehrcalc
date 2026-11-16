@@ -48,6 +48,11 @@ Supported families are:
 - acyclic flow polytopes; and
 - exact transform-only workflows from supplied Ehrhart or h* data.
 
+Kostka counts and GT Ehrhart computations automatically factor at tight
+column-capacity partial sums, including skew shapes and row flags. For
+straight shapes this recovers dominance factorization. Ordinary and
+relative-interior counts use the same lattice-product split.
+
 Littlewood-Richardson coefficient calculation is available as a direct
 counting command.  Ehrhart data for LR objects will require an explicitly
 specified family, such as a hive-polytope model, rather than treating every

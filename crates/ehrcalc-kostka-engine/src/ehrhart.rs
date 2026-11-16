@@ -4,6 +4,9 @@ use crate::kostka_dp::{
     try_flagged_skew_kostka, try_skew_kostka, try_strict_flagged_skew_kostka,
     try_strict_skew_kostka,
 };
+use crate::kostka_factorization::{
+    column_capacity_split, SaturatedRowLabelSplit, SaturatedSplitFactor,
+};
 use crate::Partition;
 /// Ehrhart polynomial computation for GT(lambda/mu, w).
 ///
@@ -35,23 +38,6 @@ struct FrozenRectangleReduction {
     weight: Vec<u32>,
     upper_flags: Option<Vec<u32>>,
     lower_flags: Option<Vec<u32>>,
-    cut_row: usize,
-    cut_label: usize,
-}
-
-#[derive(Debug, PartialEq, Eq)]
-struct SaturatedSplitFactor {
-    lambda: Partition,
-    mu: Partition,
-    weight: Vec<u32>,
-    upper_flags: Option<Vec<u32>>,
-    lower_flags: Option<Vec<u32>>,
-}
-
-#[derive(Debug, PartialEq, Eq)]
-struct SaturatedRowLabelSplit {
-    top: SaturatedSplitFactor,
-    bottom: SaturatedSplitFactor,
     cut_row: usize,
     cut_label: usize,
 }
@@ -163,7 +149,7 @@ fn saturated_row_label_split(
                 upper_flags: bottom_upper,
                 lower_flags: bottom_lower,
             },
-            cut_row,
+            cut_row: Some(cut_row),
             cut_label,
         });
     }
@@ -697,7 +683,9 @@ fn compute_ehrhart_impl(
             }
         }
 
-        if let Some(split) = saturated_row_label_split(lambda, mu, w, upper_flags, lower_flags) {
+        if let Some(split) = column_capacity_split(lambda, mu, w, upper_flags, lower_flags)
+            .or_else(|| saturated_row_label_split(lambda, mu, w, upper_flags, lower_flags))
+        {
             let top_dimension = gt_polytope_dim_full(
                 split.top.lambda.parts(),
                 split.top.mu.parts(),
@@ -719,8 +707,8 @@ fn compute_ehrhart_impl(
             {
                 if verbose {
                     eprintln!(
-                        "split saturated tableau after row {} and label {}",
-                        split.cut_row, split.cut_label
+                        "split tableau product at label {} (row cut {:?})",
+                        split.cut_label, split.cut_row
                     );
                 }
                 let factor_mode = match mode {
@@ -1407,7 +1395,7 @@ mod tests {
 
         let split = saturated_row_label_split(&lambda, &mu, &weight, Some(&upper), Some(&lower))
             .expect("saturated split");
-        assert_eq!((split.cut_row, split.cut_label), (1, 2));
+        assert_eq!((split.cut_row, split.cut_label), (Some(1), 2));
         assert_eq!(split.top.lambda, p(&[3]));
         assert_eq!(split.top.mu, p(&[1]));
         assert_eq!(split.top.weight, [1, 1]);

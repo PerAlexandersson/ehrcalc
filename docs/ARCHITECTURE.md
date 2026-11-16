@@ -40,6 +40,26 @@ Roundy and Todd, 1985) whose answer is checked by an exact relative-interior
 point and an exact dual certificate.  It must not be inferred from lattice
 points at any fixed dilation, which need not span the rational polytope.
 
+`kostka_factorization::column_capacity_split` cuts at a label `t` when its
+prefix content attains the column-capacity bound `sum_j min(t,h_j)`, where
+`h_j` is the height of skew column `j`. Every column must then have its
+top `min(t,h_j)` entries at most `t`. The intermediate partition is forced:
+`beta'_j = min(lambda'_j, mu'_j+t)`. The two factors have shapes `beta/mu`
+and `lambda/beta`, and their respective portions of the original content.
+Only the second alphabet is relabeled; row indices and row flags stay fixed.
+This applies to skew shapes and flagged inputs without sorting their content.
+Computing `beta_i=lambda_i` for `i<=t` and
+`beta_i=min(lambda_i,mu_(i-t))` afterwards avoids iterating over boxes.
+
+Both factors form a dilation-compatible lattice product. Ordinary and
+relative-interior counts share this split; the Ehrhart path multiplies
+factor polynomials after checking dimension additivity. For straight shapes
+it recovers the primitive Kostka factorization recalled in Section 6 of
+[Garber--Pak--Slonim, On stretched Kostka polynomials (2026)](https://www.math.ucla.edu/~pak/papers/Kostka_Polynomials_9.pdf),
+which cites McAllister (2008), Section 1. Geometrically disconnected skew
+components alone do not justify a product: their content allocations may
+vary. Legacy unsplit counters are retained for regression comparisons.
+
 Flow-polytope support is the set of edges that are positive for some
 feasible flow.  It is computed from one maximum flow and the strongly
 connected components of its residual graph, not from reachability alone.
