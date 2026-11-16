@@ -1,5 +1,21 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT
+
+Five fresh active fixed-content cases d13,11,13,13,18 all exactly nonnegative
+with ordinary checks 1,d+1,d+2. Repaired reciprocal path used 50 negative and 18
+positive interpolation samples;2.4129s combined child time,peak18,280 KiB,
+no OOM. Pilot preceded four-case expansion. Neutral positive-reservoir
+zero-hole branch stopped after theorem/neutrality check and one positive d95
+diagnostic. Genuine fixed-content slices remain eligible; no counterexample.
+
+All 660 event hashes read back; DB append-only, old results preserved.
+Evidence/plans: reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-active-slices/README.txt. All jobs ended, R5 PARKED. No library
+source/build changes this turn, agents, remote jobs, manuscripts or publishing.
+`/root` releases opening ownership. Search goal ACTIVE; next finite same-seed
+support batch requires new 55s run and successful measured pilot gate.
+
 ## Nine cases validated; bounded genetic pilot — 2026-11-16, CHECKPOINT
 
 All nine d21--24 cases now ordinary-validated and nonnegative; five missing
