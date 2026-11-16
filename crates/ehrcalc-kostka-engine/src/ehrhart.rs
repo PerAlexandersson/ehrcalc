@@ -7,6 +7,7 @@ use crate::kostka_dp::{
 use crate::kostka_factorization::{
     column_capacity_split, SaturatedRowLabelSplit, SaturatedSplitFactor,
 };
+use crate::kostka_normalization::forced_first_row_reduction;
 use crate::Partition;
 /// Ehrhart polynomial computation for GT(lambda/mu, w).
 ///
@@ -647,6 +648,34 @@ fn compute_ehrhart_impl(
     // The legacy path intentionally retains the unreduced presentation so it
     // remains an independent comparison implementation for regression tests.
     if !use_legacy_dp {
+        if let Some(reduced) = forced_first_row_reduction(lambda, mu, w, upper_flags, lower_flags) {
+            let reduced_dimension = gt_polytope_dim_full(
+                reduced.lambda.parts(),
+                mu.parts(),
+                &reduced.weight,
+                upper_flags,
+                lower_flags,
+            );
+            if reduced_dimension != Some(d) {
+                return Err(
+                    "forced-prefix reduction changed the exact affine dimension".to_string()
+                );
+            }
+            if verbose {
+                eprintln!("deleted {} forced first-row ones", reduced.removed);
+            }
+            return compute_ehrhart_impl(
+                &reduced.lambda,
+                mu,
+                &reduced.weight,
+                upper_flags,
+                lower_flags,
+                verbose,
+                max_states,
+                mode,
+                false,
+            );
+        }
         if let Some(reduced) =
             frozen_unit_rectangle_reduction(lambda, mu, w, upper_flags, lower_flags)
         {

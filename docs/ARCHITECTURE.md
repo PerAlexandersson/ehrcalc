@@ -40,6 +40,16 @@ Roundy and Todd, 1985) whose answer is checked by an exact relative-interior
 point and an exact dual certificate.  It must not be inferred from lattice
 points at any fixed dilation, which need not span the rational polytope.
 
+`kostka_normalization::forced_first_row_reduction` deletes an isolated
+forced prefix when label 1 is allowed in row one. With
+`T=max(mu_1,lambda_2)` and `r=alpha_1-T>0`, it subtracts `r` from `lambda_1`
+and `alpha_1`, retaining all other parts and flags. This is a
+dilation-compatible affine lattice bijection, including relative interiors.
+Generic ordinary and strict counters share the helper; the Ehrhart path
+checks exact dimension preservation before recursing. Legacy and low-level
+masked/packed paths remain independent. The proof and guards are in
+[FORCED_PREFIX.md](FORCED_PREFIX.md).
+
 `kostka_factorization::column_capacity_split` cuts at a label `t` when its
 prefix content attains the column-capacity bound `sum_j min(t,h_j)`, where
 `h_j` is the height of skew column `j`. Every column must then have its

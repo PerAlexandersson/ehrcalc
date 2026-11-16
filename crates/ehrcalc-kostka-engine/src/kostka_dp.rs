@@ -1,4 +1,5 @@
 use crate::kostka_factorization::column_capacity_split;
+use crate::kostka_normalization::forced_first_row_reduction;
 use crate::Partition;
 use num_bigint::BigUint;
 use num_traits::{One, Zero};
@@ -481,6 +482,9 @@ pub fn try_skew_kostka_stats(
         w
     };
 
+    if let Some(reduced) = forced_first_row_reduction(lambda, mu, w_eff, None, None) {
+        return try_skew_kostka_stats(&reduced.lambda, mu, &reduced.weight, max_states, false);
+    }
     if let Some(split) = column_capacity_split(lambda, mu, w_eff, None, None) {
         let top = try_skew_kostka_stats(
             &split.top.lambda,
@@ -946,6 +950,16 @@ pub fn try_flagged_skew_kostka(
         return Err("flag lengths must match the weight length".to_string());
     }
 
+    if let Some(reduced) = forced_first_row_reduction(lambda, mu, w, upper_flags, lower_flags) {
+        return try_flagged_skew_kostka(
+            &reduced.lambda,
+            mu,
+            &reduced.weight,
+            upper_flags,
+            lower_flags,
+            max_states,
+        );
+    }
     if let Some(split) = column_capacity_split(lambda, mu, w, upper_flags, lower_flags) {
         let top = try_flagged_skew_kostka(
             &split.top.lambda,
@@ -1845,6 +1859,16 @@ pub fn try_strict_flagged_skew_kostka(
         || partition_size_u64(lambda) - partition_size_u64(mu) != weight_size_u64(w)
     {
         return Ok(BigUint::zero());
+    }
+    if let Some(reduced) = forced_first_row_reduction(lambda, mu, w, upper_flags, lower_flags) {
+        return try_strict_flagged_skew_kostka(
+            &reduced.lambda,
+            mu,
+            &reduced.weight,
+            upper_flags,
+            lower_flags,
+            max_states,
+        );
     }
     if let Some(split) = column_capacity_split(lambda, mu, w, upper_flags, lower_flags) {
         let top = try_strict_flagged_skew_kostka(

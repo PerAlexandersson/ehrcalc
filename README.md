@@ -53,6 +53,11 @@ column-capacity partial sums, including skew shapes and row flags. For
 straight shapes this recovers dominance factorization. Ordinary and
 relative-interior counts use the same lattice-product split.
 
+Generic Kostka counters also remove isolated forced first-row ones before
+counting, retaining all row flags. The same affine lattice reduction applies
+to relative interiors and GT Ehrhart computations; see
+[the forced-prefix reduction](docs/FORCED_PREFIX.md).
+
 Littlewood-Richardson coefficient calculation is available as a direct
 counting command.  Ehrhart data for LR objects will require an explicitly
 specified family, such as a hive-polytope model, rather than treating every
