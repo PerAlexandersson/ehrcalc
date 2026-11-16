@@ -1,5 +1,41 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 25
+
+Alternate positive8 recovered 7cd3510c's dimension20 nonnegative fit;
+checks1/9passed,10capped. e4e4f381's positive8also capped;its dimension18
+18/19point grid stays intact. No negative fit appeared. No new case fully
+checked this turn. Totals remain2098checked inputs/1339fully checked distinct
+polynomials/145incomplete/957unique LP-empty. Latest cohort17pending:
+9unknown grids,8fits awaiting checks. Older128inputs remain parked.
+
+Fresh signed controls for both inputs and exact dimensions/masks passed;
+only then pilot,then measuredsafe expansion. All3runs terminal:15native
+jobs,9.8351s,peak21208KiB,noOOM. Counts stayed2s/200k/1thread/3GiB;no Rust
+source edits/builds or limit increase.12existing guard tests pass. Read-only
+audit verified41NEW event/native-output hashes,40reused sample-event hashes,
+and2source completion hashes.38distinct exact points retain actual backend
+provenance. All writes append-only;old rows/grids/fits/failed attempts kept.
+
+Evidence:reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-alternate-points/{README.txt,manifest.json,audit.py}.
+Exact plans archived in BOUNDED-PLANS.txt. Latest remaining-recent-pending.json
+carries all17recent inputs and current latest_progress;consult it instead
+of stale snapshots. Previous goal turn PROGRESS;this turn also PROGRESS:
+one formerly unknown polynomial recovered,one alternate attempt capped.
+
+/root releases both openings,researchREADME,new experiments/
+complete_recent_alternate.py and new evidence at local checkpoint. All prior
+drivers/library sources/binaries unchanged. No source files owned/no KTT
+jobs live after checkpoint. Goal ACTIVE;no counterexample claimed.
+NEXT:prioritize9remaining unknown grids or another independent small cohort,
+with fresh exact bounded plan,controls and measured pilot. Any modest cap
+increase requires a NEW plan justified by measured memory/runtime. Do not
+blindly repeat e4e4's capped -11/+8. Positive fits awaiting costly final checks
+stay separate from fully checked totals. Older128inputs,old negative basin/R5
+PARKED. No agents,remotejobs,historical/genetic restart,manuscripts,push,
+publish/deploy,symlinks or source-tree generated environments/builds.
+
 ## Phone status — 2026-11-16, CHECKPOINT 24
 
 Six recent unknown grids advanced. 1ca6c7ed (d17) is fully checked and
