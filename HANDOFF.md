@@ -1,5 +1,25 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 16
+
+Independent random cohort5: all512 inspected,220 NEW checked nonnegative,
+19 incomplete,273 dimension skips;no contender. Random totals:1005 distinct
+checked inputs,616 polynomials,79 incomplete. RNG2026111606,6rows/8labels,
+d3..24;all four ordinary/skew/flagged profiles included. No source/build
+changes;maintained exact APIs/hashes match checkpoint15. Fresh NEW/OLD
+controls/pilots at0,264 passed;prior verified cursor tests unchanged.
+
+All six runs terminal:132.7201s native,26212KiB peak,noOOM.11132 event/
+native-output hashes verified,all local results saved in DB,exact checked
+polynomial samples agree. Old rows/results preserved,limits unchanged.
+Evidence/plans:reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-random-small5/. /root releases opening;no library files owned.
+Large old basin/R5 PARKED;no agents,remote jobs,historical/genetic restart,
+manuscripts,push/publish/deploy. Goal ACTIVE. Next inspect maintained APIs
+and sampling coverage for independent content draws,then record a narrow
+source/test/control/pilot plan. Do not infer rational emptiness from count1=0
+without a theorem;use paper-cache for saturation claims. See research handoff.
+
 ## Phone status — 2026-11-16, CHECKPOINT 15
 
 Independent small random cohort4: all512 inspected,208 NEW checked
