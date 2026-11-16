@@ -1,5 +1,42 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 37
+
+Search BLOCKED by sustained memory pressure after three consecutive compute-
+held goal turns (35–37). Fresh three-sample preflight stayed near20GiB,
+above16GiB launch margin; current live check also failed. Runtime18GiB guard
+and Docker24GiB limit unchanged. No native job or DB write started;OOM0.
+This turn has no new search result. Goal status update follows this checkpoint.
+
+Totals unchanged:2698checked inputs /1692polynomials /187incomplete /
+1599unique exact-empty. No counterexample. Prepared d22 4b15a368 remains
+unknown19/23grid values. Source/latestbasis hashes and protected-input SQL
+rechecked;no completion/checked/negative result or native run directory.
+All old rows,results,partial fits and failed receipts preserved. R5/oldbasin
+and all other inputs untouched.
+
+Independent lightweight work is complete:original input/cache/provenance
+and maintained sorted API eligibility/four positive controls audited. Sorted
+backend is NOT built,benchmarked or qualified. Remaining counting/backend
+qualification requires native execution under the same memory guard;no
+available authorized compute route bypasses it. No repeated check-only loop.
+
+Evidence:audit-evidence/2026-11-16-selected5-d22/
+{blocked-memory-evidence.json,third-hold-preflight.json,selection.json,
+preparation-manifest.json,resume-manifest.json,sorted-api-controls.json}.
+Third receipt/source/basis/prior-evidence hashes and unchanged OOM counters
+verified. No source changes/builds,agents,remote/genetic restart,manuscripts,
+push/publish/deploy,symlinks,in-tree environments or resource-setting changes.
+Other workers/processes left alone. /root releases both openings and this
+checkpoint's evidence;no native KTT job or source ownership remains.
+
+RESUME after external memory pressure clears:recheck ownership/Git/input;
+NEW3readings10sapart<=16GiB,last<=60s+live<=16GiB. Then ONLY fresh controls
+-12/+6+geometry and one-case d22pilot,2s/200kstates/1thread/3GiB,
+55sinternal/60souter EACH;NOexpansion. Preserve every failed receipt;the
+controls-held filename retains the previous one. Do not retry capped d15
+ordinary8/d20ordinary10 at unchanged backend/budget. No automaticwake-up.
+
 ## Phone status — 2026-11-16, CHECKPOINT 36
 
 Counting still held: fresh three-sample preflight stayed about 17.6 GiB,
