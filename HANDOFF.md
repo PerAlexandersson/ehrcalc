@@ -1,5 +1,24 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 5
+
+Fixed research BODY128 cohort exhausted:110 nonnegative +18 empty,
+zero deferred,no KTT counterexample. This turn adds27 checked inputs
+through three canonical polynomials and proved flag/label bijections.
+D26 redundant row6 flag removed only by the new proof;d28 genuine flag
+retained. Fresh ordinary checks1,10,11 /1,11,12 /1,12,13 all pass;
+failed large-point attempts preserved and not claimed as completed counts.
+
+All433 new event hashes verified;DB append-only,old rows/results intact.
+25.9363s child time,58,932 KiB peak,no OOM,all native jobs ended.
+No library source/counting changes or builds;13 focused Python tests pass.
+Research evidence: reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-remaining-body/. /root releases opening ONLY at checkpoint.
+R5 PARKED;no agents,remote jobs,manuscripts,push or publication/deployment.
+Goal ACTIVE. Next narrow two-body-box shape variant requires new ownership/
+exact plan and refreshed negative-source control before one55s pilot.
+See research HANDOFF. No broad historical/genetic campaign restart.
+
 ## Phone status — 2026-11-16, CHECKPOINT 4
 
 Research body128 now83 checked nonnegative,18 empty,27 deferred
