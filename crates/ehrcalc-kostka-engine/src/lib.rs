@@ -15,5 +15,6 @@ pub mod lr;
 pub mod packed_modular;
 pub mod partition;
 pub mod syt;
+mod two_label;
 
 pub use partition::Partition;

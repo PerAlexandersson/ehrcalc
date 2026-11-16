@@ -1,5 +1,37 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 21
+
+New maintained Rust two-label skew/flagged/masked fast path:<=12free
+coordinates,<=4096exact inclusion-exclusion terms. Exact affine/interior
+masks retained;other inputs fall back.332workspace tests pass(6newfocused),
+format passes,standard Clippy passes with2preexisting warnings. Strictlint
+stops on unchanged ehrhart.rs:50/kostka_dp.rs:664;recorded,no unrelated edits.
+
+Fixed native replay:24/24counts passed;22completed OLD values match. The
+unequal6row +/-8probes previously hit1s/state caps at388/346MiB;now~22ms/
+15MiB. Both recovered counts independently match the polynomial from OLD
+samples only. Final binary archived/replayed;all13runs terminal,noOOM.
+188DB event/native-output hashes verified,all old rows/results retained.
+Random totals unchanged:1896checked,1216polynomials,128incomplete,734LPempty.
+
+Paper-cache2202.11808v2,Ferroni--McGinnis,Thm1/2 covers unequal integral
+box slices;two-label weak skew/flagged fibers reduce to these by an integral
+translation. They are positive controls,not counterexample targets. Thm14
+contains the classical counting formula. Complete proof/source hashes and
+benchmarks:reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-two-label-fastpath/{README.txt,SOURCE_SCOPE.md,manifest.json}.
+Exact plans archived there. No sampler policy/classification changes this turn.
+
+/root releases both openings,library crates/ehrcalc-kostka-engine/src/
+{lib.rs,kostka_dp.rs,two_label.rs},libraryREADME,docs/{ARCHITECTURE,TESTING}.md,
+researchREADME and new evidence at
+local checkpoint. No files owned/no KTT jobs live. Goal ACTIVE. NEXT:optional
+source-checked theorem guard and fresh independent small cohort with>=3labels,
+preserving snapshots;record ownership/test/control/pilot plan before changes/
+compute. All128caps,old large negative basin/R5 PARKED. No agents,remotejobs,
+broad historical/genetic restart,manuscripts,push/publish/deploy.
+
 ## Phone status — 2026-11-16, CHECKPOINT 20
 
 Column-compatible research sampler implemented;default hashes unchanged.

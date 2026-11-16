@@ -38,6 +38,12 @@ against the order-ideal count `L(1)`.  Budget behavior is tested at the exact
 boundary: error for `ideals`, fallback for `auto`, rejection for `frontier`.
 
 GT and flagged examples must match the frozen `kostka` reference fixtures.
+The two-label fast path is checked against exhaustive integer box points,
+legacy counts for small skew shapes and flags, and direct intermediate-chain
+enumeration for every combination of two-row forbidden and strict masks.
+Known hypersimplex ordinary/interior counts, a flag-forced point, wide translated
+totals, large capacities, state-budget zero, zero-weight labels, and the twelve
+coordinate fallback guard are covered by `two_label::tests`.
 Order-polytope examples must match direct order-preserving-map counts.  Flow
 examples must match small enumerated flows.  Key examples must match checked
 fixtures before a new evaluator becomes the default.  The fast key scanner is

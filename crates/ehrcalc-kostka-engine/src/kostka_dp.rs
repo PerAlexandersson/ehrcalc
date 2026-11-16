@@ -1015,6 +1015,20 @@ fn try_flagged_skew_kostka_oriented(
         return Ok(BigUint::zero());
     };
 
+    if w.len() == 2 && w.iter().all(|&part| part > 0) && max_states != Some(0) {
+        if let Some(value) = crate::two_label::count_chain(
+            lambda,
+            mu,
+            w[0],
+            &lower_bounds[0],
+            &upper_bounds[0],
+            None,
+            None,
+        ) {
+            return Ok(value);
+        }
+    }
+
     let n = lambda.num_parts();
     let mut dp = partition_count_map();
     dp.insert(mu.clone(), BigUint::one());
@@ -1518,6 +1532,20 @@ pub fn try_masked_flagged_skew_kostka(
     ) else {
         return Ok(BigUint::zero());
     };
+
+    if weight.len() == 2 && weight.iter().all(|&part| part > 0) && max_states != Some(0) {
+        if let Some(value) = crate::two_label::count_chain(
+            lambda,
+            mu,
+            weight[0],
+            &lower_bounds[0],
+            &upper_bounds[0],
+            strict_lower_masks,
+            strict_diagonal_masks,
+        ) {
+            return Ok(value);
+        }
+    }
 
     let mut states = partition_count_map();
     states.insert(mu.clone(), BigUint::one());

@@ -70,6 +70,43 @@ which cites McAllister (2008), Section 1. Geometrically disconnected skew
 components alone do not justify a product: their content allocations may
 vary. Legacy unsplit counters are retained for regression comparisons.
 
+For positive two-part content, `two_label::count_chain` counts the only
+intermediate partition directly. Its row coordinates satisfy
+`max(mu_j,lambda_(j+1)) <= alpha_j <= min(lambda_j,mu_(j-1))`, together
+with the first level sum. Adjacent coordinates already satisfy
+`alpha_j >= lambda_(j+1) >= alpha_(j+1)`, so these intervals and their
+sum describe the entire fiber. Validated flags and forbidden-row equalities
+are included through propagated bounds before this reduction.
+
+The explicit strict masks tighten these same endpoints. At step zero,
+strict lower/diagonal inequalities increase `mu_j` or decrease `mu_(j-1)`
+by one. At step one, they decrease `lambda_j` or increase `lambda_(j+1)`
+by one. We continue to derive relative-interior masks from the exact affine
+hull, including degenerate fibers; box endpoints do not replace that audit.
+
+After translating lower endpoints and removing fixed coordinates, the count
+is the coefficient of `z^T` in `product_j(1+z+...+z^(c_j))`. We evaluate it
+by inclusion–exclusion with the existing exact `num::integer::binomial`:
+`sum_S (-1)^|S| binom(T-sum_(j in S)(c_j+1)+r-1,r-1)`, omitting negative
+residual sums. Complement symmetry replaces `T` by `min(T,sum(c)-T)`.
+Wide integer totals and `BigUint` arithmetic avoid dependence on dilation size.
+
+This path is limited to twelve free coordinates, hence at most 4096 terms
+and two accumulating integers. Positive state budgets bound partition-DP
+levels when that DP is used; inclusion–exclusion does not construct them.
+A zero state budget retains the original DP behavior. More coordinates,
+zero-weight labels, and other alphabet sizes also retain the existing path.
+The generic flagged and low-level masked counters share this helper; legacy
+counters and the statistics-returning unflagged DP remain independent.
+
+The same weak-fiber reduction identifies these two-label polytopes as integer
+box slices after an integral translation and removal of fixed coordinates.
+Their Ehrhart positivity follows from Ferroni--McGinnis,
+[*Lattice points in slices of prisms*, Theorem 1](https://arxiv.org/abs/2202.11808v2).
+The proof of Theorem 14 gives the classical inclusion–exclusion count used
+here. Pure dilation scales the translated box and its level sum together;
+endpoint slices are points, with Ehrhart polynomial one.
+
 Flow-polytope support is the set of edges that are positive for some
 feasible flow.  It is computed from one maximum flow and the strongly
 connected components of its residual graph, not from reachability alone.
