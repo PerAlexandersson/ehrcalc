@@ -1,5 +1,27 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 17
+
+Research sampler now supports independent positive contents,no tableau
+witness;default snapshots unchanged. First new-mode cohort:all512 inspected,
+230 NEW checked nonnegative,2 priorchecked,157 exact LP-empty,3 incomplete,
+120dimskips. No contender/saturation contradiction. Totals:1235 distinct
+checked inputs,784 polynomials,82 incomplete.15 focused tests pass.
+No Rust edits/builds;existing exact dimension/emptiness/count/interior/
+interpolation APIs/binaries reused. Paper-cache AO23 Thm28/Cor29 guarantees
+an integral vertex in nonempty allowed fibers;Cor36 period-one guard remains.
+
+All six runs terminal:105.2944s native,27536KiB peak,noOOM.11767 event/
+native-output hashes verified,all local checked/empty results saved in DB,
+exact polynomial samples agree. Old rows/results retained,limits unchanged.
+Evidence/plans:reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-independent-content/. /root releases opening;no library files
+owned. Old large basin/R5 PARKED;no agents,remote jobs,historical/genetic
+restart,manuscripts,push/publish/deploy. Goal ACTIVE. Next independent-content
+RNG2026111608,6rows/8labels,d3..24 only after matching fresh controls/pilot;
+record plan/check ownership/memory first,retain1s caps and emptiness/saturation
+guards. See research handoff;keep all82 old incomplete cases parked.
+
 ## Phone status — 2026-11-16, CHECKPOINT 16
 
 Independent random cohort5: all512 inspected,220 NEW checked nonnegative,
