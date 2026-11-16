@@ -1,5 +1,34 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 8
+
+General prefix presolve implemented/committed asdf61c9b:generic ordinary,
+strict flagged,unflagged stats,and GT Ehrhart. Uses proved affine lattice
+map;all flags retained,exact dimensions checked. Private helper module
+kostka_normalization.rs;proof/guards in docs/FORCED_PREFIX.md. Legacy
+ordinary and unreduced masked/packed paths preserved as reference routes.
+No public CLI/MCP contract change. No KTT counterexample.
+
+Full workspace DEBUG and RELEASE each326 passed/0 failed/0 ignored.
+Five new tests include independent ordinary/interior oracles,small scaled
+families,dimensions,whole polynomial,flags/empty/boundary/u32 guards.
+Old five binaries preserved externally with hashes before rebuild. Thin
+consumer rebuilt locked;8 old/new controls and18 paired counts all match.
+Median ordinary10 runtime2.5013->2.1573s;interior-14 1.7346->1.6950s,
+one workload only. Existing manual reduction gets no compound speedup.
+
+All78 new append-only check hashes verified,old rows/results preserved.
+Native39.3268s/15,660 KiB,no OOM,all jobs ended. External logs/reference:
+/cargo-target/ktt-prefix-integration-20261116-* . Research evidence:
+reduced-kogan-mutation-search/audit-evidence/2026-11-16-prefix-integration/.
+/root releases opening,README,ARCHITECTURE,FORCED_PREFIX,and engine
+lib.rs/kostka_dp.rs/ehrhart.rs/kostka_normalization.rs at checkpoint.
+No files owned. R5 PARKED;no agents,remote jobs,manuscripts,push or deploy.
+Goal ACTIVE. Next one saved d31 input044fab8e... needs new ownership/
+plan and new-binary dimension/controls before55s pilot. Include preserved
+OLD original-input count:NEW original/reduced calls share presolve.
+See research handoff.
+
 ## Phone status — 2026-11-16, CHECKPOINT 7
 
 New d28 five-member class nonnegative;original/reduced dimensions28 and
