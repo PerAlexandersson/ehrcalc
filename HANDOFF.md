@@ -1,5 +1,41 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 36
+
+Counting still held: fresh three-sample preflight stayed about 17.6 GiB,
+above the unchanged 16 GiB launch margin. Zero native jobs or DB writes.
+Prepared d22 target 4b15a368 remains unknown at 19/23 values. Totals stay
+2698 checked inputs / 1692 polynomials / 187 incomplete / 1599 unique empty.
+R5, capped d15/d20 checks and all other cases remain untouched.
+
+New read-only API audit: d15 31bf8f4e and d20 28e78cce are eligible for
+maintained try_skew_kostka_stats(...,true). Exact unflagged protocol bounds
+are ONE-based: lower flags all1, upper flags all rowcount, no internal masks.
+Their content is unsorted. Flagged d19 44c801cf has active bounds: EXCLUDED.
+Never sort flagged content or strict masks. Four immutable positive controls
+verified with actual backend/input/dimension/value hashes: d15 at1/7 and
+ d20 at1/9. No sorted backend built/run/benchmarked/qualified in cache.
+
+Evidence in audit-evidence/2026-11-16-selected5-d22/: api-eligibility.py,
+sorted-api-controls.json, resume-manifest.json, resume-controls-preflight.json.
+Source API/cohort/report/progress/control-event hashes are bound. Original
+preparation files retained. Failed external controls receipt renamed byte-
+for-byte to ...-preflight-controls-held.json; future NEW controls receipt path
+is free. Latest d22 unadvanced state/protected-input/absent-run checks passed.
+Metadata/registry refreshed; existing counting/library source and binaries
+unchanged. No build. Ehrcalc/DB MCP absent; established fallback retained.
+
+/root releases both openings, researchREADME and evidence at local checkpoint.
+Goal ACTIVE. This turn PROGRESS: new exact API eligibility/control evidence;
+second consecutive compute-held turn, independent lightweight work completed.
+NEXT: fresh memory check and three spaced <=16 GiB readings before controls
+-12/+6 and d22 pilot (ONLY2phases,2s/200k/1thread/3GiB,55s/60s each,
+runtime18GiB under24GiB). No threshold change, receipt overwrite or retry of
+capped nodes at unchanged backend/budget. Sorted ordinary API needs a concrete
+consumer and fresh measured controls before any use; no performance claim.
+No agents, remote/genetic restart, manuscripts, push/publish/deploy, symlinks
+or in-tree environments/builds. No native KTT job or source ownership live.
+
 ## Phone status — 2026-11-16, CHECKPOINT 35
 
 D22target4b15a368 PREPARED,NOT counted:stillunknown19/23grid values.
