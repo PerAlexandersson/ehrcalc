@@ -1,5 +1,27 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 9
+
+Automatic forced-prefix reduction remains source commit df61c9b; no Rust
+source/build changes in this batch. Full debug/release 326-test passes
+and measured ~14% ordinary benchmark gain recorded at checkpoint 8.
+
+Bounded research revalidation closed all 18 saved d31 inputs via two
+nonnegative exact polynomials and proved flag/label equivalences.
+Original/reduced dimensions 31; preserved OLD original nonzero interior
+controls match. Fresh ordinary 1,13,14 and 1,14,15 pass. Capped32 retained,
+33 unattempted; no separate high-point counters claimed for all members.
+Two-box128: 56 nonnegative,19 empty,53 deferred(d33:9,d38:44).
+No KTT counterexample. 335 append-only hashes verified; old rows intact.
+184.3699 s native time,58928 KiB peak,no OOM,all children terminal.
+19 research tests pass; no library regression checks needed anew.
+Evidence: reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-two-body-d31/. /root releases opening at local checkpoint;
+no library files owned. Unrelated untracked runs/ untouched. R5 PARKED;
+no agents,remote jobs,broad/genetic restart,manuscripts,push or deploy.
+Goal ACTIVE. Next one saved d33 input requires exact ownership/key/plan
+and small independent controls before a55s pilot. See research HANDOFF.
+
 ## Phone status — 2026-11-16, CHECKPOINT 8
 
 General prefix presolve implemented/committed asdf61c9b:generic ordinary,
