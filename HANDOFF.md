@@ -1,6 +1,6 @@
 # Ehrcalc Handoff
 
-## Nine-case continuation — 2026-11-16, ACTIVE
+## Skew factorization + search — 2026-11-16, CHECKPOINT
 
 Implemented column-capacity Kostka factorization in the maintained engine,
 including skew shapes and flags. The forced intermediate partition cuts the
@@ -17,14 +17,15 @@ Source: Nov13 Garber--Pak--Slonim paper (cached SHA 632ad97a...), plus Nov14
 `projects/stretched-lr-finiteness/PRIMITIVE-COMPRESSION.md` Section3 and
 `RESEARCH.md` region lemmas, located following user steering. These notes
 remain read-only under their existing owner. Library implementation/docs
-ownership is released at the focused local checkpoint; `/root` continues
-to own this opening and the research consumer/orchestration listed in
-reduced-kogan-mutation-search/HANDOFF.md. No search child launched yet.
-Nine remaining d21--24 inputs, adaptive negative evaluations with per-count
-DB checkpoints. Small <=60s pilot, 3 GiB /200,000 states /one thread; expand
-only after measured safety. Maintained APIs only, external build target.
-No old-row overwrites, remote jobs or manuscript edits.
-R5 PARKED; genetic restart deferred until targeted options are exhausted.
+ownership released at 859a881. The nine-case search used the rebuilt engine:
+all nine reconstructed power/h* vectors nonnegative; six ordinary-validated,
+three incomplete after 30s timeouts. Next: five missing ordinary values
+(+25 for 99de3582..., +25,+26 for bb91bd6d... and c1eb6242...), reusing
+215 exact signed samples already in MariaDB. No interpolation rerun needed.
+Evidence: `../../projects/reduced-kogan-mutation-search/audit-evidence/2026-11-16-checkpointed/README.txt`.
+All 739 event hashes verified. All 252 jobs ended; no OOM, peak 22,148 KiB.
+R5 PARKED. `/root` releases this opening; search goal remains active. No old
+row overwrites, remote jobs, agents, manuscript edits or publication.
 
 ## KTT resume + DB saving — 2026-11-15, FIRST BATCH FINISHED
 
