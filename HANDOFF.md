@@ -1,5 +1,47 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 27
+
+All 512 fresh independent proposals inspected: 213 NEW checked nonnegative,
+200 new exact-empty fibers, 22 theorem skips, 15 incomplete, 61 dimension
+skips and one old checked input skipped. No negative fit or counterexample.
+Totals: 2505 checked inputs / 1575 distinct fully checked polynomials /
+177 incomplete / 1370 unique empty. Earlier 162 incomplete inputs untouched.
+New incomplete cases: 14 unknown grids and one d21 nonnegative flagged-skew
+fit with 2/3 ordinary checks. Partial fits stay outside checked totals.
+
+Eight runs terminal: 3981 native jobs, 131.7009 child seconds, 364.467 summed
+runner wall seconds, peak 29296 KiB, no OOM. Counts 1s, geometry 2s, 200k
+states, one thread, 3GiB; no cap increase or Rust build. Fresh controls and
+safe pilots at 0/265 preceded expansions. Final two unvisited proposals at
+510 received fresh controls and geometry: one empty, one dimension skip.
+Cursor 512 has no unvisited suffix; its zero-fit pilot gate is unused.
+
+RNG 2026111613, independent-content/full-range/column-compatible, six rows/
+eight labels, dimensions 3..24, theorem skip ON. New checked profiles:
+ordinary 70 / skew 61 / flagged 39 / skew_flagged 43; dimensions 3..19.
+All source/binary/test versions unchanged from checkpoint26's 23 passing
+focused tests; no unnecessary repeat. Audit passed 11752 new event and
+native-output hashes, exact samples/polynomials, gates/cursors and no-repeat
+checks. All writes append-only; old rows, grids, fits and failed attempts kept.
+
+Evidence: reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-independent4/{README.txt,manifest.json,audit.py}.
+Exact precompute plans archived in BOUNDED-PLANS.txt; pending-cases.json holds
+all 15 current grids/fits and source references. Earlier 162 remain in their
+prior evidence, including latest_progress in alternate-points for prior fits.
+/root releases both openings, research README and new evidence at the local
+checkpoint. No counting source changed, no KTT jobs live, no source files
+owned afterward. Goal ACTIVE; this turn made PROGRESS with new exact inputs.
+
+NEXT: a new bounded cohort or a small explicit subset of these 15 cases,
+with fresh controls and measured pilot. c2350989 (skew,d20) is one point short;
+reuse qualified maintained packed APIs under a new exact plan if appropriate.
+Do not retry earlier incomplete inputs implicitly or restart at cursor512.
+R5 and the old negative basin PARKED. No agents, remote jobs, historical/
+genetic restart, manuscripts, pushes, publish/deploy, symlinks or source-tree
+builds/environments.
+
 ## Phone status — 2026-11-16, CHECKPOINT 26
 
 All 512 new independent proposals inspected: 194 NEW checked nonnegative,
