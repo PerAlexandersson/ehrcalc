@@ -1,5 +1,44 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 35
+
+D22target4b15a368 PREPARED,NOT counted:stillunknown19/23grid values.
+Two3sample pressure preflights FAILED<=16GiB margin(initial18.7..19.1GiB,
+confirmation16.1..16.7);other owner's active Lean build observed. Native
+launch HELD,no guard/settings change or interference. Zero native jobs,
+zero DB writes. Totals unchanged2698checked/1692polynomials/187pending/
+1599unique empty. All earlier results and other186pending inputs untouched.
+
+Read-only preparation audit PASSED:18sample-event hashes+originalsource
+result hash,input/backend/dimension/reciprocitysign/all original values.
+Source native report,seed,exactdimension/interiormasks/normalizedinput/grid
+and latest unadvanced state checked. Selection pins originalindependent5
+and latestselected5-d20 manifest/pending hashes plus3qualified binaries.
+No completion/checked/negative result for selectedinput. Preparation manifest
+binds exact source/input/selection/auditor/failed-pressure receipts. No new
+polynomial or positivity claim. Prior d15/d20fit progress preserved.
+
+Evidence:audit-evidence/2026-11-16-selected5-d22/{README.txt,selection.json,
+validated-inputs.json,preparation-manifest.json,audit.py,initial-preflight.json,
+confirmation-preflight.json,BOUNDED-PLANS.txt}. --inspect is read-only and
+refuses any existing native run directory;normalnativeaudit not yet run.
+Exact plan in both precompute openings/BOUNDED-PLANS:ONLYcontrols-12/+6+
+geometry THEN1casepilot,2s/200k/1thread/3GiB,55s/60s perphase,NOexpand.
+NEWfresh3sample<=16GiB+live gate beforeEACHphase,runtime18GiB under24GiB.
+Metadata/capabilities refreshed;existing sources/tests/binaries unchanged,
+no build. Ehrcalc/DB MCP absent;established native/store fallback retained.
+
+/root releases both openings,researchREADME,new preparation evidence at
+localcheckpoint;no source ownership/native KTT job live afterward. GoalACTIVE;
+this turn PROGRESS:exact nextinput+sourcecache audited and frozen;compute
+held by observed memory gate(first resource-blocked goal turn,not marked
+blocked). NEXT:recheckmemory/currentownership,then fresh3samplepreflight;
+launch only if genuinely safe. Otherwise continue independent lightweight
+work,never bypass or restart after observation timeout. R5/oldbasin PARKED;
+do not retry d15ordinary8/d20ordinary10 at unchanged backend/budget.
+No agents,remote/genetic restart,manuscripts,push/publish/deploy,symlinks or
+source-tree generated environments/builds. No automaticwake-up promised.
+
 ## Phone status — 2026-11-16, CHECKPOINT 34
 
 28e78cce(skew,d20):old19->all21grid values;NONNEGATIVE fit. Ordinary
