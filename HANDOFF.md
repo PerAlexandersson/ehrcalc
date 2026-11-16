@@ -1,5 +1,42 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 33
+
+31bf8f4e(skew,d15):old13->all16grid values recovered;NONNEGATIVE fit.
+Ordinary checks1/7passed,8capped2s. Still validation-incomplete;NOcounterexample.
+Totals unchanged:2698checked inputs/1692distinct checked polynomials/
+187incomplete/1599unique exact-empty. Latest12pending:9unknown grids,
+3nonnegative fits awaiting checks. All earlier175pending untouched.
+
+Explicit3case selection from audited independent5(seed2026111614):31bf8f4e,
+28e78cce(d20),4b15a368(d22). Fresh6signed packed controls and refreshed
+geometry/masks ALLmatched. ONLYfirst input enteredpilot. Lastcheckcapped =>
+NO expansion,despite internal resource-safe pilot flag. Other2grids unchanged.
+Bothruns terminal/safe:18native jobs,7.2638child seconds,peak21920KiB,
+1timeout preserved,noOOM. Existing2s packed completion profile/200kstates/
+1thread/3GiB,55s/60s phases;originalscreen was scalar1s. Strict3sample<=16GiB
+plus live margin beforeEACHphase;runtime18GiB guard underDocker24GiB unchanged.
+No source/kernel/test change or build;same version as13focused tests.
+
+Read-only audit passed49NEW event/native-output hashes,12reused sample hashes,
+3source-result hashes. Successful stdout JSON equals recordednative data;
+new samples match actual backend/raw/signed/dimension/point.20distinct nonzero
+exactpoints retain provenance. Full degree15fit/h* length16/affine dimension
+and all16grid values/2checks agree exactly. All writes append-only;all old
+rows,grids,fits and failed attempts preserved.
+Evidence:audit-evidence/2026-11-16-selected5/{README.txt,manifest.json,audit.py,
+selection.json,remaining-recent-pending.json,pressure-receipts.json} in private
+project. validated-inputs.json describes PRECOMPUTE zerojobs/DBwrites only;
+manifest records actual18jobs. Exact plans in BOUNDED-PLANS.txt.
+
+/root releases both openings,researchREADME,new evidence at localcheckpoint;
+no source ownership/KTTjobs live afterward. GoalACTIVE;this turn PROGRESS:
+one unknown grid now has a nonnegative fit. NEXT:28e78cce(d20,19/21points),
+new SINGLE-case selection and fresh controls/pilot/pressure gates. Do not
+repeat31bf's capped check8 at unchanged backend/budget. R5/oldbasin PARKED.
+No agents,remote/genetic restart,manuscripts,push/publish/deploy,symlinks or
+in-tree generated environments/builds.
+
 ## Phone status — 2026-11-16, CHECKPOINT 32
 
 Fresh independent cohort:191 NEW checked nonnegative inputs,229 exact-empty,
