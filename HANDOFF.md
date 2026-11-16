@@ -1,5 +1,30 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 11
+
+USER NOW PREFERS independent small RANDOM ordinary/skew/flagged Kostka
+screen. Old negative-parent basin parked;R5 PARKED. No Rust source/build
+changes. Maintained exact Rust APIs reused via thin checkpoint consumer.
+130 inputs checked nonnegative (83 polynomials),2 fits validation-capped,
+no contender. All4 profiles covered.1s/count,d<=12,4-case pilot before128.
+44.4717s native/~136.88s run wall,25564KiB peak,no OOM,alljobs ended.
+4952 append-only random event hashes verified;39 Python tests pass.
+
+User's period-collapse concern audited using paper-cache exact-current
+sources:AO23 Corollary36 proves period1 for these pure monotone interval
+row-flagged stretches;integrality remains separate. Negative seed itself
+is an integral0/1 order polytope with all-dilation ideal formula. Degree
+agreement alone is not proof. Research guard now records hypotheses.
+Old d33 finalized (three inputs);two-box65/19/44,44 PARKED.202 finish/
+proof hashes verified. Resource guard now conservatively removes clean
+inactive file cache while retaining18GiB pressure/6GiB headroom and3GiB
+child limit;interrupted jobs journal terminal status and usage scope.
+Evidence:reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-{random-small,two-body-d33-finish}/. /root releases opening;
+no library files owned. No agents,remotejobs,manuscripts,push/deploy.
+Goal ACTIVE;next independent small mixed random pilot (new RNG seed),
+then bounded fast screen. Do not follow old negative-basin next-step notes.
+
 ## Phone status — 2026-11-16, CHECKPOINT 10
 
 No Rust source/build changes. Six saved d33 inputs newly nonnegative via
