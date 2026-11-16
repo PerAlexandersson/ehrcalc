@@ -1,5 +1,26 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 13
+
+Small independent random cohort3: 105 NEW inputs checked nonnegative,
+13 sampling-capped/unclassified; no contender. Random totals: 445 distinct
+checked inputs / 280 polynomials, 18 pending across all cohorts.
+RNG 2026111604, up to 6 rows / 8 labels, dimension window 3..24.
+225/512 proposals inspected; 287 UNVISITED, next zero-based cursor 225.
+180s screen budget ended safely; all jobs terminal. 80.3285s native,
+25700KiB peak, no OOM. 5618 event/native-output hashes verified;
+44 Python tests pass. No Rust source/build changes. Exact maintained
+count/interior/dimension/interpolation APIs reused; period-one guard retained.
+
+Evidence and exact precompute plans: reduced-kogan-mutation-search/
+audit-evidence/2026-11-16-random-small3/. All old DB rows/results retained.
+/root releases opening; no library files owned. Large old basin and R5
+PARKED; no agents, remote jobs, historical/genetic restart, manuscripts,
+push or deployment. Goal ACTIVE. NEXT: add/test explicit cursor support in
+the research driver (not implemented yet), then fresh controls/pilot at 225
+to continue the 287 unvisited proposals under the SAME 1s/resource caps.
+See research HANDOFF; do not follow older negative-parent next-step notes.
+
 ## Phone status — 2026-11-16, CHECKPOINT 12
 
 Independent small random cohort2 finished at current caps,RNG2026111603.
