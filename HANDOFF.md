@@ -1,5 +1,45 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 24
+
+Six recent unknown grids advanced. 1ca6c7ed (d17) is fully checked and
+nonnegative. e064739f (d17) and 4fea2f7e (d20) have nonnegative fits with
+2/3 ordinary checks; final checks capped. 7cd3510c (d20) and e4e4f381 (d18)
+are one point short; ee91010d (d21) is two short. No negative fit appeared.
+Totals: 2098 checked inputs / 1339 fully checked distinct polynomials /
+145 incomplete / 957 unique LP-empty. Latest cohort: 17 incomplete,
+10 unknown grids and 7 fits awaiting checks. Older 128 inputs remain parked.
+
+Two fixed subsets each passed fresh signed controls, then a safe one-case
+pilot before expansion. All six phases terminal: 57 native jobs, 28.1739s,
+peak 21256 KiB, no OOM. Counts 2s / 200k states / one thread / 3GiB; no cap
+increase or Rust build. All 12 focused tests pass. Read-only audit verified
+159 NEW event/native-output hashes and 95 reused sample-event hashes;
+113 distinct exact points retain actual backend provenance. All results,
+partial grids/fits and attempts saved append-only; old rows remain intact.
+
+Evidence: reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-packed-subsets/{README.txt,manifest.json,audit.py}.
+Exact precompute plans archived in BOUNDED-PLANS.txt. In remaining-recent-
+pending.json, consult latest_progress for the five advanced incomplete inputs;
+original source snapshots are preserved, not current classifications.
+
+/root releases both openings, research README, experiments/{
+complete_recent_caps.py,complete_recent_subset.py}, tests/
+test_complete_recent_subset.py and new evidence at the local checkpoint.
+The old loader gained only optional allowed_keys; its default fixed selection
+is unchanged. No counting algorithm changed. No source files owned and no
+KTT jobs live after checkpoint. Goal ACTIVE; no counterexample claimed.
+
+NEXT under a NEW exact plan/control/pilot: consider positive 8 for 7cd3510c
+or e4e4f381, opposite the capped negative point, at the SAME 2s/200k limits.
+This may fill either final grid point; it has NOT been measured or run.
+Otherwise choose a fresh fixed subset of remaining recent unknown grids.
+Do not replay stale prefixes or treat partial fits as fully checked.
+Older 128 inputs, old negative basin and R5 PARKED. No agents, remote jobs,
+broad historical/genetic restart, manuscripts, pushes, publish/deploy,
+symlinks or source-tree generated environments/builds.
+
 ## Phone status — 2026-11-16, CHECKPOINT 23
 
 Three recent capped grids CLOSED:6367b54c(d19,skew_flagged),71541907(d24,
