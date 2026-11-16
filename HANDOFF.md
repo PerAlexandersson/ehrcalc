@@ -1,5 +1,47 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 26
+
+All 512 new independent proposals inspected: 194 NEW checked nonnegative,
+213 new exact-empty fibers, 20 theorem skips, 17 capped grids, 66 dimension
+skips. Two prior inputs revalidated identically and excluded from new counts.
+No negative fit, counterexample or saturation contradiction.
+Totals: 2292 checked inputs / 1452 distinct fully checked polynomials /
+162 incomplete / 1170 unique empty. Earlier 145 incomplete inputs untouched.
+All 17 new incomplete cases are unknown grids, with no fitted polynomial.
+
+Eight runs terminal: 3758 native jobs, 127.3786 child seconds, 336.716 summed
+runner wall seconds, peak 29152 KiB, no OOM. Counts stayed at 1s, geometry
+2s, 200k states, one thread, 3GiB. No cap increase or Rust build. RNG
+2026111612, independent-content/full-range/column-compatible, six rows/eight
+labels, dimensions 3..24, theorem skip ON. New checked profiles: ordinary
+52 / skew 65 / flagged 38 / skew_flagged 39; dimensions 3..21.
+
+The driver now stops any negative fitted power coefficient even when its
+ordinary validation is incomplete. Regression proves the next proposal is
+not entered. All 23 focused tests pass; generator/defaults/old population
+hashes unchanged. Audit passed 11124 new event and native-output hashes,
+exact sample/polynomial evaluation, gates/cursors and no-repeat checks.
+All results, grids, fits and failed attempts saved append-only; old rows kept.
+
+Evidence: reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-independent3/{README.txt,manifest.json,audit.py}.
+Exact precompute plans archived in BOUNDED-PLANS.txt. pending-cases.json
+preserves 17 new grids and source references. Prior advanced records are in
+2026-11-16-alternate-points/remaining-recent-pending.json (latest_progress).
+/root releases both openings, research README, experiments/
+random_small_kostka.py, tests/test_random_small_kostka.py and new evidence
+at the local checkpoint. No source files owned or KTT jobs live afterward.
+Goal ACTIVE. This turn made PROGRESS: new checked and certified-empty inputs.
+
+NEXT: a new bounded independent cohort or a small explicit subset of the
+17 new unknown grids, with fresh controls and a monitored pilot. 9401d6e0
+(d17), f22262bf (d21), f2d7e676 (d22) are each one point short. Reuse qualified
+exact APIs and current prefixes/provenance. Cursor 512 has no unvisited
+suffix. No implicit retries of earlier 145 incomplete inputs. R5 and the old
+negative basin PARKED. No agents, remote jobs, historical/genetic restart,
+manuscripts, pushes, publish/deploy, symlinks or source-tree environments.
+
 ## Phone status — 2026-11-16, CHECKPOINT 25
 
 Alternate positive8 recovered 7cd3510c's dimension20 nonnegative fit;
