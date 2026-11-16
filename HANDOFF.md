@@ -1,5 +1,44 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 31
+
+Previously untouched7bdab573 (skew,d16) is fully checked and nonnegative:
+old14->17grid values,ordinary checks1/7/8allpassed (last2outside grid).
+No negative coefficient or counterexample. Totals:2507checked inputs /
+1577distinct fully checked polynomials /175incomplete /1370unique empty.
+Latest cohort has13pending:nine unknown grids,four positive fits awaiting
+checks. Earlier162incomplete inputs untouched;prior resource halt retained.
+
+Fresh SINGLE-case selection,not an old stopped-handle restart. Both signed
+packed controls and refreshed exact d16/masks matched. Strict three-snapshot
+<=16GiBpreflight plus live margin preceded EACHphase;runtime18GiBguard kept
+underDocker24GiB. Both runs terminal/safe:13native jobs,5.5302child seconds,
+peak20628KiB,no timeout/OOM. Counts/geometry2s,200kstates,one thread,3GiB;
+no limit increase,source/test/kernel edit or build. Same source version as
+22passing focused tests;no unnecessary rerun. No expansion phase/newinput.
+
+Read-only audit passed36NEW event/native-output hashes,13reused sample hashes
+and original grid-result hash.18distinct nonzero exact points retain actual
+backend provenance. Full degree16fit evaluated exactly at17grid values and
+all3ordinarychecks;h* length17. Gate/cursor/source/receipt hashes checked.
+All writes append-only;old rows,grids,fits and failed attempts preserved.
+
+Evidence:reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-untouched-skew16/{README.txt,manifest.json,selection.json,audit.py}.
+pressure-receipts.json preserves source-bound preflight/launch records. Exact
+plans archived in BOUNDED-PLANS.txt. remaining-recent-pending.json carries
+all13remaining cases and every prior latest_progress field (including d14
+positive fit/d17ordinary grid). /root releases both openings,researchREADME,
+new evidence at local checkpoint. No source files owned/KTT jobs live after.
+GoalACTIVE;this turn PROGRESS:one formerly unresolved input fully checked.
+
+NEXT:new bounded independent cohort or a small explicit subset of nine current
+unknown grids,with fresh controls/monitored pilot and stable memory preflight.
+Do not repeat capped reciprocal-10/ordinary+8 at unchanged budget without
+new evidence,or select this now-completed input. Earlier162,R5,oldnegative
+basin PARKED. No agents,remotejobs,historical/genetic restart,manuscripts,
+push/publish/deploy,symlinks or source-tree generated environments/builds.
+
 ## Phone status — 2026-11-16, CHECKPOINT 30
 
 Memory pressure cleared after preparation, confirmed by three spaced readings;
