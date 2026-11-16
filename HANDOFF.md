@@ -1,5 +1,52 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 30
+
+Memory pressure cleared after preparation, confirmed by three spaced readings;
+fresh strict preflights then preceded every native phase. Positive5 recovered
+5e694dec's d14 nonnegative fit; ordinary1/6 passed,7 capped. Ordinarycbe1's
+positive8 also capped; its d17 17/18 grid stays unchanged. No counterexample.
+No new fully checked case. Totals stay2506 checked inputs/1576distinct fully
+checked polynomials/176incomplete/1370unique empty. Latest14pending now:
+10unknown grids,4positive fits awaiting checks. Earlier162 untouched.
+
+New complete_current_point.py validates CURRENT prefixes/source completion
+events and appends a TRUEalternate argument;never relabels as reciprocal-10.
+It checks degree/constant/h* length and stops any negative fit immediately.
+Launch requires3pressure snapshots10sapart,<=16GiB,last<=60sold plus live
+check;runtime18GiB guard unchanged underDocker24GiB. No guard bypass or
+memory settings change. All3new runs terminal/safe:15native jobs,7.7208child
+seconds,peak24504KiB,noOOM. Counts2s/200k/1thread/3GiB;no budget increase,
+Rust kernel change or build. Original resource halt remains intact.
+
+22focused tests pass,including8new current-grid/node/degree/negative-stop/
+preflight/inspect guards. Real inspect mode validated29saved points/33source
+sample hashes with ZERO native jobs/DB writes before computation. Later
+counting added41immutable events;read-only audit verified all new event/
+native-output hashes,33reused sample hashes,2source completion hashes and
+all3fresh pressure receipts.31distinct exact points retain actual backend
+provenance. New fit evaluated exactly at15grid values/2completed checks.
+All writes append-only;old rows,prefixes,fits and failed attempts preserved.
+
+Evidence:reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-current-point-prep/{README.txt,manifest.json,selection.json,audit.py}.
+Directory began as preparation;manifest records actual later computation.
+validated-inputs.json's zero-write/job fields describe PRECOMPUTEinspection.
+pressure-preflights.json preserves4receipts. Exact plans archived in
+BOUNDED-PLANS.txt. remaining-recent-pending.json carries all14inputs and
+latest_progress;prior advanced fits preserved. /root releases both openings,
+researchREADME,new complete_current_point.py,test_complete_current_point.py,
+new evidence at local checkpoint. No source files owned/KTT jobs live after.
+GoalACTIVE;this turn PROGRESS:tested scheduler and one recovered polynomial.
+
+NEXT:untouched7bdab573(skew,d16,14/17points),new exact SINGLE-case selection
+with existing complete_selected_caps.py,fresh stable-pressure preflight,
+controls/pilot. No old stopped-handle restart. Current alternate selection now
+contains a fitted input and is refused. Do not repeat cbe1's capped+8/-10 at
+same budget without new evidence. Earlier162/R5/oldnegative basin PARKED.
+No agents,remotejobs,historical/genetic restart,manuscripts,push,publish/deploy,
+symlinks or source-tree generated environments/builds.
+
 ## Phone status — 2026-11-16, CHECKPOINT 29
 
 Counting STOPPED at the conservative memory guard, without OOM. Both attempted
