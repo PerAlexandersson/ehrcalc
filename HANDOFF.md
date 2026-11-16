@@ -1,5 +1,26 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 12
+
+Independent small random cohort2 finished at current caps,RNG2026111603.
+210 NEW inputs checked nonnegative/149 polynomials;3 d16 sampling caps
+unclassified,no contender. All512 proposals inspected(d3..16 filter).
+Cumulative random:340 distinct checked inputs,212 polynomials.
+All4 families covered.1s/count,86.6533s native/314.182s summed run wall,
+29692KiB peak,no OOM,alljobs terminal.10186 event/native-output hashes
+verified;43 Python tests pass. No Rust source/build changes.
+
+Research orchestration opt-in now uses1+two smallest fresh ordinary
+points beyond interpolation;old1,d+1,d+2 default preserved. Theorem period1
+and exactdimension gates unchanged;vertex integrality not assumed. Cached
+McAllister--Woods Theorems1,3 justify nonlinear dimension filter.
+Evidence:reduced-kogan-mutation-search/audit-evidence/2026-11-16-random-small2/.
+/root releases opening,no library files owned. Old large basin andR5
+PARKED;no agents,remotejobs,historical/genetic restart,manuscripts,push/deploy.
+Goal ACTIVE. Next modestly diversify small random row/alphabet sizes after
+source/test/checkpoint+freshcontrol/pilot;keep1s skips/resource bounds.
+See research HANDOFF;do not follow old negative-parent next-step notes.
+
 ## Phone status — 2026-11-16, CHECKPOINT 11
 
 USER NOW PREFERS independent small RANDOM ordinary/skew/flagged Kostka
