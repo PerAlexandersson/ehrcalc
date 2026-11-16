@@ -1,5 +1,44 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 34
+
+28e78cce(skew,d20):old19->all21grid values;NONNEGATIVE fit. Ordinary
+checks1/9passed,10capped2s. Still validation-incomplete;NOcounterexample.
+Totals2698checked inputs/1692distinct checked polynomials/187incomplete/
+1599unique exact-empty,unchanged. Latest12pending:8unknown grids/4nonnegative
+fits awaiting checks. All earlier175pending and11unselected recent records,
+including prior d15latest_progress,untouched.
+
+Fresh explicit SINGLE-case selection,source+latestbasis hashes pinned. Both
+signed packed controls-11/+7 and refreshed exact dimension/interior masks
+matched. Controls/pilot terminal/safe:11native jobs,5.5063child seconds,
+peak17984KiB,1timeout preserved,noOOM. Only2phases;NOexpansion/othercases.
+Existing packed2s completion profile/200kstates/1thread/3GiB,55s/60s phases;
+originalscreen scalar1s. Fresh3sample<=16GiB+live gate EACHphase;runtime18GiB
+underDocker24GiB unchanged. No source/kernel/test edit/build;prior13focused
+checks apply to unchanged consumer/loader. Native/store fallback:MCP absent.
+
+Read-only audit passed30NEW event/native-output hashes,18reused sample hashes,
+original source-result hash. Native stdout JSON equals attempt data;new samples
+match actual backend/raw/signed/dimension/point.21distinct nonzero exactpoints.
+Full degree20fit/h* length21/exact affine dimension and all21grid values/
+2checks agree exactly. Append-only DB events;all old rows/results/failures kept.
+Evidence:audit-evidence/2026-11-16-selected5-d20/{README.txt,manifest.json,
+audit.py,selection.json,remaining-recent-pending.json,pressure-receipts.json}.
+validated-inputs.json describes PRECOMPUTE zerojobs/writes;manifest actual11.
+Exact precompute plan archived in BOUNDED-PLANS.txt.
+
+Read-only capability finding:maintained try_skew_kostka_stats(...,true) sorts
+UNFLAGGED ordinary content;target's content unsorted. Not used/benchmarked.
+Possible next bounded consumer/control probe;never sort flagged or strict
+mask inputs. No speed claim. NEXTunknown:4b15a368(skew,d22,19/23points),fresh
+SINGLE selection/controls/pilot/pressure gates. Do not repeat capped ordinary
+10(d20)or8(d15) at unchanged backend/budget. R5/oldbasin PARKED.
+/root releases both openings,researchREADME,new evidence at localcheckpoint;
+no source ownership/KTT jobs live afterward. GoalACTIVE;this turn PROGRESS:
+one unknown grid now fitted. No agents,remote/genetic restart,manuscripts,
+push/publish/deploy,symlinks or source-tree generated environments/builds.
+
 ## Phone status — 2026-11-16, CHECKPOINT 33
 
 31bf8f4e(skew,d15):old13->all16grid values recovered;NONNEGATIVE fit.
