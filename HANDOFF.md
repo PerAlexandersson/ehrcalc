@@ -1,5 +1,38 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 22
+
+Optional source-backed two-label theorem skip implemented;default populations
+unchanged. All512 inspected:198 NEW checked nonnegative,1priorchecked
+revalidated(same polynomial/dimension),223new LP-empty,15theoremskips,
+21incomplete(16sampling/5validation),54dimskips. Every fit has>=3labels.
+Totals:2094checked inputs,1335polynomials,149incomplete,957uniqueLPempty.
+No contender/saturation contradiction;no negative partial fit found.
+
+22focused tests pass;fresh NEW/OLD line/empty/d2/d3 controls plus native
+geometry/theorem guard passed at0,242. Both pilots passed before expansion.
+All six runs terminal:137.691s native,29352KiB peak,noOOM.11215DB event/
+native-output hashes verified;all local checked/empty/theorem results saved
+append-only. All old rows/results/partial fits/attempts retained. Maintained
+25be20f binary/source unchanged,no Rust builds. Old128pending not overlapped.
+
+Evidence:reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-three-label/{README.txt,manifest.json};precompute plans archived
+in BOUNDED-PLANS.txt. Theorem certificates are separate from fitted counts.
+Source/reduction proof:../2026-11-16-two-label-fastpath/SOURCE_SCOPE.md.
+/root releases both openings,researchREADME,random_small_kostka.py,its test,
+new evidence at local checkpoint. No files owned/no KTT jobs live. GoalACTIVE.
+
+NEXT:inspect the21NEW capped cases(all6..8labels) for a small completion
+pilot under a fresh exact plan/source/ownership/resource check. Prefer unknown
+sampling grids over the5already positive partial fits;examples6367b54c(d19,
+1point missing),71541907(d24,2missing),9ae56ae5(d18,2missing). A modest
+per-count extension needs a monitored first job before expansion;keep200k
+state budget and existing memory guards unless separately justified. Avoid
+narrowing toward easier positive inputs only. Older128caps,old large negative
+basin/R5 PARKED. No agents,remote jobs,broad historical/genetic restart,
+manuscripts,push/publish/deploy.
+
 ## Phone status — 2026-11-16, CHECKPOINT 21
 
 New maintained Rust two-label skew/flagged/masked fast path:<=12free
