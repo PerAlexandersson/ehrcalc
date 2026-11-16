@@ -1,5 +1,25 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 18
+
+Independent-content cohort2:all512 inspected,270 NEW checked nonnegative,
+1priorchecked,137 exact LP-empty,18 incomplete,86 dimskips. No contender/
+saturation stop. Random totals:1505 distinct checked inputs,981 polynomials,
+100 incomplete,294 unique exact-empty. d22 case completed within1s cap.
+No source/build changes;maintained exact APIs/hashes match checkpoint17;
+its15 focused tests retained,fresh controls/pilots at0,216,414 passed.
+
+All nine runs terminal:178.7162s native,27176KiB peak,noOOM.14729 event/
+native-output hashes verified,all local checked/empty results saved in DB,
+exact polynomial samples agree. All old rows/results retained,caps unchanged.
+Evidence/plans:reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-independent-content2/. /root releases opening;no library files
+owned. Old large basin/R5 PARKED;no agents,remote jobs,historical/genetic
+restart,manuscripts,push/publish/deploy. Goal ACTIVE. Next optional alphabet
+policy for2..8 labels(including k<=rows) in research sampler;not implemented.
+Check maintained APIs/flag validity,record source/test/control/pilot plan,
+preserve defaults and1s/state/memory limits. See research handoff.
+
 ## Phone status — 2026-11-16, CHECKPOINT 17
 
 Research sampler now supports independent positive contents,no tableau
