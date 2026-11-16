@@ -1,5 +1,42 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 23
+
+Three recent capped grids CLOSED:6367b54c(d19,skew_flagged),71541907(d24,
+skew),9ae56ae5(d18,ordinary). All nonnegative,full d+1grid and3ordinary
+checks(two fresh outside grid). Totals2097checked inputs/1338polynomials/
+146pending/957LPempty. Latest cohort has18caps left(13unknown grids,
+5positive fits needing validation);all128older caps remain untouched.
+
+Scalar2s pilot stayed safe but6367/9ae stillcapped;7154completed. Existing
+packed strict controls matched old-known points,then computed missing-12/-11
+in1.1749/0.9941s. Fresh ordinary packed controls passed;packed pilot/expansion
+completed6367/9ae. Actual backend SHA/domain preserved on every sample;
+scoped trusted-run cache,old grid prefixes and exact affine masks checked.
+Middle-label transitions(43m/39m),not final2levels,dominate these examples.
+No new counting algorithm/library source edits;2existing binaries rebuilt.
+
+8focused protocol tests pass. All9runs terminal/noOOM:65native jobs,
+23.771s including builds,compute peak21868KiB/build273328KiB. Counts2s,
+200kstates,one thread;no automatic cap increase.180new event/native-output
+hashes and56old exact sample hashes verified;all results saved append-only.
+No counterexample. Old rows/grids/fits/failed attempts and old binaries kept.
+
+Evidence:reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-recent-cap-completion/{README.txt,manifest.json};exact plans
+archived in BOUNDED-PLANS.txt. sample-provenance.json binds67unique points
+to actual backends/events. /root releases both openings,researchREADME,
+experiments/{complete_recent_caps.py,probe_recent_caps_packed.py,
+complete_recent_caps_packed.py},tests/{test_complete_recent_caps.py,
+test_complete_recent_caps_packed.py},new evidence,and2binary build reservations
+at local checkpoint. No source files owned/no KTT jobs live. GoalACTIVE.
+NEXT:fresh fixed subset of the18recent caps,prefer13unknown grids;reuse
+qualified packed APIs with per-input controls/small monitored pilot,2s/200k
+limits,actual provenance and old-prefix checks. Current3entrypoints are frozen
+reproductions,not selectors for new cases. Older128caps,old negative basin/R5
+PARKED. No agents,remotejobs,broad historical/genetic restart,manuscripts,
+push/publish/deploy,symlinks or source-tree environments/builds.
+
 ## Phone status — 2026-11-16, CHECKPOINT 22
 
 Optional source-backed two-label theorem skip implemented;default populations
