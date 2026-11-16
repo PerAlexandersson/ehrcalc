@@ -1,5 +1,26 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 10
+
+No Rust source/build changes. Six saved d33 inputs newly nonnegative via
+one polynomial/proved label bijections;fresh1,14,15 and OLD-10 match.
+Two-box128:62 nonnegative,19 empty,47 deferred(d33:3,d38:44).
+Early430e80aa... has33 exact points;only ordinary14 needed to interpolate.
+No polynomial/classification yet. Shared18GiB gate interrupted14;child
+111456 absent,no count/no OOM,all KTT jobs terminal. Packed probes
+capped;no backend switch. Research CLI now permits measured120s sampling,
+180s still validation-only. Fresh controls/OLD checks and6 tests pass.
+392 append-only event hashes verified. Journaled569.8792s/62676KiB
+exclude interrupted child's unknown usage (lifetime<=30.990836s).
+Runner logging gap/stale marker resolved by explicit terminal receipt;
+underlying gap remains noted. All old rows/results/caps preserved.
+Evidence:reduced-kogan-mutation-search/audit-evidence/2026-11-16-two-body-d33/.
+/root releases opening,no library files owned. R5 PARKED;no agents,
+remote jobs,broad/genetic restart,manuscripts,push/deploy. Goal ACTIVE.
+Next verify memory stably<18GiB for60s,then SAME early key/current
+controls-v2 gate/120s in fresh output,followed by fresh ordinary validation.
+See research HANDOFF for exact key/resources and partial samples.
+
 ## Phone status — 2026-11-16, CHECKPOINT 9
 
 Automatic forced-prefix reduction remains source commit df61c9b; no Rust
