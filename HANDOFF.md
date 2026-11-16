@@ -1,5 +1,26 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 14
+
+Independent random cohort3 finished inspecting all512 proposals at caps:
+237 checked nonnegative,24 incomplete,251 dimension skips;no contender.
+Continuation added132 new cases. Random totals:577 distinct checked inputs,
+359 polynomials,29 incomplete. No unvisited proposals in RNG2026111604.
+Research driver now supports source/hash-bound resume cursor;11 focused
+proposal/cursor/adaptive tests and native NEW/OLD controls/pilots passed.
+No Rust source/build changes. Maintained exact counting/interior/dimension/
+interpolation APIs reused;period-one theorem guard retained.
+
+All six jobs ended safely,84.7189s native,26500KiB peak,noOOM.6844 event/
+native-output hashes and every checked polynomial sample verified;all old
+DB rows/results retained. Evidence+plans:reduced-kogan-mutation-search/
+audit-evidence/2026-11-16-random-small3-tail/. /root releases opening;
+no library files owned. Large old basin/R5 PARKED;no agents,remotejobs,
+historical/genetic restart,manuscripts,push/publish/deploy. Goal ACTIVE.
+NEXT:fresh independent small RNG2026111605 cohort,same6rows8labels/d3..24,
+1s counts,controls/four-case pilot before expansion;record plan/check current
+ownership/memory first. Keep old capped cases/basin parked;see research handoff.
+
 ## Phone status — 2026-11-16, CHECKPOINT 13
 
 Small independent random cohort3: 105 NEW inputs checked nonnegative,
