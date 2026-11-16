@@ -1,5 +1,29 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 20
+
+Column-compatible research sampler implemented;default hashes unchanged.
+All512 inspected:215 NEW checked nonnegative,3priorchecked,211 LP-empty,
+16 incomplete,67dimskips. No contender/saturation contradiction. Totals:
+1896 checked inputs,1216 polynomials,128 incomplete,734 unique LP-empty.
+Twenty new checked k<=rows cases include two with exactly2labels at d>=3.
+
+19 focused tests and fresh NEW/OLD d3 two-label skew control passed,alongside
+earlier line/empty/d2 controls. All six runs terminal:137.602s native,
+29452KiB peak,noOOM. All11746 event/native-output hashes verified,all local
+checked/empty results saved append-only. Old rows/partial fits/attempts retained.
+No negative coefficient in any available incomplete fit. No Rust edits/builds;
+maintained exact dimension/interior/count/interpolation APIs reused unchanged.
+
+Evidence/plans:reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-sparse-skew/. Cached Ferroni Thm2 supports the standard
+hypersimplex control,not a skip for arbitrary unequal-capacity box slices.
+/root releases opening;no library files owned/no KTT jobs live. Goal ACTIVE.
+NEXT:inspect maintained APIs/bottlenecks for exact two-label skew counting
+before proposing a narrow fast path;new ownership/test/control/pilot plan first.
+All128 incomplete cases,old large basin/R5 PARKED;no agents,remote jobs,
+broad historical/genetic restart,manuscripts,push/publish/deploy.
+
 ## Phone status — 2026-11-16, CHECKPOINT 19
 
 Research --alphabet-policy full-range implemented;default hashes unchanged.
