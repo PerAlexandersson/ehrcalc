@@ -1,5 +1,28 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 7
+
+New d28 five-member class nonnegative;original/reduced dimensions28 and
+nonzero interior-8 match;fresh ordinary1,12,13 pass. Capped29 retained,
+30 unattempted. Two-box128 now38 nonnegative,19 empty,71 deferred.
+15N forced-prefix affine reduction proved/tested in research adapter.
+
+USER LATEST:can reduction generalize for speed? General rule proved and
+benchmarked:T=max(mu1,lambda2),r=max(0,alpha1-T),with valid-input/top-row1
+guards. Current case medians:13.7% less ordinary runtime,6.7% interior;
+long-prefix diagnostic adds no growing gain. Current search already uses
+manual reduction. Automatic Rust integration NOT YET done;no source owned.
+
+All184 new event hashes verified;append-only DB,old rows preserved.
+108.5860s child time,58,012 KiB peak,no OOM,all jobs terminal;18 Python
+tests pass. Evidence: reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-two-body-d28/. /root releases opening ONLY at checkpoint.
+Goal ACTIVE. NEXT:claim private normalization/generic DP/Ehrhart/docs/tests
+as needed;preserve current binaries,add proved general prefix presolve,
+check independent ordinary/interior oracles and dimensions before full
+suite/rebuilding consumers. No public CLI change required. R5 PARKED;
+no agents,remote jobs,manuscripts,push,publishing/deployment or broad scan.
+
 ## Phone status — 2026-11-16, CHECKPOINT 6
 
 New fixed two-box128 cohort:33 nonnegative,19 empty,76 above d24 cutoff,
