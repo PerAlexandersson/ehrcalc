@@ -1,5 +1,24 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 6
+
+New fixed two-box128 cohort:33 nonnegative,19 empty,76 above d24 cutoff,
+no KTT counterexample. Three exact polynomials and explicit label-symmetry
+witnesses cover33 inputs;112 native geometries,16 dimensions inferred
+from all-dilation count bijections. No separate counters claimed for all.
+D21 fresh1,8,9 checks replace capped22/unattempted23;failures preserved.
+Old zero/one-box proposal sets unchanged. Source/body/point gates tested.
+
+All1,998 new event hashes verified;DB append-only,old rows preserved.
+33.2476s child time,102,252 KiB peak,no OOM,all jobs terminal. No library
+source/counting changes or builds;16 focused Python tests pass.
+Evidence: reduced-kogan-mutation-search/audit-evidence/2026-11-16-two-body-boxes/.
+/root releases opening ONLY at checkpoint. R5 PARKED;no agents,remote
+jobs,manuscripts,push or publication/deployment. Goal ACTIVE.
+Next one d28 input6d6edd5d... requires new ownership/exact plan,proved
+15N forced-column reduction(if used),dimensions and small controls before
+one55s pilot. See research HANDOFF;no broad campaign restart.
+
 ## Phone status — 2026-11-16, CHECKPOINT 5
 
 Fixed research BODY128 cohort exhausted:110 nonnegative +18 empty,
