@@ -1,5 +1,48 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 28
+
+Three latest unknown skew grids reached nonnegative fits. c2350989 (d20)
+is fully checked; c3ff6277 (d17) and 222315dc (d22) each passed 2/3 ordinary
+checks, with final checks capped. No negative coefficient appeared.
+Totals: 2506 checked inputs / 1576 distinct fully checked polynomials /
+176 incomplete / 1370 unique empty. Latest cohort now has 14 incomplete:
+11 unknown grids, 3 positive fits awaiting checks. Earlier 162 untouched.
+
+All six fresh signed packed controls matched old scalar values, with fresh
+exact dimensions/masks. Only then one-case pilot, then measuredsafe expansion.
+All three runs terminal: 33 native jobs, 11.0267 child seconds, peak 24408 KiB,
+no OOM. Counts/geometry/interpolation/verification stayed 2s, 200k states,
+one thread, 3GiB; no automatic cap increase or Rust build/kernel change.
+
+New complete_selected_caps.py accepts explicit source/hash-bound selections
+from fully inspected audited cohorts. Refuses completed, contender or already
+advanced completion inputs; source paths confined to project evidence.
+The loader gained only optional source_seed; old seed/selection defaults
+unchanged and original source archived. All 13 focused tests pass, including
+new seed/default and source-scope guards. Existing sample/control APIs reused.
+Audit passed 90 NEW event/native-output hashes, 54 reused sample hashes and
+3 source grid-result hashes. All three polynomials were exactly evaluated
+at saved samples/checks; partial validations remain outside checked totals.
+All writes append-only; old rows, prefixes, fits and failed attempts kept.
+
+Evidence: reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-selected-caps/{README.txt,manifest.json,selection.json,audit.py}.
+Exact plans archived in BOUNDED-PLANS.txt. remaining-recent-pending.json keeps
+14 original source snapshots with latest_progress for both advanced fits;
+consult that field rather than stale statuses/grids. /root releases both
+openings, research README, experiments/{complete_recent_caps.py,
+complete_selected_caps.py}, tests/test_complete_recent_subset.py and new
+evidence at the local checkpoint. No source files owned/KTT jobs live after.
+Goal ACTIVE. This turn made PROGRESS: one newly checked input and two new fits.
+
+NEXT: another small fixed subset of the 11 current unknown grids or a new
+bounded independent cohort, with fresh controls and monitored pilot. Do not
+repeat these completed/advanced inputs from old snapshots. Any extra final
+validation needs a new measured plan. Earlier 162 incomplete inputs, R5 and
+old negative basin PARKED. No agents, remote jobs, historical/genetic restart,
+manuscripts, pushes, publish/deploy, symlinks or source-tree environments.
+
 ## Phone status — 2026-11-16, CHECKPOINT 27
 
 All 512 fresh independent proposals inspected: 213 NEW checked nonnegative,
