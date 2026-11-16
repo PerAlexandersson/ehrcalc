@@ -1,5 +1,22 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 2
+
+Original 20 frozen targets exhausted:16 checked nonnegative +4 empty.
+Last d25 f9377a1b... now passes ordinary 1,26,27; signed samples and
+polynomial reused across retries. Final counts48.4s/59.1s,peak30,076 KiB.
+Finite 128 support cohort also exhausted:87 checked nonnegative +41 empty,
+seven polynomial classes. Six continuations added 82 cases in42.0092s,
+peak20,132 KiB. No counterexample or OOM. All jobs ended; capped attempts preserved.
+
+All 5,685 new event hashes verified, append-only DB. Evidence:
+reduced-kogan-mutation-search/audit-evidence/2026-11-16-d25-target/ and
+2026-11-16-active-slices/continuation/. No library source/build change.
+`/root` releases this opening. R5 PARKED; no positive parents, agents,
+remote jobs, manuscripts or publication. Goal ACTIVE; next one-case
+body-shape pilot must derive atomically from the verified negative source
+and satisfy the existing memory/time/hash gates. Research handoff owns plan.
+
 ## Phone status — 2026-11-16, CHECKPOINT
 
 Five fresh active fixed-content cases d13,11,13,13,18 all exactly nonnegative
