@@ -1,5 +1,49 @@
 # Ehrcalc Handoff
 
+## Phone status — 2026-11-16, CHECKPOINT 29
+
+Counting STOPPED at the conservative memory guard, without OOM. Both attempted
+grids gained two exact values: 5e694dec (skew,d14) now 14/15 points;
+cbe1e5f2 (ordinary,d17) now 17/18. Their next reciprocal -10 calls capped2s.
+Neither has a full polynomial. 7bdab573's continuation did not start; its
+14/17 grid stays unchanged. All known-value controls had passed beforehand.
+No new checked case or coefficient claim. Totals stay 2506 checked inputs /
+1576 distinct fully checked polynomials / 176 incomplete / 1370 unique empty.
+Latest cohort remains 14 pending: 11 unknown grids and 3 positive fits.
+
+Expansion exited1 at 4.060073s, before the third geometry/attempt. Its original
+error is preserved: RuntimeError('search deadline or memory gate reached').
+Final conservative pressure 19339788288 bytes exceeded the 18GiB guard
+19327352832; inactive_file=0. OOM/oom_kill stayed0; no memory/cache settings
+changed. Audit explicitly records resource-safe=false for this phase, not a
+successful expansion. All native children reaped; no KTT jobs live/restarted.
+
+All three phases terminal: 17 native jobs, 7.7158 child seconds, peak23956KiB,
+2 expected native count timeouts. Source/tests/binaries unchanged from the
+13 passing focused tests at checkpoint28; no Rust build/kernel changes.
+Counts/geometry stayed2s,200k states,one thread,3GiB; no cap increase.
+Read-only audit passed48NEW event/native-output hashes,38reused sample hashes
+and3source grid-result hashes. Four new exact values and both longer grids
+saved append-only. All old rows, prefixes, fits and failed attempts kept.
+
+Evidence: reduced-kogan-mutation-search/audit-evidence/
+2026-11-16-selected-caps2/{README.txt,manifest.json,selection.json,audit.py}.
+Exact plans and stop archived in BOUNDED-PLANS.txt. Latest remaining-recent-
+pending.json preserves prior advanced fits plus both new grids in
+latest_progress; consult those records rather than original snapshots.
+/root releases both openings,researchREADME,new evidence at local checkpoint.
+No counting source changed or source files owned afterward. Goal ACTIVE;
+this turn made PROGRESS (four exact values), with a measured resource stop.
+
+NEXT: first verify stable shared-cgroup pressure and ownership. Counting
+remains stopped pending that fresh check. Then a new exact selection/
+controls/pilot can address the untouched third case. Current advanced grids
+need their latest prefixes. A new plan may test positive5/positive8 instead
+of repeating -10, at the same2s/state limits; neither alternate was run.
+Earlier162 incomplete inputs,R5,oldnegative basin PARKED. No agents,remotejobs,
+historical/genetic restart,manuscripts,push/publish/deploy,symlinks or source-
+tree environments/builds. Do not bypass the guard or restart old handles.
+
 ## Phone status — 2026-11-16, CHECKPOINT 28
 
 Three latest unknown skew grids reached nonnegative fits. c2350989 (d20)
