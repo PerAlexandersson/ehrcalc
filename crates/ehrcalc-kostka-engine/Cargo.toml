@@ -15,3 +15,5 @@ num-traits = "0.2"
 hashbrown = "0.15"
 flate2 = { version = "1", features = ["rust_backend"] }
 serde_json = "1"
+serde = "1"
+smallvec = "1"

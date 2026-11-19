@@ -411,7 +411,9 @@ dependencies = [
  "num-rational",
  "num-traits",
  "rayon",
+ "serde",
  "serde_json",
+ "smallvec",
 ]
 
 [[package]]

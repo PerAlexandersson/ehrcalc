@@ -14,6 +14,287 @@ use ehrcalc_kostka_engine::Partition as KostkaPartition;
 use num_bigint::{BigInt, BigUint, ToBigInt};
 use num_traits::Zero;
 
+pub use ehrcalc_kostka_engine::constraint_polytope::{
+    ConstraintCount, ConstraintOptions, ConstraintPolytopeInput, CountingPlan,
+    DifferenceConstraint, ModularCertificate, OrderHeuristic, PreparedConstraintPolytope,
+    SamplePlan, SubsetSum, VariableBounds,
+};
+use num_rational::BigRational;
+
+/// An exact ordinary or reciprocal sample, including counting and CRT provenance.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ConstraintSample {
+    pub dilation: i64,
+    pub strict: bool,
+    pub value: BigRational,
+    pub interpolation: bool,
+    pub count: ConstraintCount,
+}
+
+/// A failed extra check, retained even if the fitted h* numerator is not integral.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ConstraintSampleMismatch {
+    pub dilation: i64,
+    pub expected: BigRational,
+    pub actual: BigRational,
+}
+
+/// Constraint-polytope result. Polynomiality is an explicit assumption; finite
+/// sample agreement is a check, not a proof. `data` is absent in plan-only mode
+/// or when a non-polynomial fit has nonintegral h*. `polynomial` preserves the
+/// exact fit in the latter case and `data_error` explains the failed transform.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct ConstraintComputation {
+    pub data: Option<EhrhartData>,
+    pub polynomial: Option<EhrhartPolynomial>,
+    pub data_error: Option<String>,
+    pub dimension: Option<usize>,
+    pub empty: bool,
+    pub assumes_polynomial: bool,
+    pub implicit_equalities: Vec<bool>,
+    pub free_variables: Vec<usize>,
+    pub fixed_values: Vec<Option<BigRational>>,
+    pub component_dimensions: Vec<usize>,
+    pub plan: SamplePlan,
+    pub samples: Vec<ConstraintSample>,
+    pub mismatches: Vec<ConstraintSampleMismatch>,
+    pub component_polynomials: Vec<EhrhartPolynomial>,
+    pub component_plans: Vec<SamplePlan>,
+    pub component_samples: Vec<Vec<ConstraintSample>>,
+    pub component_product_matches: Option<bool>,
+}
+
+/// Compute exact Ehrhart data for rational bounds, differences, and subset sums.
+/// Extra mismatches are returned with the fit. Callers must inspect them before
+/// treating a sampled polynomial as the polytope's Ehrhart polynomial.
+pub fn constraint_polytope_ehrhart(
+    input: &ConstraintPolytopeInput,
+    options: &ConstraintOptions,
+) -> ExactResult<ConstraintComputation> {
+    let prepared = PreparedConstraintPolytope::new(input).map_err(|e| e.to_string())?;
+    let plan = prepared.sample_plan(options).map_err(|e| e.to_string())?;
+    let mut result = ConstraintComputation {
+        data: None,
+        polynomial: None,
+        data_error: None,
+        dimension: prepared.dimension(),
+        empty: prepared.is_empty(),
+        assumes_polynomial: true,
+        implicit_equalities: prepared
+            .affine_hull()
+            .map_or_else(Vec::new, |h| h.implicit_equalities.clone()),
+        free_variables: prepared.free_variables().to_vec(),
+        fixed_values: prepared.fixed_values().to_vec(),
+        component_dimensions: prepared.component_dimensions().to_vec(),
+        plan,
+        samples: Vec::new(),
+        mismatches: Vec::new(),
+        component_polynomials: Vec::new(),
+        component_plans: Vec::new(),
+        component_samples: Vec::new(),
+        component_product_matches: None,
+    };
+    if options.plan_only {
+        return Ok(result);
+    }
+    let dimension = prepared.dimension().unwrap_or(0);
+    if result.empty {
+        let polynomial = EhrhartPolynomial::new(0, vec![BigRational::zero()])?;
+        result.data = Some(EhrhartData::new(polynomial.clone())?);
+        result.polynomial = Some(polynomial);
+        return Ok(result);
+    }
+    let mut dilations = vec![(0_i64, true)];
+    for n in 1..=result.plan.positive {
+        dilations.push((i64::try_from(n).map_err(|_| "dilation exceeds i64")?, true));
+    }
+    for n in 1..=result.plan.reciprocal {
+        dilations.push((-i64::try_from(n).map_err(|_| "dilation exceeds i64")?, true));
+    }
+    for &n in &result.plan.extra_dilations {
+        dilations.push((i64::try_from(n).map_err(|_| "dilation exceeds i64")?, false));
+    }
+    for (dilation, interpolation) in dilations {
+        let plans = if dilation < 0 {
+            &result.plan.strict_plans
+        } else {
+            &result.plan.ordinary_plans
+        };
+        let count = constraint_count_using_plan(
+            &prepared,
+            dilation.unsigned_abs(),
+            dilation < 0,
+            options,
+            plans,
+        )?;
+        let mut value = BigInt::from(count.value.clone());
+        if dilation < 0 && dimension % 2 == 1 {
+            value = -value;
+        }
+        result.samples.push(ConstraintSample {
+            dilation,
+            strict: dilation < 0,
+            value: BigRational::from_integer(value),
+            interpolation,
+            count,
+        });
+    }
+    let points = result
+        .samples
+        .iter()
+        .filter(|s| s.interpolation)
+        .map(|s| (s.dilation, s.value.clone()))
+        .collect::<Vec<_>>();
+    let mut polynomial = EhrhartPolynomial::interpolate(dimension, &points)?;
+    for sample in result.samples.iter().filter(|s| !s.interpolation) {
+        let expected = polynomial.evaluate(sample.dilation);
+        if expected != sample.value {
+            result.mismatches.push(ConstraintSampleMismatch {
+                dilation: sample.dilation,
+                expected,
+                actual: sample.value.clone(),
+            });
+        }
+    }
+    // Independently interpolate factors and multiply exact power coefficients.
+    // Retain the full fit if quasipolynomial factors fail this additional check.
+    let mut product = vec![BigRational::from_integer(1.into())];
+    for index in 0..prepared.components().len() {
+        let factor = prepared.component(index).map_err(|e| e.to_string())?;
+        let mut factor_options = options.clone();
+        factor_options.extra_samples = 0;
+        let factor_plan = factor
+            .sample_plan(&factor_options)
+            .map_err(|e| e.to_string())?;
+        let mut factor_points = vec![(0_i64, BigRational::from_integer(1.into()))];
+        let mut factor_samples = vec![ConstraintSample {
+            dilation: 0,
+            strict: false,
+            value: BigRational::from_integer(1.into()),
+            interpolation: true,
+            count: factor.count(0, false, options).map_err(|e| e.to_string())?,
+        }];
+        let d = factor.dimension().expect("nonempty component");
+        for n in 1..=factor_plan.positive {
+            let count = constraint_count_using_plan(
+                &factor,
+                n as u64,
+                false,
+                options,
+                &factor_plan.ordinary_plans,
+            )?;
+            let value = BigRational::from_integer(count.value.clone().into());
+            factor_points.push((n as i64, value.clone()));
+            factor_samples.push(ConstraintSample {
+                dilation: n as i64,
+                strict: false,
+                value,
+                interpolation: true,
+                count,
+            });
+        }
+        for n in 1..=factor_plan.reciprocal {
+            let count = constraint_count_using_plan(
+                &factor,
+                n as u64,
+                true,
+                options,
+                &factor_plan.strict_plans,
+            )?;
+            let value = BigRational::from_integer(
+                BigInt::from(count.value.clone()) * if d % 2 == 0 { 1 } else { -1 },
+            );
+            factor_points.push((-(n as i64), value.clone()));
+            factor_samples.push(ConstraintSample {
+                dilation: -(n as i64),
+                strict: true,
+                value,
+                interpolation: true,
+                count,
+            });
+        }
+        let factor_polynomial = EhrhartPolynomial::interpolate(d, &factor_points)?;
+        product = (polytool::Polynomial::new(product)
+            * polytool::Polynomial::new(factor_polynomial.power_coeffs().to_vec()))
+        .coeffs()
+        .to_vec();
+        result.component_polynomials.push(factor_polynomial);
+        result.component_plans.push(factor_plan);
+        result.component_samples.push(factor_samples);
+    }
+    let product = EhrhartPolynomial::new(dimension, product)?;
+    let matches = product == polynomial;
+    result.component_product_matches = Some(matches);
+    if matches {
+        polynomial = product;
+    }
+    match EhrhartData::new(polynomial.clone()) {
+        Ok(data) => result.data = Some(data),
+        Err(error) => result.data_error = Some(error),
+    }
+    result.polynomial = Some(polynomial);
+    Ok(result)
+}
+
+fn constraint_count_using_plan(
+    prepared: &PreparedConstraintPolytope,
+    dilation: u64,
+    strict: bool,
+    options: &ConstraintOptions,
+    plans: &[CountingPlan],
+) -> ExactResult<ConstraintCount> {
+    let mut execution = options.clone();
+    if execution.order.is_none() {
+        let mut order = plans
+            .iter()
+            .flat_map(|p| p.order.clone())
+            .collect::<Vec<_>>();
+        for v in 0..prepared.input().variables {
+            if !order.contains(&v) {
+                order.push(v);
+            }
+        }
+        execution.order = Some(order);
+    }
+    let mut result = prepared
+        .count(dilation, strict, &execution)
+        .map_err(|e| e.to_string())?;
+    if options.order.is_none() {
+        for (actual, scheduled) in result.plans.iter_mut().zip(plans) {
+            actual.user_order = false;
+            actual.heuristic = scheduled.heuristic;
+            actual.candidates[0].heuristic = scheduled.heuristic;
+        }
+    }
+    Ok(result)
+}
+
+/// Convert an existing order input to unit bounds and differences along covers.
+pub fn order_constraint_polytope(input: &OrderInput) -> ExactResult<ConstraintPolytopeInput> {
+    let poset = build_poset(input)?;
+    Ok(ConstraintPolytopeInput {
+        variables: poset.num_elements(),
+        names: Vec::new(),
+        bounds: vec![
+            VariableBounds {
+                lower: Some(BigRational::zero()),
+                upper: Some(BigRational::from_integer(1.into())),
+            };
+            poset.num_elements()
+        ],
+        differences: poset
+            .covers()
+            .iter()
+            .map(|&(left, right)| DifferenceConstraint {
+                left,
+                right,
+                upper: BigRational::zero(),
+            })
+            .collect(),
+        sums: Vec::new(),
+    })
+}
+
 /// Input for a GT/Kostka Ehrhart calculation.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct GtInput {
@@ -264,6 +545,338 @@ fn order_from_hstar(poset: &Poset, mut coeffs: Vec<BigInt>) -> ExactResult<Order
         data: EhrhartData::from_hstar(HStarPolynomial::new(dimension, coeffs)?)?,
         method: OrderMethod::Ideals,
     })
+}
+
+#[cfg(test)]
+mod constraint_tests {
+    use super::*;
+    use num_traits::One;
+    use std::time::Instant;
+
+    struct Random(u64);
+    impl Random {
+        fn next(&mut self, max: u64) -> u64 {
+            self.0 ^= self.0 << 13;
+            self.0 ^= self.0 >> 7;
+            self.0 ^= self.0 << 17;
+            self.0 % max
+        }
+    }
+    fn q(n: i64, d: i64) -> BigRational {
+        BigRational::new(n.into(), d.into())
+    }
+
+    #[test]
+    fn random_constraint_interpolation_and_reciprocity_gate() {
+        let mut random = Random(0x21b4_7ae3_921d_8831);
+        let mut skipped = 0;
+        let mut empty = 0;
+        let mut checked = 0;
+        for case in 0..320 {
+            let n = 1 + random.next(4) as usize;
+            let rational = case % 3 == 0;
+            let mut input = ConstraintPolytopeInput {
+                variables: n,
+                bounds: vec![
+                    VariableBounds {
+                        lower: Some(q(0, 1)),
+                        upper: Some(q(
+                            if rational { 3 } else { 2 },
+                            if rational { 2 } else { 1 }
+                        )),
+                    };
+                    n
+                ],
+                ..ConstraintPolytopeInput::default()
+            };
+            for i in 0..n {
+                for j in i + 1..n {
+                    if random.next(3) == 0 {
+                        input.differences.push(DifferenceConstraint {
+                            left: i,
+                            right: j,
+                            upper: q(
+                                if random.next(5) == 0 { -1 } else { 0 },
+                                if rational { 2 } else { 1 },
+                            ),
+                        });
+                    }
+                }
+            }
+            if n > 1 && random.next(2) == 0 {
+                let value = q(1 + random.next(3) as i64, if rational { 2 } else { 1 });
+                input.sums.push(SubsetSum {
+                    variables: (0..n).collect(),
+                    lower: if random.next(3) == 0 {
+                        Some(value.clone())
+                    } else {
+                        None
+                    },
+                    upper: Some(value),
+                });
+            }
+            if case % 19 == 0 {
+                input.bounds[0] = VariableBounds {
+                    lower: Some(q(1, 2)),
+                    upper: Some(q(1, 2)),
+                };
+            }
+            let options = ConstraintOptions {
+                extra_samples: 6,
+                ..ConstraintOptions::default()
+            };
+            let result = constraint_polytope_ehrhart(&input, &options).unwrap();
+            if result.empty {
+                empty += 1;
+                continue;
+            }
+            let dimension = result.dimension.unwrap();
+            assert_eq!(result.plan.positive + result.plan.reciprocal, dimension);
+            assert_eq!(
+                result.samples.iter().filter(|s| s.interpolation).count(),
+                dimension + 1
+            );
+            if !result.mismatches.is_empty() {
+                skipped += 1;
+                continue;
+            }
+            let prepared = PreparedConstraintPolytope::new(&input).unwrap();
+            let polynomial = result.polynomial.as_ref().unwrap();
+            for n in 1..=5_u64 {
+                let ordinary = prepared
+                    .count(
+                        n,
+                        false,
+                        &ConstraintOptions {
+                            exact: true,
+                            ..ConstraintOptions::default()
+                        },
+                    )
+                    .unwrap();
+                let interior = prepared
+                    .count(
+                        n,
+                        true,
+                        &ConstraintOptions {
+                            exact: true,
+                            ..ConstraintOptions::default()
+                        },
+                    )
+                    .unwrap();
+                assert_eq!(
+                    polynomial.evaluate(n as i64),
+                    BigRational::from_integer(ordinary.value.into()),
+                    "case {case}, N={n}, input={input:?}"
+                );
+                let signed =
+                    BigInt::from(interior.value) * if dimension.is_multiple_of(2) { 1 } else { -1 };
+                assert_eq!(
+                    polynomial.evaluate(-(n as i64)),
+                    BigRational::from_integer(signed),
+                    "reciprocity case {case}, N={n}, input={input:?}"
+                );
+            }
+            assert!(result.data.is_some(), "{result:?}");
+            assert_eq!(
+                result.data.as_ref().unwrap().hstar.coeffs().len(),
+                dimension + 1
+            );
+            assert_eq!(result.component_dimensions.iter().sum::<usize>(), dimension);
+            assert_eq!(result.component_product_matches, Some(true));
+            checked += 1;
+        }
+        assert!(skipped > 25);
+        assert!(checked > 100);
+        eprintln!(
+            "INTERPOLATION_GATE: systems=320 polynomial_checked={checked} \
+            quasi_skipped_by_extra_samples={skipped} empty={empty} reciprocal_N=1..5 \
+            extra_samples=6"
+        );
+    }
+
+    #[test]
+    fn random_order_adapter_matches_both_existing_methods() {
+        let mut random = Random(0x453e_a8b3_9c10);
+        for case in 0..120 {
+            let n = random.next(7) as usize;
+            let mut labels = (0..n).collect::<Vec<_>>();
+            for v in (1..n).rev() {
+                labels.swap(v, random.next((v + 1) as u64) as usize);
+            }
+            let mut covers = Vec::new();
+            for i in 0..n {
+                for j in i + 1..n {
+                    if random.next(3) == 0 {
+                        covers.push((labels[i], labels[j]));
+                    }
+                }
+            }
+            let input = OrderInput::Covers {
+                vertices: n,
+                covers,
+            };
+            let constraints = order_constraint_polytope(&input).unwrap();
+            for exact in [true, false] {
+                let result = constraint_polytope_ehrhart(
+                    &constraints,
+                    &ConstraintOptions {
+                        exact,
+                        extra_samples: 2,
+                        ..ConstraintOptions::default()
+                    },
+                )
+                .unwrap();
+                assert!(result.mismatches.is_empty());
+                for method in [OrderMethod::Frontier, OrderMethod::Ideals] {
+                    let existing = order_ehrhart_with(
+                        &input,
+                        &OrderOptions {
+                            method,
+                            max_states: None,
+                        },
+                    )
+                    .unwrap();
+                    assert_eq!(result.data.as_ref(), Some(&existing.data), "case {case}");
+                }
+            }
+        }
+        eprintln!("ORDER_ADAPTER_GATE: posets=120 exact+CRT vs frontier+ideals comparisons=480");
+    }
+
+    #[test]
+    fn constraint_quasipolynomial_warning_and_plan_only() {
+        let input = ConstraintPolytopeInput::from_json(
+            r#"{"variables":1,
+            "bounds":[[0,"1/2"]]}"#,
+        )
+        .unwrap();
+        let result = constraint_polytope_ehrhart(&input, &ConstraintOptions::default()).unwrap();
+        assert!(!result.mismatches.is_empty());
+        assert!(result.assumes_polynomial);
+        let plan = constraint_polytope_ehrhart(
+            &input,
+            &ConstraintOptions {
+                plan_only: true,
+                max_states: Some(0),
+                ..ConstraintOptions::default()
+            },
+        )
+        .unwrap();
+        assert!(plan.data.is_none() && plan.polynomial.is_none() && plan.samples.is_empty());
+        assert_eq!(plan.dimension, Some(1));
+        let positive = constraint_polytope_ehrhart(
+            &input,
+            &ConstraintOptions {
+                positive_only: true,
+                extra_samples: 0,
+                ..ConstraintOptions::default()
+            },
+        )
+        .unwrap();
+        assert_eq!(positive.plan.positive, 1);
+        assert_eq!(positive.plan.reciprocal, 0);
+        assert!(positive.mismatches.is_empty());
+    }
+
+    #[test]
+    fn constraint_product_and_known_simplex() {
+        let input = ConstraintPolytopeInput::from_json(
+            r#"{"variables":4,
+            "bounds":[[0,1],[0,1],[-1,1],[3,3]],
+            "sums":[{"vars":[0,1],"upper":1}]}"#,
+        )
+        .unwrap();
+        let result = constraint_polytope_ehrhart(&input, &ConstraintOptions::default()).unwrap();
+        assert_eq!(result.dimension, Some(3));
+        assert_eq!(result.component_dimensions, vec![2, 1]);
+        assert_eq!(result.component_product_matches, Some(true));
+        assert_eq!(result.component_polynomials.len(), 2);
+        assert_eq!(result.polynomial.unwrap().evaluate(3), q(70, 1));
+        let empty = constraint_polytope_ehrhart(
+            &ConstraintPolytopeInput::from_json(
+                r#"{"variables":1,"bounds":[[0,1]],"differences":[[0,0,-1]]}"#,
+            )
+            .unwrap(),
+            &ConstraintOptions::default(),
+        )
+        .unwrap();
+        assert!(empty.empty);
+        assert_eq!(empty.dimension, None);
+        assert!(empty.data.unwrap().ehrhart.evaluate(0).is_zero());
+        let point = constraint_polytope_ehrhart(
+            &ConstraintPolytopeInput::default(),
+            &ConstraintOptions::default(),
+        )
+        .unwrap();
+        assert_eq!(point.dimension, Some(0));
+        assert_eq!(point.data.unwrap().ehrhart.evaluate(9), BigRational::one());
+    }
+
+    #[test]
+    fn constraint_timing_and_frontier_estimates() {
+        let samples = [
+            (
+                "hypersimplex(2,7)",
+                ConstraintPolytopeInput::from_json(
+                    r#"{"variables":7,
+                "bounds":[[0,1],[0,1],[0,1],[0,1],[0,1],[0,1],[0,1]],
+                "sums":[{"vars":[0,1,2,3,4,5,6],"lower":2,"upper":2}]}"#,
+                )
+                .unwrap(),
+                2,
+            ),
+            (
+                "fence(8)",
+                order_constraint_polytope(&OrderInput::Fence { elements: 8 }).unwrap(),
+                3,
+            ),
+            (
+                "overlapping-sums",
+                ConstraintPolytopeInput::from_json(
+                    r#"{"variables":6,
+                "bounds":[[0,2],[0,2],[0,2],[0,2],[0,2],[0,2]],"differences":[[0,3,0],[2,5,0]],
+                "sums":[{"vars":[0,1,2],"upper":3},{"vars":[2,3,4],"lower":2,"upper":4},
+                {"vars":[1,4,5],"lower":3,"upper":3}]}"#,
+                )
+                .unwrap(),
+                2,
+            ),
+        ];
+        for (name, input, dilation) in samples {
+            let prepared = PreparedConstraintPolytope::new(&input).unwrap();
+            let plans = prepared
+                .plan(dilation, false, &ConstraintOptions::default())
+                .unwrap();
+            for candidate in &plans[0].candidates {
+                let mut values = Vec::new();
+                let mut peaks = Vec::new();
+                for exact in [true, false] {
+                    let options = ConstraintOptions {
+                        exact,
+                        order_heuristic: candidate.heuristic,
+                        ..ConstraintOptions::default()
+                    };
+                    let start = Instant::now();
+                    let count = prepared.count(dilation, false, &options).unwrap();
+                    let elapsed = start.elapsed();
+                    eprintln!(
+                        "TIMING name={name} N={dilation} order={:?} exact={exact} \
+                        count={} estimate={} actual_peak={} elapsed_us={}",
+                        candidate.heuristic,
+                        count.value,
+                        candidate.estimated_peak,
+                        count.peak_states,
+                        elapsed.as_micros()
+                    );
+                    values.push(count.value);
+                    peaks.push(count.peak_states);
+                }
+                assert_eq!(values[0], values[1]);
+                assert_eq!(peaks[0], peaks[1]);
+                assert!(BigUint::from(peaks[0]) <= candidate.estimated_peak);
+            }
+        }
+    }
 }
 
 /// Compute exact Ehrhart and h* data for an acyclic flow polytope.
