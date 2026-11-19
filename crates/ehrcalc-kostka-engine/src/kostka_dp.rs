@@ -161,6 +161,37 @@ fn partition_count_map() -> PartitionCountMap {
     HashMap::with_hasher(PartitionBuildHasher::default())
 }
 
+/// Add `count` to state `beta` unless a new state would exceed `limit`.
+///
+/// Once a level has more than `limit` distinct states, `overflow` is set and every later call
+/// is a no-op, so generation stops growing the map instead of materializing the whole level
+/// before the budget check.
+fn add_capped(
+    map: &mut PartitionCountMap,
+    beta: Partition,
+    count: &BigUint,
+    limit: Option<usize>,
+    overflow: &mut bool,
+) {
+    if *overflow {
+        return;
+    }
+    if let Some(entry) = map.get_mut(&beta) {
+        *entry += count;
+    } else if limit.is_some_and(|limit| map.len() >= limit) {
+        *overflow = true;
+    } else {
+        map.insert(beta, count.clone());
+    }
+}
+
+fn state_budget_message(limit: usize) -> String {
+    format!(
+        "DP state count exceeds --max-states {limit}: a level has more than {limit} states. \
+         Use a smaller input or raise the limit."
+    )
+}
+
 fn partition_size_u64(partition: &Partition) -> u64 {
     partition.parts().iter().map(|&part| u64::from(part)).sum()
 }
@@ -432,21 +463,18 @@ pub fn skew_kostka_legacy(
 
         // Build new DP map by merging extensions directly, avoiding an intermediate Vec.
         let mut new_dp = partition_count_map();
+        let mut overflow = false;
         for (alpha, count) in &dp {
             for beta in horizontal_strip_extensions_legacy(alpha, lambda, strip_size) {
-                *new_dp.entry(beta).or_insert_with(BigUint::zero) += count;
+                add_capped(&mut new_dp, beta, count, max_states, &mut overflow);
+            }
+            if overflow {
+                break;
             }
         }
 
-        if let Some(limit) = max_states {
-            if new_dp.len() > limit {
-                panic!(
-                    "DP state count {} exceeds --max-states {}. \
-                     Use a smaller input or raise the limit.",
-                    new_dp.len(),
-                    limit
-                );
-            }
+        if overflow {
+            panic!("{}", state_budget_message(max_states.unwrap_or_default()));
         }
 
         dp = new_dp;
@@ -561,19 +589,18 @@ pub fn try_skew_kostka_stats(
         }
 
         let mut new_dp = partition_count_map();
+        let mut overflow = false;
         for (alpha, count) in &dp {
             for_each_horizontal_strip_extension(alpha, lambda, strip_size, |beta| {
-                *new_dp.entry(beta).or_insert_with(BigUint::zero) += count;
+                add_capped(&mut new_dp, beta, count, max_states, &mut overflow);
             });
+            if overflow {
+                break;
+            }
         }
 
-        if let Some(limit) = max_states {
-            if new_dp.len() > limit {
-                return Err(format!(
-                    "DP state count {} exceeds --max-states {}. Use a smaller input or raise the limit.",
-                    new_dp.len(), limit
-                ));
-            }
+        if overflow {
+            return Err(state_budget_message(max_states.unwrap_or_default()));
         }
 
         record_state_layer(new_dp.len());
@@ -862,22 +889,20 @@ pub fn flagged_skew_kostka_legacy(
             .unwrap_or(n);
 
         let mut new_dp = partition_count_map();
+        let mut overflow = false;
         for (alpha, count) in &dp {
             for beta in horizontal_strip_extensions_restricted_legacy(
                 alpha, lambda, strip_size, row_lo, row_hi,
             ) {
-                *new_dp.entry(beta).or_insert_with(BigUint::zero) += count;
+                add_capped(&mut new_dp, beta, count, max_states, &mut overflow);
+            }
+            if overflow {
+                break;
             }
         }
 
-        if let Some(limit) = max_states {
-            if new_dp.len() > limit {
-                panic!(
-                    "DP state count {} exceeds --max-states {}.",
-                    new_dp.len(),
-                    limit
-                );
-            }
+        if overflow {
+            panic!("{}", state_budget_message(max_states.unwrap_or_default()));
         }
 
         dp = new_dp;
@@ -1091,6 +1116,7 @@ fn try_flagged_skew_kostka_oriented(
             .unwrap_or(n);
 
         let mut new_dp = partition_count_map();
+        let mut overflow = false;
         for (alpha, count) in &dp {
             let (level_lower, level_upper) = if i + 1 == w.len() {
                 (lambda.parts(), lambda.parts())
@@ -1107,19 +1133,16 @@ fn try_flagged_skew_kostka_oriented(
                 level_upper,
                 |beta| {
                     debug_assert!(partition_within_bounds(&beta, level_lower, level_upper));
-                    *new_dp.entry(beta).or_insert_with(BigUint::zero) += count;
+                    add_capped(&mut new_dp, beta, count, max_states, &mut overflow);
                 },
             );
+            if overflow {
+                break;
+            }
         }
 
-        if let Some(limit) = max_states {
-            if new_dp.len() > limit {
-                return Err(format!(
-                    "DP state count {} exceeds --max-states {}.",
-                    new_dp.len(),
-                    limit
-                ));
-            }
+        if overflow {
+            return Err(state_budget_message(max_states.unwrap_or_default()));
         }
 
         record_state_layer(new_dp.len());
@@ -1621,6 +1644,7 @@ pub fn try_masked_flagged_skew_kostka(
             .collect::<Vec<_>>();
 
         let mut next = partition_count_map();
+        let mut overflow = false;
         for (alpha, count) in &states {
             let (level_lower, level_upper) = if label + 1 == weight.len() {
                 (lambda.parts(), lambda.parts())
@@ -1643,18 +1667,15 @@ pub fn try_masked_flagged_skew_kostka(
                 level_upper,
                 |beta| {
                     debug_assert!(partition_within_bounds(&beta, level_lower, level_upper));
-                    *next.entry(beta).or_insert_with(BigUint::zero) += count;
+                    add_capped(&mut next, beta, count, max_states, &mut overflow);
                 },
             );
-        }
-        if let Some(limit) = max_states {
-            if next.len() > limit {
-                return Err(format!(
-                    "DP state count {} exceeds --max-states {}.",
-                    next.len(),
-                    limit
-                ));
+            if overflow {
+                break;
             }
+        }
+        if overflow {
+            return Err(state_budget_message(max_states.unwrap_or_default()));
         }
         record_state_layer(next.len());
         states = next;
@@ -1727,6 +1748,7 @@ pub fn strict_skew_kostka_legacy(
         }
 
         let mut new_dp = partition_count_map();
+        let mut overflow = false;
         for (alpha, count) in &dp {
             for beta in strict_horizontal_strip_extensions_legacy(
                 alpha,
@@ -1735,18 +1757,15 @@ pub fn strict_skew_kostka_legacy(
                 &strict_lower[i],
                 &strict_diag[i],
             ) {
-                *new_dp.entry(beta).or_insert_with(BigUint::zero) += count;
+                add_capped(&mut new_dp, beta, count, max_states, &mut overflow);
+            }
+            if overflow {
+                break;
             }
         }
 
-        if let Some(limit) = max_states {
-            if new_dp.len() > limit {
-                panic!(
-                    "DP state count {} exceeds --max-states {}.",
-                    new_dp.len(),
-                    limit
-                );
-            }
+        if overflow {
+            panic!("{}", state_budget_message(max_states.unwrap_or_default()));
         }
 
         dp = new_dp;
@@ -1990,6 +2009,26 @@ mod tests {
 
     fn p(parts: &[u32]) -> Partition {
         Partition::new(parts.to_vec())
+    }
+
+    #[test]
+    fn state_budget_is_enforced_while_a_level_is_generated() {
+        // The budget fails exactly when some level has more states than the limit, and a
+        // failing level stops growing at the limit instead of being built in full.
+        let lambda = p(&[6, 5, 4, 3, 2]);
+        let mu = Partition::empty();
+        let weight = [4, 4, 3, 3, 3, 3];
+        let full = try_skew_kostka_stats(&lambda, &mu, &weight, None, false).expect("unbounded");
+        let peak = full.peak_states;
+        assert!(peak > 2);
+        let at_peak = try_skew_kostka_stats(&lambda, &mu, &weight, Some(peak), false)
+            .expect("a budget equal to the peak suffices");
+        assert_eq!(at_peak.value, full.value);
+        let error = try_skew_kostka_stats(&lambda, &mu, &weight, Some(peak - 1), false)
+            .expect_err("a budget below the peak must fail");
+        assert!(error.contains("exceeds --max-states"), "{error}");
+        let flagged = try_flagged_skew_kostka(&lambda, &mu, &weight, None, None, Some(1));
+        assert!(flagged.is_err() || flagged.as_ref().is_ok_and(|v| *v <= BigUint::one()));
     }
     fn biguint(n: u64) -> BigUint {
         BigUint::from(n)
