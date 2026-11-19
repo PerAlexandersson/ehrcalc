@@ -70,9 +70,11 @@ inequality `y < N t` becomes `y <= ceil(N t) - 1`.
 Ehrhart–Macdonald reciprocity holds for rational polytopes and their Ehrhart quasi-polynomials, so
 if `L` is a polynomial of degree `d = dim P`, then `L(-N) = (-1)^d L°(N)`.
 
-Output always records `assumes_polynomial: true` and the sample points used. The option
-`--extra-samples k` computes `k` further values and reports any disagreement, for testing; it is
-off by default.
+Output always records `assumes_polynomial: true` and the sample points used.
+`--extra-samples k` (default **1**) computes `k` further values beyond the `d + 1` needed and warns
+if the interpolated polynomial misses any of them. A miss means either the Ehrhart function is not a
+polynomial (a quasi-polynomial) or a bug in the counter or the dimension, so this is a cheap
+built-in bug detector. Searches that trust polynomiality may pass `--extra-samples 0`.
 
 ## 4. Pipeline
 
@@ -112,6 +114,11 @@ Process the variables in an order `v_1, ..., v_n` (section 6). After step `t`:
 - a sum is **open** while it has both processed and unprocessed variables.
 
 The state is the tuple of live values together with the partial sums of open sums.
+
+**Nonnegative normal form.** Before counting at dilation `N`, translate every variable by the
+integer `ceil(N a_i)` so that all lower bounds are `0`. This is a lattice-preserving translation;
+differences and sums shift by known integers. With nonnegative variables and the current 0/1 sum
+coefficients, a partial sum only grows, so a sum fails as soon as its partial sum exceeds `u_k`.
 
 **Transition for `v = v_t`:**
 - The range of `x_v` is the bound range, intersected with the difference constraints to live
@@ -225,8 +232,12 @@ crate tests green.
 ## 11. Open questions for Per
 
 1. Naming: "constraint polytope" and `ehrcalc polytope` are working names.
-2. Signed coefficients in sums (`x_i - x_j + x_k = s`) would bring in flow polytopes. The frontier
-   DP handles them unchanged; only the presolve bounds and the CRT bound need care. Phase G?
+2. Signed coefficients in sums (`x_i - x_j + x_k = s`), for flow polytopes: phase G, agreed in
+   principle (Per, 2026-11-19). Partial sums are then no longer monotone, so the early "exceeds
+   `u_k`" test is lost. With bounded variables the interval test still works: the reachable final
+   sum lies in `[partial + sum of minimum contributions, partial + sum of maximum contributions]`
+   of the remaining members. It is weaker, so keep the monotone fast path whenever all
+   coefficients of a sum are nonnegative, and use the interval test only for signed sums.
 3. Pairwise constraints with coefficients other than ±1 (`x_i <= 2 x_j`)? Not planned.
-4. Should a quasi-polynomial check (`--extra-samples`) become a periodicity detector that reports
-   the period when a polynomial fit fails?
+4. Decided: inequality sums stay (more versatile); `--extra-samples` defaults to 1 and warns when
+   the fit fails. Later, it could also report the period of a quasi-polynomial.
