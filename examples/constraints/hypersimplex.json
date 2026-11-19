@@ -1,0 +1,8 @@
+{
+  "schema": "ehrcalc.constraint-polytope.v1",
+  "variables": 4,
+  "names": ["a", "b", "c", "d"],
+  "bounds": [[0, 1], [0, 1], [0, 1], [0, 1]],
+  "differences": [],
+  "sums": [{"vars": [0, 1, 2, 3], "lower": 2, "upper": 2}]
+}

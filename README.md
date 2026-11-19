@@ -45,6 +45,7 @@ Supported families are:
 - Gelfand-Tsetlin, Kostka, skew Kostka, and flagged Kostka data;
 - key-polynomial Ehrhart families;
 - order polytopes;
+- rational constraint polytopes (bounds, differences, subset sums);
 - acyclic flow polytopes; and
 - exact transform-only workflows from supplied Ehrhart or h* data.
 
@@ -140,6 +141,25 @@ report-status semantics.
 The `ehrcalc-mcp` companion binary exposes the same exact library operations
 over MCP stdio transport.  See [docs/OUTPUT_AND_MCP.md](docs/OUTPUT_AND_MCP.md)
 for its request and output contract.
+
+## Constraint polytopes
+
+`ehrcalc polytope --input FILE.json` computes exact data from rational bounds,
+pairwise differences, and subset sums. It reports the certified affine
+dimension, ordinary/interior samples, chosen variable orders, actual peak
+states, and CRT bounds. The caller assumes polynomiality; one extra sample
+is checked by default and a mismatch produces a visible warning.
+
+```sh
+ehrcalc polytope --input examples/constraints/hypersimplex.json --format json
+ehrcalc kostka --lambda 3,2,1 --weight 2,2,2 --lower-flags 1,1,2 \
+  --emit-constraints --reduced | ehrcalc polytope - --format json
+ehrcalc order --chain 4 --emit-constraints | ehrcalc polytope - --plan-only
+```
+
+See [constraint polytopes](docs/CONSTRAINT_POLYTOPES.md) for input syntax,
+full/reduced GT adapters, ordering controls, examples, and the shared
+`constraint_polytope_ehrhart` MCP tool.
 
 ## Design
 

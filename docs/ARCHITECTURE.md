@@ -13,6 +13,17 @@ Ehrcalc provides one exact workflow for several families of counting problems:
 The library is the sole computational implementation.  The CLI and MCP server
 are thin clients of that library.
 
+The generic constraint-polytope counter lives in
+`ehrcalc-kostka-engine::constraint_polytope` and has no GT dependency. It
+parses rational bounds, pairwise differences and subset sums, presolves,
+computes the certified affine hull, and counts by an ordered frontier DP
+with exact integers or certified CRT. `families::constraint_polytope_ehrhart`
+owns sampling, reciprocity, extra checks, interpolation and component fits;
+the GT adapters supply full chains or only their free entries. CLI and MCP
+share `render::constraint_polytope_json`, whose versioned result retains
+plans, actual peak states, samples and polynomiality warnings. See
+[constraint polytopes](CONSTRAINT_POLYTOPES.md) for semantics and examples.
+
 ## Layers
 
 ```text

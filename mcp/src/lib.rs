@@ -4,11 +4,13 @@ use ehrcalc::exact::{
     format_rational, parse_bigint_list, parse_rational_list, BinomialBasisPolynomial, EhrhartData,
     EhrhartPolynomial, HStarPolynomial,
 };
+use ehrcalc::families::{constraint_polytope_ehrhart, ConstraintOptions, ConstraintPolytopeInput};
 use ehrcalc::families::{
     flow_ehrhart, gt_ehrhart, key_ehrhart, kostka_count, lr_count, order_ehrhart_with, FlowInput,
     GtInput, KeyInput, KostkaInput, LrInput, OrderInput, OrderMethod, OrderOptions,
 };
 use ehrcalc::key_scan::{run_key_scan, KeyPacketMode, KeyScanInput};
+use ehrcalc::render::{constraint_polytope_json, parse_constraint_order_heuristic};
 use ehrcalc::render::{ehrhart_json, ehrhart_json_with_method, OutputFormat};
 use num_rational::BigRational;
 use rmcp::{
@@ -25,6 +27,47 @@ use std::path::PathBuf;
 #[derive(Debug, Clone)]
 pub struct EhrcalcServer {
     tool_router: ToolRouter<Self>,
+}
+
+/// Generic bounds/differences/subset-sum request. `input` uses the exact
+/// ehrcalc.constraint-polytope.v1 object (integer or rational-string endpoints).
+#[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
+#[serde(deny_unknown_fields)]
+pub struct ConstraintPolytopeRequest {
+    /// Constraint object: variables, optional names, bounds, differences and sums.
+    #[schemars(with = "serde_json::Map<String, Value>")]
+    pub input: Value,
+    pub positive_only: Option<bool>,
+    /// Default 1. Extra counts detect a failed polynomiality assumption.
+    pub extra_samples: Option<usize>,
+    /// Permutation of all original variable indices.
+    pub order: Option<Vec<usize>>,
+    /// auto (default), greedy, sum-contiguous, rcm, exact-subset.
+    pub order_heuristic: Option<String>,
+    /// Default 1000000.
+    pub max_states: Option<usize>,
+    pub exact: Option<bool>,
+    pub plan_only: Option<bool>,
+}
+
+/// Execute the same service and renderer used by `ehrcalc polytope`.
+pub fn execute_constraint_polytope(request: &ConstraintPolytopeRequest) -> Result<Value, String> {
+    let input: ConstraintPolytopeInput =
+        serde_json::from_value(request.input.clone()).map_err(|e| e.to_string())?;
+    let options = ConstraintOptions {
+        positive_only: request.positive_only.unwrap_or(false),
+        extra_samples: request.extra_samples.unwrap_or(1),
+        order: request.order.clone(),
+        order_heuristic: parse_constraint_order_heuristic(
+            request.order_heuristic.as_deref().unwrap_or("auto"),
+        )?,
+        max_states: Some(request.max_states.unwrap_or(1_000_000)),
+        exact: request.exact.unwrap_or(false),
+        plan_only: request.plan_only.unwrap_or(false),
+    };
+    Ok(constraint_polytope_json(&constraint_polytope_ehrhart(
+        &input, &options,
+    )?))
 }
 
 /// Exact transform operation supported by `ehrhart_transform`.
@@ -217,6 +260,20 @@ impl EhrcalcServer {
     }
 
     #[tool(
+        output_schema = rmcp::handler::server::tool::schema_for_type::<serde_json::Map<String, Value>>(),
+        description = "Exact Ehrhart data for rational constraints. input is an ehrcalc.constraint-polytope.v1 object: variables, bounds [[lower,upper]], differences [[i,j,c]] meaning x_i-x_j<=c, sums [{vars:[indices],lower,upper}]. Endpoints are integers or rational strings, null means absent. Assumes polynomiality; extra_samples defaults to 1 and mismatches appear in warnings. Returns ehrcalc.constraint-polytope-result.v1 with affine dimension, implicit equalities, sample counts, ordering plans, peak states, CRT evidence, polynomial/h*/binomial data. plan_only skips counting."
+    )]
+    pub fn constraint_polytope_ehrhart(
+        &self,
+        Parameters(request): Parameters<ConstraintPolytopeRequest>,
+    ) -> Result<Json<Value>, McpError> {
+        execute_constraint_polytope(&request)
+            .map(Json)
+            .map_err(invalid_params)
+    }
+
+    #[tool(
+        output_schema = rmcp::handler::server::tool::schema_for_type::<serde_json::Map<String, Value>>(),
         description = "Run an exact Ehrhart transform: interpolate, convert to or from h*, convert binomial coordinates, take Delta, or take a discrete sum. Exact coefficients are strings."
     )]
     pub fn ehrhart_transform(
@@ -227,6 +284,7 @@ impl EhrcalcServer {
     }
 
     #[tool(
+        output_schema = rmcp::handler::server::tool::schema_for_type::<serde_json::Map<String, Value>>(),
         description = "Compute exact data for one tagged family request: GT, Kostka, LR, key, order, or acyclic flow. Ehrhart responses include dimension, power coefficients, h*, and binomial coordinates."
     )]
     pub fn compute_family(

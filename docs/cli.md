@@ -14,6 +14,7 @@ Every computational command uses exact arbitrary-size integers and rationals. Th
 Usage: ehrcalc [COMMAND]
 
 Commands:
+  polytope     Compute exact Ehrhart data from bounds, differences, and subset sums
   gt           Compute Gelfand-Tsetlin Ehrhart, h*, and dimension data
   kostka       Compute Kostka, skew Kostka, and flagged Kostka coefficients
   lr           Compute a Littlewood-Richardson coefficient
@@ -44,6 +45,64 @@ For generated Markdown command documentation, run `ehrcalc docs cli`.
 ```
 
 ## Commands
+
+### `ehrcalc polytope`
+
+```text
+Compute exact Ehrhart data from bounds, differences, and subset sums
+
+Usage: polytope [OPTIONS] <--input <INPUT>|--text <TEXT>|STDIN>
+
+Arguments:
+  [STDIN]
+          Read JSON from stdin
+
+          [possible values: -]
+
+Options:
+      --input <INPUT>
+          Read ehrcalc.constraint-polytope.v1 JSON from a file (`-` for stdin)
+
+      --text <TEXT>
+          Read the short constraint text syntax from a file (`-` for stdin)
+
+      --positive-only
+          Use only nonnegative interpolation samples instead of reciprocity
+
+      --extra-samples <EXTRA_SAMPLES>
+          Count extra positive samples; warn visibly when the polynomial fit misses
+
+          [default: 1]
+
+      --order <ORDER>
+          Comma-separated permutation of all original variable indices
+
+      --order-heuristic <ORDER_HEURISTIC>
+          Ordering candidate: auto, greedy, sum-contiguous, rcm, exact-subset
+
+          [default: auto]
+          [possible values: auto, greedy, sum-contiguous, rcm, exact-subset]
+
+      --max-states <MAX_STATES>
+          Abort if any counting layer exceeds this many states
+
+          [default: 1000000]
+
+      --exact
+          Count with BigUint instead of certified modular reconstruction
+
+      --plan-only
+          Report affine dimension and estimated plans without counting samples
+
+      --format <FORMAT>
+          Render as human-readable text, stable JSON, or LaTeX formulas
+
+          [default: text]
+          [possible values: text, json, latex]
+
+  -h, --help
+          Print help
+```
 
 ### `ehrcalc gt`
 
@@ -113,6 +172,12 @@ Options:
 
       --max-states <MAX_STATES>
           Abort the underlying DP if a level has more than this many states
+
+      --emit-constraints
+          Print the full GT constraint JSON instead of counting
+
+      --reduced
+          Emit only free entries, with frozen neighbours as marks
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas
@@ -297,6 +362,9 @@ Options:
 
       --max-states <MAX_STATES>
           Abort the ideals method if it stores more than this many (order ideal, last element) rows. Defaults to 2000000; with `--method auto` an exceeded budget falls back to the frontier method
+
+      --emit-constraints
+          Print unit bounds and cover differences as constraint JSON
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas

@@ -53,6 +53,35 @@ permutations, inconsistent derived vectors, and conflicting duplicate rows.
 
 ### Regression Fixtures
 
+Constraint-polytope comparisons live in `tests/constraint_gt.rs` and
+`tests/constraint_fixtures.rs`. The GT gate uses 1,024 deterministic flagged
+and skew inputs: both adapters match ordinary and relative-interior Kostka
+counts at dilations 1, 2, 3 on exact and CRT paths, and match `gt_ehrhart`
+dimensions and full data with and without reciprocity. It includes empty
+fibres, zero-weight labels, and both 2026-10-08 flag-relaxation regressions.
+The geometric fixtures use the hypersimplex inclusion-exclusion formula,
+Beck–Pixton's full Birkhoff B3/B4 polynomials, original-box enumeration for
+transportation polytopes, and brute-force sums of independent-set/basis
+incidence vectors for uniform and small graphic matroids. Loops, parallel
+edges, bridges, degenerate polytopes and inconsistent margins are included.
+
+`tests/constraint_cli.rs` checks source parsing, converter round trips,
+plan-only results, ordering controls, exact counts, budgets, all formats and
+visible extra-sample warnings. `mcp/tests/constraint_stdio.rs` starts the
+actual MCP binary and checks tool registration, schema, shared-service
+equality, warnings and deterministic invalid requests.
+
+For the serial timing table (excluded from default tests), run the guarded
+Cargo command below with `test -p ehrcalc --test constraint_gt
+timing_full_reduced_and_existing_gt_engine -- --ignored --nocapture
+--test-threads=1`. It includes adapter construction and all service work.
+The existing engine is observed with `kostka_dp::profile_kostka_state_peak`,
+which measures actual maintained partition-DP layers on the calling thread.
+This benchmark uses adaptive reciprocity, whose sampling is sequential;
+the observer does not capture Rayon worker threads. Closed formulas that
+create no DP map contribute zero. Peaks are largest single layers, rather
+than the sum of concurrently allocated maps or the affine-hull workspace.
+
 Keep small, reviewed JSON fixtures under version control.  They include known
 GT and order examples, key staircase rows, the Key-HStar-Bruhat `S_3` and
 `S_4` tables, the `S_5` summary counts, and the documented non-staircase first
@@ -67,6 +96,19 @@ tested against small golden outputs, but mathematical assertions are made on
 the shared exact result model rather than formatted strings.
 
 ## Required Checks
+
+In the constraint-polytope lane, prefix **every** Cargo command (including
+formatting, docs generation and metadata) with this serialized memory guard:
+
+```sh
+/cargo-target/rr-lanes/tools/heavy.sh START_MB=8000 -- \
+  env CARGO_TARGET_DIR=/cargo-target/polytool-lanes/ehrcalc-cp \
+  CARGO_BUILD_JOBS=4 CARGO_INCREMENTAL=0 timeout 1200 nice -n 10 cargo ...
+```
+
+Required final commands are `fmt --all -- --check`,
+`clippy --workspace --all-targets -- -D warnings`, and `test --workspace`.
+The guard waits for the shared lock; other workers' builds remain untouched.
 
 Run the full standalone workspace tests during development:
 

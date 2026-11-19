@@ -1,0 +1,14 @@
+{
+  "schema": "ehrcalc.constraint-polytope.v1",
+  "variables": 9,
+  "names": ["x00", "x01", "x02", "x10", "x11", "x12", "x20", "x21", "x22"],
+  "bounds": [[0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1], [0, 1]],
+  "sums": [
+    {"vars": [0, 1, 2], "lower": 1, "upper": 1},
+    {"vars": [3, 4, 5], "lower": 1, "upper": 1},
+    {"vars": [6, 7, 8], "lower": 1, "upper": 1},
+    {"vars": [0, 3, 6], "lower": 1, "upper": 1},
+    {"vars": [1, 4, 7], "lower": 1, "upper": 1},
+    {"vars": [2, 5, 8], "lower": 1, "upper": 1}
+  ]
+}

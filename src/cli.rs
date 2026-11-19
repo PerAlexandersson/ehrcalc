@@ -5,16 +5,24 @@ use crate::exact::{
     BinomialBasisPolynomial, EhrhartData, EhrhartPolynomial, HStarPolynomial,
 };
 use crate::families::{
+    constraint_polytope_ehrhart, gt_constraint_polytope, gt_free_constraint_polytope,
+    order_constraint_polytope, ConstraintOptions, ConstraintPolytopeInput,
+};
+use crate::families::{
     flow_ehrhart, gt_ehrhart, key_ehrhart, kostka_count, lr_count, order_ehrhart_with, FlowInput,
     GtInput, KeyInput, KostkaInput, LrInput, OrderInput, OrderMethod, OrderOptions,
 };
 use crate::key_scan::{run_key_scan, KeyPacketMode, KeyScanInput};
+use crate::render::{
+    constraint_warnings, parse_constraint_order_heuristic, render_constraint_polytope,
+};
 use crate::render::{
     render_count, render_ehrhart, render_ehrhart_with_method, render_polynomial, OutputFormat,
 };
 use clap::{Args, CommandFactory, Parser, Subcommand};
 use num_rational::BigRational;
 use serde_json::json;
+use std::io::Read;
 use std::path::PathBuf;
 
 /// Exact Ehrhart computations and related combinatorial counting tools.
@@ -34,6 +42,8 @@ pub struct Cli {
 /// Public command families and exact transform operations.
 #[derive(Debug, Subcommand)]
 pub enum Command {
+    /// Compute exact Ehrhart data from bounds, differences, and subset sums.
+    Polytope(PolytopeArgs),
     /// Compute Gelfand-Tsetlin Ehrhart, h*, and dimension data.
     Gt(GtArgs),
     /// Compute Kostka, skew Kostka, and flagged Kostka coefficients.
@@ -73,6 +83,7 @@ impl Command {
     /// Return the stable CLI spelling for diagnostics and documentation.
     pub fn name(&self) -> &'static str {
         match self {
+            Self::Polytope(_) => "polytope",
             Self::Gt(_) => "gt",
             Self::Kostka(_) => "kostka",
             Self::Lr(_) => "lr",
@@ -98,6 +109,44 @@ pub struct OutputArgs {
     /// Render as human-readable text, stable JSON, or LaTeX formulas.
     #[arg(long, value_enum, default_value_t = OutputFormat::Text)]
     pub format: OutputFormat,
+}
+
+/// Arguments for a generic constraint-polytope calculation.
+#[derive(Clone, Debug, Args)]
+#[command(group(clap::ArgGroup::new("source").required(true).args(["input", "text", "stdin"])))]
+pub struct PolytopeArgs {
+    /// Read ehrcalc.constraint-polytope.v1 JSON from a file (`-` for stdin).
+    #[arg(long)]
+    input: Option<PathBuf>,
+    /// Read the short constraint text syntax from a file (`-` for stdin).
+    #[arg(long)]
+    text: Option<PathBuf>,
+    /// Read JSON from stdin.
+    #[arg(value_parser = ["-"])]
+    stdin: Option<String>,
+    /// Use only nonnegative interpolation samples instead of reciprocity.
+    #[arg(long)]
+    positive_only: bool,
+    /// Count extra positive samples; warn visibly when the polynomial fit misses.
+    #[arg(long, default_value_t = 1)]
+    extra_samples: usize,
+    /// Comma-separated permutation of all original variable indices.
+    #[arg(long)]
+    order: Option<String>,
+    /// Ordering candidate: auto, greedy, sum-contiguous, rcm, exact-subset.
+    #[arg(long, default_value = "auto", value_parser = ["auto", "greedy", "sum-contiguous", "rcm", "exact-subset"])]
+    order_heuristic: String,
+    /// Abort if any counting layer exceeds this many states.
+    #[arg(long, default_value_t = 1_000_000)]
+    max_states: usize,
+    /// Count with BigUint instead of certified modular reconstruction.
+    #[arg(long)]
+    exact: bool,
+    /// Report affine dimension and estimated plans without counting samples.
+    #[arg(long)]
+    plan_only: bool,
+    #[command(flatten)]
+    output: OutputArgs,
 }
 
 /// Arguments for a GT Ehrhart calculation.
@@ -149,6 +198,12 @@ pub struct KostkaArgs {
     /// Abort the underlying DP if a level has more than this many states.
     #[arg(long)]
     max_states: Option<usize>,
+    /// Print the full GT constraint JSON instead of counting.
+    #[arg(long)]
+    emit_constraints: bool,
+    /// Emit only free entries, with frozen neighbours as marks.
+    #[arg(long, requires = "emit_constraints")]
+    reduced: bool,
     #[command(flatten)]
     output: OutputArgs,
 }
@@ -276,6 +331,9 @@ pub struct OrderArgs {
     /// `--method auto` an exceeded budget falls back to the frontier method.
     #[arg(long)]
     max_states: Option<usize>,
+    /// Print unit bounds and cover differences as constraint JSON.
+    #[arg(long)]
+    emit_constraints: bool,
     #[command(flatten)]
     output: OutputArgs,
 }
@@ -425,6 +483,51 @@ pub fn run(cli: Cli) -> Result<Option<String>, String> {
         return Ok(None);
     };
     let output = match command {
+        Command::Polytope(args) => {
+            let path = args.input.as_ref().or(args.text.as_ref());
+            let mut source = String::new();
+            if args.stdin.is_some() || path.is_some_and(|p| p.as_os_str() == "-") {
+                std::io::stdin()
+                    .read_to_string(&mut source)
+                    .map_err(|e| format!("reading stdin: {e}"))?;
+            } else {
+                let path = path.ok_or("supply --input, --text, or -")?;
+                source = std::fs::read_to_string(path)
+                    .map_err(|e| format!("reading {}: {e}", path.display()))?;
+            }
+            let input = if args.text.is_some() {
+                source.parse::<ConstraintPolytopeInput>()
+            } else {
+                ConstraintPolytopeInput::from_json(&source)
+            }
+            .map_err(|e| e.to_string())?;
+            let result = constraint_polytope_ehrhart(
+                &input,
+                &ConstraintOptions {
+                    positive_only: args.positive_only,
+                    extra_samples: args.extra_samples,
+                    order: args
+                        .order
+                        .as_deref()
+                        .map(|s| {
+                            if s.trim().is_empty() {
+                                Ok(Vec::new())
+                            } else {
+                                parse_usize_list(s, "order")
+                            }
+                        })
+                        .transpose()?,
+                    order_heuristic: parse_constraint_order_heuristic(&args.order_heuristic)?,
+                    max_states: Some(args.max_states),
+                    exact: args.exact,
+                    plan_only: args.plan_only,
+                },
+            )?;
+            for warning in constraint_warnings(&result) {
+                eprintln!("warning: {warning}");
+            }
+            render_constraint_polytope(&result, args.output.format)
+        }
         Command::Gt(args) => {
             let weight = parse_u32_list(&args.weight, "weight")?;
             let upper_flags = parse_optional_u32_list(args.upper_flags.as_deref(), "upper flags")?;
@@ -446,6 +549,25 @@ pub fn run(cli: Cli) -> Result<Option<String>, String> {
             let upper_flags = parse_optional_u32_list(args.upper_flags.as_deref(), "upper flags")?;
             let lower_flags = parse_optional_u32_list(args.lower_flags.as_deref(), "lower flags")?;
             validate_flag_lengths(&weight, upper_flags.as_deref(), lower_flags.as_deref())?;
+            if args.emit_constraints {
+                let input = GtInput {
+                    lambda: parse_u32_list(&args.lambda, "lambda")?,
+                    mu: parse_optional_u32_list(Some(&args.mu), "mu")?.unwrap_or_default(),
+                    weight,
+                    upper_flags,
+                    lower_flags,
+                    max_states: args.max_states,
+                    use_reciprocity: true,
+                };
+                let constraints = if args.reduced {
+                    gt_free_constraint_polytope(&input)?
+                } else {
+                    gt_constraint_polytope(&input)?
+                };
+                return serde_json::to_string_pretty(&constraints)
+                    .map(Some)
+                    .map_err(|e| e.to_string());
+            }
             let count = kostka_count(&KostkaInput {
                 lambda: parse_u32_list(&args.lambda, "lambda")?,
                 mu: parse_optional_u32_list(Some(&args.mu), "mu")?.unwrap_or_default(),
@@ -496,6 +618,13 @@ pub fn run(cli: Cli) -> Result<Option<String>, String> {
             format: args.output.format,
         })?,
         Command::Order(args) => {
+            if args.emit_constraints {
+                return serde_json::to_string_pretty(&order_constraint_polytope(
+                    &parse_order_input(&args)?,
+                )?)
+                .map(Some)
+                .map_err(|e| e.to_string());
+            }
             let computation = order_ehrhart_with(
                 &parse_order_input(&args)?,
                 &OrderOptions {
@@ -868,6 +997,8 @@ mod tests {
         let output = run(Cli {
             command: Some(Command::Kostka(KostkaArgs {
                 lambda: "2,1".to_string(),
+                emit_constraints: false,
+                reduced: false,
                 mu: String::new(),
                 weight: "1,1,1".to_string(),
                 upper_flags: None,
@@ -961,6 +1092,7 @@ mod tests {
 
         let order = run(Cli {
             command: Some(Command::Order(OrderArgs {
+                emit_constraints: false,
                 chain: None,
                 antichain: None,
                 fence: None,
@@ -1043,6 +1175,8 @@ mod tests {
     fn invalid_flag_lengths_are_rejected_before_counting() {
         let error = run(Cli {
             command: Some(Command::Kostka(KostkaArgs {
+                emit_constraints: false,
+                reduced: false,
                 lambda: "2,1".to_string(),
                 mu: String::new(),
                 weight: "1,1,1".to_string(),
@@ -1062,6 +1196,10 @@ mod tests {
     fn generated_reference_contains_detailed_help() {
         let reference = cli_reference_markdown();
         assert!(reference.contains("--upper-flags"));
+        assert!(reference.contains("ehrcalc polytope"));
+        assert!(reference.contains("--emit-constraints"));
+        assert!(reference.contains("--extra-samples"));
+        assert!(reference.contains("--order-heuristic"));
         assert!(reference.contains("ehrcalc docs cli"));
         assert_eq!(reference, include_str!("../docs/cli.md"));
     }

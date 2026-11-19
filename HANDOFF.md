@@ -1,5 +1,31 @@
 # Ehrcalc Handoff
 
+## Constraint-polytope E–F checkpoint — 2026-11-19
+
+Phases E–F are complete as uncommitted changes over `88a5bff` in this lane;
+the brief prohibits Git writes. `/root` releases ownership of the adapters,
+CLI/MCP/rendering, Kostka state-profile observer, fixtures, documentation and
+this opening. Initial Git state was clean. No other lane's files changed.
+
+Verification: 362 workspace tests passed (one timing test ignored by default
+and explicitly passed separately); workspace/all-target Clippy with warnings
+denied, formatting, generated CLI-reference drift, diff whitespace and the
+empty symlink scan passed. 1,024 random GT cases plus 15 corners: 24,936
+ordinary/interior exact/CRT comparisons, 4,156 service runs, both sampling
+modes and dimensions agreed. Hypersimplex, B3/B4, transportation and matroid
+fixtures passed. CLI and real MCP stdio integration passed. Shared JSON
+output schemas also repair the MCP startup panic with `Json<Value>`.
+
+Cargo used the prescribed heavy guard and external target. Runtime registry
+and `codex mcp list` were inspected; Ehrcalc MCP is not installed, so tests
+use the local server binary. Report, logs, signatures, counts and measured
+timings: `/cargo-target/ehrcalc-cp-work/FINAL_REPORT-E-F.md`. The reduced
+engine is faster than full on the benchmark examples; it remains slower
+than `gt_ehrhart` on the larger examples. Existing-engine peaks are measured
+with the scoped calling-thread observer during sequential reciprocity.
+Signed sums remain phase G; optional parallel counting is deferred. KTT
+remains paused. No worker, remote job, Git write or deployment was started.
+
 ## OWNERSHIP 2026-11-19 — transferred to the real-rooted-tools Opus orchestrator
 
 Per (2026-11-19) assigned ehrcalc to the real-rooted-tools coordinator (Claude Opus, job c1ce5e16).

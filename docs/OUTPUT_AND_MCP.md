@@ -71,6 +71,17 @@ enumerating flags.
 
 ## MCP
 
+`constraint_polytope_ehrhart` accepts an `input` constraint JSON object and
+optional `positive_only`, `extra_samples` (default 1), `order` (array of
+original indices), `order_heuristic`, `max_states` (default 1,000,000),
+`exact`, and `plan_only`. It calls the same library service and result
+renderer as `ehrcalc polytope`. The versioned
+`ehrcalc.constraint-polytope-result.v1` response includes affine dimension,
+implicit equalities, sample provenance, chosen orders, estimated and actual
+peak states, per-component CRT bounds, Ehrhart/h*/binomial data, and warnings.
+See [constraint polytopes](CONSTRAINT_POLYTOPES.md) for the complete contract
+and the explicit polynomiality assumption.
+
 The `ehrcalc-mcp` binary exposes structured library operations over stdio.
 Its first tools are `ehrhart_transform` for exact conversion and transform
 operations, and `compute_family` for GT, Kostka, LR, key, staircase

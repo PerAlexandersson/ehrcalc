@@ -1,6 +1,9 @@
 //! Shared plain-text, JSON, and LaTeX renderers for exact Ehrhart results.
 
 use crate::exact::{format_rational, BinomialBasisPolynomial, EhrhartData, EhrhartPolynomial};
+use crate::families::{
+    ConstraintComputation, ConstraintCount, CountingPlan, OrderHeuristic, SamplePlan,
+};
 use clap::ValueEnum;
 use num_bigint::BigInt;
 use num_rational::BigRational;
@@ -14,6 +17,183 @@ pub enum OutputFormat {
     Text,
     Json,
     Latex,
+}
+
+/// Stable spelling shared by constraint plans and interface parsers.
+pub fn constraint_order_heuristic_name(heuristic: OrderHeuristic) -> &'static str {
+    match heuristic {
+        OrderHeuristic::Auto => "auto",
+        OrderHeuristic::Greedy => "greedy",
+        OrderHeuristic::SumContiguous => "sum-contiguous",
+        OrderHeuristic::ReverseCuthillMcKee => "rcm",
+        OrderHeuristic::ExactSubset => "exact-subset",
+    }
+}
+
+/// Parse one stable ordering name for CLI and MCP callers.
+pub fn parse_constraint_order_heuristic(name: &str) -> Result<OrderHeuristic, String> {
+    match name {
+        "auto" => Ok(OrderHeuristic::Auto),
+        "greedy" => Ok(OrderHeuristic::Greedy),
+        "sum-contiguous" => Ok(OrderHeuristic::SumContiguous),
+        "rcm" => Ok(OrderHeuristic::ReverseCuthillMcKee),
+        "exact-subset" => Ok(OrderHeuristic::ExactSubset),
+        _ => Err(format!(
+            "unknown order heuristic `{name}`; use auto, greedy, sum-contiguous, rcm, exact-subset"
+        )),
+    }
+}
+
+fn counting_plan_json(plan: &CountingPlan) -> Value {
+    json!({
+        "dilation": plan.dilation, "strict": plan.strict, "order": plan.order,
+        "heuristic": constraint_order_heuristic_name(plan.heuristic), "user_order": plan.user_order,
+        "estimated_peak_states": plan.estimated_peak.to_string(),
+        "estimated_work": plan.estimated_work.to_string(), "peak_frontier": plan.peak_frontier,
+        "candidates": plan.candidates.iter().map(|c| json!({
+            "heuristic": constraint_order_heuristic_name(c.heuristic), "order": c.order,
+            "estimated_peak_states": c.estimated_peak.to_string(), "estimated_work": c.estimated_work.to_string(),
+            "peak_frontier": c.peak_frontier,
+        })).collect::<Vec<_>>()
+    })
+}
+
+fn sample_plan_json(plan: &SamplePlan) -> Value {
+    json!({
+        "positive": plan.positive, "reciprocal": plan.reciprocal,
+        "extra_dilations": plan.extra_dilations, "estimated_work": plan.estimated_work.to_string(),
+        "ordinary": plan.ordinary_plans.iter().map(counting_plan_json).collect::<Vec<_>>(),
+        "strict": plan.strict_plans.iter().map(counting_plan_json).collect::<Vec<_>>(),
+    })
+}
+
+fn constraint_count_json(count: &ConstraintCount) -> Value {
+    json!({
+        "count": count.value.to_string(), "actual_peak_states": count.peak_states,
+        "layer_states": count.layer_states,
+        "plans": count.plans.iter().map(counting_plan_json).collect::<Vec<_>>(),
+        "crt": count.modular.iter().map(|c| json!({
+            "moduli_count": c.moduli.len(), "bound_bits": c.bound_bits,
+            "upper_bound": c.upper_bound.to_string(), "moduli": c.moduli, "residues": c.residues,
+            "combined_modulus": c.combined_modulus.to_string(),
+        })).collect::<Vec<_>>()
+    })
+}
+
+/// Warnings retained in every presentation, including a failed polynomial fit.
+pub fn constraint_warnings(result: &ConstraintComputation) -> Vec<String> {
+    let mut warnings = result.mismatches.iter().map(|m| format!(
+        "extra-sample mismatch at dilation {}: fitted {}, counted {}; polynomiality assumption failed or counter/dimension error",
+        m.dilation, format_rational(&m.expected), format_rational(&m.actual),
+    )).collect::<Vec<_>>();
+    if let Some(error) = &result.data_error {
+        warnings.push(format!("Ehrhart transforms unavailable: {error}"));
+    }
+    if result.component_product_matches == Some(false) {
+        warnings.push("component polynomial product differs from the full fit; polynomiality assumption may fail".into());
+    }
+    warnings
+}
+
+/// Versioned constraint result used unchanged by the CLI and MCP tool.
+/// Exact counts, estimates, coefficients, and CRT integers are decimal strings.
+pub fn constraint_polytope_json(result: &ConstraintComputation) -> Value {
+    let mut plan = sample_plan_json(&result.plan);
+    plan["actual_peak_states"] = json!(result.samples.iter().map(|s| s.count.peak_states).max());
+    json!({
+        "schema": "ehrcalc.constraint-polytope-result.v1",
+        "assumes_polynomial": result.assumes_polynomial, "empty": result.empty,
+        "dimension": result.dimension, "implicit_equalities": result.implicit_equalities,
+        "free_variables": result.free_variables,
+        "fixed_values": result.fixed_values.iter().map(|q| q.as_ref().map(format_rational)).collect::<Vec<_>>(),
+        "component_dimensions": result.component_dimensions, "plan": plan,
+        "samples": result.samples.iter().map(|s| {
+            let mut value = constraint_count_json(&s.count);
+            value["dilation"] = json!(s.dilation);
+            value["kind"] = json!(if s.strict { "interior" } else { "ordinary" });
+            value["value"] = json!(format_rational(&s.value));
+            value["interpolation"] = json!(s.interpolation);
+            value
+        }).collect::<Vec<_>>(),
+        "ehrhart": result.data.as_ref().map(ehrhart_json),
+        "ehrhart_power": result.polynomial.as_ref().map(|p| rational_strings(p.power_coeffs())),
+        "hstar": result.data.as_ref().map(|d| bigint_strings(d.hstar.coeffs())),
+        "binomial_basis": result.polynomial.as_ref().and_then(|p| p.to_binomial_basis().ok()).map(|b| bigint_strings(b.coeffs())),
+        "mismatches": result.mismatches.iter().map(|m| json!({"dilation": m.dilation,
+            "expected": format_rational(&m.expected), "actual": format_rational(&m.actual)})).collect::<Vec<_>>(),
+        "component_product_matches": result.component_product_matches,
+        "warnings": constraint_warnings(result),
+    })
+}
+
+/// Render the shared constraint result, preserving plan-only and mismatch data.
+pub fn render_constraint_polytope(result: &ConstraintComputation, format: OutputFormat) -> String {
+    if format == OutputFormat::Json {
+        return serde_json::to_string_pretty(&constraint_polytope_json(result))
+            .expect("constraint result JSON");
+    }
+    let prefix = if format == OutputFormat::Latex {
+        "% "
+    } else {
+        ""
+    };
+    let mut output = if result.empty {
+        format!("{prefix}dimension: null\n{prefix}empty: true\n")
+    } else if let Some(data) = &result.data {
+        render_ehrhart(data, format)
+    } else if let Some(poly) = &result.polynomial {
+        render_polynomial("fitted_Ehrhart", poly, None, format)
+    } else {
+        format!(
+            "{prefix}dimension: {}\n{prefix}empty: {}\n",
+            result
+                .dimension
+                .map_or_else(|| "null".into(), |d| d.to_string()),
+            result.empty
+        )
+    };
+    output.push_str(&format!(
+        "{prefix}assumes_polynomial: true\n{prefix}implicit_equalities: {:?}\n",
+        result.implicit_equalities
+    ));
+    output.push_str(&format!(
+        "{prefix}sample plan: {} positive, {} reciprocal, extras {:?}\n",
+        result.plan.positive, result.plan.reciprocal, result.plan.extra_dilations
+    ));
+    for p in result
+        .plan
+        .ordinary_plans
+        .iter()
+        .chain(&result.plan.strict_plans)
+    {
+        output.push_str(&format!(
+            "{prefix}{} order {:?}: estimated peak {}\n",
+            if p.strict { "interior" } else { "ordinary" },
+            p.order,
+            p.estimated_peak
+        ));
+    }
+    for s in &result.samples {
+        output.push_str(&format!(
+            "{prefix}sample {} ({}): count {}, value {}, actual peak {}\n",
+            s.dilation,
+            if s.strict { "interior" } else { "ordinary" },
+            s.count.value,
+            format_rational(&s.value),
+            s.count.peak_states
+        ));
+        for c in &s.count.modular {
+            output.push_str(&format!(
+                "{prefix}CRT: {} moduli, {} bound bits\n",
+                c.moduli.len(),
+                c.bound_bits
+            ));
+        }
+    }
+    for warning in constraint_warnings(result) {
+        output.push_str(&format!("{prefix}WARNING: {warning}\n"));
+    }
+    output
 }
 
 /// Render a complete Ehrhart calculation in the requested format.

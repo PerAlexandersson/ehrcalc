@@ -20,6 +20,10 @@ workspace.  The tool should consolidate the current scattered code for:
 - Gelfand-Tsetlin and Kostka computations;
 - key-polynomial Ehrhart computations;
 - order-polytope Ehrhart computations;
+- constraint-polytope Ehrhart computations from rational bounds, pairwise
+  differences, and subset sums, with exact affine hulls, frontier counting,
+  certified CRT, and full/reduced flagged GT converters (see
+  [docs/CONSTRAINT_POLYTOPES.md](docs/CONSTRAINT_POLYTOPES.md));
 - research diagnostics that feed real-rootedness and interlacing checks.
 
 The immediate client project is:

@@ -1,6 +1,12 @@
 # Constraint polytopes: implementation plan
 
-Status: plan, 2026-11-19. Owner: real-rooted-tools coordinator. Requested by Per Alexandersson.
+Status: phases A–F implemented, 2026-11-19. Owner: real-rooted-tools coordinator.
+Requested by Per Alexandersson. See [the constraint guide](CONSTRAINT_POLYTOPES.md)
+for the implemented interface and [testing](TESTING.md) for comparison gates.
+Constraint counting remains serial; optional rayon layers are deferred.
+The timing fixture measures existing-engine peak states with a scoped
+observer during sequential adaptive-reciprocity sampling. Signed sums
+remain phase G.
 
 ## 1. Goal
 

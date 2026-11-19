@@ -10,6 +10,45 @@ pub struct KostkaDpStats {
     pub level_states: Vec<usize>,
 }
 
+thread_local! {
+    static PROFILED_STATE_PEAK: std::cell::Cell<Option<usize>> = const { std::cell::Cell::new(None) };
+}
+
+fn record_state_layer(states: usize) {
+    PROFILED_STATE_PEAK.with(|peak| {
+        if let Some(previous) = peak.get() {
+            peak.set(Some(previous.max(states)));
+        }
+    });
+}
+
+/// Measure the largest accepted partition-counting DP layer in `operation` on
+/// the calling thread. Covers the maintained ordinary skew, flagged, and
+/// masked/relative-interior counters, including recursive reductions. Closed
+/// formulas that create no DP map contribute zero. This is a layer size, not
+/// the sum of simultaneously allocated maps or an affine-hull workspace size.
+///
+/// Use with sequential workloads, such as adaptive-reciprocity `gt_ehrhart`.
+/// Worker threads (including positive-only Ehrhart sampling in Rayon) are not
+/// observed. Scopes can nest; the outer scope includes nested observations.
+/// The previous scope is restored on return or panic.
+pub fn profile_kostka_state_peak<T>(operation: impl FnOnce() -> T) -> (T, usize) {
+    struct Restore(Option<usize>);
+    impl Drop for Restore {
+        fn drop(&mut self) {
+            PROFILED_STATE_PEAK.with(|peak| {
+                let observed = peak.get().unwrap_or(0);
+                peak.set(self.0.map(|outer| outer.max(observed)));
+            });
+        }
+    }
+    let restore = Restore(PROFILED_STATE_PEAK.with(|peak| peak.replace(Some(0))));
+    let result = operation();
+    let peak = PROFILED_STATE_PEAK.with(|peak| peak.get().unwrap_or(0));
+    drop(restore);
+    (result, peak)
+}
+
 /// Level-by-level DP for computing skew Kostka coefficients K(lambda/mu, w).
 ///
 /// A SSYT of shape lambda/mu and content w = (w_1,...,w_k) corresponds bijectively to a chain
@@ -512,6 +551,7 @@ pub fn try_skew_kostka_stats(
     let mut dp = partition_count_map();
     dp.insert(mu.clone(), BigUint::one());
     let mut peak_states = dp.len();
+    record_state_layer(dp.len());
     let mut level_states = vec![dp.len()];
 
     for &strip_size in w_eff {
@@ -536,6 +576,7 @@ pub fn try_skew_kostka_stats(
             }
         }
 
+        record_state_layer(new_dp.len());
         peak_states = peak_states.max(new_dp.len());
         level_states.push(new_dp.len());
         dp = new_dp;
@@ -1033,6 +1074,7 @@ fn try_flagged_skew_kostka_oriented(
     let n = lambda.num_parts();
     let mut dp = partition_count_map();
     dp.insert(mu.clone(), BigUint::one());
+    record_state_layer(dp.len());
 
     for (i, &strip_size) in w.iter().enumerate() {
         if strip_size == 0 {
@@ -1080,6 +1122,7 @@ fn try_flagged_skew_kostka_oriented(
             }
         }
 
+        record_state_layer(new_dp.len());
         dp = new_dp;
     }
 
@@ -1550,6 +1593,7 @@ pub fn try_masked_flagged_skew_kostka(
 
     let mut states = partition_count_map();
     states.insert(mu.clone(), BigUint::one());
+    record_state_layer(states.len());
     for (label, &strip_size) in weight.iter().enumerate() {
         if strip_size == 0 {
             if strict_lower_masks.is_some_and(|masks| masks[label] != 0)
@@ -1612,6 +1656,7 @@ pub fn try_masked_flagged_skew_kostka(
                 ));
             }
         }
+        record_state_layer(next.len());
         states = next;
     }
 

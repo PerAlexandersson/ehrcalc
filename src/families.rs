@@ -14,6 +14,9 @@ use ehrcalc_kostka_engine::Partition as KostkaPartition;
 use num_bigint::{BigInt, BigUint, ToBigInt};
 use num_traits::Zero;
 
+mod gt_constraints;
+pub use gt_constraints::{gt_constraint_polytope, gt_free_constraint_polytope};
+
 pub use ehrcalc_kostka_engine::constraint_polytope::{
     ConstraintCount, ConstraintOptions, ConstraintPolytopeInput, CountingPlan,
     DifferenceConstraint, ModularCertificate, OrderHeuristic, PreparedConstraintPolytope,
