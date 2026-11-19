@@ -43,11 +43,10 @@ struct FrozenRectangleReduction {
     cut_label: usize,
 }
 
-fn optional_flags(
-    upper: Vec<u32>,
-    lower: Vec<u32>,
-    rows: usize,
-) -> Option<(Option<Vec<u32>>, Option<Vec<u32>>)> {
+/// Upper and lower per-label flags, each omitted when the pair is trivial.
+type OptionalFlagPair = (Option<Vec<u32>>, Option<Vec<u32>>);
+
+fn optional_flags(upper: Vec<u32>, lower: Vec<u32>, rows: usize) -> Option<OptionalFlagPair> {
     if lower.iter().zip(&upper).any(|(lo, hi)| lo > hi) {
         return None;
     }

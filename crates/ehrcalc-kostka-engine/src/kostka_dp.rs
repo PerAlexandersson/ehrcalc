@@ -661,6 +661,7 @@ fn enumerate_strips_restricted(
     increments[row] = 0;
 }
 
+#[allow(clippy::too_many_arguments)]
 fn for_each_horizontal_strip_extension_restricted<F>(
     alpha: &Partition,
     lambda: &Partition,
