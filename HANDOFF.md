@@ -1,5 +1,15 @@
 # Ehrcalc Handoff
 
+## OWNERSHIP 2026-11-19 — transferred to the real-rooted-tools Opus orchestrator
+
+Per (2026-11-19) assigned ehrcalc to the real-rooted-tools coordinator (Claude Opus, job c1ce5e16).
+At transfer: no ehrcalc worker process alive (tmux session agent-ehrcalc-kostka-a-face7f37 has no
+running child); main clean except untracked `runs/`, 43 local HANDOFF commits ahead of origin
+(unpushed, preserved). The KTT search state below is preserved unchanged; it is paused, not resumed.
+New work: generic constraint polytopes (bounds, pairwise differences, subset sums) with exact affine
+hull, reciprocity, frontier DP and CRT counting — plan `docs/CONSTRAINT_POLYTOPES_PLAN.md` on branch
+`feat/constraint-polytopes` (worktree `/workspace/rust/.worktrees/ehrcalc-constraint-polytopes`).
+
 ## Phone status — 2026-11-16, CHECKPOINT 37
 
 Search BLOCKED by sustained memory pressure after three consecutive compute-
