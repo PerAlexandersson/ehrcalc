@@ -1,5 +1,24 @@
 //! Real JSON-RPC stdio tool registration, schema, success and failure contracts.
 use serde_json::{json, Value};
+
+fn without_timing(mut value: Value) -> Value {
+    match &mut value {
+        Value::Object(fields) => {
+            fields.remove("elapsed_micros");
+            fields.remove("predicted_runtime_micros");
+            for field in fields.values_mut() {
+                *field = without_timing(field.take());
+            }
+        }
+        Value::Array(values) => {
+            for value in values {
+                *value = without_timing(value.take());
+            }
+        }
+        _ => {}
+    }
+    value
+}
 use std::io::{BufRead, BufReader, Write};
 use std::process::{Child, ChildStdin, Command, Stdio};
 use std::sync::mpsc::{channel, Receiver};
@@ -102,8 +121,8 @@ fn constraint_tool_is_registered_and_calls_the_shared_service() {
     let value = &result["result"]["structuredContent"];
     let request = serde_json::from_value(args).unwrap();
     assert_eq!(
-        value,
-        &ehrcalc_mcp::execute_constraint_polytope(&request).unwrap()
+        without_timing(value.clone()),
+        without_timing(ehrcalc_mcp::execute_constraint_polytope(&request).unwrap())
     );
     assert_eq!(value["schema"], "ehrcalc.constraint-polytope-result.v1");
     assert_eq!(value["ehrhart_power"], json!(["1", "2"]));
@@ -114,7 +133,10 @@ fn constraint_tool_is_registered_and_calls_the_shared_service() {
         .as_array()
         .unwrap()
         .is_empty());
-    let plan = server.tool(5, json!({"input":{"variables":1,"bounds":[[0,1]]},"plan_only":true,"order":[0],"order_heuristic":"rcm"}));
+    let plan = server.tool(
+        5,
+        json!({"input":{"variables":1,"bounds":[[0,1]]},"plan_only":true,"order":[0]}),
+    );
     assert_eq!(plan["result"]["structuredContent"]["samples"], json!([]));
     for (id, args) in [
         (6, json!({"input":{"variables":1,"bounds":[[2,1]]}})),

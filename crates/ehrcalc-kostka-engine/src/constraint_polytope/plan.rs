@@ -1,8 +1,14 @@
-use super::count::{state_estimate, IntegerProblem};
+use super::count::{pilot, state_estimate, IntegerProblem, PilotProblem};
 use super::{ConstraintError, PreparedConstraintPolytope, Result};
 use num_bigint::BigUint;
 use num_traits::{One, Zero};
 use std::collections::VecDeque;
+
+#[path = "orders.rs"]
+mod orders;
+
+/// Maximum number of extra interpolation checks per request.
+pub const MAX_EXTRA_SAMPLES: usize = 64;
 
 /// Candidate ordering algorithm. Exact subset minimax is available through 22 free variables.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -13,6 +19,12 @@ pub enum OrderHeuristic {
     SumContiguous,
     ReverseCuthillMcKee,
     ExactSubset,
+    MinimumDegree,
+    MinimumFill,
+    CuthillMcKee,
+    GtLevel,
+    GtRow,
+    LocalImprovement,
 }
 
 /// Core engine and Ehrhart-service controls. Orders name original input variables.
@@ -42,7 +54,7 @@ impl Default for ConstraintOptions {
 }
 
 /// A candidate order and its exact box-product frontier estimate.
-/// The optimization objective is `estimated_peak`; work breaks ties when choosing candidates.
+/// Estimate-only selection minimizes peak then work; auto uses recorded pilot predictions.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct OrderCandidate {
     pub heuristic: OrderHeuristic,
@@ -50,6 +62,30 @@ pub struct OrderCandidate {
     pub estimated_peak: BigUint,
     pub estimated_work: BigUint,
     pub peak_frontier: usize,
+    /// Seed/direction or local-search source, stable across runs.
+    pub variant: String,
+    pub pilots: Vec<OrderPilot>,
+    /// Index of an identical order whose pilot was reused.
+    pub duplicate_of: Option<usize>,
+    /// Heuristic prediction, never a certified bound or a count.
+    pub predicted_peak: Option<String>,
+    pub predicted_runtime_micros: Option<String>,
+    pub prediction_basis: Option<String>,
+}
+
+/// Bounded enumeration evidence. Incomplete peaks are lower bounds only.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct OrderPilot {
+    pub dilation: u64,
+    pub strict: bool,
+    pub status: String,
+    pub peak_states: usize,
+    pub layer_states: Vec<usize>,
+    pub transitions: u64,
+    pub elapsed_micros: u64,
+    pub state_budget: usize,
+    pub transition_budget: u64,
+    pub time_budget_micros: u64,
 }
 
 /// Chosen order at a specified dilation, plus all evaluated candidates.
@@ -65,6 +101,8 @@ pub struct CountingPlan {
     pub estimated_work: BigUint,
     pub peak_frontier: usize,
     pub candidates: Vec<OrderCandidate>,
+    /// `pilot`, `estimate-only`, `explicit-heuristic`, or `user-order`.
+    pub selection: String,
 }
 
 /// Interpolation schedule: zero, `1..=positive`, and `-1..=-reciprocal`.
@@ -81,6 +119,12 @@ pub struct SamplePlan {
 }
 
 pub(super) fn validate_order(n: usize, options: &ConstraintOptions) -> Result<()> {
+    if options.extra_samples > MAX_EXTRA_SAMPLES {
+        return Err(ConstraintError::InvalidInput(format!(
+            "extra_samples must be at most {MAX_EXTRA_SAMPLES}; got {}",
+            options.extra_samples
+        )));
+    }
     if let Some(order) = &options.order {
         let mut sorted = order.clone();
         sorted.sort_unstable();
@@ -119,6 +163,12 @@ fn evaluate(
         estimated_peak: peak,
         estimated_work: work,
         peak_frontier: frontier,
+        variant: String::new(),
+        pilots: Vec::new(),
+        duplicate_of: None,
+        predicted_peak: None,
+        predicted_runtime_micros: None,
+        prediction_basis: None,
     }
 }
 
@@ -307,9 +357,101 @@ fn exact_subset(problem: &IntegerProblem) -> Vec<usize> {
     order
 }
 
+fn log_size(value: &BigUint) -> f64 {
+    use num_traits::ToPrimitive;
+    if value.is_zero() {
+        return 0.0;
+    }
+    let shift = value.bits().saturating_sub(52);
+    (value >> shift).to_f64().expect("52-bit mantissa").ln() + shift as f64 * std::f64::consts::LN_2
+}
+
+fn prediction(
+    problem: &IntegerProblem,
+    pilots: &[PilotProblem],
+    candidate: &OrderCandidate,
+) -> (f64, f64, &'static str) {
+    if problem.empty {
+        return (f64::NEG_INFINITY, f64::NEG_INFINITY, "empty-target");
+    }
+    let usable = candidate
+        .pilots
+        .iter()
+        .enumerate()
+        .filter(|(_, p)| {
+            p.status == "complete"
+                && p.layer_states.len() == candidate.order.len()
+                && p.layer_states.last().is_some_and(|&n| n != 0)
+        })
+        .map(|(i, _)| i)
+        .collect::<Vec<_>>();
+    let Some(&last) = usable.last() else {
+        // Empty small dilations and censored runs give no full-layer density.
+        // Retain the certified range estimate rather than treating them as zero cost.
+        return (
+            log_size(&candidate.estimated_peak),
+            log_size(&candidate.estimated_work),
+            "range-fallback",
+        );
+    };
+    let measured = &candidate.pilots[last];
+    let mut done = vec![false; problem.widths.len()];
+    let mut peak = 0.0_f64;
+    let mut work = 0.0_f64;
+    for (step, &v) in candidate.order.iter().enumerate() {
+        done[v] = true;
+        let target = log_size(&state_estimate(problem, &done).0);
+        let small = log_size(&state_estimate(&pilots[last].problem, &done).0);
+        let actual = (measured.layer_states[step].max(1) as f64).ln();
+        let mut power = 1.0;
+        if usable.len() >= 2 {
+            let previous = usable[usable.len() - 2];
+            let first = &candidate.pilots[previous];
+            let first_model = log_size(&state_estimate(&pilots[previous].problem, &done).0);
+            if small > first_model + 1e-9 {
+                power = ((actual - (first.layer_states[step].max(1) as f64).ln())
+                    / (small - first_model))
+                    .clamp(0.0, 1.0);
+            }
+        }
+        let projected = actual + (target - small).max(0.0) * power;
+        peak = peak.max(projected);
+        work += projected.min(690.0).exp();
+    }
+    // A censored second pilot may have unseen layers; increase the score rather
+    // than presenting its observed lower bound as a completed peak.
+    if usable.len() < 2 && candidate.pilots.iter().any(|p| p.status.ends_with("limit")) {
+        peak += 2.0_f64.ln();
+    }
+    let runtime = (measured.elapsed_micros.max(1) as f64).ln()
+        + (work.max(1.0).ln() - (measured.layer_states.iter().sum::<usize>().max(1) as f64).ln())
+            .max(0.0);
+    let adaptive = measured.dilation > 2;
+    let basis = if usable.len() >= 2 {
+        if adaptive {
+            "adaptive-two-pilot-growth"
+        } else {
+            "two-pilot-growth"
+        }
+    } else if candidate.pilots.iter().any(|p| p.status.ends_with("limit")) {
+        if adaptive {
+            "adaptive-one-pilot-censored"
+        } else {
+            "one-pilot-censored"
+        }
+    } else if adaptive {
+        "adaptive-one-pilot-density"
+    } else {
+        "one-pilot-density"
+    };
+    (peak, runtime, basis)
+}
+
 pub(super) fn choose_order(
     problem: &IntegerProblem,
     original: &[usize],
+    names: &[String],
+    pilots: &[PilotProblem],
     dilation: u64,
     strict: bool,
     options: &ConstraintOptions,
@@ -327,42 +469,140 @@ pub(super) fn choose_order(
             OrderHeuristic::SumContiguous,
             OrderHeuristic::ReverseCuthillMcKee,
             OrderHeuristic::ExactSubset,
+            OrderHeuristic::MinimumDegree,
+            OrderHeuristic::MinimumFill,
+            OrderHeuristic::CuthillMcKee,
+            OrderHeuristic::GtLevel,
+            OrderHeuristic::GtRow,
         ] {
             if options.order_heuristic != OrderHeuristic::Auto
+                && options.order_heuristic != OrderHeuristic::LocalImprovement
                 && options.order_heuristic != heuristic
             {
                 continue;
             }
-            if heuristic == OrderHeuristic::ExactSubset && original.len() > 22 {
-                if options.order_heuristic == heuristic {
-                    return Err(ConstraintError::InvalidInput(
-                        "exact subset ordering requires at most 22 free variables per component"
-                            .into(),
-                    ));
+            if heuristic == OrderHeuristic::ExactSubset {
+                let limit = if options.order_heuristic == heuristic {
+                    22
+                } else {
+                    16
+                };
+                if original.len() > limit {
+                    if options.order_heuristic == heuristic {
+                        return Err(ConstraintError::InvalidInput(
+                            "exact subset ordering requires at most 22 free variables per component".into()));
+                    }
+                    continue;
                 }
-                continue;
             }
-            let order = match heuristic {
-                OrderHeuristic::Greedy => greedy(problem),
-                OrderHeuristic::SumContiguous => sum_contiguous(problem),
-                OrderHeuristic::ReverseCuthillMcKee => reverse_cuthill_mckee(problem),
-                OrderHeuristic::ExactSubset => exact_subset(problem),
-                OrderHeuristic::Auto => unreachable!("enumerated candidate"),
+            let generated = match heuristic {
+                OrderHeuristic::Greedy => vec![(String::new(), greedy(problem))],
+                OrderHeuristic::SumContiguous => vec![(String::new(), sum_contiguous(problem))],
+                OrderHeuristic::ReverseCuthillMcKee => {
+                    vec![(String::new(), reverse_cuthill_mckee(problem))]
+                }
+                OrderHeuristic::ExactSubset => vec![(String::new(), exact_subset(problem))],
+                OrderHeuristic::MinimumDegree => {
+                    vec![(String::new(), orders::elimination(problem, false))]
+                }
+                OrderHeuristic::MinimumFill => {
+                    vec![(String::new(), orders::elimination(problem, true))]
+                }
+                OrderHeuristic::CuthillMcKee => orders::cuthill_mckee(problem),
+                OrderHeuristic::GtLevel => orders::gt_orders(names, original, false),
+                OrderHeuristic::GtRow => orders::gt_orders(names, original, true),
+                OrderHeuristic::Auto | OrderHeuristic::LocalImprovement => {
+                    unreachable!("enumerated candidate")
+                }
             };
-            candidates.push(evaluate(problem, order, heuristic));
+            for (variant, order) in generated {
+                let mut candidate = evaluate(problem, order, heuristic);
+                candidate.variant = variant;
+                candidates.push(candidate);
+            }
+        }
+        if candidates.is_empty() {
+            return Err(ConstraintError::InvalidInput(
+                "GT ordering requires alpha_LEVEL_ROW names for every free variable".into(),
+            ));
+        }
+        if matches!(
+            options.order_heuristic,
+            OrderHeuristic::Auto | OrderHeuristic::LocalImprovement
+        ) {
+            let mut sources = candidates.clone();
+            sources.sort_by(|a, b| {
+                (&a.estimated_peak, &a.estimated_work).cmp(&(&b.estimated_peak, &b.estimated_work))
+            });
+            sources.dedup_by(|a, b| a.order == b.order);
+            for source in sources.iter().take(3) {
+                candidates.push(orders::improve(problem, source));
+            }
+            if options.order_heuristic == OrderHeuristic::LocalImprovement {
+                candidates.retain(|c| c.heuristic == OrderHeuristic::LocalImprovement);
+            }
         }
     }
+    let run_pilots = options.order.is_none()
+        && options.order_heuristic == OrderHeuristic::Auto
+        && !options.plan_only;
+    let mut scores = Vec::new();
+    for i in 0..candidates.len() {
+        let duplicate = (0..i).find(|&j| candidates[j].order == candidates[i].order);
+        candidates[i].duplicate_of = duplicate;
+        if run_pilots {
+            candidates[i].pilots = if let Some(j) = duplicate {
+                candidates[j].pilots.clone()
+            } else {
+                let mut observations = Vec::new();
+                for (j, p) in pilots.iter().enumerate() {
+                    let informative = observations
+                        .iter()
+                        .filter(|p: &&OrderPilot| {
+                            p.status == "complete"
+                                && p.layer_states.len() == original.len()
+                                && p.layer_states.last().is_some_and(|&n| n > 0)
+                        })
+                        .count();
+                    if j >= 2 && informative >= 2 {
+                        break;
+                    }
+                    observations.push(pilot(
+                        &p.problem,
+                        &candidates[i],
+                        p.dilation,
+                        strict,
+                        options.max_states,
+                    ));
+                }
+                observations
+            };
+            let score = prediction(problem, pilots, &candidates[i]);
+            candidates[i].predicted_peak = Some(format!("{:.6e}", score.0.min(690.0).exp()));
+            candidates[i].predicted_runtime_micros =
+                (score.2 != "range-fallback").then(|| format!("{:.6e}", score.1.min(690.0).exp()));
+            candidates[i].prediction_basis = Some(score.2.into());
+            scores.push(score);
+        }
+    }
+    let best_index = (0..candidates.len())
+        .min_by(|&a, &b| {
+            if run_pilots {
+                scores[a]
+                    .0
+                    .total_cmp(&scores[b].0)
+                    .then(scores[a].1.total_cmp(&scores[b].1))
+                    .then(a.cmp(&b))
+            } else {
+                (&candidates[a].estimated_peak, &candidates[a].estimated_work)
+                    .cmp(&(&candidates[b].estimated_peak, &candidates[b].estimated_work))
+            }
+        })
+        .expect("at least one candidate");
     for candidate in &mut candidates {
         candidate.order = candidate.order.iter().map(|&v| original[v]).collect();
     }
-    let best = candidates
-        .iter()
-        .min_by(|a, b| {
-            a.estimated_peak
-                .cmp(&b.estimated_peak)
-                .then(a.estimated_work.cmp(&b.estimated_work))
-        })
-        .expect("at least one candidate");
+    let best = &candidates[best_index];
     Ok(CountingPlan {
         dilation,
         strict,
@@ -372,20 +612,40 @@ pub(super) fn choose_order(
         estimated_peak: best.estimated_peak.clone(),
         estimated_work: best.estimated_work.clone(),
         peak_frontier: best.peak_frontier,
+        selection: if options.order.is_some() {
+            "user-order"
+        } else if run_pilots {
+            "pilot"
+        } else if options.order_heuristic == OrderHeuristic::Auto {
+            "estimate-only"
+        } else {
+            "explicit-heuristic"
+        }
+        .into(),
         candidates,
     })
 }
 
 impl PreparedConstraintPolytope {
     /// Choose a split `p+q=d` by estimating ordinary and strict frontier work.
-    /// Split selection uses greedy orders to avoid repeating exponential subset
-    /// optimization for each trial; final candidates are evaluated at the largest N.
+    /// Split selection reuses one ordinary greedy order at every trial dilation.
+    /// Positive-only requests never estimate interior counts. Final candidates
+    /// are evaluated once per required mode at the largest scheduled dilation.
     pub fn sample_plan(&self, options: &ConstraintOptions) -> Result<SamplePlan> {
         validate_order(self.input.variables, options)?;
         let d = self.dimension().unwrap_or(0);
         let mut estimation = options.clone();
+        estimation.plan_only = true;
         if estimation.order.is_none() {
             estimation.order_heuristic = OrderHeuristic::Greedy;
+            let seeds = self.plan((d as u64).max(1), false, &estimation)?;
+            let mut order = seeds.into_iter().flat_map(|p| p.order).collect::<Vec<_>>();
+            for v in 0..self.input.variables {
+                if !order.contains(&v) {
+                    order.push(v);
+                }
+            }
+            estimation.order = Some(order);
         }
         let mut ordinary_prefix = vec![BigUint::zero()];
         let mut strict_prefix = vec![BigUint::zero()];
@@ -395,11 +655,14 @@ impl PreparedConstraintPolytope {
                 .iter()
                 .map(|p| p.estimated_work.clone())
                 .sum::<BigUint>();
-            let strict = self
-                .plan(dilation as u64, true, &estimation)?
-                .iter()
-                .map(|p| p.estimated_work.clone())
-                .sum::<BigUint>();
+            let strict = if options.positive_only {
+                BigUint::zero()
+            } else {
+                self.plan(dilation as u64, true, &estimation)?
+                    .iter()
+                    .map(|p| p.estimated_work.clone())
+                    .sum::<BigUint>()
+            };
             ordinary_prefix.push(&ordinary_prefix[dilation - 1] + ordinary);
             strict_prefix.push(&strict_prefix[dilation - 1] + strict);
         }

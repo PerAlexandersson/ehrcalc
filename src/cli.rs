@@ -14,7 +14,8 @@ use crate::families::{
 };
 use crate::key_scan::{run_key_scan, KeyPacketMode, KeyScanInput};
 use crate::render::{
-    constraint_warnings, parse_constraint_order_heuristic, render_constraint_polytope,
+    constraint_polynomiality_failed, constraint_warnings, parse_constraint_order_heuristic,
+    render_constraint_polytope,
 };
 use crate::render::{
     render_count, render_ehrhart, render_ehrhart_with_method, render_polynomial, OutputFormat,
@@ -127,16 +128,16 @@ pub struct PolytopeArgs {
     /// Use only nonnegative interpolation samples instead of reciprocity.
     #[arg(long)]
     positive_only: bool,
-    /// Count extra positive samples; warn visibly when the polynomial fit misses.
+    /// Count at most 64 extra positive samples; warn when the polynomial fit misses.
     #[arg(long, default_value_t = 1)]
     extra_samples: usize,
     /// Comma-separated permutation of all original variable indices.
-    #[arg(long)]
+    #[arg(long, conflicts_with = "order_heuristic")]
     order: Option<String>,
-    /// Ordering candidate: auto, greedy, sum-contiguous, rcm, exact-subset.
-    #[arg(long, default_value = "auto", value_parser = ["auto", "greedy", "sum-contiguous", "rcm", "exact-subset"])]
+    /// Ordering candidate; auto uses bounded frontier pilots (plan-only uses estimates).
+    #[arg(long, default_value = "auto", value_parser = ["auto", "greedy", "sum-contiguous", "rcm", "exact-subset", "min-degree", "min-fill", "cm", "gt-level", "gt-row", "local"])]
     order_heuristic: String,
-    /// Abort if any counting layer exceeds this many states.
+    /// Layer-state cap (default 1000000; GT/Kostka default to unlimited).
     #[arg(long, default_value_t = 1_000_000)]
     max_states: usize,
     /// Count with BigUint instead of certified modular reconstruction.
@@ -145,6 +146,9 @@ pub struct PolytopeArgs {
     /// Report affine dimension and estimated plans without counting samples.
     #[arg(long)]
     plan_only: bool,
+    /// Exit with an error when extra samples or necessary polynomiality checks fail.
+    #[arg(long)]
+    fail_on_mismatch: bool,
     #[command(flatten)]
     output: OutputArgs,
 }
@@ -525,6 +529,9 @@ pub fn run(cli: Cli) -> Result<Option<String>, String> {
             )?;
             for warning in constraint_warnings(&result) {
                 eprintln!("warning: {warning}");
+            }
+            if args.fail_on_mismatch && constraint_polynomiality_failed(&result) {
+                return Err("constraint polynomiality checks failed (--fail-on-mismatch)".into());
             }
             render_constraint_polytope(&result, args.output.format)
         }

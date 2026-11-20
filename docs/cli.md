@@ -70,7 +70,7 @@ Options:
           Use only nonnegative interpolation samples instead of reciprocity
 
       --extra-samples <EXTRA_SAMPLES>
-          Count extra positive samples; warn visibly when the polynomial fit misses
+          Count at most 64 extra positive samples; warn when the polynomial fit misses
 
           [default: 1]
 
@@ -78,13 +78,13 @@ Options:
           Comma-separated permutation of all original variable indices
 
       --order-heuristic <ORDER_HEURISTIC>
-          Ordering candidate: auto, greedy, sum-contiguous, rcm, exact-subset
+          Ordering candidate; auto uses bounded frontier pilots (plan-only uses estimates)
 
           [default: auto]
-          [possible values: auto, greedy, sum-contiguous, rcm, exact-subset]
+          [possible values: auto, greedy, sum-contiguous, rcm, exact-subset, min-degree, min-fill, cm, gt-level, gt-row, local]
 
       --max-states <MAX_STATES>
-          Abort if any counting layer exceeds this many states
+          Layer-state cap (default 1000000; GT/Kostka default to unlimited)
 
           [default: 1000000]
 
@@ -93,6 +93,9 @@ Options:
 
       --plan-only
           Report affine dimension and estimated plans without counting samples
+
+      --fail-on-mismatch
+          Exit with an error when extra samples or necessary polynomiality checks fail
 
       --format <FORMAT>
           Render as human-readable text, stable JSON, or LaTeX formulas

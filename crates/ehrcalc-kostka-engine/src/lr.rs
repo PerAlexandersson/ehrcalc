@@ -1,6 +1,6 @@
 use crate::Partition;
 
-use crate::kostka_dp::{horizontal_strip_extensions, kostka, skew_kostka};
+use crate::kostka_dp::{kostka, skew_kostka};
 use num_bigint::{BigInt, BigUint, ToBigInt};
 use num_traits::{One, Zero};
 /// Littlewood-Richardson coefficients c^λ_{μ,ν} via two methods:
@@ -29,15 +29,18 @@ type DpState = (Partition, Vec<u32>);
 /// Enumerate horizontal-strip extensions of `alpha` within `lambda` of size `strip_size`,
 /// subject to the Yamanouchi constraint parameterised by `d`.
 ///
-/// Returns (beta, new_d) pairs.
-fn yamanouchi_extensions(
+/// Visit (beta, new_d) pairs, stopping immediately on a visitor error.
+fn yamanouchi_extensions<F>(
     alpha: &Partition,
     lambda: &Partition,
     strip_size: u32,
     d: &[u32],
     n: usize,
-) -> Vec<(Partition, Vec<u32>)> {
-    let mut results = Vec::new();
+    mut visit: F,
+) -> Result<(), String>
+where
+    F: FnMut(DpState) -> Result<(), String>,
+{
     let mut increments = vec![0u32; n];
     yamanouchi_enumerate(
         alpha,
@@ -48,13 +51,12 @@ fn yamanouchi_extensions(
         n,
         0,
         &mut increments,
-        &mut results,
-    );
-    results
+        &mut visit,
+    )
 }
 
 #[allow(clippy::too_many_arguments)]
-fn yamanouchi_enumerate(
+fn yamanouchi_enumerate<F>(
     alpha: &Partition,
     lambda: &Partition,
     remaining: u32,
@@ -63,8 +65,11 @@ fn yamanouchi_enumerate(
     n: usize,
     cumsum: u32,
     increments: &mut Vec<u32>,
-    results: &mut Vec<(Partition, Vec<u32>)>,
-) {
+    visit: &mut F,
+) -> Result<(), String>
+where
+    F: FnMut(DpState) -> Result<(), String>,
+{
     if row == n {
         if remaining == 0 {
             let mut parts = vec![0u32; n];
@@ -76,9 +81,9 @@ fn yamanouchi_enumerate(
                 cs += increments[r];
             }
             new_d[n] = cs;
-            results.push((Partition::from_sorted(parts), new_d));
+            visit((Partition::from_sorted(parts), new_d))?;
         }
-        return;
+        return Ok(());
     }
 
     // Yamanouchi bound: cumsum_so_far + c[row] ≤ d[row].
@@ -109,10 +114,31 @@ fn yamanouchi_enumerate(
             n,
             cumsum + c,
             increments,
-            results,
-        );
+            visit,
+        )?;
     }
     increments[row] = 0;
+    Ok(())
+}
+
+// Existing states may merge at capacity; a new key must never exceed it.
+fn add_lr_capped(
+    map: &mut HashMap<DpState, BigUint>,
+    state: DpState,
+    count: &BigUint,
+    limit: Option<usize>,
+) -> Result<(), String> {
+    if let Some(value) = map.get_mut(&state) {
+        *value += count;
+    } else if limit.is_some_and(|limit| map.len() >= limit) {
+        return Err(format!(
+            "LR DP state count exceeds --max-states {}: a level would exceed the limit",
+            limit.expect("checked limit")
+        ));
+    } else {
+        map.insert(state, count.clone());
+    }
+    Ok(())
 }
 
 /// Compute c^λ_{μ,ν} via the augmented GT DP (Yamanouchi constraints in the DP).
@@ -150,37 +176,19 @@ pub fn try_lr_dp(
 
     // Level 0 → 1: no Yamanouchi check (no previous letter to compare against).
     let mut dp: HashMap<DpState, BigUint> = HashMap::new();
-    for beta in horizontal_strip_extensions(mu, lambda, w[0]) {
-        let mut d = vec![0u32; n + 1];
-        let mut cs = 0u32;
-        for (j, entry) in d.iter_mut().enumerate().take(n) {
-            *entry = cs;
-            cs += beta.part(j).saturating_sub(mu.part(j));
-        }
-        d[n] = cs;
-        *dp.entry((beta, d)).or_insert_with(BigUint::zero) += BigUint::one();
-    }
+    // The first strip has no Yamanouchi restriction: these bounds are
+    // redundant because every prefix uses at most the whole strip size.
+    yamanouchi_extensions(mu, lambda, w[0], &vec![w[0]; n + 1], n, |state| {
+        add_lr_capped(&mut dp, state, &BigUint::one(), max_states)
+    })?;
 
-    // Levels 1 → 2, 2 → 3, ... with Yamanouchi.
     for &strip_size in w.iter().skip(1) {
-        let mut new_dp: HashMap<DpState, BigUint> = HashMap::new();
-
+        let mut new_dp = HashMap::new();
         for ((alpha, d), count) in &dp {
-            for (beta, new_d) in yamanouchi_extensions(alpha, lambda, strip_size, d, n) {
-                *new_dp.entry((beta, new_d)).or_insert_with(BigUint::zero) += count;
-            }
+            yamanouchi_extensions(alpha, lambda, strip_size, d, n, |state| {
+                add_lr_capped(&mut new_dp, state, count, max_states)
+            })?;
         }
-
-        if let Some(limit) = max_states {
-            if new_dp.len() > limit {
-                return Err(format!(
-                    "LR DP state count {} exceeds --max-states {}.",
-                    new_dp.len(),
-                    limit
-                ));
-            }
-        }
-
         dp = new_dp;
     }
 
@@ -337,4 +345,53 @@ fn json_parts(p: &Partition) -> String {
             .collect::<Vec<_>>()
             .join(",")
     )
+}
+
+#[cfg(test)]
+mod budget_tests {
+    use super::*;
+
+    #[test]
+    fn initial_level_and_duplicate_keys_respect_capacity() {
+        let one = Partition::new(vec![1]);
+        assert!(try_lr_dp(&one, &Partition::new(vec![]), &one, Some(0)).is_err());
+        assert_eq!(
+            try_lr_dp(&one, &Partition::new(vec![]), &one, Some(1)).unwrap(),
+            BigUint::one()
+        );
+        let mut map = HashMap::new();
+        let key = (one.clone(), vec![0, 1]);
+        add_lr_capped(&mut map, key.clone(), &BigUint::one(), Some(1)).unwrap();
+        add_lr_capped(&mut map, key.clone(), &BigUint::one(), Some(1)).unwrap();
+        assert_eq!(map[&key], BigUint::from(2_u32));
+        assert!(add_lr_capped(&mut map, (one, vec![0, 2]), &BigUint::one(), Some(1)).is_err());
+        assert_eq!(map.len(), 1);
+    }
+
+    #[test]
+    fn streaming_strips_stop_on_budget_error_and_match_kostka_inversion() {
+        let lambda = Partition::new((1..=20).rev().collect());
+        let mu = Partition::new((0..20).rev().collect());
+        let mut visited = 0;
+        let result = yamanouchi_extensions(&mu, &lambda, 10, &[10; 21], 20, |_| {
+            visited += 1;
+            if visited == 2 {
+                Err("stop".into())
+            } else {
+                Ok(())
+            }
+        });
+        assert!(result.is_err());
+        assert_eq!(visited, 2);
+        for parts in [vec![3, 2, 1], vec![4, 2], vec![3, 3]] {
+            let outer = Partition::new(parts);
+            let inner = Partition::new(vec![1]);
+            for content in partitions_of(5) {
+                let weight = Partition::new(content);
+                let expected = lr_kostka_inverse(&outer, &inner, &weight, None);
+                let actual = try_lr_dp(&outer, &inner, &weight, Some(1000)).unwrap();
+                assert_eq!(BigInt::from(actual), expected);
+            }
+        }
+    }
 }

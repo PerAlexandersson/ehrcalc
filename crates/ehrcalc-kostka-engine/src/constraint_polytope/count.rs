@@ -1,4 +1,6 @@
-use super::plan::{choose_order, validate_order, ConstraintOptions, CountingPlan};
+use super::plan::{
+    choose_order, validate_order, ConstraintOptions, CountingPlan, OrderCandidate, OrderPilot,
+};
 use super::{ConstraintError, PreparedConstraintPolytope, Result};
 use crate::packed_modular::{crt_reconstruct_bounded, DEFAULT_MODULI, MAX_CRT_MODULI};
 use hashbrown::HashMap;
@@ -8,6 +10,7 @@ use num_rational::BigRational;
 use num_traits::{One, ToPrimitive, Zero};
 use smallvec::SmallVec;
 use std::collections::BTreeMap;
+use std::time::{Duration, Instant};
 
 /// CRT uniqueness evidence for one connected factor at one dilation.
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -43,6 +46,12 @@ pub(super) struct IntegerProblem {
     pub differences: Vec<IntegerRange>,
     pub sums: Vec<IntegerRange>,
     pub empty: bool,
+}
+
+#[derive(Clone, Debug)]
+pub(super) struct PilotProblem {
+    pub dilation: u64,
+    pub problem: IntegerProblem,
 }
 
 pub(super) fn floor(q: &BigRational) -> BigInt {
@@ -208,7 +217,48 @@ impl PreparedConstraintPolytope {
         problem
     }
 
-    /// Plan one ordinary or relative-interior count without enumerating states.
+    fn pilot_problems(
+        &self,
+        dilation: u64,
+        strict: bool,
+        empty: bool,
+        options: &ConstraintOptions,
+    ) -> Vec<PilotProblem> {
+        if options.order.is_some()
+            || options.order_heuristic != super::OrderHeuristic::Auto
+            || options.plan_only
+        {
+            return Vec::new();
+        }
+        let mut probes = [1, 2]
+            .into_iter()
+            .map(|n| PilotProblem {
+                dilation: n,
+                problem: self.integer_problem(n, strict),
+            })
+            .collect::<Vec<_>>();
+        if strict && !empty {
+            // Interval feasibility is a cheap screen. Enumeration remains bounded
+            // and candidates stop after at most two additional strict probes.
+            // Cap screening too: public count/plan APIs accept arbitrary u64 scales.
+            for n in 3..=dilation.min(256) {
+                let problem = self.integer_problem(n, true);
+                if !problem.empty {
+                    probes.push(PilotProblem {
+                        dilation: n,
+                        problem,
+                    });
+                }
+                if probes.len() == 4 {
+                    break;
+                }
+            }
+        }
+        probes
+    }
+
+    /// Plan one ordinary or relative-interior count, including bounded auto pilots.
+    /// `plan_only` disables pilots and uses estimates alone.
     /// Orders in options use original input indices, including fixed variables.
     pub fn plan(
         &self,
@@ -218,6 +268,7 @@ impl PreparedConstraintPolytope {
     ) -> Result<Vec<CountingPlan>> {
         validate_order(self.input.variables, options)?;
         let problem = self.integer_problem(dilation, strict);
+        let pilot_problems = self.pilot_problems(dilation, strict, problem.empty, options);
         self.components
             .iter()
             .map(|component| {
@@ -226,7 +277,22 @@ impl PreparedConstraintPolytope {
                     .iter()
                     .map(|&v| self.free_variables[v])
                     .collect::<Vec<_>>();
-                choose_order(&local, &original, dilation, strict, options)
+                let pilots = pilot_problems
+                    .iter()
+                    .map(|p| PilotProblem {
+                        dilation: p.dilation,
+                        problem: p.problem.component(component),
+                    })
+                    .collect::<Vec<_>>();
+                choose_order(
+                    &local,
+                    &original,
+                    &self.input.names,
+                    &pilots,
+                    dilation,
+                    strict,
+                    options,
+                )
             })
             .collect()
     }
@@ -261,6 +327,7 @@ impl PreparedConstraintPolytope {
             return Ok(result);
         }
         let problem = self.integer_problem(dilation, strict);
+        let pilot_problems = self.pilot_problems(dilation, strict, problem.empty, options);
         if problem.empty {
             result.value = BigUint::zero();
             return Ok(result);
@@ -271,7 +338,22 @@ impl PreparedConstraintPolytope {
                 .iter()
                 .map(|&v| self.free_variables[v])
                 .collect::<Vec<_>>();
-            let plan = choose_order(&local, &original, dilation, strict, options)?;
+            let pilots = pilot_problems
+                .iter()
+                .map(|p| PilotProblem {
+                    dilation: p.dilation,
+                    problem: p.problem.component(component),
+                })
+                .collect::<Vec<_>>();
+            let plan = choose_order(
+                &local,
+                &original,
+                &self.input.names,
+                &pilots,
+                dilation,
+                strict,
+                options,
+            )?;
             let order = plan
                 .order
                 .iter()
@@ -282,14 +364,25 @@ impl PreparedConstraintPolytope {
                         .expect("order is a permutation")
                 })
                 .collect::<Vec<_>>();
+            let request = FrontierRequest {
+                order: &order,
+                reported_order: &plan.order,
+                estimated_peak: &plan.estimated_peak,
+                max_states: options.max_states,
+            };
             let (value, layers, certificate) = if options.exact {
-                let (value, layers) = frontier::<BigUint>(&local, &order, &plan, options, &[])?;
+                let (value, layers) =
+                    frontier::<BigUint>(&local, &request, &[], &mut FrontierMonitor::default())?;
                 (value, layers, None)
             } else {
                 let upper_bound = local.count_bound();
                 let moduli = select_moduli(&upper_bound)?;
-                let (residues, layers) =
-                    frontier::<Vec<u32>>(&local, &order, &plan, options, &moduli)?;
+                let (residues, layers) = frontier::<Vec<u32>>(
+                    &local,
+                    &request,
+                    &moduli,
+                    &mut FrontierMonitor::default(),
+                )?;
                 let value = crt_reconstruct_bounded(&residues, &moduli, &upper_bound)
                     .map_err(ConstraintError::Arithmetic)?;
                 let certificate = ModularCertificate {
@@ -603,12 +696,99 @@ impl Weight for Vec<u32> {
     }
 }
 
+struct FrontierRequest<'a> {
+    order: &'a [usize],
+    reported_order: &'a [usize],
+    estimated_peak: &'a BigUint,
+    max_states: Option<usize>,
+}
+
+#[derive(Default)]
+struct FrontierMonitor {
+    deadline: Option<Instant>,
+    transition_budget: Option<u64>,
+    transitions: u64,
+    ticks: u64,
+    peak: usize,
+    layers: Vec<usize>,
+    stop: Option<&'static str>,
+}
+
+impl FrontierMonitor {
+    fn check(&mut self) -> Result<()> {
+        self.ticks += 1;
+        if self
+            .transition_budget
+            .is_some_and(|b| self.transitions >= b)
+        {
+            self.stop = Some("transition-limit");
+        } else if self.ticks.is_multiple_of(256)
+            && self.deadline.is_some_and(|d| Instant::now() >= d)
+        {
+            self.stop = Some("time-limit");
+        }
+        if self.stop.is_some() {
+            return Err(ConstraintError::Arithmetic(
+                "internal pilot budget exhausted".into(),
+            ));
+        }
+        Ok(())
+    }
+}
+
+/// Pilots use the production frontier and one modular lane. Residue values do
+/// not affect state presence: even a zero residue remains a reachable key.
+pub(super) fn pilot(
+    problem: &IntegerProblem,
+    candidate: &OrderCandidate,
+    dilation: u64,
+    strict: bool,
+    max_states: Option<usize>,
+) -> OrderPilot {
+    let state_budget = max_states.unwrap_or(4096).min(4096);
+    let transition_budget = 100_000;
+    let time_budget_micros = 50_000;
+    let start = Instant::now();
+    let mut monitor = FrontierMonitor {
+        deadline: Some(start + Duration::from_micros(time_budget_micros)),
+        transition_budget: Some(transition_budget),
+        peak: usize::from(!problem.empty),
+        ..FrontierMonitor::default()
+    };
+    let request = FrontierRequest {
+        order: &candidate.order,
+        reported_order: &candidate.order,
+        estimated_peak: &candidate.estimated_peak,
+        max_states: Some(state_budget),
+    };
+    let status = if problem.empty {
+        "empty"
+    } else {
+        match frontier::<Vec<u32>>(problem, &request, &DEFAULT_MODULI[..1], &mut monitor) {
+            Ok(_) => "complete",
+            Err(ConstraintError::StateLimitExceeded { .. }) => "state-limit",
+            Err(_) => monitor.stop.unwrap_or("error"),
+        }
+    };
+    OrderPilot {
+        dilation,
+        strict,
+        status: status.into(),
+        peak_states: monitor.peak,
+        layer_states: monitor.layers,
+        transitions: monitor.transitions,
+        elapsed_micros: u64::try_from(start.elapsed().as_micros()).unwrap_or(u64::MAX),
+        state_budget,
+        transition_budget,
+        time_budget_micros,
+    }
+}
+
 fn frontier<W: Weight>(
     problem: &IntegerProblem,
-    order: &[usize],
-    plan: &CountingPlan,
-    options: &ConstraintOptions,
+    request: &FrontierRequest<'_>,
     moduli: &[u32],
+    monitor: &mut FrontierMonitor,
 ) -> Result<(W, Vec<usize>)> {
     let n = problem.widths.len();
     let mut done = vec![false; n];
@@ -618,12 +798,13 @@ fn frontier<W: Weight>(
     let mut layer = HashMap::new();
     layer.insert(Key::Packed(0), W::multiplicative_one(moduli));
     let mut layers = Vec::new();
-    for (step, &v) in order.iter().enumerate() {
+    for (step, &v) in request.order.iter().enumerate() {
         done[v] = true;
         let (after_live, after_sums) = boundary(problem, &done);
         let next_codec = Codec::new(&maxima(problem, &done, &after_live, &after_sums));
         let mut next = HashMap::<Key, W>::new();
         for (key, count) in &layer {
+            monitor.check()?;
             let values = codec.decode(key);
             let value_of = |w: usize| {
                 values[before_live
@@ -703,6 +884,8 @@ fn frontier<W: Weight>(
             };
             let mut value = lo;
             while value <= hi {
+                monitor.check()?;
+                monitor.transitions += 1;
                 let coordinates = after_live
                     .iter()
                     .map(|&w| if w == v { value.clone() } else { value_of(w) })
@@ -715,18 +898,19 @@ fn frontier<W: Weight>(
                     }))
                     .collect::<Vec<_>>();
                 let key = next_codec.encode(&coordinates);
-                if !next.contains_key(&key) && options.max_states.is_some_and(|m| next.len() >= m) {
+                if !next.contains_key(&key) && request.max_states.is_some_and(|m| next.len() >= m) {
                     return Err(ConstraintError::StateLimitExceeded {
                         step: step + 1,
-                        variable: plan.order[step],
-                        limit: options.max_states.expect("checked state budget"),
+                        variable: request.reported_order[step],
+                        limit: request.max_states.expect("checked state budget"),
                         frontier: coordinates.len(),
-                        estimated_peak: plan.estimated_peak.to_string(),
+                        estimated_peak: request.estimated_peak.to_string(),
                     });
                 }
                 next.entry(key)
                     .or_insert_with(|| W::additive_zero(moduli))
                     .add_scaled(count, &multiplicity, moduli);
+                monitor.peak = monitor.peak.max(next.len());
                 if aggregated {
                     break;
                 }
@@ -734,6 +918,7 @@ fn frontier<W: Weight>(
             }
         }
         layers.push(next.len());
+        monitor.layers.push(next.len());
         layer = next;
         codec = next_codec;
         before_live = after_live;
@@ -754,6 +939,24 @@ fn frontier<W: Weight>(
 #[cfg(test)]
 mod key_tests {
     use super::*;
+
+    #[test]
+    fn pilot_time_and_transition_budgets_stop_cooperatively() {
+        let mut time = FrontierMonitor {
+            deadline: Some(Instant::now()),
+            ticks: 255,
+            ..FrontierMonitor::default()
+        };
+        assert!(time.check().is_err());
+        assert_eq!(time.stop, Some("time-limit"));
+        let mut transitions = FrontierMonitor {
+            transition_budget: Some(2),
+            transitions: 2,
+            ..FrontierMonitor::default()
+        };
+        assert!(transitions.check().is_err());
+        assert_eq!(transitions.stop, Some("transition-limit"));
+    }
 
     #[test]
     fn packed_word_and_arbitrary_precision_keys_round_trip() {

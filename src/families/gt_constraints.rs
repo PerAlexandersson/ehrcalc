@@ -64,6 +64,12 @@ pub fn gt_constraint_polytope(input: &GtInput) -> ExactResult<ConstraintPolytope
         .checked_add(1)
         .and_then(|l| l.checked_mul(rows))
         .ok_or("GT variable count overflow")?;
+    if variables > super::MAX_CONSTRAINT_VARIABLES {
+        return Err(format!(
+            "variables must be at most {}; GT adapter requires {variables}",
+            super::MAX_CONSTRAINT_VARIABLES
+        ));
+    }
     let node = |level: usize, row: usize| level * rows + row;
     let mut result = ConstraintPolytopeInput {
         variables,

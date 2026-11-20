@@ -10,7 +10,9 @@ use ehrcalc::families::{
     GtInput, KeyInput, KostkaInput, LrInput, OrderInput, OrderMethod, OrderOptions,
 };
 use ehrcalc::key_scan::{run_key_scan, KeyPacketMode, KeyScanInput};
-use ehrcalc::render::{constraint_polytope_json, parse_constraint_order_heuristic};
+use ehrcalc::render::{
+    constraint_polynomiality_failed, constraint_polytope_json, parse_constraint_order_heuristic,
+};
 use ehrcalc::render::{ehrhart_json, ehrhart_json_with_method, OutputFormat};
 use num_rational::BigRational;
 use rmcp::{
@@ -34,24 +36,39 @@ pub struct EhrcalcServer {
 #[derive(Clone, Debug, Deserialize, Serialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub struct ConstraintPolytopeRequest {
-    /// Constraint object: variables, optional names, bounds, differences and sums.
+    /// Constraint object: at most 256 variables, optional names, bounds, differences and sums.
     #[schemars(with = "serde_json::Map<String, Value>")]
     pub input: Value,
     pub positive_only: Option<bool>,
-    /// Default 1. Extra counts detect a failed polynomiality assumption.
+    /// Default 1, maximum 64. Extra counts detect a failed polynomiality assumption.
     pub extra_samples: Option<usize>,
     /// Permutation of all original variable indices.
     pub order: Option<Vec<usize>>,
-    /// auto (default), greedy, sum-contiguous, rcm, exact-subset.
+    /// auto (bounded pilots), greedy, sum-contiguous, rcm, exact-subset,
+    /// min-degree, min-fill, cm, gt-level, gt-row, local.
     pub order_heuristic: Option<String>,
-    /// Default 1000000.
+    /// Default 1000000, unlike unlimited GT/Kostka counters.
     pub max_states: Option<usize>,
     pub exact: Option<bool>,
     pub plan_only: Option<bool>,
+    /// Return a tool error when extra samples or necessary polynomiality checks fail.
+    pub fail_on_mismatch: Option<bool>,
 }
 
 /// Execute the same service and renderer used by `ehrcalc polytope`.
 pub fn execute_constraint_polytope(request: &ConstraintPolytopeRequest) -> Result<Value, String> {
+    if request.order.is_some() && request.order_heuristic.is_some() {
+        return Err("order and order_heuristic are mutually exclusive".into());
+    }
+    if request
+        .extra_samples
+        .is_some_and(|n| n > ehrcalc::families::MAX_EXTRA_SAMPLES)
+    {
+        return Err(format!(
+            "extra_samples must be at most {}",
+            ehrcalc::families::MAX_EXTRA_SAMPLES
+        ));
+    }
     let input: ConstraintPolytopeInput =
         serde_json::from_value(request.input.clone()).map_err(|e| e.to_string())?;
     let options = ConstraintOptions {
@@ -65,9 +82,11 @@ pub fn execute_constraint_polytope(request: &ConstraintPolytopeRequest) -> Resul
         exact: request.exact.unwrap_or(false),
         plan_only: request.plan_only.unwrap_or(false),
     };
-    Ok(constraint_polytope_json(&constraint_polytope_ehrhart(
-        &input, &options,
-    )?))
+    let result = constraint_polytope_ehrhart(&input, &options)?;
+    if request.fail_on_mismatch.unwrap_or(false) && constraint_polynomiality_failed(&result) {
+        return Err("constraint polynomiality checks failed (fail_on_mismatch)".into());
+    }
+    Ok(constraint_polytope_json(&result))
 }
 
 /// Exact transform operation supported by `ehrhart_transform`.
@@ -829,5 +848,50 @@ mod tests {
             order_request(json!({"family": "order_chain", "elements": 3, "method": "fast"}))
                 .is_err()
         );
+    }
+}
+
+#[cfg(test)]
+mod constraint_audit_tests {
+    use super::*;
+    use serde_json::json;
+
+    #[test]
+    fn request_limits_conflicts_and_polynomiality_checks() {
+        let fixed = json!({"variables":2,"bounds":[["1/2","1/2"],[0,1]]});
+        let request = serde_json::from_value(json!({"input":fixed,"extra_samples":0})).unwrap();
+        let result = execute_constraint_polytope(&request).unwrap();
+        assert_eq!(result["polynomiality_checks_failed"], true);
+        assert!(!result["warnings"].as_array().unwrap().is_empty());
+        for (value, message) in [
+            (
+                json!({"input":{"variables":1000000000000_u64}}),
+                "at most 256",
+            ),
+            (
+                json!({"input":{"variables":0},"extra_samples":65}),
+                "at most 64",
+            ),
+            (
+                json!({"input":{"variables":1,"bounds":[[0,1]]},"order":[0],"order_heuristic":"auto"}),
+                "mutually exclusive",
+            ),
+            (
+                json!({"input":fixed,"extra_samples":0,"fail_on_mismatch":true}),
+                "polynomiality checks failed",
+            ),
+            (
+                json!({"input":{"variables":1,"bounds":[[0,"1/2"]]},"fail_on_mismatch":true}),
+                "polynomiality checks failed",
+            ),
+        ] {
+            let request = serde_json::from_value(value).unwrap();
+            assert!(execute_constraint_polytope(&request)
+                .unwrap_err()
+                .contains(message));
+        }
+        let boundary = json!({"input":{"variables":256,"bounds":vec![vec![0,0];256]},"extra_samples":64,"plan_only":true});
+        let request = serde_json::from_value(boundary).unwrap();
+        assert!(execute_constraint_polytope(&request).is_ok());
     }
 }

@@ -1,12 +1,20 @@
 # Constraint polytopes: implementation plan
 
-Status: phases A–F implemented, 2026-11-19. Owner: real-rooted-tools coordinator.
+Status: phases A–F implemented, 2026-11-19.
 Requested by Per Alexandersson. See [the constraint guide](CONSTRAINT_POLYTOPES.md)
 for the implemented interface and [testing](TESTING.md) for comparison gates.
 Constraint counting remains serial; optional rayon layers are deferred.
 The timing fixture measures existing-engine peak states with a scoped
 observer during sequential adaptive-reciprocity sampling. Signed sums
 remain phase G.
+
+Ordering follow-up (2026-11-20): the implemented planner now also offers
+incidence-graph elimination and multi-seed Cuthill–McKee, GT sweeps and bounded
+adjacent swaps. Auto uses capped dilation-one/two frontier pilots and reports
+their evidence. Plan-only keeps the estimate-only behavior; explicit subset
+minimax supports 22 variables and automatic subset DP is limited to 16.
+See “Counting and ordering” in the constraint guide for the current policy;
+section 6 below summarizes the current ordering policy.
 
 ## 1. Goal
 
@@ -150,27 +158,28 @@ exhausting memory.
 
 ## 6. Frontier order
 
-The cost of a step is about the product of the value ranges of the live variables and the ranges
-of the open partial sums, at the dilation being counted. We minimise the total over all steps, which
-is dominated by the peak.
+The frontier stores live difference endpoints and open sum accumulators.
+Candidates include greedy and sum-contiguous sweeps, primal RCM, reverse
+minimum-degree/minimum-fill elimination, incidence-graph Cuthill–McKee
+variants, GT level/row sweeps and bounded adjacent swaps. Exact subset minimax
+is included automatically through 16 free variables and supports explicit
+requests through 22.
 
-- **Model.** A hypergraph with variable nodes and sum nodes. A sum behaves like one accumulator
-  variable (its partial sum), not like a clique on its members. That is why a long equality row
-  costs one state coordinate and not many.
-- **Candidates:**
-  1. greedy minimum-frontier: pick the next variable minimising the resulting weighted frontier;
-     break ties by closing sums and difference edges; one-step lookahead;
-  2. sum-contiguous: process each sum's members consecutively, ordering the sums by a greedy path
-     through the sum-overlap graph (GT rows and content lines become one sweep);
-  3. reverse Cuthill–McKee from a pseudo-peripheral node of the primal graph;
-  4. exact minimum of the maximum weighted frontier by dynamic programming over subsets when
-     `n <= 22` (vertex separation number, weighted).
-- **Choice.** Evaluate each candidate with the cost model at the largest planned dilation and keep
-  the cheapest. Report the order, the peak frontier and the estimated states in the JSON `plan`
-  field.
-- **Override.** `--order 3,0,1,...` overrides the choice. `--order-heuristic` selects one candidate.
-- **Extensions.** `order` and `gt` keep their own counters. They may later call this planner on
-  their constraint systems for comparison.
+Automatic selection pilots each distinct order at dilations one and two.
+Strict modes can add at most two probes at later feasible scales when the
+small probes are empty or censored; feasibility screening stops at scale 256. Every probe is capped at 4,096 states,
+100,000 transitions and a cooperative 50 ms deadline. JSON retains actual
+scales, peaks, layer sizes, timings, censoring, forecasts and duplicate reuse.
+The forecasts affect cost selection only; arithmetic and counts stay exact.
+
+The sampling split uses one fixed ordinary greedy order. Positive-only
+requests skip interior estimates. Final ordinary/interior orders can differ;
+a single component reuses its parent samples and plan. `--plan-only` uses
+estimates without enumeration. Explicit orders and heuristics bypass pilots
+and are mutually exclusive at the CLI/MCP boundary.
+
+See [the counting guide](CONSTRAINT_POLYTOPES.md) for limits, diagnostics and
+forecast details.
 
 ## 7. Modular counting and CRT
 
@@ -195,8 +204,8 @@ Each adapter builds the constraint system and must agree with the existing famil
   as fixed bounds; interlacing as differences; level sums as equalities. Compare with `gt` and
   `kostka`, including skew `--mu` and per-label flags, on random and corner cases. This includes
   the 2026-10-08 regression fixtures (`flag_relaxation_geometry`, broad corner cases).
-- Flagged GT, reduced form: only free entries, with marks as bounds (Per's marked poset of free
-  entries; dictionary in `notes/flagged-kostka/` of real-rooted-tools). Compare with the full form
+- Flagged GT, reduced form: only free entries, with marks as bounds (a marked poset of free
+  entries, with all frozen marks retained as bounds). Compare with the full form
   and with `kostka`.
 - Matroids (tests only at first): uniform matroids and small graphic matroids, base and
   independence polytopes, from an explicit rank function. Compare with brute force; hypersimplex
@@ -232,8 +241,8 @@ Each adapter builds the constraint system and must agree with the existing famil
 
 Every phase runs `cargo fmt`, `cargo clippy -D warnings` and the focused tests
 (`timeout 60s nice -n 10 cargo test -p ...`, longer only for documented benchmarks), under the shared
-memory guard. Commits go to `feat/constraint-polytopes`; merge to `main` after phase F with all
-crate tests green.
+memory guard. Use the current CI gate, including both debug and release workspace tests,
+and regenerate the CLI reference when command help changes.
 
 ## 11. Open questions for Per
 

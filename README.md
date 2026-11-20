@@ -149,6 +149,12 @@ pairwise differences, and subset sums. It reports the certified affine
 dimension, ordinary/interior samples, chosen variable orders, actual peak
 states, and CRT bounds. The caller assumes polynomiality; one extra sample
 is checked by default and a mismatch produces a visible warning.
+Automatic ordering compares graph, GT-sweep and locally improved candidates
+using bounded frontier pilots. JSON retains their measurements and predictions;
+`--plan-only` uses range estimates without enumerating pilot states.
+Requests support at most 256 variables and 64 extra samples. Necessary
+polynomiality warnings remain active with `--extra-samples 0`;
+`--fail-on-mismatch` opts into an error when those checks fail.
 
 ```sh
 ehrcalc polytope --input examples/constraints/hypersimplex.json --format json

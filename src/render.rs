@@ -27,6 +27,12 @@ pub fn constraint_order_heuristic_name(heuristic: OrderHeuristic) -> &'static st
         OrderHeuristic::SumContiguous => "sum-contiguous",
         OrderHeuristic::ReverseCuthillMcKee => "rcm",
         OrderHeuristic::ExactSubset => "exact-subset",
+        OrderHeuristic::MinimumDegree => "min-degree",
+        OrderHeuristic::MinimumFill => "min-fill",
+        OrderHeuristic::CuthillMcKee => "cm",
+        OrderHeuristic::GtLevel => "gt-level",
+        OrderHeuristic::GtRow => "gt-row",
+        OrderHeuristic::LocalImprovement => "local",
     }
 }
 
@@ -38,22 +44,41 @@ pub fn parse_constraint_order_heuristic(name: &str) -> Result<OrderHeuristic, St
         "sum-contiguous" => Ok(OrderHeuristic::SumContiguous),
         "rcm" => Ok(OrderHeuristic::ReverseCuthillMcKee),
         "exact-subset" => Ok(OrderHeuristic::ExactSubset),
+        "min-degree" => Ok(OrderHeuristic::MinimumDegree),
+        "min-fill" => Ok(OrderHeuristic::MinimumFill),
+        "cm" => Ok(OrderHeuristic::CuthillMcKee),
+        "gt-level" => Ok(OrderHeuristic::GtLevel),
+        "gt-row" => Ok(OrderHeuristic::GtRow),
+        "local" => Ok(OrderHeuristic::LocalImprovement),
         _ => Err(format!(
-            "unknown order heuristic `{name}`; use auto, greedy, sum-contiguous, rcm, exact-subset"
+            "unknown order heuristic `{name}`; use auto, greedy, sum-contiguous, rcm, exact-subset, min-degree, min-fill, cm, gt-level, gt-row, local"
         )),
     }
 }
 
-fn counting_plan_json(plan: &CountingPlan) -> Value {
+/// Serialize a counting plan with candidate estimates and bounded pilot evidence.
+pub fn counting_plan_json(plan: &CountingPlan) -> Value {
     json!({
         "dilation": plan.dilation, "strict": plan.strict, "order": plan.order,
         "heuristic": constraint_order_heuristic_name(plan.heuristic), "user_order": plan.user_order,
+        "selection": plan.selection,
         "estimated_peak_states": plan.estimated_peak.to_string(),
         "estimated_work": plan.estimated_work.to_string(), "peak_frontier": plan.peak_frontier,
         "candidates": plan.candidates.iter().map(|c| json!({
             "heuristic": constraint_order_heuristic_name(c.heuristic), "order": c.order,
             "estimated_peak_states": c.estimated_peak.to_string(), "estimated_work": c.estimated_work.to_string(),
             "peak_frontier": c.peak_frontier,
+            "variant": c.variant, "duplicate_of": c.duplicate_of,
+            "predicted_peak_states": c.predicted_peak,
+            "predicted_runtime_micros": c.predicted_runtime_micros,
+            "prediction_basis": c.prediction_basis,
+            "pilots": c.pilots.iter().map(|p| json!({
+                "dilation": p.dilation, "strict": p.strict, "status": p.status,
+                "actual_peak_states": p.peak_states, "layer_states": p.layer_states,
+                "transitions": p.transitions, "elapsed_micros": p.elapsed_micros,
+                "state_budget": p.state_budget, "transition_budget": p.transition_budget,
+                "time_budget_micros": p.time_budget_micros,
+            })).collect::<Vec<_>>(),
         })).collect::<Vec<_>>()
     })
 }
@@ -86,6 +111,7 @@ pub fn constraint_warnings(result: &ConstraintComputation) -> Vec<String> {
         "extra-sample mismatch at dilation {}: fitted {}, counted {}; polynomiality assumption failed or counter/dimension error",
         m.dilation, format_rational(&m.expected), format_rational(&m.actual),
     )).collect::<Vec<_>>();
+    warnings.extend(result.polynomiality_warnings.iter().cloned());
     if let Some(error) = &result.data_error {
         warnings.push(format!("Ehrhart transforms unavailable: {error}"));
     }
@@ -93,6 +119,13 @@ pub fn constraint_warnings(result: &ConstraintComputation) -> Vec<String> {
         warnings.push("component polynomial product differs from the full fit; polynomiality assumption may fail".into());
     }
     warnings
+}
+
+/// Whether a necessary polynomiality check or an extra sample failed.
+pub fn constraint_polynomiality_failed(result: &ConstraintComputation) -> bool {
+    !result.mismatches.is_empty()
+        || !result.polynomiality_warnings.is_empty()
+        || result.component_product_matches == Some(false)
 }
 
 /// Versioned constraint result used unchanged by the CLI and MCP tool.
@@ -103,6 +136,7 @@ pub fn constraint_polytope_json(result: &ConstraintComputation) -> Value {
     json!({
         "schema": "ehrcalc.constraint-polytope-result.v1",
         "assumes_polynomial": result.assumes_polynomial, "empty": result.empty,
+        "polynomiality_checks_failed": constraint_polynomiality_failed(result),
         "dimension": result.dimension, "implicit_equalities": result.implicit_equalities,
         "free_variables": result.free_variables,
         "fixed_values": result.fixed_values.iter().map(|q| q.as_ref().map(format_rational)).collect::<Vec<_>>(),

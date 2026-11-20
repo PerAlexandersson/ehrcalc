@@ -12,7 +12,7 @@ use ehrcalc_kostka_engine::kostka_dp::{try_flagged_skew_kostka, try_skew_kostka}
 use ehrcalc_kostka_engine::lr::try_lr_dp;
 use ehrcalc_kostka_engine::Partition as KostkaPartition;
 use num_bigint::{BigInt, BigUint, ToBigInt};
-use num_traits::Zero;
+use num_traits::{Signed, Zero};
 
 mod gt_constraints;
 pub use gt_constraints::{gt_constraint_polytope, gt_free_constraint_polytope};
@@ -20,7 +20,7 @@ pub use gt_constraints::{gt_constraint_polytope, gt_free_constraint_polytope};
 pub use ehrcalc_kostka_engine::constraint_polytope::{
     ConstraintCount, ConstraintOptions, ConstraintPolytopeInput, CountingPlan,
     DifferenceConstraint, ModularCertificate, OrderHeuristic, PreparedConstraintPolytope,
-    SamplePlan, SubsetSum, VariableBounds,
+    SamplePlan, SubsetSum, VariableBounds, MAX_CONSTRAINT_VARIABLES, MAX_EXTRA_SAMPLES,
 };
 use num_rational::BigRational;
 
@@ -44,8 +44,9 @@ pub struct ConstraintSampleMismatch {
 
 /// Constraint-polytope result. Polynomiality is an explicit assumption; finite
 /// sample agreement is a check, not a proof. `data` is absent in plan-only mode
-/// or when a non-polynomial fit has nonintegral h*. `polynomial` preserves the
-/// exact fit in the latter case and `data_error` explains the failed transform.
+/// or when a fit has nonintegral h*. Fitted data remain diagnostic when
+/// `mismatches` or `polynomiality_warnings` are nonempty; `data_error` records
+/// failed transforms. Neither a retained fit nor empty warnings certify polynomiality.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct ConstraintComputation {
     pub data: Option<EhrhartData>,
@@ -54,6 +55,8 @@ pub struct ConstraintComputation {
     pub dimension: Option<usize>,
     pub empty: bool,
     pub assumes_polynomial: bool,
+    /// Necessary polynomiality checks, independent of optional extra samples.
+    pub polynomiality_warnings: Vec<String>,
     pub implicit_equalities: Vec<bool>,
     pub free_variables: Vec<usize>,
     pub fixed_values: Vec<Option<BigRational>>,
@@ -68,12 +71,19 @@ pub struct ConstraintComputation {
 }
 
 /// Compute exact Ehrhart data for rational bounds, differences, and subset sums.
-/// Extra mismatches are returned with the fit. Callers must inspect them before
+/// Extra mismatches and necessary-check warnings are returned with the fit.
+/// Callers must inspect both `mismatches` and `polynomiality_warnings` before
 /// treating a sampled polynomial as the polytope's Ehrhart polynomial.
 pub fn constraint_polytope_ehrhart(
     input: &ConstraintPolytopeInput,
     options: &ConstraintOptions,
 ) -> ExactResult<ConstraintComputation> {
+    if options.extra_samples > MAX_EXTRA_SAMPLES {
+        return Err(format!(
+            "extra_samples must be at most {MAX_EXTRA_SAMPLES}; got {}",
+            options.extra_samples
+        ));
+    }
     let prepared = PreparedConstraintPolytope::new(input).map_err(|e| e.to_string())?;
     let plan = prepared.sample_plan(options).map_err(|e| e.to_string())?;
     let mut result = ConstraintComputation {
@@ -83,6 +93,7 @@ pub fn constraint_polytope_ehrhart(
         dimension: prepared.dimension(),
         empty: prepared.is_empty(),
         assumes_polynomial: true,
+        polynomiality_warnings: Vec::new(),
         implicit_equalities: prepared
             .affine_hull()
             .map_or_else(Vec::new, |h| h.implicit_equalities.clone()),
@@ -97,6 +108,25 @@ pub fn constraint_polytope_ehrhart(
         component_samples: Vec::new(),
         component_product_matches: None,
     };
+    if !result.empty {
+        if result
+            .fixed_values
+            .iter()
+            .flatten()
+            .any(|q| !q.is_integer())
+        {
+            result.polynomiality_warnings.push("known non-polynomial lattice-count function: a fixed value has denominator greater than one; some dilations have no lattice points".into());
+        }
+        if prepared.affine_hull().is_some_and(|hull| {
+            prepared
+                .rows()
+                .iter()
+                .zip(&hull.implicit_equalities)
+                .any(|(row, &implicit)| implicit && !row.rhs.is_integer())
+        }) {
+            result.polynomiality_warnings.push("known non-polynomial lattice-count function: an implicit-equality right-hand side has denominator greater than one; some dilations have no lattice points".into());
+        }
+    }
     if options.plan_only {
         return Ok(result);
     }
@@ -159,77 +189,100 @@ pub fn constraint_polytope_ehrhart(
             });
         }
     }
-    // Independently interpolate factors and multiply exact power coefficients.
-    // Retain the full fit if quasipolynomial factors fail this additional check.
-    let mut product = vec![BigRational::from_integer(1.into())];
-    for index in 0..prepared.components().len() {
-        let factor = prepared.component(index).map_err(|e| e.to_string())?;
-        let mut factor_options = options.clone();
-        factor_options.extra_samples = 0;
-        let factor_plan = factor
-            .sample_plan(&factor_options)
-            .map_err(|e| e.to_string())?;
-        let mut factor_points = vec![(0_i64, BigRational::from_integer(1.into()))];
-        let mut factor_samples = vec![ConstraintSample {
-            dilation: 0,
-            strict: false,
-            value: BigRational::from_integer(1.into()),
-            interpolation: true,
-            count: factor.count(0, false, options).map_err(|e| e.to_string())?,
-        }];
-        let d = factor.dimension().expect("nonempty component");
-        for n in 1..=factor_plan.positive {
-            let count = constraint_count_using_plan(
-                &factor,
-                n as u64,
-                false,
-                options,
-                &factor_plan.ordinary_plans,
-            )?;
-            let value = BigRational::from_integer(count.value.clone().into());
-            factor_points.push((n as i64, value.clone()));
-            factor_samples.push(ConstraintSample {
-                dilation: n as i64,
+    if prepared.components().len() == 1 {
+        // A single factor is the original system. Reuse its plan and samples.
+        result.component_polynomials.push(polynomial.clone());
+        result.component_plans.push(result.plan.clone());
+        result.component_samples.push(result.samples.clone());
+        result.component_product_matches = Some(true);
+    } else {
+        // Independently interpolate factors and multiply exact power coefficients.
+        // Retain the full fit if quasipolynomial factors fail this additional check.
+        let mut product = vec![BigRational::from_integer(1.into())];
+        for index in 0..prepared.components().len() {
+            let factor = prepared.component(index).map_err(|e| e.to_string())?;
+            let mut factor_options = options.clone();
+            factor_options.extra_samples = 0;
+            let factor_plan = factor
+                .sample_plan(&factor_options)
+                .map_err(|e| e.to_string())?;
+            let mut factor_points = vec![(0_i64, BigRational::from_integer(1.into()))];
+            let mut factor_samples = vec![ConstraintSample {
+                dilation: 0,
                 strict: false,
-                value,
+                value: BigRational::from_integer(1.into()),
                 interpolation: true,
-                count,
-            });
+                count: factor.count(0, false, options).map_err(|e| e.to_string())?,
+            }];
+            let d = factor.dimension().expect("nonempty component");
+            for n in 1..=factor_plan.positive {
+                let count = constraint_count_using_plan(
+                    &factor,
+                    n as u64,
+                    false,
+                    options,
+                    &factor_plan.ordinary_plans,
+                )?;
+                let value = BigRational::from_integer(count.value.clone().into());
+                factor_points.push((n as i64, value.clone()));
+                factor_samples.push(ConstraintSample {
+                    dilation: n as i64,
+                    strict: false,
+                    value,
+                    interpolation: true,
+                    count,
+                });
+            }
+            for n in 1..=factor_plan.reciprocal {
+                let count = constraint_count_using_plan(
+                    &factor,
+                    n as u64,
+                    true,
+                    options,
+                    &factor_plan.strict_plans,
+                )?;
+                let value = BigRational::from_integer(
+                    BigInt::from(count.value.clone()) * if d % 2 == 0 { 1 } else { -1 },
+                );
+                factor_points.push((-(n as i64), value.clone()));
+                factor_samples.push(ConstraintSample {
+                    dilation: -(n as i64),
+                    strict: true,
+                    value,
+                    interpolation: true,
+                    count,
+                });
+            }
+            let factor_polynomial = EhrhartPolynomial::interpolate(d, &factor_points)?;
+            product = (polytool::Polynomial::new(product)
+                * polytool::Polynomial::new(factor_polynomial.power_coeffs().to_vec()))
+            .coeffs()
+            .to_vec();
+            result.component_polynomials.push(factor_polynomial);
+            result.component_plans.push(factor_plan);
+            result.component_samples.push(factor_samples);
         }
-        for n in 1..=factor_plan.reciprocal {
-            let count = constraint_count_using_plan(
-                &factor,
-                n as u64,
-                true,
-                options,
-                &factor_plan.strict_plans,
-            )?;
-            let value = BigRational::from_integer(
-                BigInt::from(count.value.clone()) * if d % 2 == 0 { 1 } else { -1 },
-            );
-            factor_points.push((-(n as i64), value.clone()));
-            factor_samples.push(ConstraintSample {
-                dilation: -(n as i64),
-                strict: true,
-                value,
-                interpolation: true,
-                count,
-            });
+        let product = EhrhartPolynomial::new(dimension, product)?;
+        let matches = product == polynomial;
+        result.component_product_matches = Some(matches);
+        if matches {
+            polynomial = product;
         }
-        let factor_polynomial = EhrhartPolynomial::interpolate(d, &factor_points)?;
-        product = (polytool::Polynomial::new(product)
-            * polytool::Polynomial::new(factor_polynomial.power_coeffs().to_vec()))
-        .coeffs()
-        .to_vec();
-        result.component_polynomials.push(factor_polynomial);
-        result.component_plans.push(factor_plan);
-        result.component_samples.push(factor_samples);
     }
-    let product = EhrhartPolynomial::new(dimension, product)?;
-    let matches = product == polynomial;
-    result.component_product_matches = Some(matches);
-    if matches {
-        polynomial = product;
+    if polynomial.degree() != dimension {
+        result.polynomiality_warnings.push(format!(
+            "fitted polynomial degree {} differs from affine dimension {dimension}",
+            polynomial.degree()
+        ));
+    }
+    if !polynomial
+        .power_coeffs()
+        .last()
+        .is_some_and(|c| c.is_positive())
+    {
+        result
+            .polynomiality_warnings
+            .push("fitted polynomial has a nonpositive leading coefficient".into());
     }
     match EhrhartData::new(polynomial.clone()) {
         Ok(data) => result.data = Some(data),
@@ -265,6 +318,7 @@ fn constraint_count_using_plan(
     if options.order.is_none() {
         for (actual, scheduled) in result.plans.iter_mut().zip(plans) {
             actual.user_order = false;
+            actual.selection = "scheduled".into();
             actual.heuristic = scheduled.heuristic;
             actual.candidates[0].heuristic = scheduled.heuristic;
         }
@@ -856,7 +910,7 @@ mod constraint_tests {
                 for exact in [true, false] {
                     let options = ConstraintOptions {
                         exact,
-                        order_heuristic: candidate.heuristic,
+                        order: Some(candidate.order.clone()),
                         ..ConstraintOptions::default()
                     };
                     let start = Instant::now();
@@ -1354,5 +1408,24 @@ mod tests {
         // The h* entries sum to the number of standard Young tableaux of 5^5.
         let total: BigInt = data.hstar.coeffs().iter().sum();
         assert_eq!(total, BigInt::from(701_149_020u64));
+    }
+    #[test]
+    fn single_component_observations_include_the_scheduled_extra_checks() {
+        let input =
+            ConstraintPolytopeInput::from_json(r#"{"variables":1,"bounds":[[0,3]]}"#).unwrap();
+        let result = constraint_polytope_ehrhart(
+            &input,
+            &ConstraintOptions {
+                extra_samples: 2,
+                ..Default::default()
+            },
+        )
+        .unwrap();
+        assert_eq!(result.component_plans.len(), 1);
+        assert_eq!(result.component_plans[0].extra_dilations.len(), 2);
+        let samples = &result.component_samples[0];
+        assert_eq!(samples.iter().filter(|s| s.interpolation).count(), 2);
+        assert_eq!(samples.iter().filter(|s| !s.interpolation).count(), 2);
+        assert!(result.mismatches.is_empty());
     }
 }

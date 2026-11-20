@@ -30,9 +30,79 @@ fn success(args: &[&str], stdin: Option<&str>) -> Value {
         "{}",
         String::from_utf8_lossy(&output.stderr)
     );
-    serde_json::from_slice(&output.stdout).unwrap()
+    let mut value = serde_json::from_slice(&output.stdout).unwrap();
+    remove_timing(&mut value);
+    value
+}
+// Wall-clock observations are deliberately part of the JSON contract, but
+// cannot be compared byte-for-byte across equivalent invocations.
+fn remove_timing(value: &mut Value) {
+    match value {
+        Value::Object(fields) => {
+            fields.remove("elapsed_micros");
+            fields.remove("predicted_runtime_micros");
+            for field in fields.values_mut() {
+                remove_timing(field);
+            }
+        }
+        Value::Array(values) => {
+            for value in values {
+                remove_timing(value);
+            }
+        }
+        _ => {}
+    }
 }
 const INTERVAL: &str = r#"{"variables":1,"bounds":[[0,2]]}"#;
+
+#[test]
+fn pilot_evidence_and_gt_heuristics_are_exposed_by_cli() {
+    let output = run(&["polytope", "-", "--format", "json"], Some(INTERVAL));
+    assert!(output.status.success());
+    let result: Value = serde_json::from_slice(&output.stdout).unwrap();
+    let plan = &result["plan"]["ordinary"][0];
+    assert_eq!(plan["selection"], "pilot");
+    for candidate in plan["candidates"].as_array().unwrap() {
+        assert!(candidate["predicted_peak_states"].is_string());
+        assert!(candidate["predicted_runtime_micros"].is_string());
+        for pilot in candidate["pilots"].as_array().unwrap() {
+            assert!(pilot["elapsed_micros"].is_number());
+            assert!(pilot["actual_peak_states"].is_number());
+            assert!(pilot["status"].is_string());
+        }
+    }
+    let system = success(
+        &[
+            "kostka",
+            "--lambda",
+            "3,2,1",
+            "--weight",
+            "2,2,2",
+            "--emit-constraints",
+            "--reduced",
+        ],
+        None,
+    );
+    for heuristic in ["gt-level", "gt-row"] {
+        let value = success(
+            &[
+                "polytope",
+                "-",
+                "--order-heuristic",
+                heuristic,
+                "--format",
+                "json",
+            ],
+            Some(&system.to_string()),
+        );
+        assert_eq!(value["dimension"], 1);
+        assert!(value["plan"]["ordinary"][0]["candidates"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|c| c["pilots"] == json!([])));
+    }
+}
 
 #[test]
 fn json_text_stdin_and_file_inputs_use_one_result_contract() {
@@ -165,7 +235,17 @@ fn converters_feed_the_same_polytope_command() {
 fn ordering_plan_only_exact_and_positive_options() {
     let input = r#"{"variables":3,"bounds":[[0,1],[0,1],[0,1]],"sums":[{"vars":[0,1,2],"lower":1,"upper":1}]}"#;
     let expected = success(&["polytope", "-", "--format", "json"], Some(input));
-    for heuristic in ["auto", "greedy", "sum-contiguous", "rcm", "exact-subset"] {
+    for heuristic in [
+        "auto",
+        "greedy",
+        "sum-contiguous",
+        "rcm",
+        "exact-subset",
+        "min-degree",
+        "min-fill",
+        "cm",
+        "local",
+    ] {
         let result = success(
             &[
                 "polytope",
@@ -340,4 +420,113 @@ fn checked_in_examples_reproduce_the_documented_data() {
         assert_eq!(result["hstar"], hstar);
         assert_eq!(result["warnings"], json!([]));
     }
+}
+
+#[test]
+fn audited_polynomiality_limits_and_order_conflicts() {
+    let fixed = r#"{"variables":2,"bounds":[["1/2","1/2"],[0,1]]}"#;
+    let value = success(
+        &["polytope", "-", "--extra-samples", "0", "--format", "json"],
+        Some(fixed),
+    );
+    assert_eq!(value["polynomiality_checks_failed"], true);
+    assert!(value["warnings"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|w| w.as_str().unwrap().contains("fixed value")));
+    assert!(!run(
+        &[
+            "polytope",
+            "-",
+            "--extra-samples",
+            "0",
+            "--fail-on-mismatch"
+        ],
+        Some(fixed)
+    )
+    .status
+    .success());
+    let implicit = r#"{"variables":2,"bounds":[[0,1],[0,1]],"sums":[{"vars":[0,1],"lower":"1/2","upper":"1/2"}]}"#;
+    let value = success(
+        &["polytope", "-", "--extra-samples", "0", "--format", "json"],
+        Some(implicit),
+    );
+    assert!(value["warnings"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|w| w.as_str().unwrap().contains("implicit-equality")));
+    for (input, expected) in [
+        (
+            r#"{"variables":1,"bounds":[["1/3","2/3"]]}"#,
+            "nonpositive leading coefficient",
+        ),
+        (
+            r#"{"variables":2,"bounds":[[0,"1/10"],[0,"1/10"]]}"#,
+            "differs from affine dimension",
+        ),
+    ] {
+        let value = success(
+            &[
+                "polytope",
+                "-",
+                "--positive-only",
+                "--extra-samples",
+                "0",
+                "--format",
+                "json",
+            ],
+            Some(input),
+        );
+        assert!(
+            value["warnings"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|w| w.as_str().unwrap().contains(expected)),
+            "{value}"
+        );
+    }
+    let conflict = success(
+        &["polytope", "--text", "-", "--format", "json"],
+        Some("vars 1\nbound 0 0 1\nbound 0 2 3"),
+    );
+    assert_eq!(conflict["empty"], true);
+    for (args, input, message) in [
+        (
+            vec!["polytope", "-"],
+            r#"{"variables":1000000000000}"#,
+            "at most 256",
+        ),
+        (
+            vec!["polytope", "--text", "-"],
+            "vars 1000000000000",
+            "at most 256",
+        ),
+        (
+            vec!["polytope", "-", "--extra-samples", "65"],
+            INTERVAL,
+            "at most 64",
+        ),
+        (
+            vec!["polytope", "-", "--order", "0", "--order-heuristic", "auto"],
+            INTERVAL,
+            "cannot be used with",
+        ),
+    ] {
+        let output = run(&args, Some(input));
+        assert!(!output.status.success());
+        assert!(
+            String::from_utf8_lossy(&output.stderr).contains(message),
+            "{}",
+            String::from_utf8_lossy(&output.stderr)
+        );
+    }
+    let point = r#"{"variables":0}"#;
+    let boundary = success(
+        &["polytope", "-", "--extra-samples", "64", "--format", "json"],
+        Some(point),
+    );
+    assert_eq!(boundary["samples"].as_array().unwrap().len(), 65);
 }

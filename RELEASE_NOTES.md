@@ -1,5 +1,24 @@
 # Unreleased
 
+- Constraint audit fixes warn on fractional fixed marks/implicit equations and
+  invalid fitted degree or leading coefficient even with zero extra samples.
+  CLI/MCP requests cap variables at 256 and extra samples at 64, reject explicit
+  order/heuristic conflicts, and offer `fail-on-mismatch`. Conflicting text
+  bounds now represent an empty system. LR levels stream into capped maps,
+  including the initial strip. Single-component samples/plans are reused,
+  split estimates share one order, positive-only skips interior work, and auto
+  subset DP stops at 16 variables (explicit 22). Strict pilots can add up to
+  two bounded probes at later informative scales.
+
+- Constraint-polytope auto ordering adds reverse minimum-degree/minimum-fill
+  elimination, peripheral Cuthill–McKee variants, GT level/row sweeps and
+  adjacent-swap improvement. Bounded dilation-one/two pilots select among
+  candidates using actual frontier sizes; JSON records estimates, measurements,
+  censoring and predictions. Explicit orders/heuristics bypass pilots and
+  plan-only remains estimate-only. Auto subset minimax is limited to 16 free
+  variables; explicit `exact-subset` retains its 22-variable limit. Counts and
+  CRT certificates are unchanged. A portable JSONL benchmark adapter and
+  Python 3.12 runner support bounded, resumable comparison batches.
 - `ehrcalc order` computes h* by a dynamic program over order ideals
   (Stanley's descent generating function) when the poset has a moderate
   number of order ideals, and otherwise falls back to the previous frontier

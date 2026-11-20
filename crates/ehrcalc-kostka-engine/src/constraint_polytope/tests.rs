@@ -228,6 +228,11 @@ fn random_dp_brute_force_order_and_crt_gate() {
                     OrderHeuristic::SumContiguous,
                     OrderHeuristic::ReverseCuthillMcKee,
                     OrderHeuristic::ExactSubset,
+                    OrderHeuristic::MinimumDegree,
+                    OrderHeuristic::MinimumFill,
+                    OrderHeuristic::CuthillMcKee,
+                    OrderHeuristic::LocalImprovement,
+                    OrderHeuristic::Auto,
                 ] {
                     let options = ConstraintOptions {
                         exact: true,
@@ -293,6 +298,269 @@ fn random_dp_brute_force_order_and_crt_gate() {
         "RANDOM_COUNTER_GATE: systems=360 nonempty={nonempty} N=1,2,3 strict+ordinary \
         candidate_exact_brute_crt_comparisons={comparisons} override_comparisons=2160"
     );
+}
+
+#[test]
+fn every_generated_candidate_and_pilot_agrees_with_brute_force() {
+    let mut random = Random(0x9211_3298_1129);
+    for case in 0..64 {
+        let input = random_input(&mut random, case);
+        let prepared = PreparedConstraintPolytope::new(&input).unwrap();
+        for strict in [false, true] {
+            let expected = BigUint::from(brute_points(&input, 2, strict).len());
+            for plan in prepared
+                .plan(2, strict, &ConstraintOptions::default())
+                .unwrap()
+            {
+                assert_eq!(plan.selection, "pilot");
+                for candidate in plan.candidates {
+                    let mut order = candidate.order.clone();
+                    for v in 0..input.variables {
+                        if !order.contains(&v) {
+                            order.push(v);
+                        }
+                    }
+                    let actual = prepared
+                        .count(
+                            2,
+                            strict,
+                            &ConstraintOptions {
+                                order: Some(order),
+                                ..ConstraintOptions::default()
+                            },
+                        )
+                        .unwrap();
+                    assert_eq!(actual.value, expected, "{candidate:?}");
+                    assert_eq!(candidate.pilots.len(), 2);
+                    for pilot in candidate.pilots {
+                        assert!(pilot.peak_states <= pilot.state_budget.max(1));
+                        assert!(pilot.transitions <= pilot.transition_budget);
+                        assert!(matches!(
+                            pilot.status.as_str(),
+                            "complete"
+                                | "empty"
+                                | "state-limit"
+                                | "transition-limit"
+                                | "time-limit"
+                        ));
+                    }
+                }
+            }
+            let plan_only = prepared
+                .plan(
+                    2,
+                    strict,
+                    &ConstraintOptions {
+                        plan_only: true,
+                        ..ConstraintOptions::default()
+                    },
+                )
+                .unwrap();
+            assert!(plan_only.iter().all(|p| p.selection == "estimate-only"
+                && p.candidates
+                    .iter()
+                    .all(|c| c.pilots.is_empty() && c.predicted_peak.is_none())));
+        }
+    }
+}
+
+#[test]
+fn censored_pilots_and_gt_name_validation() {
+    let input = ConstraintPolytopeInput::from_json(
+        r#"{"variables":4,
+        "bounds":[[0,20],[0,20],[0,20],[0,20]],
+        "sums":[{"vars":[0,1,2,3],"lower":30,"upper":30}]}"#,
+    )
+    .unwrap();
+    let prepared = PreparedConstraintPolytope::new(&input).unwrap();
+    let options = ConstraintOptions {
+        max_states: Some(2),
+        ..ConstraintOptions::default()
+    };
+    let plans = prepared.plan(10, false, &options).unwrap();
+    for candidate in &plans[0].candidates {
+        assert!(candidate
+            .pilots
+            .iter()
+            .all(|p| p.status == "state-limit" && p.peak_states == 2));
+        assert!(
+            candidate
+                .predicted_peak
+                .as_ref()
+                .unwrap()
+                .parse::<f64>()
+                .unwrap()
+                > 2.0
+        );
+    }
+    for heuristic in [OrderHeuristic::GtLevel, OrderHeuristic::GtRow] {
+        assert!(prepared
+            .plan(
+                1,
+                false,
+                &ConstraintOptions {
+                    order_heuristic: heuristic,
+                    ..options.clone()
+                }
+            )
+            .is_err());
+    }
+}
+
+#[test]
+fn empty_small_dilations_do_not_predict_an_empty_target() {
+    let input =
+        ConstraintPolytopeInput::from_json(r#"{"variables":1,"bounds":[["1/4","1/3"]]}"#).unwrap();
+    let prepared = PreparedConstraintPolytope::new(&input).unwrap();
+    let actual = prepared
+        .count(12, false, &ConstraintOptions::default())
+        .unwrap();
+    assert_eq!(actual.value, BigUint::from(2_u32));
+    for candidate in &actual.plans[0].candidates {
+        assert!(candidate.pilots.iter().all(|p| p.status == "empty"));
+        assert!(
+            candidate
+                .predicted_peak
+                .as_ref()
+                .unwrap()
+                .parse::<f64>()
+                .unwrap()
+                >= 1.0
+        );
+    }
+}
+
+#[test]
+fn request_limits_and_conflicting_text_bounds() {
+    assert!(ConstraintPolytopeInput {
+        variables: usize::MAX,
+        ..Default::default()
+    }
+    .normalized()
+    .unwrap_err()
+    .to_string()
+    .contains("at most 256"));
+    assert!(
+        ConstraintPolytopeInput::from_json(r#"{"variables":1000000000000}"#)
+            .unwrap_err()
+            .to_string()
+            .contains("at most 256")
+    );
+    assert!("vars 1000000000000"
+        .parse::<ConstraintPolytopeInput>()
+        .unwrap_err()
+        .to_string()
+        .contains("at most 256"));
+    let input = "vars 1\nbound 0 0 1\nbound 0 2 3"
+        .parse::<ConstraintPolytopeInput>()
+        .unwrap();
+    assert!(PreparedConstraintPolytope::new(&input).unwrap().is_empty());
+    assert!("vars 1\nbound 0 2 1"
+        .parse::<ConstraintPolytopeInput>()
+        .is_err());
+    let prepared = PreparedConstraintPolytope::new(&ConstraintPolytopeInput::default()).unwrap();
+    assert!(prepared
+        .sample_plan(&ConstraintOptions {
+            extra_samples: usize::MAX,
+            ..Default::default()
+        })
+        .unwrap_err()
+        .to_string()
+        .contains("at most 64"));
+    assert_eq!(
+        prepared
+            .sample_plan(&ConstraintOptions {
+                extra_samples: 64,
+                ..Default::default()
+            })
+            .unwrap()
+            .extra_dilations
+            .len(),
+        64
+    );
+}
+
+#[test]
+fn strict_pilots_reach_the_first_informative_scale() {
+    let input = ConstraintPolytopeInput::from_json(
+        r#"{"variables":3,
+      "bounds":[[0,1],[0,1],[0,1]],"differences":[[0,1,0],[1,2,0]]}"#,
+    )
+    .unwrap();
+    let prepared = PreparedConstraintPolytope::new(&input).unwrap();
+    let count = prepared
+        .count(5, true, &ConstraintOptions::default())
+        .unwrap();
+    assert_eq!(count.value, BigUint::from(4_u32));
+    for candidate in &count.plans[0].candidates {
+        assert_eq!(
+            candidate
+                .pilots
+                .iter()
+                .map(|p| p.dilation)
+                .collect::<Vec<_>>(),
+            vec![1, 2, 4, 5]
+        );
+        assert!(candidate.pilots[..2].iter().all(|p| p.status == "empty"));
+        assert!(candidate.pilots[2..].iter().all(|p| p.status == "complete"));
+        assert_eq!(
+            candidate.prediction_basis.as_deref(),
+            Some("adaptive-two-pilot-growth")
+        );
+        assert!(candidate
+            .pilots
+            .iter()
+            .all(|p| p.peak_states <= 4096 && p.transitions <= 100_000));
+    }
+}
+
+#[test]
+fn strict_probe_screening_is_bounded_for_large_requested_scales() {
+    let input =
+        ConstraintPolytopeInput::from_json(r#"{"variables":1,"bounds":[[0,"1/1000000000"]]}"#)
+            .unwrap();
+    let prepared = PreparedConstraintPolytope::new(&input).unwrap();
+    let plans = prepared
+        .plan(2_000_000_000, true, &ConstraintOptions::default())
+        .unwrap();
+    assert!(plans[0].candidates.iter().all(|c| c.pilots.len() == 2));
+}
+
+#[test]
+fn automatic_subset_search_stops_above_sixteen() {
+    let input = ConstraintPolytopeInput {
+        variables: 17,
+        bounds: vec![
+            VariableBounds {
+                lower: Some(q(0, 1)),
+                upper: Some(q(1, 1))
+            };
+            17
+        ],
+        differences: (0..16)
+            .map(|v| DifferenceConstraint {
+                left: v,
+                right: v + 1,
+                upper: q(0, 1),
+            })
+            .collect(),
+        ..Default::default()
+    };
+    let prepared = PreparedConstraintPolytope::new(&input).unwrap();
+    let plan = prepared
+        .plan(
+            1,
+            false,
+            &ConstraintOptions {
+                plan_only: true,
+                ..Default::default()
+            },
+        )
+        .unwrap();
+    assert!(plan[0]
+        .candidates
+        .iter()
+        .all(|p| p.heuristic != OrderHeuristic::ExactSubset));
 }
 
 #[test]

@@ -7,6 +7,18 @@ use serde_json::{json, Value};
 use std::collections::{BTreeMap, BTreeSet};
 use std::str::FromStr;
 
+/// Maximum supported input size, checked before allocating variable arrays.
+pub const MAX_CONSTRAINT_VARIABLES: usize = 256;
+
+fn validate_variables(n: usize) -> Result<()> {
+    if n > MAX_CONSTRAINT_VARIABLES {
+        return Err(invalid(format!(
+            "variables must be at most {MAX_CONSTRAINT_VARIABLES}; got {n}"
+        )));
+    }
+    Ok(())
+}
+
 /// Optional rational endpoints. Missing endpoints must be bounded by other constraints.
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct VariableBounds {
@@ -116,6 +128,7 @@ impl ConstraintPolytopeInput {
     /// A contradiction between different valid constraints is retained as an empty system.
     pub fn normalized(&self) -> Result<Self> {
         let n = self.variables;
+        validate_variables(n)?;
         if !self.names.is_empty()
             && (self.names.len() != n || self.names.iter().collect::<BTreeSet<_>>().len() != n)
         {
@@ -238,6 +251,7 @@ impl ConstraintPolytopeInput {
             )?,
             ..Self::default()
         };
+        validate_variables(input.variables)?;
         if let Some(names) = object.get("names") {
             input.names = array(names)?
                 .iter()
@@ -322,6 +336,7 @@ impl FromStr for ConstraintPolytopeInput {
             let idx = |word: &str| word.parse::<usize>().map_err(|_| bad());
             if words[0] == "vars" && words.len() == 2 && input.is_none() {
                 let n = idx(words[1])?;
+                validate_variables(n)?;
                 input = Some(Self {
                     variables: n,
                     bounds: vec![VariableBounds::default(); n],
@@ -339,8 +354,17 @@ impl FromStr for ConstraintPolytopeInput {
                         return Err(bad());
                     }
                     let bounds = system.bounds.get_mut(v).ok_or_else(bad)?;
+                    let previous = bounds.clone();
                     tighten_lower(&mut bounds.lower, &Some(lo));
                     tighten_upper(&mut bounds.upper, &Some(hi));
+                    if bounds.lower > bounds.upper {
+                        *bounds = previous;
+                        system.differences.push(DifferenceConstraint {
+                            left: v,
+                            right: v,
+                            upper: -BigRational::one(),
+                        });
+                    }
                 }
                 "le" if words.len() == 3 || words.len() == 4 => {
                     system.differences.push(DifferenceConstraint {

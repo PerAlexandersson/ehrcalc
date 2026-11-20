@@ -243,6 +243,88 @@ fn thousand_deterministic_flagged_skew_comparisons() {
 }
 
 #[test]
+fn all_frontier_candidates_agree_on_random_gt_fibres() {
+    let mut rng = Random(0x8811_2026_1120);
+    let mut gt_candidates = 0;
+    for index in 0..40 {
+        let mut weight = vec![0; 4];
+        for _ in 0..8 {
+            weight[rng.below(4) as usize] += 1;
+        }
+        let case = input(
+            &[4, 3, 1],
+            &[],
+            &weight,
+            if index % 2 == 0 {
+                Some(vec![2, 3, 3, 3])
+            } else {
+                None
+            },
+            None,
+        );
+        for system in [
+            gt_constraint_polytope(&case).unwrap(),
+            gt_free_constraint_polytope(&case).unwrap(),
+        ] {
+            let prepared = PreparedConstraintPolytope::new(&system).unwrap();
+            for dilation in [1, 2] {
+                for strict in [false, true] {
+                    let expected = prepared
+                        .count(
+                            dilation,
+                            strict,
+                            &ConstraintOptions {
+                                order_heuristic: OrderHeuristic::Greedy,
+                                exact: true,
+                                ..ConstraintOptions::default()
+                            },
+                        )
+                        .unwrap();
+                    for plan in prepared
+                        .plan(
+                            dilation,
+                            strict,
+                            &ConstraintOptions {
+                                plan_only: true,
+                                ..ConstraintOptions::default()
+                            },
+                        )
+                        .unwrap()
+                    {
+                        for candidate in plan.candidates {
+                            if matches!(
+                                candidate.heuristic,
+                                OrderHeuristic::GtLevel | OrderHeuristic::GtRow
+                            ) {
+                                gt_candidates += 1;
+                            }
+                            let mut order = candidate.order;
+                            for v in 0..system.variables {
+                                if !order.contains(&v) {
+                                    order.push(v);
+                                }
+                            }
+                            let actual = prepared
+                                .count(
+                                    dilation,
+                                    strict,
+                                    &ConstraintOptions {
+                                        order: Some(order),
+                                        ..ConstraintOptions::default()
+                                    },
+                                )
+                                .unwrap();
+                            assert_eq!(actual.value, expected.value, "case {case:?}");
+                        }
+                    }
+                }
+            }
+        }
+    }
+    assert!(gt_candidates >= 100);
+}
+
+#[test]
 fn regression_2026_10_08_and_broad_gt_corners() {
     for row_flags in [[4, 4, 6, 6, 6], [4, 5, 6, 6, 6]] {
         let lower = (1..=6)

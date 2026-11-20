@@ -17,8 +17,14 @@ mod plan;
 mod presolve;
 
 pub use count::{ConstraintCount, ModularCertificate};
-pub use model::{ConstraintPolytopeInput, DifferenceConstraint, SubsetSum, VariableBounds};
-pub use plan::{ConstraintOptions, CountingPlan, OrderCandidate, OrderHeuristic, SamplePlan};
+pub use model::{
+    ConstraintPolytopeInput, DifferenceConstraint, SubsetSum, VariableBounds,
+    MAX_CONSTRAINT_VARIABLES,
+};
+pub use plan::{
+    ConstraintOptions, CountingPlan, OrderCandidate, OrderHeuristic, OrderPilot, SamplePlan,
+    MAX_EXTRA_SAMPLES,
+};
 pub use presolve::{ConstraintRow, PreparedConstraintPolytope};
 
 use std::fmt;

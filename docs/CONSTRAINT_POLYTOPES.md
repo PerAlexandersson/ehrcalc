@@ -28,7 +28,9 @@ contains one distinct name per variable. `bounds` may be omitted; otherwise
 it contains one pair per variable. Duplicate constraints merge to the tightest
 endpoints. We reject reversed endpoints, out-of-range indices, duplicate sum
 members, empty sums, unknown fields, and floating-point endpoints. Valid but
-mutually incompatible constraints describe an empty polytope.
+mutually incompatible constraints describe an empty polytope, including
+conflicting repeated text `bound` lines. Inputs are limited to **256 variables**;
+this is checked before variable-array allocation in JSON, text and adapters.
 
 The short text syntax supports comments and the relations `=`, `<=`, `>=`:
 
@@ -73,12 +75,24 @@ using \(d+1\) exact values, where \(d=\dim P\), and always record
 The planner may combine positive ordinary samples with negative reciprocal
 samples; `--positive-only` uses zero and positive samples exclusively.
 
-`--extra-samples K` defaults to **1**. These further positive counts are
+`--extra-samples K` defaults to **1** and is limited to **64**. These further positive counts are
 excluded from interpolation. A mismatch produces a visible stderr warning,
 warnings in every output format, and exact `mismatches` entries in JSON.
 A mismatch indicates failure of polynomiality or an error in counting or
 dimension. Finite agreement does not prove polynomiality. Passing
 `--extra-samples 0` disables this check.
+Necessary checks still run with zero extra samples: a nonintegral fixed mark
+or implicit-equality right-hand side proves that some dilations have no
+lattice points, so the count function cannot be one polynomial. We also warn
+if a nonempty fit has degree different from the affine dimension or a
+nonpositive leading coefficient. JSON sets `polynomiality_checks_failed` and
+retains the fitted coefficients as diagnostic data.
+
+`--fail-on-mismatch` makes a failed extra sample or necessary check return a
+nonzero CLI exit (with a diagnostic instead of the normal report). The MCP
+field `fail_on_mismatch: true` returns a tool error under the same conditions.
+Without it, warnings and exact fitted data remain available in every format.
+
 
 For example, `[0,1/2]` has \(L(N)=\lfloor N/2\rfloor+1\), and
 `echo '{"variables":1,"bounds":[[0,"1/2"]]}' | ehrcalc polytope -`
@@ -94,19 +108,84 @@ values and partial sums of open subset constraints. Each variable is
 translated by its integral lower endpoint at the current dilation, so partial
 subset sums are nonnegative. Equality sums force their last variable.
 
-`--order-heuristic` accepts `auto`, `greedy`, `sum-contiguous`, `rcm`, and
-`exact-subset`. Automatic selection compares candidates at the largest
-scheduled dilation; exact subset minimax is available through 22 free
-variables. Explicit `exact-subset` requests above this limit are errors.
+`--order-heuristic` accepts these candidates:
+
+| Name | Construction |
+| --- | --- |
+| `greedy` | Weighted frontier with one-step lookahead. |
+| `sum-contiguous` | Sweep subset groups using the greedy variable order. |
+| `rcm` | Original pseudo-peripheral reverse Cuthill–McKee on the primal graph. |
+| `exact-subset` | Exact subset minimax of the range estimate, through 22 free variables. |
+| `min-degree`, `min-fill` | Reverse elimination orders on the incidence graph. |
+| `cm` | Forward/reverse Cuthill–McKee from up to six low-degree/peripheral seeds. |
+| `gt-level` | GT level sweeps, both level and within-level directions. |
+| `gt-row` | Tableau-row sweeps, both row and within-row directions. |
+| `local` | Up to three adjacent-swap passes from the three best estimated candidates. |
+| `auto` | All applicable candidates, with bounded frontier pilots. |
+
+The incidence graph has one node per subset accumulator; a sum is not expanded
+to a clique for the new graph heuristics. GT candidates recognize the adapters'
+`alpha_LEVEL_ROW` names, including reduced systems. Level sweeps keep each
+level-sum group contiguous; row sweeps provide an alternative traversal across
+these groups. Explicit GT requests without these names are errors. Local
+search minimizes estimated peak, then work, and skips swaps above 128 free
+variables. Auto includes exact subset DP through **16** free variables to keep
+planning affordable; explicit requests support 22 and fail above that limit.
+
+Auto evaluates each distinct order with the production frontier at dilations
+1 and 2, separately for ordinary and strict constraints. Each pilot has at most
+4,096 states per layer (or the caller's smaller cap), 100,000 transitions, and
+a cooperative 50 ms time budget, checked every 256 work units. Pilots use one
+modular lane; zero residues retain their keys, so state presence is exact.
+Duplicate orders share pilot results. Explicit orders and explicit heuristics
+bypass pilots.
+
+For strict counts, when the first two probes are empty or censored, we screen
+integer boxes for the first possible scale from 3 up to the requested dilation,
+with screening capped at scale 256.
+Each order may try up to two additional bounded probes, stopping once two
+complete nonempty observations are available. There are at most four probes
+per distinct order; every probe keeps the same budgets. Box feasibility is
+only a screen: a larger probe can still be empty or capped. The actual
+scales and `adaptive-*` prediction bases are recorded in JSON.
+
+For completed pilots with nonempty final layers, we extrapolate each measured
+layer using its range growth. Two informative pilots calibrate an effective
+growth exponent between zero and one relative to the range-product model;
+one informative pilot uses exponent one. The predicted peak chooses the order,
+with extrapolated runtime breaking ties. When more than two probes are
+informative, the last two calibrate growth. A forecast based on only one completed pilot receives a factor-two peak
+penalty if another probe is budget-limited. If no probe reaches a nonempty final layer,
+selection falls back to the range estimate. Empty small dilations do not imply
+that larger dilations are empty. These predictions use floating point only for
+cost selection; feasibility, counts and certificates remain exact.
+
+JSON plans contain the `selection` policy and the complete `candidates` table:
+variant, original variable order, exact range estimates, duplicate index,
+`prediction_basis`, predicted peak/runtime (runtime is null on range fallback), and each pilot's actual peak, completed layer sizes,
+elapsed microseconds, transitions, status and budgets. An incomplete pilot's
+peak is an observed lower bound. Wall-clock observations, and sometimes the
+choice between tied orders, can vary between runs. The service freezes the
+chosen orders for its scheduled samples; sample plans use `selection: scheduled`.
 `--order 3,0,1,2` supplies a permutation of **all original input variables**,
-including entries removed by presolve. Fixed entries are skipped when
+including entries removed by presolve. `--order` and an explicitly supplied
+`--order-heuristic` are mutually exclusive (also in MCP). Fixed entries are skipped when
 constructing component orders. Plan orders use original variable indices.
 
 `--plan-only` computes the affine hull, sample schedule and frontier estimates
-without counting. Estimates bound layer states; they do not estimate the
-number of attempted transitions. `--max-states` defaults to 1,000,000 and
+without pilots or sample counting (`selection: estimate-only` for auto).
+Estimates bound layer states; they do not estimate the
+number of attempted transitions. The sampling split is scored with one fixed
+ordinary greedy order rather than rerunning greedy at every dilation.
+`--positive-only` skips all interior estimates. A single connected component
+reuses the parent count, fit and plan; multiple factors retain their separate
+product cross-check. The single-factor product match is an identity.
+
+`--max-states` defaults to 1,000,000 and
 stops a count when a layer exceeds that limit, with the step and frontier in
-the error. Scheduled ordinary and interior plans can use different orders.
+the error. This bounded default intentionally differs from `gt`/`kostka`,
+whose default state budget is unlimited. Scheduled ordinary and interior
+plans can use different orders.
 
 The default counter carries residues for several word-sized primes through
 one set of transitions. The number of points is bounded by the product of
@@ -120,6 +199,26 @@ moduli and residues, and their combined modulus, per connected component.
 The current table extends deterministically to at most 64 moduli; capacity
 failure is an error. `--exact` uses `BigUint` counts instead and omits CRT data.
 Counting is currently serial.
+
+## Bounded ordering benchmarks
+
+`examples/frontier_order_benchmark.rs` is a JSONL adapter for comparing `auto`,
+the original four-candidate `legacy-auto` policy, and `gt-level`. Fit mode
+counts the full interpolation grid with `extra_samples=0`, using frozen orders;
+it performs no interpolation or coefficient search. Count mode evaluates one
+specified dilation and interior flag. Plans are flushed before counting, and
+cap failures retain their observed state lower bound.
+
+`examples/run_frontier_order_benchmark.py` requires only Python 3.12 and that
+release executable on Linux x86-64. It isolates each case/policy in a process,
+caps address space at 8 GiB, applies CPU and wall limits, records peak child RSS
+with `wait4`, and stops each whole job within six hours. Results are append-only
+JSONL, resumable with matching input and binary SHA-256 hashes. Each invocation
+selects at most 100 inputs; `--start` chooses the next batch. Use an external
+target directory and generic `-C target-cpu=x86-64` when building the binary.
+On the coordinator, run the Python runner through the prescribed heavy guard
+with `JOB_MB=9000` passed as an argument. A completed grid is counting evidence,
+not a new validated polynomial. No queue submission is performed by the runner.
 
 ## Worked examples
 

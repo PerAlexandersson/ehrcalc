@@ -65,14 +65,22 @@ transportation polytopes, and brute-force sums of independent-set/basis
 incidence vectors for uniform and small graphic matroids. Loops, parallel
 edges, bridges, degenerate polytopes and inconsistent margins are included.
 
+Ordering coverage extends the 360-system brute-force/CRT gate to every
+heuristic. A separate 64-system gate executes every generated candidate order,
+checks pilot limits and estimate-only behavior, and tests censored pilots.
+Forty deterministic GT fibres exercise every candidate on both full and reduced
+adapters, at two dilations with ordinary and strict counts. Timing fields are
+excluded only from repeat-invocation equality assertions; their JSON types and
+pilot statuses are checked separately.
+
 `tests/constraint_cli.rs` checks source parsing, converter round trips,
 plan-only results, ordering controls, exact counts, budgets, all formats and
 visible extra-sample warnings. `mcp/tests/constraint_stdio.rs` starts the
 actual MCP binary and checks tool registration, schema, shared-service
 equality, warnings and deterministic invalid requests.
 
-For the serial timing table (excluded from default tests), run the guarded
-Cargo command below with `test -p ehrcalc --test constraint_gt
+For the serial timing table (excluded from default tests), run a bounded
+Cargo command with `test -p ehrcalc --test constraint_gt
 timing_full_reduced_and_existing_gt_engine -- --ignored --nocapture
 --test-threads=1`. It includes adapter construction and all service work.
 The existing engine is observed with `kostka_dp::profile_kostka_state_peak`,
@@ -97,24 +105,21 @@ the shared exact result model rather than formatted strings.
 
 ## Required Checks
 
-In the constraint-polytope lane, prefix **every** Cargo command (including
-formatting, docs generation and metadata) with this serialized memory guard:
+Use an external Cargo cache, especially in synchronized checkouts. Serialize
+expensive builds and benchmarks when resources are shared. The CI gate is:
 
 ```sh
-/cargo-target/rr-lanes/tools/heavy.sh START_MB=8000 -- \
-  env CARGO_TARGET_DIR=/cargo-target/polytool-lanes/ehrcalc-cp \
-  CARGO_BUILD_JOBS=4 CARGO_INCREMENTAL=0 timeout 1200 nice -n 10 cargo ...
+export CARGO_TARGET_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/ehrcalc/target"
+cargo fmt --all --check
+cargo clippy --workspace --all-targets --locked -- -D warnings
+cargo test --workspace --locked
+cargo test --workspace --release --locked
 ```
 
-Required final commands are `fmt --all -- --check`,
-`clippy --workspace --all-targets -- -D warnings`, and `test --workspace`.
-The guard waits for the shared lock; other workers' builds remain untouched.
-
-Run the full standalone workspace tests during development:
-
-```bash
-timeout 60s nice -n 10 cargo test --workspace
-```
+Choose bounded time and memory allowances appropriate to the machine and
+workload. Keep generated benchmark inputs, logs and reports outside the
+source tree. Regenerate `docs/cli.md` with `ehrcalc docs cli --write docs/cli.md`
+when command help changes; the workspace tests check it for drift.
 
 The database-backed KTT research binary has focused tests that do not require a
 database:
