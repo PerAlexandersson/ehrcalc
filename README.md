@@ -1,208 +1,137 @@
 # Ehrcalc
 
 Ehrcalc is an exact Rust library, command-line tool, and MCP server for
-Ehrhart polynomials, h*-vectors, dimensions, and closely related
+Ehrhart polynomials, h*-vectors, affine dimensions, and closely related
 combinatorial counting problems.
 
-The project unifies a common workflow across several families: obtain exact
-lattice-point or combinatorial counts under dilation, determine the relevant
-dimension, interpolate the Ehrhart polynomial exactly, and derive h* and
-binomial-basis data.  It also exposes supporting calculations such as Kostka
-and Littlewood-Richardson coefficients when those are useful inputs to an
-Ehrhart computation.
+Every family follows the same pipeline: obtain exact lattice-point counts
+under dilation, determine the affine dimension, interpolate the Ehrhart
+polynomial over the rationals, and derive h* and binomial-basis data.  All
+arithmetic uses arbitrary-size integers and rationals.
 
-## Status
+## Features
 
-Version 0.1 implements the exact interpolation and transform core, the
-Gelfand-Tsetlin, Kostka, flagged Kostka, Littlewood-Richardson, key, order,
-and acyclic-flow command families, JSON/LaTeX/plain-text rendering, and an
-MCP stdio companion.  It also includes the `key-scan` command for
-Key-HStar-Bruhat full-rank scans with resumable JSONL checkpoints.  The fast
-scanner supports staircase shapes, explicit dominant partitions, and adjacent
-gap vectors; staircase scans can also run the `D/G/W/bar K/L` packet checks.
-Scans whose parts have a common factor use the exact dilation shortcut
-`P_{sigma,k mu}(m)=P_{sigma,mu}(km)`, including scaled staircases and
-rectangles `(k^r,0^{n-r})`.  Single-row scans with `--sigma` can also use
-`--sample-checkpoint` to preserve each exact dilation sample before final
-interpolation.  For block-constant shapes, `--block-summary`
-groups rows by the block contingency matrix, and `--block-representatives`
-computes one lexicographic representative for each matrix class.
+- Gelfand-Tsetlin polytopes, Kostka, skew Kostka, and flagged Kostka numbers
+  (with automatic factorization and forced-prefix reductions), plus
+  Littlewood-Richardson coefficients.
+- Key-polynomial Ehrhart families and resumable `key-scan` scans of key
+  h*-polynomials over symmetric groups.
+- Order polytopes, with h* from Stanley's linear-extension theorem or a
+  frontier dynamic program for wide posets.
+- Rational constraint polytopes given by bounds, differences, and subset sums.
+- Acyclic flow polytopes.
+- Transform-only workflows: interpolation, power / h* / binomial-basis
+  conversion, finite differences, sums, evaluation, and independent checks.
+- Exact h* and binomial-basis output; trailing zero h* coefficients are kept.
+- An MCP stdio server that calls the same library API as the CLI.
 
-The repository is a standalone Cargo workspace.  Its internal
-`ehrcalc-kostka-engine` and `ehrcalc-foundations` crates own the migrated
-algorithms needed by the public CLI and MCP server.  No sibling repository is
-needed to build it: `polytool`, used for exact real-rootedness and interlacing,
-is pinned to a public Git revision.
+## Installation
 
-## Scope
+```bash
+cargo install --git https://github.com/PerAlexandersson/ehrcalc.git ehrcalc
+cargo install --git https://github.com/PerAlexandersson/ehrcalc.git ehrcalc-mcp  # optional MCP server
+```
 
-Boundary arithmetic and relative-interior semantics are documented in
-[the correctness repair notes](docs/BROAD_CORNER_FIXES.md), with executable
-regressions. CI runs the workspace suite in both debug and release.
-
-Supported families are:
-
-- Gelfand-Tsetlin, Kostka, skew Kostka, and flagged Kostka data;
-- key-polynomial Ehrhart families;
-- order polytopes;
-- rational constraint polytopes (bounds, differences, subset sums);
-- acyclic flow polytopes; and
-- exact transform-only workflows from supplied Ehrhart or h* data.
-
-Kostka counts and GT Ehrhart computations automatically factor at tight
-column-capacity partial sums, including skew shapes and row flags. For
-straight shapes this recovers dominance factorization. Ordinary and
-relative-interior counts use the same lattice-product split.
-
-Generic Kostka counters also remove isolated forced first-row ones before
-counting, retaining all row flags. The same affine lattice reduction applies
-to relative interiors and GT Ehrhart computations; see
-[the forced-prefix reduction](docs/FORCED_PREFIX.md).
-
-Two-label flagged and masked counters use exact box-slice inclusion–exclusion
-when at most twelve intermediate coordinates vary. This avoids enumerating
-individual partitions at large dilations. Relative-interior counts use the
-same path with endpoint shifts from the exact affine-hull masks; larger
-instances retain the partition DP. See [the architecture](docs/ARCHITECTURE.md).
-
-Littlewood-Richardson coefficient calculation is available as a direct
-counting command.  Ehrhart data for LR objects will require an explicitly
-specified family, such as a hive-polytope model, rather than treating every
-LR coefficient as an Ehrhart value by default.
-
-## CLI
-
-Build a fresh checkout with the stable Rust toolchain:
+Or build from a checkout:
 
 ```bash
 git clone https://github.com/PerAlexandersson/ehrcalc.git
 cd ehrcalc
-cargo build --release
-./target/release/ehrcalc --help
+cargo build --release   # binaries: target/release/ehrcalc, target/release/ehrcalc-mcp
 ```
 
-The exact `polytool` dependency is fetched from its pinned public Git revision;
-no sibling checkout is required.
+## Quick start
 
-```text
-ehrcalc gt ...
-ehrcalc kostka ...
-ehrcalc lr ...
-ehrcalc key ...
-ehrcalc key-scan --max-n 5 --staircase
-ehrcalc key-scan --n 4 --lambda 4,2,1 --packets h-checks
-ehrcalc key-scan --n 4 --gaps 2,1,1 --rows --format json
-ehrcalc key-scan --n 5 --lambda 2,1,1 --sigma 4,2,5,1,3 --rows
-ehrcalc key-scan --n 6 --lambda 7,5,5,2,0,0 --sigma 5,4,6,2,1,3 \
-  --sample-checkpoint samples.jsonl --rows --format json
-ehrcalc order ...
-ehrcalc flow ...
-ehrcalc interpolate ...
-ehrcalc hstar ...
-ehrcalc verify ...
+Order polytope of the poset given by `--shape 4,4,4`:
+
+```console
+$ ehrcalc order --shape 4,4,4
+dimension: 12
+Ehrhart(n): 1/1036800 n^12 + 7/172800 n^11 + ... + 259/60 n + 1
+hstar(t): [1, 22, 113, 190, 113, 22, 1, 0, 0, 0, 0, 0, 0]
+binomial_basis: [1, 34, 421, 2750, 11033, 29378, 54097, 70168, 64120, 40488, 16842, 4158, 462]
 ```
 
-For order polytopes, `ehrcalc order` computes h* by Stanley's theorem: for a
-naturally labeled poset it is the descent generating function of the linear
-extensions, obtained by a dynamic program over order ideals.  This is fast for
-long narrow posets, for example the `8 x 8` rectangle in about a tenth of a
-second, and it is the default whenever the number of order ideals is moderate.
-`--method frontier` selects the older route (order-preserving map counts,
-reciprocity, interpolation), which does not depend on the number of ideals and
-is preferable for wide posets; `--method auto` (the default) tries the ideal
-method within `--max-states` stored states and otherwise falls back.
+Gelfand-Tsetlin polytope and a Kostka number:
 
-```text
-ehrcalc order --shape 8,8,8,8,8,8,8,8
-ehrcalc order --shape 6,6,6 --method frontier --format json
-ehrcalc order --antichain 25 --max-states 1000000
+```console
+$ ehrcalc gt --lambda 4,2 --weight 2,2,2
+dimension: 1
+Ehrhart(n): 2 n + 1
+hstar(t): [1, 1]
+binomial_basis: [1, 2]
+$ ehrcalc kostka --lambda 3,2,1 --weight 2,2,2
+kostka: 2
 ```
 
-Every command supports plain text and JSON.  Commands producing mathematical
-expressions also support LaTeX.  JSON is the stable
-machine-readable contract, with large integers and rationals encoded as
-strings where JSON numeric precision would be unsafe.
+Acyclic flow polytope (vertices and edges are zero-based):
 
-The command model is the source of truth for the CLI reference.  Run
-`ehrcalc --help` or `ehrcalc <command> --help` for terminal documentation.
-The checked-in [CLI reference](docs/cli.md) is generated from that same model
-and is tested for drift.  This README deliberately stays a short overview and
-does not duplicate every option.
-
-See [Key h-star computations](docs/KEY_HSTAR.md) for the mathematical
-convention, exact row schema, packet modes, and resumable workflows for
-`key-scan`.
-
-The workspace also contains a database-backed, bounded KTT research scanner.
-It is intentionally separate from the stable CLI; see
-[the KTT search utility guide](docs/KTT_SEARCH.md) for exact validation and
-report-status semantics.
-
-The `ehrcalc-mcp` companion binary exposes the same exact library operations
-over MCP stdio transport.  See [docs/OUTPUT_AND_MCP.md](docs/OUTPUT_AND_MCP.md)
-for its request and output contract.
-
-## Constraint polytopes
-
-`ehrcalc polytope --input FILE.json` computes exact data from rational bounds,
-pairwise differences, and subset sums. It reports the certified affine
-dimension, ordinary/interior samples, chosen variable orders, actual peak
-states, and CRT bounds. The caller assumes polynomiality; one extra sample
-is checked by default and a mismatch produces a visible warning.
-Automatic ordering compares graph, GT-sweep and locally improved candidates
-using bounded frontier pilots. JSON retains their measurements and predictions;
-`--plan-only` uses range estimates without enumerating pilot states.
-Requests support at most 256 variables and 64 extra samples. Necessary
-polynomiality warnings remain active with `--extra-samples 0`;
-`--fail-on-mismatch` opts into an error when those checks fail.
-
-```sh
-ehrcalc polytope --input examples/constraints/hypersimplex.json --format json
-ehrcalc kostka --lambda 3,2,1 --weight 2,2,2 --lower-flags 1,1,2 \
-  --emit-constraints --reduced | ehrcalc polytope - --format json
-ehrcalc order --chain 4 --emit-constraints | ehrcalc polytope - --plan-only
+```console
+$ ehrcalc flow --vertices 4 --edges '0->1,0->2,1->3,2->3,1->2' --netflow 2,0,0,-2
+dimension: 2
+Ehrhart(n): 2 n^2 + 3 n + 1
+hstar(t): [1, 3, 0]
+binomial_basis: [1, 5, 4]
 ```
 
-See [constraint polytopes](docs/CONSTRAINT_POLYTOPES.md) for input syntax,
-full/reduced GT adapters, ordering controls, examples, and the shared
-`constraint_polytope_ehrhart` MCP tool.
+Transform-only (Ehrhart coefficients in ascending degree to h*) and a
+constraint polytope from a JSON description:
 
-## Design
+```console
+$ ehrcalc hstar --dimension 2 --coefficients 1,3/2,1/2
+dimension: 2
+Ehrhart(n): 1/2 n^2 + 3/2 n + 1
+hstar(t): [1, 0, 0]
+binomial_basis: [1, 2, 1]
+$ ehrcalc polytope --input examples/constraints/hypersimplex.json
+dimension: 3
+Ehrhart(n): 2/3 n^3 + 2 n^2 + 7/3 n + 1
+hstar(t): [1, 2, 1, 0]
+...
+```
 
-Ehrcalc is an orchestrator and exact transformation layer.  It owns the
-migrated GT/Kostka/LR/flow and key/order engines in its internal workspace
-crates.  The legacy `kostka` repository is a frozen compatibility and research
-reference, not a runtime dependency.  `polytool` remains the source of truth
-for real-rootedness and interlacing checks.
+Other families can feed `polytope` with `--emit-constraints`; see
+[docs/CONSTRAINT_POLYTOPES.md](docs/CONSTRAINT_POLYTOPES.md).
 
-## Legacy Transition
+Run `ehrcalc --help` or `ehrcalc <command> --help` for all options.
 
-Ehrcalc is the maintained public CLI, library, and MCP surface for the
-algorithms formerly exposed by `kostka`.  New supported calculations and fixes
-belong here.  We retain `kostka` unchanged as a historical reference until the
-Ehrcalc command-level compatibility audit is complete; it should not receive
-new features.
+## Output formats
 
-See:
+Every command accepts `--format text|json|latex`.  JSON is the stable
+machine-readable contract (large integers and rationals are encoded as
+strings); plain text and LaTeX are presentation layers over the same result.
 
-- [EHRHART_TOOL_SPEC.md](EHRHART_TOOL_SPEC.md) for requirements and the
-  phased migration plan.
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for package boundaries.
-- [docs/KEY_HSTAR.md](docs/KEY_HSTAR.md) for key h-star computations.
-- [docs/KTT_SEARCH.md](docs/KTT_SEARCH.md) for the bounded KTT research scanner.
-- [docs/cli.md](docs/cli.md) for generated CLI documentation.
-- [docs/OUTPUT_AND_MCP.md](docs/OUTPUT_AND_MCP.md) for output and MCP design.
-- [docs/TESTING.md](docs/TESTING.md) for the required test strategy.
+## MCP server
 
-## Development
+`ehrcalc-mcp` serves the library over MCP stdio transport; clients start it
+with no arguments.  Tools: `ehrhart_transform`, `compute_family`, and
+`constraint_polytope_ehrhart`.
 
-From this repository root, use bounded, low-priority commands:
+## Documentation
+
+- [docs/cli.md](docs/cli.md): generated CLI reference.
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): package layers, counting
+  engines, and exact interpolation.
+- [docs/OUTPUT_AND_MCP.md](docs/OUTPUT_AND_MCP.md): output schema and MCP
+  request contract.
+- [docs/CONSTRAINT_POLYTOPES.md](docs/CONSTRAINT_POLYTOPES.md): constraint
+  polytope input syntax, GT adapters, and ordering controls.
+- [docs/KEY_HSTAR.md](docs/KEY_HSTAR.md): key h* conventions, `key-scan` modes,
+  checkpoints, dilation shortcuts, and block-constant weights.
+- [docs/FORCED_PREFIX.md](docs/FORCED_PREFIX.md): forced first-row reduction.
+- [docs/BROAD_CORNER_FIXES.md](docs/BROAD_CORNER_FIXES.md): boundary semantics.
+- [docs/KTT_SEARCH.md](docs/KTT_SEARCH.md): the separate KTT research scanner.
+- [docs/TESTING.md](docs/TESTING.md): test strategy.
+- [EHRHART_TOOL_SPEC.md](EHRHART_TOOL_SPEC.md): requirements and design goals.
+
+## Testing
 
 ```bash
-timeout 60s nice -n 10 cargo test --workspace
-timeout 60s nice -n 10 cargo run -- --help
+cargo test --workspace
 ```
 
-All mathematical conclusions must use exact arithmetic.  A passing
-interpolation check alone is not sufficient: each family must also verify its
-dimension and independent sample points or reciprocity where applicable.
+CI runs the suite in debug and release; see [docs/TESTING.md](docs/TESTING.md).
+
+## License
+
+MIT; see [LICENSE](LICENSE).
